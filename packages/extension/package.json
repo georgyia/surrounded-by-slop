@@ -1,0 +1,45 @@
+{
+  "name": "surrounded-by-slop",
+  "displayName": "Surrounded by Slop",
+  "version": "0.0.1",
+  "private": true,
+  "description": "See the code you'll never read — automatic diagrams for your codebase.",
+  "publisher": "georgyia",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/georgyia/surrounded-by-slop.git",
+    "directory": "packages/extension"
+  },
+  "license": "MIT",
+  "engines": {
+    "vscode": "^1.96.0"
+  },
+  "categories": [
+    "Visualization"
+  ],
+  "keywords": [
+    "diagram",
+    "visualization",
+    "architecture",
+    "call graph",
+    "drawio",
+    "mermaid"
+  ],
+  "main": "./dist/extension.js",
+  "activationEvents": [
+    "onStartupFinished"
+  ],
+  "contributes": {},
+  "scripts": {
+    "build": "node esbuild.mjs",
+    "typecheck": "tsc --noEmit",
+    "package": "pnpm run build --production && vsce package --no-dependencies -o surrounded-by-slop.vsix"
+  },
+  "devDependencies": {
+    "@types/vscode": "^1.96.0",
+    "@vscode/vsce": "^3.3.0",
+    "esbuild": "^0.25.0",
+    "ovsx": "^1.0.2",
+    "typescript": "^5.8.0"
+  }
+}

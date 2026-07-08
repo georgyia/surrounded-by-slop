@@ -1,0 +1,25 @@
+{
+  "name": "@surrounded-by-slop/webview",
+  "version": "0.0.1",
+  "private": true,
+  "description": "Diagram UI for the editor webview: layout, SVG rendering, pan/zoom, interactions.",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/georgyia/surrounded-by-slop.git",
+    "directory": "packages/webview"
+  },
+  "license": "MIT",
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsc -p tsconfig.build.json",
+    "typecheck": "tsc --noEmit"
+  },
+  "devDependencies": {
+    "typescript": "^5.8.0"
+  }
+}

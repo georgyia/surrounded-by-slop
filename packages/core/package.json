@@ -1,0 +1,25 @@
+{
+  "name": "@surrounded-by-slop/core",
+  "version": "0.0.1",
+  "private": true,
+  "description": "Language-agnostic code analysis: source → Semantic Graph IR → exporters. Pure TypeScript, no editor dependencies.",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/georgyia/surrounded-by-slop.git",
+    "directory": "packages/core"
+  },
+  "license": "MIT",
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsc -p tsconfig.build.json",
+    "typecheck": "tsc --noEmit"
+  },
+  "devDependencies": {
+    "typescript": "^5.8.0"
+  }
+}

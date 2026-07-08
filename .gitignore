@@ -1,0 +1,18 @@
+# private roadmap — published as issues when ready
+PROJECT.md
+
+# dependencies
+node_modules/
+
+# build output
+dist/
+*.vsix
+*.tsbuildinfo
+
+# test output
+coverage/
+
+# editor & os noise
+.DS_Store
+.idea/
+*.log
