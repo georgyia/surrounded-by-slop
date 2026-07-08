@@ -1,0 +1,105 @@
+<div align="center">
+
+<img src="assets/banner.svg" alt="surrounded by slop — unreadable code goes in, a clean diagram comes out" width="100%">
+
+<br>
+
+[![CI](https://github.com/georgyia/surrounded-by-slop/actions/workflows/ci.yml/badge.svg)](https://github.com/georgyia/surrounded-by-slop/actions/workflows/ci.yml)
+[![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
+[![PRs welcome](https://img.shields.io/badge/PRs-welcome-3fb950.svg)](CONTRIBUTING.md)
+[![Made by humans](https://img.shields.io/badge/made_by_humans-citation_needed-d29922.svg)](#faq)
+
+**You can't understand people.** Fine — there's a bestseller for that.
+**You can't understand your codebase.** That one's on us.
+
+</div>
+
+---
+
+## The situation
+
+Somewhere around 2023, code stopped being *written* and started being *generated*. You "wrote" three thousand lines last week and read maybe forty of them. Your PR was approved by a reviewer whose reviewing strategy was also a language model. Somewhere in there, `processDataFinal2()` calls `processDataFinal()`, and the only entity that knows why is a GPU in Virginia.
+
+The book was right about one thing: you're not surrounded by idiots — you just can't decode how others think. Same energy here. **You're not a bad engineer. You're surrounded by slop.** And nobody has ever decoded slop by reading it line by line.
+
+## The fix
+
+Stop reading code. **Look at it.**
+
+**surrounded-by-slop** is a VS Code / Cursor extension that turns code into diagrams, automatically:
+
+```mermaid
+flowchart LR
+    code["your code<br/><i>(all 3,000 lines of it)</i>"] --> adapter["language adapter<br/>AST"]
+    adapter --> ir["semantic graph<br/>symbols · calls · imports · CFG · data flow"]
+    ir --> layout["layout engine"]
+    layout --> view["🖱 interactive diagram<br/>in your editor"]
+    ir --> mmd["mermaid"]
+    ir --> dio["draw.io"]
+    layout --> svg["svg"]
+```
+
+Open a file — get its structure and call graph as an interactive diagram. Click a node — land on the exact line. Zoom out — see the whole workspace as a map instead of a folder tree you keep pretending to understand. Export to **draw.io**, **Mermaid**, or **SVG** and paste it into the PR description that nobody was going to read either.
+
+## What it will do
+
+- 🗺️ **Workspace map** — modules, imports, and who actually depends on whom (spoiler: everything on `utils`)
+- 🕸️ **Call graphs that don't guess** — resolved through the TypeScript compiler, not regex and optimism
+- 🌀 **Control flow** — every path through a function, including the one that goes straight to the incident channel
+- 💧 **Data flow** — follow a variable through the function that "just transforms the payload a bit"
+- 🖱️ **Click-to-source** — every node knows exactly which line it came from
+- 📤 **Exports that are diffable** — deterministic output, so your *architecture* has a Git history too
+- 🧊 **Zero magic** — parsers, graphs, and layout algorithms; the same input produces the same diagram, byte for byte
+
+## Status
+
+Pre-alpha. The foundation is built and gated (strict TS, 3-OS CI, coverage thresholds the linter actually enforces); the visualization pipeline is landing milestone by milestone:
+
+| Milestone | Ships | Status |
+| --------- | ----- | ------ |
+| **M0 · Foundation** | monorepo, CI gates, governance | ✅ done |
+| **M1 · First Light** | TS/JS file → interactive diagram + Mermaid export | 🔨 next |
+| **M2 · The Map** | workspace call/import graph, click-to-source, draw.io + SVG | ⏳ |
+| **M3 · X-Ray** | control-flow & data-flow overlays, search, filters | ⏳ |
+| **M4 · Babel** | tree-sitter adapter layer, Python first | ⏳ |
+| **M5 · Launch** | VS Code Marketplace + Open VSX, docs site | ⏳ |
+
+Issues are opened in waves as each milestone starts, so the tracker only ever contains work that's actually actionable.
+
+## Try it (from source, for now)
+
+```bash
+git clone https://github.com/georgyia/surrounded-by-slop.git
+cd surrounded-by-slop
+pnpm install
+pnpm test          # see for yourself
+pnpm package       # → packages/extension/surrounded-by-slop.vsix
+```
+
+Or open the repo in VS Code and hit **F5**. Marketplace and Open VSX listings arrive with M5.
+
+## Principles
+
+1. **Local only.** Your slop never leaves your machine. No telemetry, no cloud, no "anonymous usage statistics". A network call in this codebase is a security bug — [we mean it](SECURITY.md).
+2. **Deterministic.** Same code in, byte-identical diagram out. Golden-file tested.
+3. **Minimal.** Every dependency needs a written justification to get in.
+4. **Boring quality bar.** It works, it's tested, it's documented — or it doesn't merge. AI-assisted PRs are welcome and held to exactly the same bar. That's rather the point of the whole project.
+
+## FAQ
+
+**Is this AI?**
+No. It's parsers, graph theory, and a layout engine — boring, deterministic technology that never hallucinates an edge. We *visualize* the slop; we don't add to it.
+
+**Why the name?**
+A Swedish author sold five million books explaining that the people around you aren't idiots — you just can't read them. The code around you isn't idiotic either. You just stopped reading it. We made the second problem visible.
+
+**Cursor?**
+Yes — Cursor, VSCodium, and anything else that speaks VS Code extensions. Open VSX publishing is part of the release pipeline, not an afterthought.
+
+## Contributing
+
+Come help people understand code they didn't write. Start with [CONTRIBUTING.md](CONTRIBUTING.md) — setup takes under ten minutes, the rules are short, and the CI tells you the truth.
+
+## License
+
+[MIT](LICENSE) — take it, fork it, diagram it.

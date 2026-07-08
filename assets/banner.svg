@@ -1,0 +1,92 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 330" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, 'Liberation Mono', monospace" role="img" aria-label="surrounded by slop — unreadable code goes in, a clean diagram comes out">
+  <style>
+    .flicker { animation: flicker 2.8s ease-in-out infinite; }
+    .d0 { animation-delay: 0s; }
+    .d1 { animation-delay: .5s; }
+    .d2 { animation-delay: 1s; }
+    .d3 { animation-delay: 1.5s; }
+    .d4 { animation-delay: 2s; }
+    .d5 { animation-delay: 2.4s; }
+    @keyframes flicker { 0%, 100% { opacity: 1; } 50% { opacity: .35; } }
+    .dash { stroke-dasharray: 6 5; animation: dashmove 1.2s linear infinite; }
+    .dash-slow { stroke-dasharray: 8 6; animation: dashmove 1.8s linear infinite; }
+    @keyframes dashmove { to { stroke-dashoffset: -11; } }
+    .cursor { animation: blink 1.1s steps(1) infinite; }
+    @keyframes blink { 50% { opacity: 0; } }
+    @media (prefers-reduced-motion: reduce) {
+      .flicker, .dash, .dash-slow, .cursor { animation: none; }
+    }
+  </style>
+
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M 0 1 L 9 5 L 0 9 z" fill="#8b949e"/>
+    </marker>
+    <marker id="arrow-blue" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+      <path d="M 0 1 L 9 5 L 0 9 z" fill="#58a6ff"/>
+    </marker>
+  </defs>
+
+  <!-- background -->
+  <rect width="1200" height="330" rx="12" fill="#0b0f17"/>
+  <rect x="1" y="1" width="1198" height="328" rx="11" fill="none" stroke="#21262d"/>
+
+  <!-- title -->
+  <text x="600" y="62" text-anchor="middle" font-size="40" font-weight="800" letter-spacing="6" fill="#e6edf3">SURROUNDED BY SLOP</text>
+  <text x="600" y="94" text-anchor="middle" font-size="15" fill="#8b949e">see the code you'll never read<tspan class="cursor" fill="#58a6ff">▌</tspan></text>
+
+  <!-- left window: the slop -->
+  <g>
+    <rect x="70" y="130" width="420" height="160" rx="8" fill="#10151f" stroke="#21262d"/>
+    <circle cx="90" cy="147" r="4.5" fill="#f85149"/>
+    <circle cx="106" cy="147" r="4.5" fill="#d29922"/>
+    <circle cx="122" cy="147" r="4.5" fill="#3fb950"/>
+    <text x="140" y="151" font-size="11" fill="#6e7681">generated_by_ai_final_v2.ts</text>
+
+    <g class="flicker d0"><rect x="90" y="170" width="180" height="8" rx="3" fill="#2d333b"/></g>
+    <g class="flicker d1"><rect x="106" y="188" width="250" height="8" rx="3" fill="#2d333b"/></g>
+    <g class="flicker d2"><rect x="106" y="206" width="210" height="8" rx="3" fill="#f85149" opacity=".4"/></g>
+    <g class="flicker d3"><rect x="122" y="224" width="150" height="8" rx="3" fill="#2d333b"/></g>
+    <g class="flicker d4"><rect x="90" y="242" width="280" height="8" rx="3" fill="#2d333b"/></g>
+    <g class="flicker d5"><rect x="106" y="260" width="130" height="8" rx="3" fill="#d29922" opacity=".4"/></g>
+    <text x="90" y="281" font-size="11" font-style="italic" fill="#6e7681">// TODO(nobody): understand this</text>
+  </g>
+
+  <!-- the transformation -->
+  <path d="M 505 208 H 682" stroke="#58a6ff" stroke-width="2" fill="none" class="dash-slow" marker-end="url(#arrow-blue)"/>
+  <text x="597" y="192" text-anchor="middle" font-size="12" fill="#58a6ff">surrounded-by-slop</text>
+
+  <!-- right window: the diagram -->
+  <g>
+    <rect x="710" y="130" width="420" height="160" rx="8" fill="#10151f" stroke="#21262d"/>
+    <circle cx="730" cy="147" r="4.5" fill="#f85149"/>
+    <circle cx="746" cy="147" r="4.5" fill="#d29922"/>
+    <circle cx="762" cy="147" r="4.5" fill="#3fb950"/>
+    <text x="780" y="151" font-size="11" fill="#6e7681">the_same_file — suddenly obvious</text>
+
+    <!-- edges -->
+    <path d="M 827 174 C 860 174, 872 166, 903 166" stroke="#8b949e" stroke-width="1.5" fill="none" class="dash" marker-end="url(#arrow)"/>
+    <path d="M 969 166 C 1002 166, 1012 174, 1043 174" stroke="#8b949e" stroke-width="1.5" fill="none" class="dash" marker-end="url(#arrow)"/>
+    <path d="M 813 238 C 813 214, 795 210, 792 190" stroke="#8b949e" stroke-width="1.5" fill="none" class="dash" marker-end="url(#arrow)"/>
+    <path d="M 937 180 C 937 212, 978 210, 979 236" stroke="#8b949e" stroke-width="1.5" fill="none" class="dash" marker-end="url(#arrow)"/>
+
+    <!-- nodes -->
+    <rect x="755" y="160" width="72" height="28" rx="6" fill="#58a6ff" fill-opacity=".13" stroke="#58a6ff"/>
+    <text x="791" y="178" text-anchor="middle" font-size="12" fill="#79b8ff">auth</text>
+
+    <rect x="905" y="152" width="64" height="28" rx="6" fill="#3fb950" fill-opacity=".13" stroke="#3fb950"/>
+    <text x="937" y="170" text-anchor="middle" font-size="12" fill="#56d364">api</text>
+
+    <rect x="1045" y="160" width="56" height="28" rx="6" fill="#d29922" fill-opacity=".13" stroke="#d29922"/>
+    <text x="1073" y="178" text-anchor="middle" font-size="12" fill="#e3b341">db</text>
+
+    <rect x="785" y="238" width="56" height="28" rx="6" fill="#bc8cff" fill-opacity=".13" stroke="#bc8cff"/>
+    <text x="813" y="256" text-anchor="middle" font-size="12" fill="#d2a8ff">ui</text>
+
+    <rect x="930" y="238" width="100" height="28" rx="6" fill="#8b949e" fill-opacity=".13" stroke="#8b949e"/>
+    <text x="980" y="256" text-anchor="middle" font-size="12" fill="#adbac7">exporters</text>
+  </g>
+
+  <!-- footer -->
+  <text x="600" y="316" text-anchor="middle" font-size="12" fill="#6e7681">AST + call graph + control flow + data flow&#160;&#160;→&#160;&#160;interactive diagram / draw.io / mermaid / svg</text>
+</svg>
