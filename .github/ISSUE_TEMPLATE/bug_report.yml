@@ -1,0 +1,61 @@
+name: Bug report
+description: Something renders wrong, crashes, or lies to you
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for the report. The smallest reproducible code sample is worth
+        more than three paragraphs of description.
+  - type: textarea
+    id: what-happened
+    attributes:
+      label: What happened?
+      description: What did you do, what did you get?
+      placeholder: Ran "Visualize File" on the sample below and the diagram …
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: What did you expect?
+      placeholder: Expected an edge from `a()` to `b()` …
+    validations:
+      required: true
+  - type: textarea
+    id: sample
+    attributes:
+      label: Minimal code sample
+      description: The smallest input that reproduces the problem. This becomes a regression fixture.
+      render: typescript
+    validations:
+      required: false
+  - type: input
+    id: extension-version
+    attributes:
+      label: Extension version
+      placeholder: e.g. 0.1.0
+    validations:
+      required: true
+  - type: input
+    id: editor
+    attributes:
+      label: Editor & version
+      placeholder: e.g. VS Code 1.101.0 / Cursor 1.2
+    validations:
+      required: true
+  - type: input
+    id: os
+    attributes:
+      label: Operating system
+      placeholder: e.g. macOS 15.5 / Windows 11 / Ubuntu 24.04
+    validations:
+      required: true
+  - type: textarea
+    id: logs
+    attributes:
+      label: Logs
+      description: Output panel → "Surrounded by Slop" channel, if relevant.
+      render: shell
+    validations:
+      required: false

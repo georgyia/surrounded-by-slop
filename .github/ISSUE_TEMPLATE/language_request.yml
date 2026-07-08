@@ -1,0 +1,36 @@
+name: Language request
+description: Ask for (or offer to build) support for a programming language
+labels: ["lang:request"]
+body:
+  - type: input
+    id: language
+    attributes:
+      label: Language
+      placeholder: e.g. Go, Rust, Kotlin
+    validations:
+      required: true
+  - type: input
+    id: grammar
+    attributes:
+      label: tree-sitter grammar
+      description: Link to the grammar if you know it (most languages have one).
+      placeholder: https://github.com/tree-sitter/tree-sitter-go
+    validations:
+      required: false
+  - type: textarea
+    id: views
+    attributes:
+      label: What matters most for this language?
+      description: Which views would you actually use — module map, call graph, class structure, control flow?
+    validations:
+      required: true
+  - type: dropdown
+    id: contribute
+    attributes:
+      label: Would you contribute the adapter?
+      options:
+        - Yes, with guidance
+        - Maybe
+        - No, just requesting
+    validations:
+      required: true

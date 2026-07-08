@@ -1,0 +1,8 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Question / discussion
+    url: https://github.com/georgyia/surrounded-by-slop/discussions
+    about: For "how do I…?", ideas you want to talk through, and everything that isn't a bug.
+  - name: Security report
+    url: https://github.com/georgyia/surrounded-by-slop/security/advisories/new
+    about: Report vulnerabilities privately — never as a public issue.

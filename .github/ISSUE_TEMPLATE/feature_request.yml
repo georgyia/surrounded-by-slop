@@ -1,0 +1,25 @@
+name: Feature request
+description: Something the extension should do but doesn't
+labels: ["feature"]
+body:
+  - type: textarea
+    id: problem
+    attributes:
+      label: The problem
+      description: What are you trying to understand/do that you currently can't?
+      placeholder: When I open a workspace diagram I can't tell which modules are test-only …
+    validations:
+      required: true
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Proposed solution
+      description: How should it work? Sketches, screenshots and hand-drawn diagrams are very welcome here, of all places.
+    validations:
+      required: true
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternatives considered
+    validations:
+      required: false
