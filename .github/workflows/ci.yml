@@ -75,7 +75,9 @@ jobs:
         run: |
           base='${{ github.event.pull_request.base.sha }}'
           head='${{ github.event.pull_request.head.sha }}'
-          missing="$(git log --format='%h %s' --invert-grep --grep='Signed-off-by:' "$base..$head")"
+          # Bots (dependabot, github-actions) can't sign the DCO — it only
+          # binds humans certifying they may contribute the code.
+          missing="$(git log --format='%h %an %s' --invert-grep --grep='Signed-off-by:' "$base..$head" | grep -v '\[bot\]' || true)"
           if [ -n "$missing" ]; then
             echo 'Commits missing a DCO sign-off:'
             echo "$missing"
