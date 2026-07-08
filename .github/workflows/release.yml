@@ -1,0 +1,56 @@
+name: Release
+
+on:
+  push:
+    tags: ["v*"]
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    name: Build, verify & publish
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm lint
+      - run: pnpm typecheck
+      - run: pnpm test
+      - run: pnpm package
+
+      - name: GitHub release with VSIX
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh release create "$GITHUB_REF_NAME" \
+            packages/extension/surrounded-by-slop.vsix \
+            --title "$GITHUB_REF_NAME" \
+            --generate-notes
+
+      - name: Publish to VS Code Marketplace
+        env:
+          VSCE_PAT: ${{ secrets.VSCE_PAT }}
+        working-directory: packages/extension
+        run: |
+          if [ -z "$VSCE_PAT" ]; then
+            echo '::notice::VSCE_PAT secret not configured — skipping Marketplace publish.'
+            exit 0
+          fi
+          pnpm exec vsce publish --no-dependencies --packagePath surrounded-by-slop.vsix
+
+      - name: Publish to Open VSX
+        env:
+          OVSX_PAT: ${{ secrets.OVSX_PAT }}
+        working-directory: packages/extension
+        run: |
+          if [ -z "$OVSX_PAT" ]; then
+            echo '::notice::OVSX_PAT secret not configured — skipping Open VSX publish.'
+            exit 0
+          fi
+          pnpm exec ovsx publish surrounded-by-slop.vsix --pat "$OVSX_PAT"
