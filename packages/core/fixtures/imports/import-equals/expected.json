@@ -1,0 +1,89 @@
+{
+  "diagnostics": [],
+  "graph": {
+    "edges": [
+      {
+        "from": "module:fs-like.ts",
+        "id": "contains:module:fs-like.ts->variable:fs-like.ts#read",
+        "kind": "contains",
+        "to": "variable:fs-like.ts#read"
+      },
+      {
+        "from": "module:main.ts",
+        "id": "contains:module:main.ts->variable:main.ts#io",
+        "kind": "contains",
+        "to": "variable:main.ts#io"
+      },
+      {
+        "from": "module:main.ts",
+        "id": "imports:module:main.ts->module:fs-like.ts",
+        "kind": "imports",
+        "span": {
+          "endCol": 36,
+          "endLine": 1,
+          "file": "main.ts",
+          "startCol": 25,
+          "startLine": 1
+        },
+        "to": "module:fs-like.ts"
+      }
+    ],
+    "nodes": [
+      {
+        "id": "module:fs-like.ts",
+        "kind": "module",
+        "name": "fs-like.ts",
+        "qualifiedName": "fs-like.ts",
+        "span": {
+          "endCol": 1,
+          "endLine": 2,
+          "file": "fs-like.ts",
+          "startCol": 1,
+          "startLine": 1
+        }
+      },
+      {
+        "id": "module:main.ts",
+        "kind": "module",
+        "name": "main.ts",
+        "qualifiedName": "main.ts",
+        "span": {
+          "endCol": 1,
+          "endLine": 3,
+          "file": "main.ts",
+          "startCol": 1,
+          "startLine": 1
+        }
+      },
+      {
+        "exported": true,
+        "id": "variable:fs-like.ts#read",
+        "kind": "variable",
+        "name": "read",
+        "qualifiedName": "read",
+        "span": {
+          "endCol": 25,
+          "endLine": 1,
+          "file": "fs-like.ts",
+          "startCol": 14,
+          "startLine": 1
+        }
+      },
+      {
+        "exported": true,
+        "id": "variable:main.ts#io",
+        "kind": "variable",
+        "name": "io",
+        "qualifiedName": "io",
+        "span": {
+          "endCol": 25,
+          "endLine": 2,
+          "file": "main.ts",
+          "startCol": 14,
+          "startLine": 2
+        }
+      }
+    ],
+    "schemaVersion": 1
+  }
+}

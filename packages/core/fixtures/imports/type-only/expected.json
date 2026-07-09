@@ -1,0 +1,184 @@
+{
+  "diagnostics": [],
+  "graph": {
+    "edges": [
+      {
+        "from": "module:main.ts",
+        "id": "contains:module:main.ts->variable:main.ts#s",
+        "kind": "contains",
+        "to": "variable:main.ts#s"
+      },
+      {
+        "from": "module:mixed.ts",
+        "id": "contains:module:mixed.ts->variable:mixed.ts#both",
+        "kind": "contains",
+        "to": "variable:mixed.ts#both"
+      },
+      {
+        "from": "module:types.ts",
+        "id": "contains:module:types.ts->interface:types.ts#Shape",
+        "kind": "contains",
+        "to": "interface:types.ts#Shape"
+      },
+      {
+        "from": "module:types.ts",
+        "id": "contains:module:types.ts->variable:types.ts#origin",
+        "kind": "contains",
+        "to": "variable:types.ts#origin"
+      },
+      {
+        "from": "module:main.ts",
+        "id": "imports:module:main.ts->module:types.ts",
+        "kind": "imports",
+        "span": {
+          "endCol": 37,
+          "endLine": 1,
+          "file": "main.ts",
+          "startCol": 28,
+          "startLine": 1
+        },
+        "to": "module:types.ts",
+        "typeOnly": true
+      },
+      {
+        "count": 2,
+        "from": "module:mixed.ts",
+        "id": "imports:module:mixed.ts->module:types.ts",
+        "kind": "imports",
+        "span": {
+          "endCol": 37,
+          "endLine": 1,
+          "file": "mixed.ts",
+          "startCol": 28,
+          "startLine": 1
+        },
+        "to": "module:types.ts"
+      },
+      {
+        "from": "module:reexport.ts",
+        "id": "imports:module:reexport.ts->module:types.ts",
+        "kind": "imports",
+        "span": {
+          "endCol": 37,
+          "endLine": 1,
+          "file": "reexport.ts",
+          "startCol": 28,
+          "startLine": 1
+        },
+        "to": "module:types.ts",
+        "typeOnly": true
+      }
+    ],
+    "nodes": [
+      {
+        "exported": true,
+        "id": "interface:types.ts#Shape",
+        "kind": "interface",
+        "name": "Shape",
+        "qualifiedName": "Shape",
+        "span": {
+          "endCol": 2,
+          "endLine": 3,
+          "file": "types.ts",
+          "startCol": 1,
+          "startLine": 1
+        }
+      },
+      {
+        "id": "module:main.ts",
+        "kind": "module",
+        "name": "main.ts",
+        "qualifiedName": "main.ts",
+        "span": {
+          "endCol": 1,
+          "endLine": 3,
+          "file": "main.ts",
+          "startCol": 1,
+          "startLine": 1
+        }
+      },
+      {
+        "id": "module:mixed.ts",
+        "kind": "module",
+        "name": "mixed.ts",
+        "qualifiedName": "mixed.ts",
+        "span": {
+          "endCol": 1,
+          "endLine": 4,
+          "file": "mixed.ts",
+          "startCol": 1,
+          "startLine": 1
+        }
+      },
+      {
+        "id": "module:reexport.ts",
+        "kind": "module",
+        "name": "reexport.ts",
+        "qualifiedName": "reexport.ts",
+        "span": {
+          "endCol": 1,
+          "endLine": 2,
+          "file": "reexport.ts",
+          "startCol": 1,
+          "startLine": 1
+        }
+      },
+      {
+        "id": "module:types.ts",
+        "kind": "module",
+        "name": "types.ts",
+        "qualifiedName": "types.ts",
+        "span": {
+          "endCol": 1,
+          "endLine": 5,
+          "file": "types.ts",
+          "startCol": 1,
+          "startLine": 1
+        }
+      },
+      {
+        "exported": true,
+        "id": "variable:main.ts#s",
+        "kind": "variable",
+        "name": "s",
+        "qualifiedName": "s",
+        "span": {
+          "endCol": 36,
+          "endLine": 2,
+          "file": "main.ts",
+          "startCol": 14,
+          "startLine": 2
+        }
+      },
+      {
+        "exported": true,
+        "id": "variable:mixed.ts#both",
+        "kind": "variable",
+        "name": "both",
+        "qualifiedName": "both",
+        "span": {
+          "endCol": 55,
+          "endLine": 3,
+          "file": "mixed.ts",
+          "startCol": 14,
+          "startLine": 3
+        }
+      },
+      {
+        "exported": true,
+        "id": "variable:types.ts#origin",
+        "kind": "variable",
+        "name": "origin",
+        "qualifiedName": "origin",
+        "span": {
+          "endCol": 35,
+          "endLine": 4,
+          "file": "types.ts",
+          "startCol": 14,
+          "startLine": 4
+        }
+      }
+    ],
+    "schemaVersion": 1
+  }
+}

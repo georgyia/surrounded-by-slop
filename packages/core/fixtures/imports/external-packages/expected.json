@@ -1,0 +1,84 @@
+{
+  "diagnostics": [],
+  "graph": {
+    "edges": [
+      {
+        "from": "module:main.ts",
+        "id": "contains:module:main.ts->variable:main.ts#stack",
+        "kind": "contains",
+        "to": "variable:main.ts#stack"
+      },
+      {
+        "from": "module:main.ts",
+        "id": "imports:module:main.ts->module:external:@scope/pkg",
+        "kind": "imports",
+        "span": {
+          "endCol": 44,
+          "endLine": 3,
+          "file": "main.ts",
+          "startCol": 22,
+          "startLine": 3
+        },
+        "to": "module:external:@scope/pkg"
+      },
+      {
+        "count": 2,
+        "from": "module:main.ts",
+        "id": "imports:module:main.ts->module:external:react",
+        "kind": "imports",
+        "span": {
+          "endCol": 26,
+          "endLine": 1,
+          "file": "main.ts",
+          "startCol": 19,
+          "startLine": 1
+        },
+        "to": "module:external:react"
+      }
+    ],
+    "nodes": [
+      {
+        "external": true,
+        "id": "module:external:@scope/pkg",
+        "kind": "module",
+        "name": "@scope/pkg",
+        "qualifiedName": "@scope/pkg"
+      },
+      {
+        "external": true,
+        "id": "module:external:react",
+        "kind": "module",
+        "name": "react",
+        "qualifiedName": "react"
+      },
+      {
+        "id": "module:main.ts",
+        "kind": "module",
+        "name": "main.ts",
+        "qualifiedName": "main.ts",
+        "span": {
+          "endCol": 1,
+          "endLine": 5,
+          "file": "main.ts",
+          "startCol": 1,
+          "startLine": 1
+        }
+      },
+      {
+        "exported": true,
+        "id": "variable:main.ts#stack",
+        "kind": "variable",
+        "name": "stack",
+        "qualifiedName": "stack",
+        "span": {
+          "endCol": 35,
+          "endLine": 4,
+          "file": "main.ts",
+          "startCol": 14,
+          "startLine": 4
+        }
+      }
+    ],
+    "schemaVersion": 1
+  }
+}

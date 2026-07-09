@@ -7,6 +7,7 @@ import { toRelativePath } from "./host.js";
 export interface ProjectContext {
   program: ts.Program;
   checker: ts.TypeChecker;
+  resolutionHost: ts.ModuleResolutionHost;
   ids: IdAllocator;
   nodes: GraphNode[];
   edges: GraphEdge[];
@@ -29,10 +30,14 @@ export interface PendingHeritage {
   expression: ts.Expression;
 }
 
-export function createProjectContext(program: ts.Program): ProjectContext {
+export function createProjectContext(
+  program: ts.Program,
+  resolutionHost: ts.ModuleResolutionHost,
+): ProjectContext {
   return {
     program,
     checker: program.getTypeChecker(),
+    resolutionHost,
     ids: new IdAllocator(),
     nodes: [],
     edges: [],
@@ -77,9 +82,9 @@ export function signatureOf(
 }
 
 export interface EdgeProps {
-  span?: SourceSpan;
-  typeOnly?: boolean;
-  confidence?: "low";
+  span?: SourceSpan | undefined;
+  typeOnly?: boolean | undefined;
+  confidence?: "low" | undefined;
 }
 
 /**

@@ -9,6 +9,7 @@ import { buildGraph } from "../ir/ids.js";
 import type { AnalysisResult, Diagnostic } from "../ir/types.js";
 import { createProjectContext, type ProjectContext } from "./common.js";
 import { createVirtualEnvironment, DEFAULT_COMPILER_OPTIONS } from "./host.js";
+import { collectFileImports, markImportCycles } from "./imports.js";
 import { collectFileStructure, resolveHeritage } from "./structure.js";
 
 /**
@@ -25,7 +26,7 @@ export function analyzeTypeScriptProject(
   const compilerOptions = compilerOptionsFrom(options?.adapterOptions, diagnostics);
   const { host, rootNames } = createVirtualEnvironment(files);
   const program = ts.createProgram({ rootNames, options: compilerOptions, host });
-  const ctx = createProjectContext(program);
+  const ctx = createProjectContext(program, host);
   ctx.diagnostics.push(...diagnostics);
 
   const sourceFiles = rootNames
@@ -34,6 +35,8 @@ export function analyzeTypeScriptProject(
 
   runPhase(ctx, sourceFiles, options, "structure", collectFileStructure);
   resolveHeritage(ctx);
+  runPhase(ctx, sourceFiles, options, "imports", collectFileImports);
+  markImportCycles(ctx);
 
   const graph = buildGraph(ctx.nodes, ctx.edges);
   return { graph, diagnostics: ctx.diagnostics };

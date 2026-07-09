@@ -1,0 +1,69 @@
+{
+  "diagnostics": [
+    {
+      "file": "main.ts",
+      "message": "unresolved import \"./missing\"",
+      "severity": "warning"
+    }
+  ],
+  "graph": {
+    "edges": [
+      {
+        "from": "module:main.ts",
+        "id": "contains:module:main.ts->variable:main.ts#still",
+        "kind": "contains",
+        "to": "variable:main.ts#still"
+      },
+      {
+        "from": "module:main.ts",
+        "id": "imports:module:main.ts->module:external:./missing",
+        "kind": "imports",
+        "span": {
+          "endCol": 33,
+          "endLine": 1,
+          "file": "main.ts",
+          "startCol": 22,
+          "startLine": 1
+        },
+        "to": "module:external:./missing"
+      }
+    ],
+    "nodes": [
+      {
+        "external": true,
+        "id": "module:external:./missing",
+        "kind": "module",
+        "name": "./missing",
+        "qualifiedName": "./missing"
+      },
+      {
+        "id": "module:main.ts",
+        "kind": "module",
+        "name": "main.ts",
+        "qualifiedName": "main.ts",
+        "span": {
+          "endCol": 1,
+          "endLine": 3,
+          "file": "main.ts",
+          "startCol": 1,
+          "startLine": 1
+        }
+      },
+      {
+        "exported": true,
+        "id": "variable:main.ts#still",
+        "kind": "variable",
+        "name": "still",
+        "qualifiedName": "still",
+        "span": {
+          "endCol": 26,
+          "endLine": 2,
+          "file": "main.ts",
+          "startCol": 14,
+          "startLine": 2
+        }
+      }
+    ],
+    "schemaVersion": 1
+  }
+}

@@ -1,0 +1,115 @@
+{
+  "diagnostics": [],
+  "graph": {
+    "edges": [
+      {
+        "from": "module:impl.ts",
+        "id": "contains:module:impl.ts->variable:impl.ts#value",
+        "kind": "contains",
+        "to": "variable:impl.ts#value"
+      },
+      {
+        "from": "module:other.ts",
+        "id": "contains:module:other.ts->variable:other.ts#helper",
+        "kind": "contains",
+        "to": "variable:other.ts#helper"
+      },
+      {
+        "from": "module:index.ts",
+        "id": "imports:module:index.ts->module:impl.ts",
+        "kind": "imports",
+        "span": {
+          "endCol": 23,
+          "endLine": 1,
+          "file": "index.ts",
+          "startCol": 15,
+          "startLine": 1
+        },
+        "to": "module:impl.ts"
+      },
+      {
+        "from": "module:index.ts",
+        "id": "imports:module:index.ts->module:other.ts",
+        "kind": "imports",
+        "span": {
+          "endCol": 44,
+          "endLine": 2,
+          "file": "index.ts",
+          "startCol": 35,
+          "startLine": 2
+        },
+        "to": "module:other.ts"
+      }
+    ],
+    "nodes": [
+      {
+        "id": "module:impl.ts",
+        "kind": "module",
+        "name": "impl.ts",
+        "qualifiedName": "impl.ts",
+        "span": {
+          "endCol": 1,
+          "endLine": 2,
+          "file": "impl.ts",
+          "startCol": 1,
+          "startLine": 1
+        }
+      },
+      {
+        "id": "module:index.ts",
+        "kind": "module",
+        "name": "index.ts",
+        "qualifiedName": "index.ts",
+        "span": {
+          "endCol": 1,
+          "endLine": 3,
+          "file": "index.ts",
+          "startCol": 1,
+          "startLine": 1
+        }
+      },
+      {
+        "id": "module:other.ts",
+        "kind": "module",
+        "name": "other.ts",
+        "qualifiedName": "other.ts",
+        "span": {
+          "endCol": 1,
+          "endLine": 2,
+          "file": "other.ts",
+          "startCol": 1,
+          "startLine": 1
+        }
+      },
+      {
+        "exported": true,
+        "id": "variable:impl.ts#value",
+        "kind": "variable",
+        "name": "value",
+        "qualifiedName": "value",
+        "span": {
+          "endCol": 23,
+          "endLine": 1,
+          "file": "impl.ts",
+          "startCol": 14,
+          "startLine": 1
+        }
+      },
+      {
+        "exported": true,
+        "id": "variable:other.ts#helper",
+        "kind": "variable",
+        "name": "helper",
+        "qualifiedName": "helper",
+        "span": {
+          "endCol": 24,
+          "endLine": 1,
+          "file": "other.ts",
+          "startCol": 14,
+          "startLine": 1
+        }
+      }
+    ],
+    "schemaVersion": 1
+  }
+}

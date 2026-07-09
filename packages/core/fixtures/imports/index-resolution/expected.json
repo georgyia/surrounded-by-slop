@@ -1,0 +1,89 @@
+{
+  "diagnostics": [],
+  "graph": {
+    "edges": [
+      {
+        "from": "module:dir/index.ts",
+        "id": "contains:module:dir/index.ts->variable:dir/index.ts#fromIndex",
+        "kind": "contains",
+        "to": "variable:dir/index.ts#fromIndex"
+      },
+      {
+        "from": "module:main.ts",
+        "id": "contains:module:main.ts->variable:main.ts#got",
+        "kind": "contains",
+        "to": "variable:main.ts#got"
+      },
+      {
+        "from": "module:main.ts",
+        "id": "imports:module:main.ts->module:dir/index.ts",
+        "kind": "imports",
+        "span": {
+          "endCol": 34,
+          "endLine": 1,
+          "file": "main.ts",
+          "startCol": 27,
+          "startLine": 1
+        },
+        "to": "module:dir/index.ts"
+      }
+    ],
+    "nodes": [
+      {
+        "id": "module:dir/index.ts",
+        "kind": "module",
+        "name": "dir/index.ts",
+        "qualifiedName": "dir/index.ts",
+        "span": {
+          "endCol": 1,
+          "endLine": 2,
+          "file": "dir/index.ts",
+          "startCol": 1,
+          "startLine": 1
+        }
+      },
+      {
+        "id": "module:main.ts",
+        "kind": "module",
+        "name": "main.ts",
+        "qualifiedName": "main.ts",
+        "span": {
+          "endCol": 1,
+          "endLine": 3,
+          "file": "main.ts",
+          "startCol": 1,
+          "startLine": 1
+        }
+      },
+      {
+        "exported": true,
+        "id": "variable:dir/index.ts#fromIndex",
+        "kind": "variable",
+        "name": "fromIndex",
+        "qualifiedName": "fromIndex",
+        "span": {
+          "endCol": 27,
+          "endLine": 1,
+          "file": "dir/index.ts",
+          "startCol": 14,
+          "startLine": 1
+        }
+      },
+      {
+        "exported": true,
+        "id": "variable:main.ts#got",
+        "kind": "variable",
+        "name": "got",
+        "qualifiedName": "got",
+        "span": {
+          "endCol": 29,
+          "endLine": 2,
+          "file": "main.ts",
+          "startCol": 14,
+          "startLine": 2
+        }
+      }
+    ],
+    "schemaVersion": 1
+  }
+}

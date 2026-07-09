@@ -1,0 +1,135 @@
+{
+  "diagnostics": [],
+  "graph": {
+    "edges": [
+      {
+        "from": "module:lib.ts",
+        "id": "contains:module:lib.ts->variable:lib.ts#helper",
+        "kind": "contains",
+        "to": "variable:lib.ts#helper"
+      },
+      {
+        "from": "module:main.ts",
+        "id": "contains:module:main.ts->variable:main.ts#use",
+        "kind": "contains",
+        "to": "variable:main.ts#use"
+      },
+      {
+        "from": "module:side-effect.ts",
+        "id": "contains:module:side-effect.ts->variable:side-effect.ts#loaded",
+        "kind": "contains",
+        "to": "variable:side-effect.ts#loaded"
+      },
+      {
+        "from": "module:main.ts",
+        "id": "imports:module:main.ts->module:lib.ts",
+        "kind": "imports",
+        "span": {
+          "endCol": 45,
+          "endLine": 1,
+          "file": "main.ts",
+          "startCol": 38,
+          "startLine": 1
+        },
+        "to": "module:lib.ts"
+      },
+      {
+        "from": "module:main.ts",
+        "id": "imports:module:main.ts->module:side-effect.ts",
+        "kind": "imports",
+        "span": {
+          "endCol": 23,
+          "endLine": 2,
+          "file": "main.ts",
+          "startCol": 8,
+          "startLine": 2
+        },
+        "to": "module:side-effect.ts"
+      }
+    ],
+    "nodes": [
+      {
+        "id": "module:lib.ts",
+        "kind": "module",
+        "name": "lib.ts",
+        "qualifiedName": "lib.ts",
+        "span": {
+          "endCol": 1,
+          "endLine": 3,
+          "file": "lib.ts",
+          "startCol": 1,
+          "startLine": 1
+        }
+      },
+      {
+        "id": "module:main.ts",
+        "kind": "module",
+        "name": "main.ts",
+        "qualifiedName": "main.ts",
+        "span": {
+          "endCol": 1,
+          "endLine": 4,
+          "file": "main.ts",
+          "startCol": 1,
+          "startLine": 1
+        }
+      },
+      {
+        "id": "module:side-effect.ts",
+        "kind": "module",
+        "name": "side-effect.ts",
+        "qualifiedName": "side-effect.ts",
+        "span": {
+          "endCol": 1,
+          "endLine": 2,
+          "file": "side-effect.ts",
+          "startCol": 1,
+          "startLine": 1
+        }
+      },
+      {
+        "exported": true,
+        "id": "variable:lib.ts#helper",
+        "kind": "variable",
+        "name": "helper",
+        "qualifiedName": "helper",
+        "span": {
+          "endCol": 24,
+          "endLine": 2,
+          "file": "lib.ts",
+          "startCol": 14,
+          "startLine": 2
+        }
+      },
+      {
+        "exported": true,
+        "id": "variable:main.ts#use",
+        "kind": "variable",
+        "name": "use",
+        "qualifiedName": "use",
+        "span": {
+          "endCol": 42,
+          "endLine": 3,
+          "file": "main.ts",
+          "startCol": 14,
+          "startLine": 3
+        }
+      },
+      {
+        "exported": true,
+        "id": "variable:side-effect.ts#loaded",
+        "kind": "variable",
+        "name": "loaded",
+        "qualifiedName": "loaded",
+        "span": {
+          "endCol": 27,
+          "endLine": 1,
+          "file": "side-effect.ts",
+          "startCol": 14,
+          "startLine": 1
+        }
+      }
+    ],
+    "schemaVersion": 1
+  }
+}

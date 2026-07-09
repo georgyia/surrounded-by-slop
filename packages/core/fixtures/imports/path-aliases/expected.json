@@ -1,0 +1,90 @@
+{
+  "diagnostics": [],
+  "graph": {
+    "edges": [
+      {
+        "from": "module:src/lib/math.ts",
+        "id": "contains:module:src/lib/math.ts->function:src/lib/math.ts#add",
+        "kind": "contains",
+        "to": "function:src/lib/math.ts#add"
+      },
+      {
+        "from": "module:src/main.ts",
+        "id": "contains:module:src/main.ts->variable:src/main.ts#sum",
+        "kind": "contains",
+        "to": "variable:src/main.ts#sum"
+      },
+      {
+        "from": "module:src/main.ts",
+        "id": "imports:module:src/main.ts->module:src/lib/math.ts",
+        "kind": "imports",
+        "span": {
+          "endCol": 32,
+          "endLine": 1,
+          "file": "src/main.ts",
+          "startCol": 21,
+          "startLine": 1
+        },
+        "to": "module:src/lib/math.ts"
+      }
+    ],
+    "nodes": [
+      {
+        "exported": true,
+        "id": "function:src/lib/math.ts#add",
+        "kind": "function",
+        "name": "add",
+        "qualifiedName": "add",
+        "signature": "(a: number, b: number): number",
+        "span": {
+          "endCol": 59,
+          "endLine": 1,
+          "file": "src/lib/math.ts",
+          "startCol": 14,
+          "startLine": 1
+        }
+      },
+      {
+        "id": "module:src/lib/math.ts",
+        "kind": "module",
+        "name": "src/lib/math.ts",
+        "qualifiedName": "src/lib/math.ts",
+        "span": {
+          "endCol": 1,
+          "endLine": 2,
+          "file": "src/lib/math.ts",
+          "startCol": 1,
+          "startLine": 1
+        }
+      },
+      {
+        "id": "module:src/main.ts",
+        "kind": "module",
+        "name": "src/main.ts",
+        "qualifiedName": "src/main.ts",
+        "span": {
+          "endCol": 1,
+          "endLine": 3,
+          "file": "src/main.ts",
+          "startCol": 1,
+          "startLine": 1
+        }
+      },
+      {
+        "exported": true,
+        "id": "variable:src/main.ts#sum",
+        "kind": "variable",
+        "name": "sum",
+        "qualifiedName": "sum",
+        "span": {
+          "endCol": 23,
+          "endLine": 2,
+          "file": "src/main.ts",
+          "startCol": 14,
+          "startLine": 2
+        }
+      }
+    ],
+    "schemaVersion": 1
+  }
+}

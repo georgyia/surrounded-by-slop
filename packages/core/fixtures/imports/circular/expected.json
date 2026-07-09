@@ -1,0 +1,197 @@
+{
+  "diagnostics": [],
+  "graph": {
+    "edges": [
+      {
+        "from": "module:a.ts",
+        "id": "contains:module:a.ts->variable:a.ts#a",
+        "kind": "contains",
+        "to": "variable:a.ts#a"
+      },
+      {
+        "from": "module:b.ts",
+        "id": "contains:module:b.ts->variable:b.ts#b",
+        "kind": "contains",
+        "to": "variable:b.ts#b"
+      },
+      {
+        "from": "module:c.ts",
+        "id": "contains:module:c.ts->variable:c.ts#c",
+        "kind": "contains",
+        "to": "variable:c.ts#c"
+      },
+      {
+        "from": "module:outside.ts",
+        "id": "contains:module:outside.ts->variable:outside.ts#uses",
+        "kind": "contains",
+        "to": "variable:outside.ts#uses"
+      },
+      {
+        "from": "module:a.ts",
+        "id": "imports:module:a.ts->module:b.ts",
+        "inCycle": true,
+        "kind": "imports",
+        "span": {
+          "endCol": 24,
+          "endLine": 1,
+          "file": "a.ts",
+          "startCol": 19,
+          "startLine": 1
+        },
+        "to": "module:b.ts"
+      },
+      {
+        "from": "module:b.ts",
+        "id": "imports:module:b.ts->module:c.ts",
+        "inCycle": true,
+        "kind": "imports",
+        "span": {
+          "endCol": 24,
+          "endLine": 1,
+          "file": "b.ts",
+          "startCol": 19,
+          "startLine": 1
+        },
+        "to": "module:c.ts"
+      },
+      {
+        "from": "module:c.ts",
+        "id": "imports:module:c.ts->module:a.ts",
+        "inCycle": true,
+        "kind": "imports",
+        "span": {
+          "endCol": 24,
+          "endLine": 1,
+          "file": "c.ts",
+          "startCol": 19,
+          "startLine": 1
+        },
+        "to": "module:a.ts"
+      },
+      {
+        "from": "module:outside.ts",
+        "id": "imports:module:outside.ts->module:a.ts",
+        "kind": "imports",
+        "span": {
+          "endCol": 24,
+          "endLine": 1,
+          "file": "outside.ts",
+          "startCol": 19,
+          "startLine": 1
+        },
+        "to": "module:a.ts"
+      }
+    ],
+    "nodes": [
+      {
+        "id": "module:a.ts",
+        "kind": "module",
+        "name": "a.ts",
+        "qualifiedName": "a.ts",
+        "span": {
+          "endCol": 1,
+          "endLine": 3,
+          "file": "a.ts",
+          "startCol": 1,
+          "startLine": 1
+        }
+      },
+      {
+        "id": "module:b.ts",
+        "kind": "module",
+        "name": "b.ts",
+        "qualifiedName": "b.ts",
+        "span": {
+          "endCol": 1,
+          "endLine": 3,
+          "file": "b.ts",
+          "startCol": 1,
+          "startLine": 1
+        }
+      },
+      {
+        "id": "module:c.ts",
+        "kind": "module",
+        "name": "c.ts",
+        "qualifiedName": "c.ts",
+        "span": {
+          "endCol": 1,
+          "endLine": 3,
+          "file": "c.ts",
+          "startCol": 1,
+          "startLine": 1
+        }
+      },
+      {
+        "id": "module:outside.ts",
+        "kind": "module",
+        "name": "outside.ts",
+        "qualifiedName": "outside.ts",
+        "span": {
+          "endCol": 1,
+          "endLine": 3,
+          "file": "outside.ts",
+          "startCol": 1,
+          "startLine": 1
+        }
+      },
+      {
+        "exported": true,
+        "id": "variable:a.ts#a",
+        "kind": "variable",
+        "name": "a",
+        "qualifiedName": "a",
+        "span": {
+          "endCol": 19,
+          "endLine": 2,
+          "file": "a.ts",
+          "startCol": 14,
+          "startLine": 2
+        }
+      },
+      {
+        "exported": true,
+        "id": "variable:b.ts#b",
+        "kind": "variable",
+        "name": "b",
+        "qualifiedName": "b",
+        "span": {
+          "endCol": 19,
+          "endLine": 2,
+          "file": "b.ts",
+          "startCol": 14,
+          "startLine": 2
+        }
+      },
+      {
+        "exported": true,
+        "id": "variable:c.ts#c",
+        "kind": "variable",
+        "name": "c",
+        "qualifiedName": "c",
+        "span": {
+          "endCol": 19,
+          "endLine": 2,
+          "file": "c.ts",
+          "startCol": 14,
+          "startLine": 2
+        }
+      },
+      {
+        "exported": true,
+        "id": "variable:outside.ts#uses",
+        "kind": "variable",
+        "name": "uses",
+        "qualifiedName": "uses",
+        "span": {
+          "endCol": 22,
+          "endLine": 2,
+          "file": "outside.ts",
+          "startCol": 14,
+          "startLine": 2
+        }
+      }
+    ],
+    "schemaVersion": 1
+  }
+}

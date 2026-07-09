@@ -1,0 +1,90 @@
+{
+  "diagnostics": [],
+  "graph": {
+    "edges": [
+      {
+        "from": "module:lazy.ts",
+        "id": "contains:module:lazy.ts->variable:lazy.ts#heavy",
+        "kind": "contains",
+        "to": "variable:lazy.ts#heavy"
+      },
+      {
+        "from": "module:main.ts",
+        "id": "contains:module:main.ts->function:main.ts#load",
+        "kind": "contains",
+        "to": "function:main.ts#load"
+      },
+      {
+        "from": "module:main.ts",
+        "id": "imports:module:main.ts->module:lazy.ts",
+        "kind": "imports",
+        "span": {
+          "endCol": 25,
+          "endLine": 2,
+          "file": "main.ts",
+          "startCol": 17,
+          "startLine": 2
+        },
+        "to": "module:lazy.ts"
+      }
+    ],
+    "nodes": [
+      {
+        "exported": true,
+        "id": "function:main.ts#load",
+        "kind": "function",
+        "name": "load",
+        "qualifiedName": "load",
+        "signature": "(): Promise<unknown>",
+        "span": {
+          "endCol": 2,
+          "endLine": 3,
+          "file": "main.ts",
+          "startCol": 1,
+          "startLine": 1
+        }
+      },
+      {
+        "id": "module:lazy.ts",
+        "kind": "module",
+        "name": "lazy.ts",
+        "qualifiedName": "lazy.ts",
+        "span": {
+          "endCol": 1,
+          "endLine": 2,
+          "file": "lazy.ts",
+          "startCol": 1,
+          "startLine": 1
+        }
+      },
+      {
+        "id": "module:main.ts",
+        "kind": "module",
+        "name": "main.ts",
+        "qualifiedName": "main.ts",
+        "span": {
+          "endCol": 1,
+          "endLine": 4,
+          "file": "main.ts",
+          "startCol": 1,
+          "startLine": 1
+        }
+      },
+      {
+        "exported": true,
+        "id": "variable:lazy.ts#heavy",
+        "kind": "variable",
+        "name": "heavy",
+        "qualifiedName": "heavy",
+        "span": {
+          "endCol": 26,
+          "endLine": 1,
+          "file": "lazy.ts",
+          "startCol": 14,
+          "startLine": 1
+        }
+      }
+    ],
+    "schemaVersion": 1
+  }
+}

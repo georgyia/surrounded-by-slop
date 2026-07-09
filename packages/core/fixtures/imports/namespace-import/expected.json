@@ -1,0 +1,89 @@
+{
+  "diagnostics": [],
+  "graph": {
+    "edges": [
+      {
+        "from": "module:main.ts",
+        "id": "contains:module:main.ts->variable:main.ts#all",
+        "kind": "contains",
+        "to": "variable:main.ts#all"
+      },
+      {
+        "from": "module:util.ts",
+        "id": "contains:module:util.ts->variable:util.ts#one",
+        "kind": "contains",
+        "to": "variable:util.ts#one"
+      },
+      {
+        "from": "module:main.ts",
+        "id": "imports:module:main.ts->module:util.ts",
+        "kind": "imports",
+        "span": {
+          "endCol": 31,
+          "endLine": 1,
+          "file": "main.ts",
+          "startCol": 23,
+          "startLine": 1
+        },
+        "to": "module:util.ts"
+      }
+    ],
+    "nodes": [
+      {
+        "id": "module:main.ts",
+        "kind": "module",
+        "name": "main.ts",
+        "qualifiedName": "main.ts",
+        "span": {
+          "endCol": 1,
+          "endLine": 3,
+          "file": "main.ts",
+          "startCol": 1,
+          "startLine": 1
+        }
+      },
+      {
+        "id": "module:util.ts",
+        "kind": "module",
+        "name": "util.ts",
+        "qualifiedName": "util.ts",
+        "span": {
+          "endCol": 1,
+          "endLine": 2,
+          "file": "util.ts",
+          "startCol": 1,
+          "startLine": 1
+        }
+      },
+      {
+        "exported": true,
+        "id": "variable:main.ts#all",
+        "kind": "variable",
+        "name": "all",
+        "qualifiedName": "all",
+        "span": {
+          "endCol": 24,
+          "endLine": 2,
+          "file": "main.ts",
+          "startCol": 14,
+          "startLine": 2
+        }
+      },
+      {
+        "exported": true,
+        "id": "variable:util.ts#one",
+        "kind": "variable",
+        "name": "one",
+        "qualifiedName": "one",
+        "span": {
+          "endCol": 21,
+          "endLine": 1,
+          "file": "util.ts",
+          "startCol": 14,
+          "startLine": 1
+        }
+      }
+    ],
+    "schemaVersion": 1
+  }
+}

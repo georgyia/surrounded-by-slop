@@ -1,0 +1,89 @@
+{
+  "diagnostics": [],
+  "graph": {
+    "edges": [
+      {
+        "from": "module:legacy.ts",
+        "id": "contains:module:legacy.ts->variable:legacy.ts#old",
+        "kind": "contains",
+        "to": "variable:legacy.ts#old"
+      },
+      {
+        "from": "module:main.ts",
+        "id": "contains:module:main.ts->variable:main.ts#wrapped",
+        "kind": "contains",
+        "to": "variable:main.ts#wrapped"
+      },
+      {
+        "from": "module:main.ts",
+        "id": "imports:module:main.ts->module:legacy.ts",
+        "kind": "imports",
+        "span": {
+          "endCol": 34,
+          "endLine": 1,
+          "file": "main.ts",
+          "startCol": 24,
+          "startLine": 1
+        },
+        "to": "module:legacy.ts"
+      }
+    ],
+    "nodes": [
+      {
+        "id": "module:legacy.ts",
+        "kind": "module",
+        "name": "legacy.ts",
+        "qualifiedName": "legacy.ts",
+        "span": {
+          "endCol": 1,
+          "endLine": 2,
+          "file": "legacy.ts",
+          "startCol": 1,
+          "startLine": 1
+        }
+      },
+      {
+        "id": "module:main.ts",
+        "kind": "module",
+        "name": "main.ts",
+        "qualifiedName": "main.ts",
+        "span": {
+          "endCol": 1,
+          "endLine": 3,
+          "file": "main.ts",
+          "startCol": 1,
+          "startLine": 1
+        }
+      },
+      {
+        "exported": true,
+        "id": "variable:legacy.ts#old",
+        "kind": "variable",
+        "name": "old",
+        "qualifiedName": "old",
+        "span": {
+          "endCol": 21,
+          "endLine": 1,
+          "file": "legacy.ts",
+          "startCol": 14,
+          "startLine": 1
+        }
+      },
+      {
+        "exported": true,
+        "id": "variable:main.ts#wrapped",
+        "kind": "variable",
+        "name": "wrapped",
+        "qualifiedName": "wrapped",
+        "span": {
+          "endCol": 30,
+          "endLine": 2,
+          "file": "main.ts",
+          "startCol": 14,
+          "startLine": 2
+        }
+      }
+    ],
+    "schemaVersion": 1
+  }
+}
