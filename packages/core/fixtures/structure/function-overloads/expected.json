@@ -1,0 +1,44 @@
+{
+  "diagnostics": [],
+  "graph": {
+    "edges": [
+      {
+        "from": "module:input.ts",
+        "id": "contains:module:input.ts->function:input.ts#parse",
+        "kind": "contains",
+        "to": "function:input.ts#parse"
+      }
+    ],
+    "nodes": [
+      {
+        "exported": true,
+        "id": "function:input.ts#parse",
+        "kind": "function",
+        "name": "parse",
+        "qualifiedName": "parse",
+        "signature": "(input: string): number",
+        "span": {
+          "endCol": 46,
+          "endLine": 1,
+          "file": "input.ts",
+          "startCol": 1,
+          "startLine": 1
+        }
+      },
+      {
+        "id": "module:input.ts",
+        "kind": "module",
+        "name": "input.ts",
+        "qualifiedName": "input.ts",
+        "span": {
+          "endCol": 1,
+          "endLine": 6,
+          "file": "input.ts",
+          "startCol": 1,
+          "startLine": 1
+        }
+      }
+    ],
+    "schemaVersion": 1
+  }
+}

@@ -1,0 +1,103 @@
+{
+  "diagnostics": [],
+  "graph": {
+    "edges": [
+      {
+        "from": "module:input.ts",
+        "id": "contains:module:input.ts->variable:input.ts#config",
+        "kind": "contains",
+        "to": "variable:input.ts#config"
+      },
+      {
+        "from": "module:input.ts",
+        "id": "contains:module:input.ts->variable:input.ts#counter",
+        "kind": "contains",
+        "to": "variable:input.ts#counter"
+      },
+      {
+        "from": "module:input.ts",
+        "id": "contains:module:input.ts->variable:input.ts#flag",
+        "kind": "contains",
+        "to": "variable:input.ts#flag"
+      },
+      {
+        "from": "module:input.ts",
+        "id": "contains:module:input.ts->variable:input.ts#limit",
+        "kind": "contains",
+        "to": "variable:input.ts#limit"
+      }
+    ],
+    "nodes": [
+      {
+        "id": "module:input.ts",
+        "kind": "module",
+        "name": "input.ts",
+        "qualifiedName": "input.ts",
+        "span": {
+          "endCol": 1,
+          "endLine": 5,
+          "file": "input.ts",
+          "startCol": 1,
+          "startLine": 1
+        }
+      },
+      {
+        "exported": true,
+        "id": "variable:input.ts#config",
+        "kind": "variable",
+        "name": "config",
+        "qualifiedName": "config",
+        "span": {
+          "endCol": 37,
+          "endLine": 1,
+          "file": "input.ts",
+          "startCol": 14,
+          "startLine": 1
+        }
+      },
+      {
+        "exported": true,
+        "id": "variable:input.ts#counter",
+        "kind": "variable",
+        "name": "counter",
+        "qualifiedName": "counter",
+        "span": {
+          "endCol": 23,
+          "endLine": 2,
+          "file": "input.ts",
+          "startCol": 12,
+          "startLine": 2
+        }
+      },
+      {
+        "exported": true,
+        "id": "variable:input.ts#flag",
+        "kind": "variable",
+        "name": "flag",
+        "qualifiedName": "flag",
+        "span": {
+          "endCol": 25,
+          "endLine": 4,
+          "file": "input.ts",
+          "startCol": 14,
+          "startLine": 4
+        }
+      },
+      {
+        "exported": true,
+        "id": "variable:input.ts#limit",
+        "kind": "variable",
+        "name": "limit",
+        "qualifiedName": "limit",
+        "span": {
+          "endCol": 37,
+          "endLine": 4,
+          "file": "input.ts",
+          "startCol": 27,
+          "startLine": 4
+        }
+      }
+    ],
+    "schemaVersion": 1
+  }
+}

@@ -1,0 +1,45 @@
+{
+  "diagnostics": [],
+  "graph": {
+    "edges": [
+      {
+        "from": "module:input.ts",
+        "id": "contains:module:input.ts->function:input.ts#main",
+        "kind": "contains",
+        "to": "function:input.ts#main"
+      }
+    ],
+    "nodes": [
+      {
+        "doc": "The entry point.",
+        "exported": true,
+        "id": "function:input.ts#main",
+        "kind": "function",
+        "name": "main",
+        "qualifiedName": "main",
+        "signature": "(argv: {}): number",
+        "span": {
+          "endCol": 2,
+          "endLine": 4,
+          "file": "input.ts",
+          "startCol": 1,
+          "startLine": 2
+        }
+      },
+      {
+        "id": "module:input.ts",
+        "kind": "module",
+        "name": "input.ts",
+        "qualifiedName": "input.ts",
+        "span": {
+          "endCol": 1,
+          "endLine": 5,
+          "file": "input.ts",
+          "startCol": 1,
+          "startLine": 2
+        }
+      }
+    ],
+    "schemaVersion": 1
+  }
+}

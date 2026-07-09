@@ -1,0 +1,85 @@
+{
+  "diagnostics": [],
+  "graph": {
+    "edges": [
+      {
+        "from": "module:input.ts",
+        "id": "contains:module:input.ts->function:input.ts#double",
+        "kind": "contains",
+        "to": "function:input.ts#double"
+      },
+      {
+        "from": "module:input.ts",
+        "id": "contains:module:input.ts->function:input.ts#half",
+        "kind": "contains",
+        "to": "function:input.ts#half"
+      },
+      {
+        "from": "module:input.ts",
+        "id": "contains:module:input.ts->variable:input.ts#constant",
+        "kind": "contains",
+        "to": "variable:input.ts#constant"
+      }
+    ],
+    "nodes": [
+      {
+        "doc": "Doubles a number.",
+        "exported": true,
+        "id": "function:input.ts#double",
+        "kind": "function",
+        "name": "double",
+        "qualifiedName": "double",
+        "signature": "(value: number): number",
+        "span": {
+          "endCol": 59,
+          "endLine": 2,
+          "file": "input.ts",
+          "startCol": 14,
+          "startLine": 2
+        }
+      },
+      {
+        "id": "function:input.ts#half",
+        "kind": "function",
+        "name": "half",
+        "qualifiedName": "half",
+        "signature": "(value: number): number",
+        "span": {
+          "endCol": 2,
+          "endLine": 6,
+          "file": "input.ts",
+          "startCol": 7,
+          "startLine": 4
+        }
+      },
+      {
+        "id": "module:input.ts",
+        "kind": "module",
+        "name": "input.ts",
+        "qualifiedName": "input.ts",
+        "span": {
+          "endCol": 1,
+          "endLine": 9,
+          "file": "input.ts",
+          "startCol": 1,
+          "startLine": 2
+        }
+      },
+      {
+        "exported": true,
+        "id": "variable:input.ts#constant",
+        "kind": "variable",
+        "name": "constant",
+        "qualifiedName": "constant",
+        "span": {
+          "endCol": 29,
+          "endLine": 8,
+          "file": "input.ts",
+          "startCol": 14,
+          "startLine": 8
+        }
+      }
+    ],
+    "schemaVersion": 1
+  }
+}

@@ -1,0 +1,83 @@
+{
+  "diagnostics": [],
+  "graph": {
+    "edges": [
+      {
+        "from": "class:input.ts#Temperature",
+        "id": "contains:class:input.ts#Temperature->method:input.ts#Temperature.fahrenheit",
+        "kind": "contains",
+        "to": "method:input.ts#Temperature.fahrenheit"
+      },
+      {
+        "from": "class:input.ts#Temperature",
+        "id": "contains:class:input.ts#Temperature->method:input.ts#Temperature.fahrenheit~2",
+        "kind": "contains",
+        "to": "method:input.ts#Temperature.fahrenheit~2"
+      },
+      {
+        "from": "module:input.ts",
+        "id": "contains:module:input.ts->class:input.ts#Temperature",
+        "kind": "contains",
+        "to": "class:input.ts#Temperature"
+      }
+    ],
+    "nodes": [
+      {
+        "exported": true,
+        "id": "class:input.ts#Temperature",
+        "kind": "class",
+        "name": "Temperature",
+        "qualifiedName": "Temperature",
+        "span": {
+          "endCol": 2,
+          "endLine": 11,
+          "file": "input.ts",
+          "startCol": 1,
+          "startLine": 1
+        }
+      },
+      {
+        "id": "method:input.ts#Temperature.fahrenheit",
+        "kind": "method",
+        "name": "fahrenheit",
+        "qualifiedName": "Temperature.fahrenheit",
+        "signature": "(): number",
+        "span": {
+          "endCol": 4,
+          "endLine": 6,
+          "file": "input.ts",
+          "startCol": 3,
+          "startLine": 4
+        }
+      },
+      {
+        "id": "method:input.ts#Temperature.fahrenheit~2",
+        "kind": "method",
+        "name": "fahrenheit",
+        "qualifiedName": "Temperature.fahrenheit",
+        "signature": "(value: number): void",
+        "span": {
+          "endCol": 4,
+          "endLine": 10,
+          "file": "input.ts",
+          "startCol": 3,
+          "startLine": 8
+        }
+      },
+      {
+        "id": "module:input.ts",
+        "kind": "module",
+        "name": "input.ts",
+        "qualifiedName": "input.ts",
+        "span": {
+          "endCol": 1,
+          "endLine": 12,
+          "file": "input.ts",
+          "startCol": 1,
+          "startLine": 1
+        }
+      }
+    ],
+    "schemaVersion": 1
+  }
+}

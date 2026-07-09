@@ -1,0 +1,76 @@
+{
+  "diagnostics": [
+    {
+      "file": "input.ts",
+      "message": "Property or signature expected.",
+      "severity": "error"
+    },
+    {
+      "file": "input.ts",
+      "message": "Declaration or statement expected.",
+      "severity": "error"
+    }
+  ],
+  "graph": {
+    "edges": [
+      {
+        "from": "module:input.ts",
+        "id": "contains:module:input.ts->function:input.ts#broken",
+        "kind": "contains",
+        "to": "function:input.ts#broken"
+      },
+      {
+        "from": "module:input.ts",
+        "id": "contains:module:input.ts->function:input.ts#intact",
+        "kind": "contains",
+        "to": "function:input.ts#intact"
+      }
+    ],
+    "nodes": [
+      {
+        "exported": true,
+        "id": "function:input.ts#broken",
+        "kind": "function",
+        "name": "broken",
+        "qualifiedName": "broken",
+        "signature": "(a: {}): any",
+        "span": {
+          "endCol": 28,
+          "endLine": 1,
+          "file": "input.ts",
+          "startCol": 1,
+          "startLine": 1
+        }
+      },
+      {
+        "exported": true,
+        "id": "function:input.ts#intact",
+        "kind": "function",
+        "name": "intact",
+        "qualifiedName": "intact",
+        "signature": "(): number",
+        "span": {
+          "endCol": 2,
+          "endLine": 7,
+          "file": "input.ts",
+          "startCol": 1,
+          "startLine": 5
+        }
+      },
+      {
+        "id": "module:input.ts",
+        "kind": "module",
+        "name": "input.ts",
+        "qualifiedName": "input.ts",
+        "span": {
+          "endCol": 1,
+          "endLine": 8,
+          "file": "input.ts",
+          "startCol": 1,
+          "startLine": 1
+        }
+      }
+    ],
+    "schemaVersion": 1
+  }
+}

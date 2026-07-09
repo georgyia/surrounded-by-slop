@@ -1,0 +1,125 @@
+{
+  "diagnostics": [],
+  "graph": {
+    "edges": [
+      {
+        "from": "class:input.ts#BoundedQueue",
+        "id": "contains:class:input.ts#BoundedQueue->method:input.ts#BoundedQueue.clear",
+        "kind": "contains",
+        "to": "method:input.ts#BoundedQueue.clear"
+      },
+      {
+        "from": "class:input.ts#BoundedQueue",
+        "id": "contains:class:input.ts#BoundedQueue->method:input.ts#BoundedQueue.constructor",
+        "kind": "contains",
+        "to": "method:input.ts#BoundedQueue.constructor"
+      },
+      {
+        "from": "class:input.ts#BoundedQueue",
+        "id": "contains:class:input.ts#BoundedQueue->method:input.ts#BoundedQueue.describe",
+        "kind": "contains",
+        "to": "method:input.ts#BoundedQueue.describe"
+      },
+      {
+        "from": "class:input.ts#BoundedQueue",
+        "id": "contains:class:input.ts#BoundedQueue->method:input.ts#BoundedQueue.push",
+        "kind": "contains",
+        "to": "method:input.ts#BoundedQueue.push"
+      },
+      {
+        "from": "module:input.ts",
+        "id": "contains:module:input.ts->class:input.ts#BoundedQueue",
+        "kind": "contains",
+        "to": "class:input.ts#BoundedQueue"
+      }
+    ],
+    "nodes": [
+      {
+        "doc": "A queue with a fixed capacity.",
+        "exported": true,
+        "id": "class:input.ts#BoundedQueue",
+        "kind": "class",
+        "name": "BoundedQueue",
+        "qualifiedName": "BoundedQueue",
+        "span": {
+          "endCol": 2,
+          "endLine": 22,
+          "file": "input.ts",
+          "startCol": 1,
+          "startLine": 2
+        }
+      },
+      {
+        "id": "method:input.ts#BoundedQueue.clear",
+        "kind": "method",
+        "name": "clear",
+        "qualifiedName": "BoundedQueue.clear",
+        "signature": "(): void",
+        "span": {
+          "endCol": 5,
+          "endLine": 17,
+          "file": "input.ts",
+          "startCol": 3,
+          "startLine": 15
+        }
+      },
+      {
+        "id": "method:input.ts#BoundedQueue.constructor",
+        "kind": "method",
+        "name": "constructor",
+        "qualifiedName": "BoundedQueue.constructor",
+        "signature": "(capacity: number): BoundedQueue",
+        "span": {
+          "endCol": 4,
+          "endLine": 8,
+          "file": "input.ts",
+          "startCol": 3,
+          "startLine": 6
+        }
+      },
+      {
+        "id": "method:input.ts#BoundedQueue.describe",
+        "kind": "method",
+        "name": "describe",
+        "qualifiedName": "BoundedQueue.describe",
+        "signature": "(): string",
+        "span": {
+          "endCol": 4,
+          "endLine": 21,
+          "file": "input.ts",
+          "startCol": 3,
+          "startLine": 19
+        }
+      },
+      {
+        "doc": "Adds an item when there is room.",
+        "id": "method:input.ts#BoundedQueue.push",
+        "kind": "method",
+        "name": "push",
+        "qualifiedName": "BoundedQueue.push",
+        "signature": "(item: string): boolean",
+        "span": {
+          "endCol": 4,
+          "endLine": 13,
+          "file": "input.ts",
+          "startCol": 3,
+          "startLine": 11
+        }
+      },
+      {
+        "id": "module:input.ts",
+        "kind": "module",
+        "name": "input.ts",
+        "qualifiedName": "input.ts",
+        "span": {
+          "endCol": 1,
+          "endLine": 23,
+          "file": "input.ts",
+          "startCol": 1,
+          "startLine": 2
+        }
+      }
+    ],
+    "schemaVersion": 1
+  }
+}

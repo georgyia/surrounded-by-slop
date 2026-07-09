@@ -1,0 +1,44 @@
+{
+  "diagnostics": [],
+  "graph": {
+    "edges": [
+      {
+        "from": "module:input.ts",
+        "id": "contains:module:input.ts->function:input.ts#default",
+        "kind": "contains",
+        "to": "function:input.ts#default"
+      }
+    ],
+    "nodes": [
+      {
+        "exported": true,
+        "id": "function:input.ts#default",
+        "kind": "function",
+        "name": "default",
+        "qualifiedName": "default",
+        "signature": "(input: string): string",
+        "span": {
+          "endCol": 2,
+          "endLine": 3,
+          "file": "input.ts",
+          "startCol": 1,
+          "startLine": 1
+        }
+      },
+      {
+        "id": "module:input.ts",
+        "kind": "module",
+        "name": "input.ts",
+        "qualifiedName": "input.ts",
+        "span": {
+          "endCol": 1,
+          "endLine": 4,
+          "file": "input.ts",
+          "startCol": 1,
+          "startLine": 1
+        }
+      }
+    ],
+    "schemaVersion": 1
+  }
+}

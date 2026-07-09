@@ -1,0 +1,104 @@
+{
+  "diagnostics": [],
+  "graph": {
+    "edges": [
+      {
+        "from": "function:input.ts#outer",
+        "id": "contains:function:input.ts#outer->function:input.ts#outer.middle",
+        "kind": "contains",
+        "to": "function:input.ts#outer.middle"
+      },
+      {
+        "from": "function:input.ts#outer.middle",
+        "id": "contains:function:input.ts#outer.middle->function:input.ts#outer.middle.innermost",
+        "kind": "contains",
+        "to": "function:input.ts#outer.middle.innermost"
+      },
+      {
+        "from": "function:input.ts#outer.middle",
+        "id": "contains:function:input.ts#outer.middle->function:input.ts#outer.middle.viaConst",
+        "kind": "contains",
+        "to": "function:input.ts#outer.middle.viaConst"
+      },
+      {
+        "from": "module:input.ts",
+        "id": "contains:module:input.ts->function:input.ts#outer",
+        "kind": "contains",
+        "to": "function:input.ts#outer"
+      }
+    ],
+    "nodes": [
+      {
+        "exported": true,
+        "id": "function:input.ts#outer",
+        "kind": "function",
+        "name": "outer",
+        "qualifiedName": "outer",
+        "signature": "(): number",
+        "span": {
+          "endCol": 2,
+          "endLine": 13,
+          "file": "input.ts",
+          "startCol": 1,
+          "startLine": 1
+        }
+      },
+      {
+        "id": "function:input.ts#outer.middle",
+        "kind": "function",
+        "name": "middle",
+        "qualifiedName": "outer.middle",
+        "signature": "(): number",
+        "span": {
+          "endCol": 4,
+          "endLine": 10,
+          "file": "input.ts",
+          "startCol": 3,
+          "startLine": 4
+        }
+      },
+      {
+        "id": "function:input.ts#outer.middle.innermost",
+        "kind": "function",
+        "name": "innermost",
+        "qualifiedName": "outer.middle.innermost",
+        "signature": "(): number",
+        "span": {
+          "endCol": 6,
+          "endLine": 7,
+          "file": "input.ts",
+          "startCol": 5,
+          "startLine": 5
+        }
+      },
+      {
+        "id": "function:input.ts#outer.middle.viaConst",
+        "kind": "function",
+        "name": "viaConst",
+        "qualifiedName": "outer.middle.viaConst",
+        "signature": "(): number",
+        "span": {
+          "endCol": 44,
+          "endLine": 8,
+          "file": "input.ts",
+          "startCol": 11,
+          "startLine": 8
+        }
+      },
+      {
+        "id": "module:input.ts",
+        "kind": "module",
+        "name": "input.ts",
+        "qualifiedName": "input.ts",
+        "span": {
+          "endCol": 1,
+          "endLine": 14,
+          "file": "input.ts",
+          "startCol": 1,
+          "startLine": 1
+        }
+      }
+    ],
+    "schemaVersion": 1
+  }
+}

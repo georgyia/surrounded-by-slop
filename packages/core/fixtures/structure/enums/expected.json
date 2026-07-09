@@ -1,0 +1,62 @@
+{
+  "diagnostics": [],
+  "graph": {
+    "edges": [
+      {
+        "from": "module:input.ts",
+        "id": "contains:module:input.ts->enum:input.ts#Direction",
+        "kind": "contains",
+        "to": "enum:input.ts#Direction"
+      },
+      {
+        "from": "module:input.ts",
+        "id": "contains:module:input.ts->enum:input.ts#Speed",
+        "kind": "contains",
+        "to": "enum:input.ts#Speed"
+      }
+    ],
+    "nodes": [
+      {
+        "exported": true,
+        "id": "enum:input.ts#Direction",
+        "kind": "enum",
+        "name": "Direction",
+        "qualifiedName": "Direction",
+        "span": {
+          "endCol": 2,
+          "endLine": 4,
+          "file": "input.ts",
+          "startCol": 1,
+          "startLine": 1
+        }
+      },
+      {
+        "id": "enum:input.ts#Speed",
+        "kind": "enum",
+        "name": "Speed",
+        "qualifiedName": "Speed",
+        "span": {
+          "endCol": 2,
+          "endLine": 9,
+          "file": "input.ts",
+          "startCol": 1,
+          "startLine": 6
+        }
+      },
+      {
+        "id": "module:input.ts",
+        "kind": "module",
+        "name": "input.ts",
+        "qualifiedName": "input.ts",
+        "span": {
+          "endCol": 1,
+          "endLine": 10,
+          "file": "input.ts",
+          "startCol": 1,
+          "startLine": 1
+        }
+      }
+    ],
+    "schemaVersion": 1
+  }
+}

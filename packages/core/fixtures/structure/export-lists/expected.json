@@ -1,0 +1,84 @@
+{
+  "diagnostics": [],
+  "graph": {
+    "edges": [
+      {
+        "from": "module:input.ts",
+        "id": "contains:module:input.ts->function:input.ts#internalOnly",
+        "kind": "contains",
+        "to": "function:input.ts#internalOnly"
+      },
+      {
+        "from": "module:input.ts",
+        "id": "contains:module:input.ts->function:input.ts#start",
+        "kind": "contains",
+        "to": "function:input.ts#start"
+      },
+      {
+        "from": "module:input.ts",
+        "id": "contains:module:input.ts->variable:input.ts#port",
+        "kind": "contains",
+        "to": "variable:input.ts#port"
+      }
+    ],
+    "nodes": [
+      {
+        "id": "function:input.ts#internalOnly",
+        "kind": "function",
+        "name": "internalOnly",
+        "qualifiedName": "internalOnly",
+        "signature": "(): number",
+        "span": {
+          "endCol": 2,
+          "endLine": 9,
+          "file": "input.ts",
+          "startCol": 1,
+          "startLine": 7
+        }
+      },
+      {
+        "exported": true,
+        "id": "function:input.ts#start",
+        "kind": "function",
+        "name": "start",
+        "qualifiedName": "start",
+        "signature": "(): string",
+        "span": {
+          "endCol": 2,
+          "endLine": 3,
+          "file": "input.ts",
+          "startCol": 1,
+          "startLine": 1
+        }
+      },
+      {
+        "id": "module:input.ts",
+        "kind": "module",
+        "name": "input.ts",
+        "qualifiedName": "input.ts",
+        "span": {
+          "endCol": 1,
+          "endLine": 12,
+          "file": "input.ts",
+          "startCol": 1,
+          "startLine": 1
+        }
+      },
+      {
+        "exported": true,
+        "id": "variable:input.ts#port",
+        "kind": "variable",
+        "name": "port",
+        "qualifiedName": "port",
+        "span": {
+          "endCol": 18,
+          "endLine": 5,
+          "file": "input.ts",
+          "startCol": 7,
+          "startLine": 5
+        }
+      }
+    ],
+    "schemaVersion": 1
+  }
+}

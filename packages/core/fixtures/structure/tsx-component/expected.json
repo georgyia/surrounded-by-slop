@@ -1,0 +1,85 @@
+{
+  "diagnostics": [],
+  "graph": {
+    "edges": [
+      {
+        "from": "module:input.tsx",
+        "id": "contains:module:input.tsx->function:input.tsx#Farewell",
+        "kind": "contains",
+        "to": "function:input.tsx#Farewell"
+      },
+      {
+        "from": "module:input.tsx",
+        "id": "contains:module:input.tsx->function:input.tsx#Greeting",
+        "kind": "contains",
+        "to": "function:input.tsx#Greeting"
+      },
+      {
+        "from": "module:input.tsx",
+        "id": "contains:module:input.tsx->interface:input.tsx#GreetingProps",
+        "kind": "contains",
+        "to": "interface:input.tsx#GreetingProps"
+      }
+    ],
+    "nodes": [
+      {
+        "exported": true,
+        "id": "function:input.tsx#Farewell",
+        "kind": "function",
+        "name": "Farewell",
+        "qualifiedName": "Farewell",
+        "signature": "(props: GreetingProps): any",
+        "span": {
+          "endCol": 76,
+          "endLine": 10,
+          "file": "input.tsx",
+          "startCol": 14,
+          "startLine": 10
+        }
+      },
+      {
+        "doc": "Renders a greeting.",
+        "exported": true,
+        "id": "function:input.tsx#Greeting",
+        "kind": "function",
+        "name": "Greeting",
+        "qualifiedName": "Greeting",
+        "signature": "(props: GreetingProps): any",
+        "span": {
+          "endCol": 2,
+          "endLine": 8,
+          "file": "input.tsx",
+          "startCol": 1,
+          "startLine": 6
+        }
+      },
+      {
+        "id": "interface:input.tsx#GreetingProps",
+        "kind": "interface",
+        "name": "GreetingProps",
+        "qualifiedName": "GreetingProps",
+        "span": {
+          "endCol": 2,
+          "endLine": 3,
+          "file": "input.tsx",
+          "startCol": 1,
+          "startLine": 1
+        }
+      },
+      {
+        "id": "module:input.tsx",
+        "kind": "module",
+        "name": "input.tsx",
+        "qualifiedName": "input.tsx",
+        "span": {
+          "endCol": 1,
+          "endLine": 11,
+          "file": "input.tsx",
+          "startCol": 1,
+          "startLine": 1
+        }
+      }
+    ],
+    "schemaVersion": 1
+  }
+}

@@ -1,0 +1,124 @@
+{
+  "diagnostics": [],
+  "graph": {
+    "edges": [
+      {
+        "from": "module:input.ts",
+        "id": "contains:module:input.ts->namespace:input.ts#Geometry",
+        "kind": "contains",
+        "to": "namespace:input.ts#Geometry"
+      },
+      {
+        "from": "namespace:input.ts#Geometry",
+        "id": "contains:namespace:input.ts#Geometry->function:input.ts#Geometry.area",
+        "kind": "contains",
+        "to": "function:input.ts#Geometry.area"
+      },
+      {
+        "from": "namespace:input.ts#Geometry",
+        "id": "contains:namespace:input.ts#Geometry->namespace:input.ts#Geometry.Units",
+        "kind": "contains",
+        "to": "namespace:input.ts#Geometry.Units"
+      },
+      {
+        "from": "namespace:input.ts#Geometry",
+        "id": "contains:namespace:input.ts#Geometry->variable:input.ts#Geometry.PI",
+        "kind": "contains",
+        "to": "variable:input.ts#Geometry.PI"
+      },
+      {
+        "from": "namespace:input.ts#Geometry.Units",
+        "id": "contains:namespace:input.ts#Geometry.Units->class:input.ts#Geometry.Units.Meter",
+        "kind": "contains",
+        "to": "class:input.ts#Geometry.Units.Meter"
+      }
+    ],
+    "nodes": [
+      {
+        "exported": true,
+        "id": "class:input.ts#Geometry.Units.Meter",
+        "kind": "class",
+        "name": "Meter",
+        "qualifiedName": "Geometry.Units.Meter",
+        "span": {
+          "endCol": 6,
+          "endLine": 11,
+          "file": "input.ts",
+          "startCol": 5,
+          "startLine": 9
+        }
+      },
+      {
+        "exported": true,
+        "id": "function:input.ts#Geometry.area",
+        "kind": "function",
+        "name": "area",
+        "qualifiedName": "Geometry.area",
+        "signature": "(radius: number): number",
+        "span": {
+          "endCol": 4,
+          "endLine": 6,
+          "file": "input.ts",
+          "startCol": 3,
+          "startLine": 4
+        }
+      },
+      {
+        "id": "module:input.ts",
+        "kind": "module",
+        "name": "input.ts",
+        "qualifiedName": "input.ts",
+        "span": {
+          "endCol": 1,
+          "endLine": 14,
+          "file": "input.ts",
+          "startCol": 1,
+          "startLine": 1
+        }
+      },
+      {
+        "exported": true,
+        "id": "namespace:input.ts#Geometry",
+        "kind": "namespace",
+        "name": "Geometry",
+        "qualifiedName": "Geometry",
+        "span": {
+          "endCol": 2,
+          "endLine": 13,
+          "file": "input.ts",
+          "startCol": 1,
+          "startLine": 1
+        }
+      },
+      {
+        "exported": true,
+        "id": "namespace:input.ts#Geometry.Units",
+        "kind": "namespace",
+        "name": "Units",
+        "qualifiedName": "Geometry.Units",
+        "span": {
+          "endCol": 4,
+          "endLine": 12,
+          "file": "input.ts",
+          "startCol": 3,
+          "startLine": 8
+        }
+      },
+      {
+        "exported": true,
+        "id": "variable:input.ts#Geometry.PI",
+        "kind": "variable",
+        "name": "PI",
+        "qualifiedName": "Geometry.PI",
+        "span": {
+          "endCol": 28,
+          "endLine": 2,
+          "file": "input.ts",
+          "startCol": 16,
+          "startLine": 2
+        }
+      }
+    ],
+    "schemaVersion": 1
+  }
+}

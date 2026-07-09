@@ -1,0 +1,142 @@
+{
+  "diagnostics": [],
+  "graph": {
+    "edges": [
+      {
+        "from": "module:input.ts",
+        "id": "contains:module:input.ts->class:input.ts#LogEvent",
+        "kind": "contains",
+        "to": "class:input.ts#LogEvent"
+      },
+      {
+        "from": "module:input.ts",
+        "id": "contains:module:input.ts->interface:input.ts#Event",
+        "kind": "contains",
+        "to": "interface:input.ts#Event"
+      },
+      {
+        "from": "module:input.ts",
+        "id": "contains:module:input.ts->interface:input.ts#Identified",
+        "kind": "contains",
+        "to": "interface:input.ts#Identified"
+      },
+      {
+        "from": "module:input.ts",
+        "id": "contains:module:input.ts->interface:input.ts#Timestamped",
+        "kind": "contains",
+        "to": "interface:input.ts#Timestamped"
+      },
+      {
+        "from": "interface:input.ts#Event",
+        "id": "extends:interface:input.ts#Event->interface:input.ts#Identified",
+        "kind": "extends",
+        "span": {
+          "endCol": 42,
+          "endLine": 9,
+          "file": "input.ts",
+          "startCol": 32,
+          "startLine": 9
+        },
+        "to": "interface:input.ts#Identified"
+      },
+      {
+        "from": "interface:input.ts#Event",
+        "id": "extends:interface:input.ts#Event->interface:input.ts#Timestamped",
+        "kind": "extends",
+        "span": {
+          "endCol": 55,
+          "endLine": 9,
+          "file": "input.ts",
+          "startCol": 44,
+          "startLine": 9
+        },
+        "to": "interface:input.ts#Timestamped"
+      },
+      {
+        "from": "class:input.ts#LogEvent",
+        "id": "implements:class:input.ts#LogEvent->interface:input.ts#Event",
+        "kind": "implements",
+        "span": {
+          "endCol": 39,
+          "endLine": 13,
+          "file": "input.ts",
+          "startCol": 34,
+          "startLine": 13
+        },
+        "to": "interface:input.ts#Event"
+      }
+    ],
+    "nodes": [
+      {
+        "exported": true,
+        "id": "class:input.ts#LogEvent",
+        "kind": "class",
+        "name": "LogEvent",
+        "qualifiedName": "LogEvent",
+        "span": {
+          "endCol": 2,
+          "endLine": 17,
+          "file": "input.ts",
+          "startCol": 1,
+          "startLine": 13
+        }
+      },
+      {
+        "exported": true,
+        "id": "interface:input.ts#Event",
+        "kind": "interface",
+        "name": "Event",
+        "qualifiedName": "Event",
+        "span": {
+          "endCol": 2,
+          "endLine": 11,
+          "file": "input.ts",
+          "startCol": 1,
+          "startLine": 9
+        }
+      },
+      {
+        "exported": true,
+        "id": "interface:input.ts#Identified",
+        "kind": "interface",
+        "name": "Identified",
+        "qualifiedName": "Identified",
+        "span": {
+          "endCol": 2,
+          "endLine": 3,
+          "file": "input.ts",
+          "startCol": 1,
+          "startLine": 1
+        }
+      },
+      {
+        "exported": true,
+        "id": "interface:input.ts#Timestamped",
+        "kind": "interface",
+        "name": "Timestamped",
+        "qualifiedName": "Timestamped",
+        "span": {
+          "endCol": 2,
+          "endLine": 7,
+          "file": "input.ts",
+          "startCol": 1,
+          "startLine": 5
+        }
+      },
+      {
+        "id": "module:input.ts",
+        "kind": "module",
+        "name": "input.ts",
+        "qualifiedName": "input.ts",
+        "span": {
+          "endCol": 1,
+          "endLine": 18,
+          "file": "input.ts",
+          "startCol": 1,
+          "startLine": 1
+        }
+      }
+    ],
+    "schemaVersion": 1
+  }
+}

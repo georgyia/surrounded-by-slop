@@ -1,0 +1,84 @@
+{
+  "diagnostics": [],
+  "graph": {
+    "edges": [
+      {
+        "from": "function:input.ts#choose",
+        "id": "contains:function:input.ts#choose->function:input.ts#choose.pick",
+        "kind": "contains",
+        "to": "function:input.ts#choose.pick"
+      },
+      {
+        "from": "function:input.ts#choose",
+        "id": "contains:function:input.ts#choose->function:input.ts#choose.pick~2",
+        "kind": "contains",
+        "to": "function:input.ts#choose.pick~2"
+      },
+      {
+        "from": "module:input.ts",
+        "id": "contains:module:input.ts->function:input.ts#choose",
+        "kind": "contains",
+        "to": "function:input.ts#choose"
+      }
+    ],
+    "nodes": [
+      {
+        "exported": true,
+        "id": "function:input.ts#choose",
+        "kind": "function",
+        "name": "choose",
+        "qualifiedName": "choose",
+        "signature": "(flag: boolean): number",
+        "span": {
+          "endCol": 2,
+          "endLine": 15,
+          "file": "input.ts",
+          "startCol": 1,
+          "startLine": 1
+        }
+      },
+      {
+        "id": "function:input.ts#choose.pick",
+        "kind": "function",
+        "name": "pick",
+        "qualifiedName": "choose.pick",
+        "signature": "(): number",
+        "span": {
+          "endCol": 6,
+          "endLine": 5,
+          "file": "input.ts",
+          "startCol": 5,
+          "startLine": 3
+        }
+      },
+      {
+        "id": "function:input.ts#choose.pick~2",
+        "kind": "function",
+        "name": "pick",
+        "qualifiedName": "choose.pick",
+        "signature": "(): number",
+        "span": {
+          "endCol": 6,
+          "endLine": 11,
+          "file": "input.ts",
+          "startCol": 5,
+          "startLine": 9
+        }
+      },
+      {
+        "id": "module:input.ts",
+        "kind": "module",
+        "name": "input.ts",
+        "qualifiedName": "input.ts",
+        "span": {
+          "endCol": 1,
+          "endLine": 16,
+          "file": "input.ts",
+          "startCol": 1,
+          "startLine": 1
+        }
+      }
+    ],
+    "schemaVersion": 1
+  }
+}
