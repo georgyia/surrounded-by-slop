@@ -1,0 +1,310 @@
+{
+  "diagnostics": [],
+  "graph": {
+    "edges": [
+      {
+        "from": "function:src/app.ts#main",
+        "id": "calls:function:src/app.ts#main->function:src/services/db.ts#createDb",
+        "kind": "calls",
+        "span": {
+          "endCol": 24,
+          "endLine": 5,
+          "file": "src/app.ts",
+          "startCol": 14,
+          "startLine": 5
+        },
+        "to": "function:src/services/db.ts#createDb"
+      },
+      {
+        "from": "function:src/app.ts#main",
+        "id": "calls:function:src/app.ts#main->function:src/util/strings.ts#trim",
+        "kind": "calls",
+        "span": {
+          "endCol": 21,
+          "endLine": 7,
+          "file": "src/app.ts",
+          "startCol": 10,
+          "startLine": 7
+        },
+        "to": "function:src/util/strings.ts#trim"
+      },
+      {
+        "from": "function:src/app.ts#main",
+        "id": "calls:function:src/app.ts#main->method:src/services/db.ts#Database.connect",
+        "kind": "calls",
+        "span": {
+          "endCol": 15,
+          "endLine": 6,
+          "file": "src/app.ts",
+          "startCol": 3,
+          "startLine": 6
+        },
+        "to": "method:src/services/db.ts#Database.connect"
+      },
+      {
+        "from": "function:src/services/db.ts#createDb",
+        "id": "calls:function:src/services/db.ts#createDb->class:src/services/db.ts#Database",
+        "kind": "calls",
+        "span": {
+          "endCol": 55,
+          "endLine": 13,
+          "file": "src/services/db.ts",
+          "startCol": 41,
+          "startLine": 13
+        },
+        "to": "class:src/services/db.ts#Database"
+      },
+      {
+        "from": "method:src/services/db.ts#Database.connect",
+        "id": "calls:method:src/services/db.ts#Database.connect->function:lib/logger.ts#log",
+        "kind": "calls",
+        "span": {
+          "endCol": 21,
+          "endLine": 5,
+          "file": "src/services/db.ts",
+          "startCol": 5,
+          "startLine": 5
+        },
+        "to": "function:lib/logger.ts#log"
+      },
+      {
+        "from": "class:src/services/db.ts#Database",
+        "id": "contains:class:src/services/db.ts#Database->method:src/services/db.ts#Database.connect",
+        "kind": "contains",
+        "to": "method:src/services/db.ts#Database.connect"
+      },
+      {
+        "from": "class:src/services/db.ts#Database",
+        "id": "contains:class:src/services/db.ts#Database->method:src/services/db.ts#Database.query",
+        "kind": "contains",
+        "to": "method:src/services/db.ts#Database.query"
+      },
+      {
+        "from": "module:lib/logger.ts",
+        "id": "contains:module:lib/logger.ts->function:lib/logger.ts#log",
+        "kind": "contains",
+        "to": "function:lib/logger.ts#log"
+      },
+      {
+        "from": "module:src/app.ts",
+        "id": "contains:module:src/app.ts->function:src/app.ts#main",
+        "kind": "contains",
+        "to": "function:src/app.ts#main"
+      },
+      {
+        "from": "module:src/services/db.ts",
+        "id": "contains:module:src/services/db.ts->class:src/services/db.ts#Database",
+        "kind": "contains",
+        "to": "class:src/services/db.ts#Database"
+      },
+      {
+        "from": "module:src/services/db.ts",
+        "id": "contains:module:src/services/db.ts->function:src/services/db.ts#createDb",
+        "kind": "contains",
+        "to": "function:src/services/db.ts#createDb"
+      },
+      {
+        "from": "module:src/util/strings.ts",
+        "id": "contains:module:src/util/strings.ts->function:src/util/strings.ts#trim",
+        "kind": "contains",
+        "to": "function:src/util/strings.ts#trim"
+      },
+      {
+        "from": "module:src/app.ts",
+        "id": "imports:module:src/app.ts->module:src/services/db.ts",
+        "kind": "imports",
+        "span": {
+          "endCol": 41,
+          "endLine": 1,
+          "file": "src/app.ts",
+          "startCol": 26,
+          "startLine": 1
+        },
+        "to": "module:src/services/db.ts"
+      },
+      {
+        "from": "module:src/app.ts",
+        "id": "imports:module:src/app.ts->module:src/util/strings.ts",
+        "kind": "imports",
+        "span": {
+          "endCol": 38,
+          "endLine": 2,
+          "file": "src/app.ts",
+          "startCol": 22,
+          "startLine": 2
+        },
+        "to": "module:src/util/strings.ts"
+      },
+      {
+        "from": "module:src/services/db.ts",
+        "id": "imports:module:src/services/db.ts->module:lib/logger.ts",
+        "kind": "imports",
+        "span": {
+          "endCol": 39,
+          "endLine": 1,
+          "file": "src/services/db.ts",
+          "startCol": 21,
+          "startLine": 1
+        },
+        "to": "module:lib/logger.ts"
+      }
+    ],
+    "nodes": [
+      {
+        "exported": true,
+        "id": "class:src/services/db.ts#Database",
+        "kind": "class",
+        "name": "Database",
+        "qualifiedName": "Database",
+        "span": {
+          "endCol": 2,
+          "endLine": 11,
+          "file": "src/services/db.ts",
+          "startCol": 1,
+          "startLine": 3
+        }
+      },
+      {
+        "exported": true,
+        "id": "function:lib/logger.ts#log",
+        "kind": "function",
+        "name": "log",
+        "qualifiedName": "log",
+        "signature": "(message: string): void",
+        "span": {
+          "endCol": 2,
+          "endLine": 3,
+          "file": "lib/logger.ts",
+          "startCol": 1,
+          "startLine": 1
+        }
+      },
+      {
+        "exported": true,
+        "id": "function:src/app.ts#main",
+        "kind": "function",
+        "name": "main",
+        "qualifiedName": "main",
+        "signature": "(input: string): string",
+        "span": {
+          "endCol": 2,
+          "endLine": 8,
+          "file": "src/app.ts",
+          "startCol": 1,
+          "startLine": 4
+        }
+      },
+      {
+        "exported": true,
+        "id": "function:src/services/db.ts#createDb",
+        "kind": "function",
+        "name": "createDb",
+        "qualifiedName": "createDb",
+        "signature": "(): Database",
+        "span": {
+          "endCol": 55,
+          "endLine": 13,
+          "file": "src/services/db.ts",
+          "startCol": 14,
+          "startLine": 13
+        }
+      },
+      {
+        "exported": true,
+        "id": "function:src/util/strings.ts#trim",
+        "kind": "function",
+        "name": "trim",
+        "qualifiedName": "trim",
+        "signature": "(value: string): string",
+        "span": {
+          "endCol": 2,
+          "endLine": 3,
+          "file": "src/util/strings.ts",
+          "startCol": 1,
+          "startLine": 1
+        }
+      },
+      {
+        "id": "method:src/services/db.ts#Database.connect",
+        "kind": "method",
+        "name": "connect",
+        "qualifiedName": "Database.connect",
+        "signature": "(): void",
+        "span": {
+          "endCol": 4,
+          "endLine": 6,
+          "file": "src/services/db.ts",
+          "startCol": 3,
+          "startLine": 4
+        }
+      },
+      {
+        "id": "method:src/services/db.ts#Database.query",
+        "kind": "method",
+        "name": "query",
+        "qualifiedName": "Database.query",
+        "signature": "(sql: string): {}",
+        "span": {
+          "endCol": 4,
+          "endLine": 10,
+          "file": "src/services/db.ts",
+          "startCol": 3,
+          "startLine": 8
+        }
+      },
+      {
+        "id": "module:lib/logger.ts",
+        "kind": "module",
+        "name": "lib/logger.ts",
+        "qualifiedName": "lib/logger.ts",
+        "span": {
+          "endCol": 1,
+          "endLine": 4,
+          "file": "lib/logger.ts",
+          "startCol": 1,
+          "startLine": 1
+        }
+      },
+      {
+        "id": "module:src/app.ts",
+        "kind": "module",
+        "name": "src/app.ts",
+        "qualifiedName": "src/app.ts",
+        "span": {
+          "endCol": 1,
+          "endLine": 9,
+          "file": "src/app.ts",
+          "startCol": 1,
+          "startLine": 1
+        }
+      },
+      {
+        "id": "module:src/services/db.ts",
+        "kind": "module",
+        "name": "src/services/db.ts",
+        "qualifiedName": "src/services/db.ts",
+        "span": {
+          "endCol": 1,
+          "endLine": 14,
+          "file": "src/services/db.ts",
+          "startCol": 1,
+          "startLine": 1
+        }
+      },
+      {
+        "id": "module:src/util/strings.ts",
+        "kind": "module",
+        "name": "src/util/strings.ts",
+        "qualifiedName": "src/util/strings.ts",
+        "span": {
+          "endCol": 1,
+          "endLine": 4,
+          "file": "src/util/strings.ts",
+          "startCol": 1,
+          "startLine": 1
+        }
+      }
+    ],
+    "schemaVersion": 1
+  }
+}

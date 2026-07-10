@@ -32,3 +32,4 @@ export {
 } from "./ir/types.js";
 export { validateGraph } from "./ir/validate.js";
 export { stableStringify } from "./stable-json.js";
+export { analyzeTypeScriptProject, typescriptAdapter } from "./typescript/adapter.js";

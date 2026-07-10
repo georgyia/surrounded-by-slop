@@ -10,6 +10,7 @@ it("exports exactly the documented public api", () => {
     "IdAllocator",
     "OperationCancelledError",
     "SCHEMA_VERSION",
+    "analyzeTypeScriptProject",
     "buildGraph",
     "canonicalizeGraph",
     "createAdapterRegistry",
@@ -18,6 +19,7 @@ it("exports exactly the documented public api", () => {
     "externalModuleId",
     "moduleId",
     "stableStringify",
+    "typescriptAdapter",
     "unresolvedFunctionId",
     "validateGraph",
   ]);
