@@ -1,0 +1,96 @@
+{
+  "diagnostics": [],
+  "graph": {
+    "edges": [
+      {
+        "from": "method:input.ts#Machine.start",
+        "id": "calls:method:input.ts#Machine.start->method:input.ts#Machine.reset",
+        "kind": "calls",
+        "span": {
+          "endCol": 17,
+          "endLine": 3,
+          "file": "input.ts",
+          "startCol": 5,
+          "startLine": 3
+        },
+        "to": "method:input.ts#Machine.reset"
+      },
+      {
+        "from": "class:input.ts#Machine",
+        "id": "contains:class:input.ts#Machine->method:input.ts#Machine.reset",
+        "kind": "contains",
+        "to": "method:input.ts#Machine.reset"
+      },
+      {
+        "from": "class:input.ts#Machine",
+        "id": "contains:class:input.ts#Machine->method:input.ts#Machine.start",
+        "kind": "contains",
+        "to": "method:input.ts#Machine.start"
+      },
+      {
+        "from": "module:input.ts",
+        "id": "contains:module:input.ts->class:input.ts#Machine",
+        "kind": "contains",
+        "to": "class:input.ts#Machine"
+      }
+    ],
+    "nodes": [
+      {
+        "exported": true,
+        "id": "class:input.ts#Machine",
+        "kind": "class",
+        "name": "Machine",
+        "qualifiedName": "Machine",
+        "span": {
+          "endCol": 2,
+          "endLine": 11,
+          "file": "input.ts",
+          "startCol": 1,
+          "startLine": 1
+        }
+      },
+      {
+        "id": "method:input.ts#Machine.reset",
+        "kind": "method",
+        "name": "reset",
+        "qualifiedName": "Machine.reset",
+        "signature": "(): void",
+        "span": {
+          "endCol": 4,
+          "endLine": 8,
+          "file": "input.ts",
+          "startCol": 3,
+          "startLine": 6
+        }
+      },
+      {
+        "id": "method:input.ts#Machine.start",
+        "kind": "method",
+        "name": "start",
+        "qualifiedName": "Machine.start",
+        "signature": "(): void",
+        "span": {
+          "endCol": 4,
+          "endLine": 4,
+          "file": "input.ts",
+          "startCol": 3,
+          "startLine": 2
+        }
+      },
+      {
+        "id": "module:input.ts",
+        "kind": "module",
+        "name": "input.ts",
+        "qualifiedName": "input.ts",
+        "span": {
+          "endCol": 1,
+          "endLine": 12,
+          "file": "input.ts",
+          "startCol": 1,
+          "startLine": 1
+        }
+      }
+    ],
+    "schemaVersion": 1
+  }
+}

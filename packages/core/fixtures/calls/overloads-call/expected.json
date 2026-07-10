@@ -1,0 +1,78 @@
+{
+  "diagnostics": [],
+  "graph": {
+    "edges": [
+      {
+        "count": 2,
+        "from": "function:input.ts#useBoth",
+        "id": "calls:function:input.ts#useBoth->function:input.ts#parse",
+        "kind": "calls",
+        "span": {
+          "endCol": 16,
+          "endLine": 8,
+          "file": "input.ts",
+          "startCol": 3,
+          "startLine": 8
+        },
+        "to": "function:input.ts#parse"
+      },
+      {
+        "from": "module:input.ts",
+        "id": "contains:module:input.ts->function:input.ts#parse",
+        "kind": "contains",
+        "to": "function:input.ts#parse"
+      },
+      {
+        "from": "module:input.ts",
+        "id": "contains:module:input.ts->function:input.ts#useBoth",
+        "kind": "contains",
+        "to": "function:input.ts#useBoth"
+      }
+    ],
+    "nodes": [
+      {
+        "id": "function:input.ts#parse",
+        "kind": "function",
+        "name": "parse",
+        "qualifiedName": "parse",
+        "signature": "(input: string): number",
+        "span": {
+          "endCol": 39,
+          "endLine": 1,
+          "file": "input.ts",
+          "startCol": 1,
+          "startLine": 1
+        }
+      },
+      {
+        "exported": true,
+        "id": "function:input.ts#useBoth",
+        "kind": "function",
+        "name": "useBoth",
+        "qualifiedName": "useBoth",
+        "signature": "(): void",
+        "span": {
+          "endCol": 2,
+          "endLine": 10,
+          "file": "input.ts",
+          "startCol": 1,
+          "startLine": 7
+        }
+      },
+      {
+        "id": "module:input.ts",
+        "kind": "module",
+        "name": "input.ts",
+        "qualifiedName": "input.ts",
+        "span": {
+          "endCol": 1,
+          "endLine": 11,
+          "file": "input.ts",
+          "startCol": 1,
+          "startLine": 1
+        }
+      }
+    ],
+    "schemaVersion": 1
+  }
+}

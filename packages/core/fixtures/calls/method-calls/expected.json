@@ -1,0 +1,110 @@
+{
+  "diagnostics": [],
+  "graph": {
+    "edges": [
+      {
+        "from": "function:input.ts#persist",
+        "id": "calls:function:input.ts#persist->method:input.ts#Store.save",
+        "kind": "calls",
+        "span": {
+          "endCol": 22,
+          "endLine": 10,
+          "file": "input.ts",
+          "startCol": 10,
+          "startLine": 10
+        },
+        "to": "method:input.ts#Store.save"
+      },
+      {
+        "from": "module:input.ts",
+        "id": "calls:module:input.ts->class:input.ts#Store",
+        "kind": "calls",
+        "span": {
+          "endCol": 26,
+          "endLine": 7,
+          "file": "input.ts",
+          "startCol": 15,
+          "startLine": 7
+        },
+        "to": "class:input.ts#Store"
+      },
+      {
+        "from": "class:input.ts#Store",
+        "id": "contains:class:input.ts#Store->method:input.ts#Store.save",
+        "kind": "contains",
+        "to": "method:input.ts#Store.save"
+      },
+      {
+        "from": "module:input.ts",
+        "id": "contains:module:input.ts->class:input.ts#Store",
+        "kind": "contains",
+        "to": "class:input.ts#Store"
+      },
+      {
+        "from": "module:input.ts",
+        "id": "contains:module:input.ts->function:input.ts#persist",
+        "kind": "contains",
+        "to": "function:input.ts#persist"
+      }
+    ],
+    "nodes": [
+      {
+        "exported": true,
+        "id": "class:input.ts#Store",
+        "kind": "class",
+        "name": "Store",
+        "qualifiedName": "Store",
+        "span": {
+          "endCol": 2,
+          "endLine": 5,
+          "file": "input.ts",
+          "startCol": 1,
+          "startLine": 1
+        }
+      },
+      {
+        "exported": true,
+        "id": "function:input.ts#persist",
+        "kind": "function",
+        "name": "persist",
+        "qualifiedName": "persist",
+        "signature": "(): boolean",
+        "span": {
+          "endCol": 2,
+          "endLine": 11,
+          "file": "input.ts",
+          "startCol": 1,
+          "startLine": 9
+        }
+      },
+      {
+        "id": "method:input.ts#Store.save",
+        "kind": "method",
+        "name": "save",
+        "qualifiedName": "Store.save",
+        "signature": "(): boolean",
+        "span": {
+          "endCol": 4,
+          "endLine": 4,
+          "file": "input.ts",
+          "startCol": 3,
+          "startLine": 2
+        }
+      },
+      {
+        "id": "module:input.ts",
+        "kind": "module",
+        "name": "input.ts",
+        "qualifiedName": "input.ts",
+        "span": {
+          "endCol": 1,
+          "endLine": 12,
+          "file": "input.ts",
+          "startCol": 1,
+          "startLine": 1
+        }
+      }
+    ],
+    "schemaVersion": 1
+  }
+}

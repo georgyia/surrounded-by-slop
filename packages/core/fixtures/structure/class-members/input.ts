@@ -9,7 +9,7 @@ export class BoundedQueue {
 
   /** Adds an item when there is room. */
   push(item: string): boolean {
-    return this.items.length < this.capacity ? Boolean(this.items) : false;
+    return this.items.length < this.capacity;
   }
 
   clear = (): void => {

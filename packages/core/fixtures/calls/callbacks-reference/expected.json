@@ -1,0 +1,132 @@
+{
+  "diagnostics": [],
+  "graph": {
+    "edges": [
+      {
+        "confidence": "low",
+        "from": "function:input.ts#each",
+        "id": "calls:function:input.ts#each->function:unresolved#visit",
+        "kind": "calls",
+        "span": {
+          "endCol": 16,
+          "endLine": 3,
+          "file": "input.ts",
+          "startCol": 5,
+          "startLine": 3
+        },
+        "to": "function:unresolved#visit"
+      },
+      {
+        "from": "function:input.ts#run",
+        "id": "calls:function:input.ts#run->function:input.ts#each",
+        "kind": "calls",
+        "span": {
+          "endCol": 24,
+          "endLine": 12,
+          "file": "input.ts",
+          "startCol": 3,
+          "startLine": 12
+        },
+        "to": "function:input.ts#each"
+      },
+      {
+        "confidence": "low",
+        "from": "function:input.ts#run",
+        "id": "calls:function:input.ts#run->function:input.ts#handler",
+        "kind": "calls",
+        "span": {
+          "endCol": 23,
+          "endLine": 12,
+          "file": "input.ts",
+          "startCol": 16,
+          "startLine": 12
+        },
+        "to": "function:input.ts#handler"
+      },
+      {
+        "from": "module:input.ts",
+        "id": "contains:module:input.ts->function:input.ts#each",
+        "kind": "contains",
+        "to": "function:input.ts#each"
+      },
+      {
+        "from": "module:input.ts",
+        "id": "contains:module:input.ts->function:input.ts#handler",
+        "kind": "contains",
+        "to": "function:input.ts#handler"
+      },
+      {
+        "from": "module:input.ts",
+        "id": "contains:module:input.ts->function:input.ts#run",
+        "kind": "contains",
+        "to": "function:input.ts#run"
+      }
+    ],
+    "nodes": [
+      {
+        "id": "function:input.ts#each",
+        "kind": "function",
+        "name": "each",
+        "qualifiedName": "each",
+        "signature": "(items: {}, visit: (item: number) => void): void",
+        "span": {
+          "endCol": 2,
+          "endLine": 5,
+          "file": "input.ts",
+          "startCol": 1,
+          "startLine": 1
+        }
+      },
+      {
+        "id": "function:input.ts#handler",
+        "kind": "function",
+        "name": "handler",
+        "qualifiedName": "handler",
+        "signature": "(item: number): void",
+        "span": {
+          "endCol": 2,
+          "endLine": 9,
+          "file": "input.ts",
+          "startCol": 1,
+          "startLine": 7
+        }
+      },
+      {
+        "exported": true,
+        "id": "function:input.ts#run",
+        "kind": "function",
+        "name": "run",
+        "qualifiedName": "run",
+        "signature": "(): void",
+        "span": {
+          "endCol": 2,
+          "endLine": 13,
+          "file": "input.ts",
+          "startCol": 1,
+          "startLine": 11
+        }
+      },
+      {
+        "external": true,
+        "id": "function:unresolved#visit",
+        "kind": "function",
+        "name": "visit",
+        "qualifiedName": "visit"
+      },
+      {
+        "id": "module:input.ts",
+        "kind": "module",
+        "name": "input.ts",
+        "qualifiedName": "input.ts",
+        "span": {
+          "endCol": 1,
+          "endLine": 14,
+          "file": "input.ts",
+          "startCol": 1,
+          "startLine": 1
+        }
+      }
+    ],
+    "schemaVersion": 1
+  }
+}

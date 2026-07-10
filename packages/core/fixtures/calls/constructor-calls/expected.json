@@ -1,0 +1,130 @@
+{
+  "diagnostics": [],
+  "graph": {
+    "edges": [
+      {
+        "from": "function:input.ts#build",
+        "id": "calls:function:input.ts#build->class:input.ts#Explicit",
+        "kind": "calls",
+        "span": {
+          "endCol": 36,
+          "endLine": 10,
+          "file": "input.ts",
+          "startCol": 17,
+          "startLine": 10
+        },
+        "to": "class:input.ts#Explicit"
+      },
+      {
+        "from": "function:input.ts#build",
+        "id": "calls:function:input.ts#build->class:input.ts#Implicit",
+        "kind": "calls",
+        "span": {
+          "endCol": 32,
+          "endLine": 11,
+          "file": "input.ts",
+          "startCol": 18,
+          "startLine": 11
+        },
+        "to": "class:input.ts#Implicit"
+      },
+      {
+        "from": "class:input.ts#Explicit",
+        "id": "contains:class:input.ts#Explicit->method:input.ts#Explicit.constructor",
+        "kind": "contains",
+        "to": "method:input.ts#Explicit.constructor"
+      },
+      {
+        "from": "module:input.ts",
+        "id": "contains:module:input.ts->class:input.ts#Explicit",
+        "kind": "contains",
+        "to": "class:input.ts#Explicit"
+      },
+      {
+        "from": "module:input.ts",
+        "id": "contains:module:input.ts->class:input.ts#Implicit",
+        "kind": "contains",
+        "to": "class:input.ts#Implicit"
+      },
+      {
+        "from": "module:input.ts",
+        "id": "contains:module:input.ts->function:input.ts#build",
+        "kind": "contains",
+        "to": "function:input.ts#build"
+      }
+    ],
+    "nodes": [
+      {
+        "exported": true,
+        "id": "class:input.ts#Explicit",
+        "kind": "class",
+        "name": "Explicit",
+        "qualifiedName": "Explicit",
+        "span": {
+          "endCol": 2,
+          "endLine": 3,
+          "file": "input.ts",
+          "startCol": 1,
+          "startLine": 1
+        }
+      },
+      {
+        "exported": true,
+        "id": "class:input.ts#Implicit",
+        "kind": "class",
+        "name": "Implicit",
+        "qualifiedName": "Implicit",
+        "span": {
+          "endCol": 2,
+          "endLine": 7,
+          "file": "input.ts",
+          "startCol": 1,
+          "startLine": 5
+        }
+      },
+      {
+        "exported": true,
+        "id": "function:input.ts#build",
+        "kind": "function",
+        "name": "build",
+        "qualifiedName": "build",
+        "signature": "(): {}",
+        "span": {
+          "endCol": 2,
+          "endLine": 13,
+          "file": "input.ts",
+          "startCol": 1,
+          "startLine": 9
+        }
+      },
+      {
+        "id": "method:input.ts#Explicit.constructor",
+        "kind": "method",
+        "name": "constructor",
+        "qualifiedName": "Explicit.constructor",
+        "signature": "(label: string): Explicit",
+        "span": {
+          "endCol": 39,
+          "endLine": 2,
+          "file": "input.ts",
+          "startCol": 3,
+          "startLine": 2
+        }
+      },
+      {
+        "id": "module:input.ts",
+        "kind": "module",
+        "name": "input.ts",
+        "qualifiedName": "input.ts",
+        "span": {
+          "endCol": 1,
+          "endLine": 14,
+          "file": "input.ts",
+          "startCol": 1,
+          "startLine": 1
+        }
+      }
+    ],
+    "schemaVersion": 1
+  }
+}

@@ -1,0 +1,76 @@
+{
+  "diagnostics": [],
+  "graph": {
+    "edges": [
+      {
+        "from": "variable:input.ts#ready",
+        "id": "calls:variable:input.ts#ready->function:input.ts#initialize",
+        "kind": "calls",
+        "span": {
+          "endCol": 34,
+          "endLine": 5,
+          "file": "input.ts",
+          "startCol": 22,
+          "startLine": 5
+        },
+        "to": "function:input.ts#initialize"
+      },
+      {
+        "from": "module:input.ts",
+        "id": "contains:module:input.ts->function:input.ts#initialize",
+        "kind": "contains",
+        "to": "function:input.ts#initialize"
+      },
+      {
+        "from": "module:input.ts",
+        "id": "contains:module:input.ts->variable:input.ts#ready",
+        "kind": "contains",
+        "to": "variable:input.ts#ready"
+      }
+    ],
+    "nodes": [
+      {
+        "id": "function:input.ts#initialize",
+        "kind": "function",
+        "name": "initialize",
+        "qualifiedName": "initialize",
+        "signature": "(): boolean",
+        "span": {
+          "endCol": 2,
+          "endLine": 3,
+          "file": "input.ts",
+          "startCol": 1,
+          "startLine": 1
+        }
+      },
+      {
+        "id": "module:input.ts",
+        "kind": "module",
+        "name": "input.ts",
+        "qualifiedName": "input.ts",
+        "span": {
+          "endCol": 1,
+          "endLine": 6,
+          "file": "input.ts",
+          "startCol": 1,
+          "startLine": 1
+        }
+      },
+      {
+        "exported": true,
+        "id": "variable:input.ts#ready",
+        "kind": "variable",
+        "name": "ready",
+        "qualifiedName": "ready",
+        "span": {
+          "endCol": 34,
+          "endLine": 5,
+          "file": "input.ts",
+          "startCol": 14,
+          "startLine": 5
+        }
+      }
+    ],
+    "schemaVersion": 1
+  }
+}

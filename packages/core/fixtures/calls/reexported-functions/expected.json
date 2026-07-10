@@ -1,0 +1,130 @@
+{
+  "diagnostics": [],
+  "graph": {
+    "edges": [
+      {
+        "from": "function:main.ts#caller",
+        "id": "calls:function:main.ts#caller->function:impl.ts#implementation",
+        "kind": "calls",
+        "span": {
+          "endCol": 21,
+          "endLine": 4,
+          "file": "main.ts",
+          "startCol": 10,
+          "startLine": 4
+        },
+        "to": "function:impl.ts#implementation"
+      },
+      {
+        "from": "module:impl.ts",
+        "id": "contains:module:impl.ts->function:impl.ts#implementation",
+        "kind": "contains",
+        "to": "function:impl.ts#implementation"
+      },
+      {
+        "from": "module:main.ts",
+        "id": "contains:module:main.ts->function:main.ts#caller",
+        "kind": "contains",
+        "to": "function:main.ts#caller"
+      },
+      {
+        "from": "module:barrel.ts",
+        "id": "imports:module:barrel.ts->module:impl.ts",
+        "kind": "imports",
+        "span": {
+          "endCol": 53,
+          "endLine": 1,
+          "file": "barrel.ts",
+          "startCol": 45,
+          "startLine": 1
+        },
+        "to": "module:impl.ts"
+      },
+      {
+        "from": "module:main.ts",
+        "id": "imports:module:main.ts->module:barrel.ts",
+        "kind": "imports",
+        "span": {
+          "endCol": 37,
+          "endLine": 1,
+          "file": "main.ts",
+          "startCol": 27,
+          "startLine": 1
+        },
+        "to": "module:barrel.ts"
+      }
+    ],
+    "nodes": [
+      {
+        "exported": true,
+        "id": "function:impl.ts#implementation",
+        "kind": "function",
+        "name": "implementation",
+        "qualifiedName": "implementation",
+        "signature": "(): number",
+        "span": {
+          "endCol": 2,
+          "endLine": 3,
+          "file": "impl.ts",
+          "startCol": 1,
+          "startLine": 1
+        }
+      },
+      {
+        "exported": true,
+        "id": "function:main.ts#caller",
+        "kind": "function",
+        "name": "caller",
+        "qualifiedName": "caller",
+        "signature": "(): number",
+        "span": {
+          "endCol": 2,
+          "endLine": 5,
+          "file": "main.ts",
+          "startCol": 1,
+          "startLine": 3
+        }
+      },
+      {
+        "id": "module:barrel.ts",
+        "kind": "module",
+        "name": "barrel.ts",
+        "qualifiedName": "barrel.ts",
+        "span": {
+          "endCol": 1,
+          "endLine": 2,
+          "file": "barrel.ts",
+          "startCol": 1,
+          "startLine": 1
+        }
+      },
+      {
+        "id": "module:impl.ts",
+        "kind": "module",
+        "name": "impl.ts",
+        "qualifiedName": "impl.ts",
+        "span": {
+          "endCol": 1,
+          "endLine": 4,
+          "file": "impl.ts",
+          "startCol": 1,
+          "startLine": 1
+        }
+      },
+      {
+        "id": "module:main.ts",
+        "kind": "module",
+        "name": "main.ts",
+        "qualifiedName": "main.ts",
+        "span": {
+          "endCol": 1,
+          "endLine": 6,
+          "file": "main.ts",
+          "startCol": 1,
+          "startLine": 1
+        }
+      }
+    ],
+    "schemaVersion": 1
+  }
+}

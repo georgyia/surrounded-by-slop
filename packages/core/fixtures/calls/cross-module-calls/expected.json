@@ -1,0 +1,104 @@
+{
+  "diagnostics": [],
+  "graph": {
+    "edges": [
+      {
+        "from": "function:consumer.ts#consume",
+        "id": "calls:function:consumer.ts#consume->function:provider.ts#provide",
+        "kind": "calls",
+        "span": {
+          "endCol": 19,
+          "endLine": 4,
+          "file": "consumer.ts",
+          "startCol": 10,
+          "startLine": 4
+        },
+        "to": "function:provider.ts#provide"
+      },
+      {
+        "from": "module:consumer.ts",
+        "id": "contains:module:consumer.ts->function:consumer.ts#consume",
+        "kind": "contains",
+        "to": "function:consumer.ts#consume"
+      },
+      {
+        "from": "module:provider.ts",
+        "id": "contains:module:provider.ts->function:provider.ts#provide",
+        "kind": "contains",
+        "to": "function:provider.ts#provide"
+      },
+      {
+        "from": "module:consumer.ts",
+        "id": "imports:module:consumer.ts->module:provider.ts",
+        "kind": "imports",
+        "span": {
+          "endCol": 37,
+          "endLine": 1,
+          "file": "consumer.ts",
+          "startCol": 25,
+          "startLine": 1
+        },
+        "to": "module:provider.ts"
+      }
+    ],
+    "nodes": [
+      {
+        "exported": true,
+        "id": "function:consumer.ts#consume",
+        "kind": "function",
+        "name": "consume",
+        "qualifiedName": "consume",
+        "signature": "(): number",
+        "span": {
+          "endCol": 2,
+          "endLine": 5,
+          "file": "consumer.ts",
+          "startCol": 1,
+          "startLine": 3
+        }
+      },
+      {
+        "exported": true,
+        "id": "function:provider.ts#provide",
+        "kind": "function",
+        "name": "provide",
+        "qualifiedName": "provide",
+        "signature": "(): number",
+        "span": {
+          "endCol": 2,
+          "endLine": 3,
+          "file": "provider.ts",
+          "startCol": 1,
+          "startLine": 1
+        }
+      },
+      {
+        "id": "module:consumer.ts",
+        "kind": "module",
+        "name": "consumer.ts",
+        "qualifiedName": "consumer.ts",
+        "span": {
+          "endCol": 1,
+          "endLine": 6,
+          "file": "consumer.ts",
+          "startCol": 1,
+          "startLine": 1
+        }
+      },
+      {
+        "id": "module:provider.ts",
+        "kind": "module",
+        "name": "provider.ts",
+        "qualifiedName": "provider.ts",
+        "span": {
+          "endCol": 1,
+          "endLine": 4,
+          "file": "provider.ts",
+          "startCol": 1,
+          "startLine": 1
+        }
+      }
+    ],
+    "schemaVersion": 1
+  }
+}

@@ -1,0 +1,65 @@
+{
+  "diagnostics": [],
+  "graph": {
+    "edges": [
+      {
+        "confidence": "low",
+        "from": "function:input.ts#tryEverything",
+        "id": "calls:function:input.ts#tryEverything->function:unresolved#phantom",
+        "kind": "calls",
+        "span": {
+          "endCol": 12,
+          "endLine": 4,
+          "file": "input.ts",
+          "startCol": 3,
+          "startLine": 4
+        },
+        "to": "function:unresolved#phantom"
+      },
+      {
+        "from": "module:input.ts",
+        "id": "contains:module:input.ts->function:input.ts#tryEverything",
+        "kind": "contains",
+        "to": "function:input.ts#tryEverything"
+      }
+    ],
+    "nodes": [
+      {
+        "exported": true,
+        "id": "function:input.ts#tryEverything",
+        "kind": "function",
+        "name": "tryEverything",
+        "qualifiedName": "tryEverything",
+        "signature": "(): void",
+        "span": {
+          "endCol": 2,
+          "endLine": 6,
+          "file": "input.ts",
+          "startCol": 1,
+          "startLine": 3
+        }
+      },
+      {
+        "external": true,
+        "id": "function:unresolved#phantom",
+        "kind": "function",
+        "name": "phantom",
+        "qualifiedName": "phantom"
+      },
+      {
+        "id": "module:input.ts",
+        "kind": "module",
+        "name": "input.ts",
+        "qualifiedName": "input.ts",
+        "span": {
+          "endCol": 1,
+          "endLine": 7,
+          "file": "input.ts",
+          "startCol": 1,
+          "startLine": 1
+        }
+      }
+    ],
+    "schemaVersion": 1
+  }
+}

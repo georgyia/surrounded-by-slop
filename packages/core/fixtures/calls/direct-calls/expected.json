@@ -1,0 +1,111 @@
+{
+  "diagnostics": [],
+  "graph": {
+    "edges": [
+      {
+        "from": "function:input.ts#entry",
+        "id": "calls:function:input.ts#entry->function:input.ts#twice",
+        "kind": "calls",
+        "span": {
+          "endCol": 17,
+          "endLine": 10,
+          "file": "input.ts",
+          "startCol": 10,
+          "startLine": 10
+        },
+        "to": "function:input.ts#twice"
+      },
+      {
+        "count": 2,
+        "from": "function:input.ts#twice",
+        "id": "calls:function:input.ts#twice->function:input.ts#base",
+        "kind": "calls",
+        "span": {
+          "endCol": 16,
+          "endLine": 6,
+          "file": "input.ts",
+          "startCol": 10,
+          "startLine": 6
+        },
+        "to": "function:input.ts#base"
+      },
+      {
+        "from": "module:input.ts",
+        "id": "contains:module:input.ts->function:input.ts#base",
+        "kind": "contains",
+        "to": "function:input.ts#base"
+      },
+      {
+        "from": "module:input.ts",
+        "id": "contains:module:input.ts->function:input.ts#entry",
+        "kind": "contains",
+        "to": "function:input.ts#entry"
+      },
+      {
+        "from": "module:input.ts",
+        "id": "contains:module:input.ts->function:input.ts#twice",
+        "kind": "contains",
+        "to": "function:input.ts#twice"
+      }
+    ],
+    "nodes": [
+      {
+        "id": "function:input.ts#base",
+        "kind": "function",
+        "name": "base",
+        "qualifiedName": "base",
+        "signature": "(): number",
+        "span": {
+          "endCol": 2,
+          "endLine": 3,
+          "file": "input.ts",
+          "startCol": 1,
+          "startLine": 1
+        }
+      },
+      {
+        "exported": true,
+        "id": "function:input.ts#entry",
+        "kind": "function",
+        "name": "entry",
+        "qualifiedName": "entry",
+        "signature": "(): number",
+        "span": {
+          "endCol": 2,
+          "endLine": 11,
+          "file": "input.ts",
+          "startCol": 1,
+          "startLine": 9
+        }
+      },
+      {
+        "id": "function:input.ts#twice",
+        "kind": "function",
+        "name": "twice",
+        "qualifiedName": "twice",
+        "signature": "(): number",
+        "span": {
+          "endCol": 2,
+          "endLine": 7,
+          "file": "input.ts",
+          "startCol": 1,
+          "startLine": 5
+        }
+      },
+      {
+        "id": "module:input.ts",
+        "kind": "module",
+        "name": "input.ts",
+        "qualifiedName": "input.ts",
+        "span": {
+          "endCol": 1,
+          "endLine": 12,
+          "file": "input.ts",
+          "startCol": 1,
+          "startLine": 1
+        }
+      }
+    ],
+    "schemaVersion": 1
+  }
+}

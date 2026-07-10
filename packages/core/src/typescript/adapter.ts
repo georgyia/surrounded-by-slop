@@ -7,6 +7,7 @@ import {
 } from "../adapter.js";
 import { buildGraph } from "../ir/ids.js";
 import type { AnalysisResult, Diagnostic } from "../ir/types.js";
+import { collectFileCalls } from "./calls.js";
 import { createProjectContext, type ProjectContext } from "./common.js";
 import { createVirtualEnvironment, DEFAULT_COMPILER_OPTIONS } from "./host.js";
 import { collectFileImports, markImportCycles } from "./imports.js";
@@ -37,6 +38,7 @@ export function analyzeTypeScriptProject(
   resolveHeritage(ctx);
   runPhase(ctx, sourceFiles, options, "imports", collectFileImports);
   markImportCycles(ctx);
+  runPhase(ctx, sourceFiles, options, "calls", collectFileCalls);
 
   const graph = buildGraph(ctx.nodes, ctx.edges);
   return { graph, diagnostics: ctx.diagnostics };

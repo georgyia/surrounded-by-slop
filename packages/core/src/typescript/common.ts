@@ -18,6 +18,8 @@ export interface ProjectContext {
   moduleIdByPath: Map<string, string>;
   /** External package name → node id, materialized on first use. */
   externalModuleIds: Map<string, string>;
+  /** Unresolved-call sink name → node id, materialized on first use. */
+  sinkFunctionIds: Map<string, string>;
   /** Heritage references resolved after every file's structure exists. */
   pendingHeritage: PendingHeritage[];
   /** Edge id → edge, so repeated (kind, from, to) occurrences merge with a count. */
@@ -45,6 +47,7 @@ export function createProjectContext(
     declToNodeId: new Map(),
     moduleIdByPath: new Map(),
     externalModuleIds: new Map(),
+    sinkFunctionIds: new Map(),
     pendingHeritage: [],
     edgeById: new Map(),
   };
