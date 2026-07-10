@@ -10,6 +10,14 @@ export {
   OperationCancelledError,
 } from "./adapter.js";
 export {
+  createExporterRegistry,
+  type Exporter,
+  type ExporterRegistry,
+  type ExportOptions,
+  requiredLayout,
+} from "./export/exporter.js";
+export { mermaidExporter } from "./export/mermaid.js";
+export {
   buildGraph,
   canonicalizeGraph,
   declarationId,
@@ -31,6 +39,15 @@ export {
   type SourceSpan,
 } from "./ir/types.js";
 export { validateGraph } from "./ir/validate.js";
+export { displayLabel } from "./layout/label.js";
+export {
+  type GraphLayout,
+  type LayoutEdge,
+  type LayoutGraphOptions,
+  type LayoutNode,
+  type LayoutPoint,
+  layoutGraph,
+} from "./layout/layout.js";
 export { stableStringify } from "./stable-json.js";
 export {
   collapseToFolders,
