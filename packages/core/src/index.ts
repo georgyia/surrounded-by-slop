@@ -32,4 +32,12 @@ export {
 } from "./ir/types.js";
 export { validateGraph } from "./ir/validate.js";
 export { stableStringify } from "./stable-json.js";
+export {
+  collapseToFolders,
+  collapseToModules,
+  type FilterOptions,
+  filterGraph,
+  reachableFrom,
+  sliceAround,
+} from "./transforms/transforms.js";
 export { analyzeTypeScriptProject, typescriptAdapter } from "./typescript/adapter.js";
