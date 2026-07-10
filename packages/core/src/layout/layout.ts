@@ -90,9 +90,16 @@ export async function layoutGraph(
     if (childIds.length === 0) {
       return { id: node.id, ...leafSize(node) };
     }
+    // Containers are sized by their children — additionally reserve room for
+    // the container's own label so it never overflows the box.
+    const labelWidth = leafSize(node).width + 8;
     return {
       id: node.id,
-      layoutOptions: { "elk.padding": CONTAINER_PADDING },
+      layoutOptions: {
+        "elk.padding": CONTAINER_PADDING,
+        "elk.nodeSize.constraints": "MINIMUM_SIZE",
+        "elk.nodeSize.minimum": `(${labelWidth},${LEAF_HEIGHT})`,
+      },
       children: childIds
         .map((id) => nodeById.get(id))
         .filter((child): child is GraphNode => child !== undefined)
