@@ -16,3 +16,7 @@ coverage/
 .DS_Store
 .idea/
 *.log
+
+# local scratch
+/try.mjs
+/graph.json

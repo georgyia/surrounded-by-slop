@@ -9,6 +9,7 @@ export {
   type LanguageCapabilities,
   OperationCancelledError,
 } from "./adapter.js";
+export { drawioExporter } from "./export/drawio.js";
 export {
   createExporterRegistry,
   type Exporter,
@@ -16,7 +17,9 @@ export {
   type ExportOptions,
   requiredLayout,
 } from "./export/exporter.js";
+export { jsonExporter } from "./export/json.js";
 export { mermaidExporter } from "./export/mermaid.js";
+export { svgExporter } from "./export/svg.js";
 export {
   buildGraph,
   canonicalizeGraph,
