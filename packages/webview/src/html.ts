@@ -45,7 +45,12 @@ export function buildDiagramHtml(options: DiagramHtmlOptions): string {
       font-family: var(--vscode-editor-font-family, ui-monospace, monospace);
       overflow: hidden;
     }
-    #root { width: 100vw; height: 100vh; }
+    #root { width: 100vw; height: 100vh; cursor: grab; }
+    #root.slop-dragging { cursor: grabbing; }
+    .slop-diagram { display: block; }
+    .slop-node { cursor: pointer; }
+    .slop-node:focus-visible { outline: none; }
+    .slop-node:focus-visible rect { stroke-width: 2.5; }
     .slop-status {
       display: flex; align-items: center; justify-content: center;
       height: 100%; padding: 1rem; text-align: center; opacity: 0.7;
