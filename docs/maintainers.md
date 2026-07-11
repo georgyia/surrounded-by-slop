@@ -53,17 +53,23 @@ it never fails because of missing tokens.
 
 ## Cursor compatibility checklist
 
-Run before every release (manual until automated):
+Run before every release (manual until automated). Install the freshly packaged
+`.vsix` in **Cursor** (Extensions → … → Install from VSIX), open a TS/JS
+project, then:
 
-- [ ] Install the freshly packaged `.vsix` in **Cursor** (Extensions → … →
-      Install from VSIX)
 - [ ] Extension activates without errors (Help → Toggle Developer Tools →
       console)
-- [ ] All commands appear in the palette and run
-- [ ] Webview renders and theme switching works
+- [ ] **Slop: Visualize File** opens a diagram beside the editor
+- [ ] Clicking a node jumps to its declaration; the diagram refreshes on save
+- [ ] **Slop: Visualize Workspace** produces the collapsed module map, and its
+      progress notification cancels cleanly
+- [ ] **Slop: Export Diagram As…** writes `.drawio` / `.mmd` / `.svg` / `.json`;
+      **Copy Diagram as Mermaid** pastes into a GitHub comment
+- [ ] Theme switching works, and `slop.*` settings apply on the next render
 
-Cursor tracks VS Code with a lag — keep `engines.vscode` conservative and
-never use proposed APIs.
+Cursor tracks VS Code with a lag, so the extension uses only stable APIs — no
+`enableProposedApi`, and every editor API it calls predates its `engines.vscode`
+floor (`^1.96.0`, a version Cursor already ships). Keep it that way.
 
 ## Issue triage
 
