@@ -1,0 +1,28 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "build: extension",
+      "type": "shell",
+      "command": "pnpm --filter surrounded-by-slop run build",
+      "group": { "kind": "build", "isDefault": true },
+      "problemMatcher": ["$tsc"]
+    },
+    {
+      "label": "watch: extension",
+      "type": "shell",
+      "command": "pnpm --filter surrounded-by-slop run watch",
+      "isBackground": true,
+      "group": "build",
+      "problemMatcher": {
+        "owner": "esbuild",
+        "pattern": [{ "regexp": "^$", "file": 1, "location": 2, "message": 3 }],
+        "background": {
+          "activeOnStart": true,
+          "beginsPattern": "\\[watch\\] build started",
+          "endsPattern": "\\[watch\\] build finished"
+        }
+      }
+    }
+  ]
+}

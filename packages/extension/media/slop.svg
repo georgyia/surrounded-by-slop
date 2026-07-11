@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linejoin="round" role="img" aria-label="Surrounded by Slop">
+  <title>Surrounded by Slop</title>
+  <rect x="1.5" y="1.75" width="5" height="3.5" rx="1" />
+  <rect x="9.5" y="1.75" width="5" height="3.5" rx="1" />
+  <rect x="5.5" y="10.75" width="5" height="3.5" rx="1" />
+  <path d="M4 5.25v2.25h8V5.25M8 7.5v3.25" />
+</svg>

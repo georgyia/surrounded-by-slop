@@ -1,0 +1,30 @@
+import { resolve } from "node:path";
+import { runTests } from "@vscode/test-electron";
+
+/**
+ * Download a pinned VS Code, launch it with this extension loaded, and run the
+ * suite inside that real host. Exits non-zero if the suite rejects.
+ */
+async function main(): Promise<void> {
+  // A VS Code integrated terminal (and this repo's own extension dev host) sets
+  // ELECTRON_RUN_AS_NODE=1. Inherited by the downloaded VS Code, it makes that
+  // binary run as plain Node and reject its own CLI flags ("bad option: …").
+  // Clear it so `pnpm test:integration` works from inside an editor too.
+  delete process.env.ELECTRON_RUN_AS_NODE;
+
+  // dist/test/ → packages/extension/
+  const extensionDevelopmentPath = resolve(__dirname, "../..");
+  const extensionTestsPath = resolve(__dirname, "./suite/index.js");
+  await runTests({
+    extensionDevelopmentPath,
+    extensionTestsPath,
+    // No settings sync, no other extensions — a clean, reproducible host.
+    launchArgs: ["--disable-extensions"],
+  });
+}
+
+main().catch((error) => {
+  console.error("Integration tests failed:");
+  console.error(error);
+  process.exit(1);
+});

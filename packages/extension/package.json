@@ -26,17 +26,32 @@
     "mermaid"
   ],
   "main": "./dist/extension.js",
-  "activationEvents": [
-    "onStartupFinished"
-  ],
-  "contributes": {},
+  "activationEvents": [],
+  "contributes": {
+    "commands": [
+      {
+        "command": "slop.visualizeFile",
+        "title": "Visualize File",
+        "category": "Slop",
+        "icon": "media/slop.svg"
+      }
+    ]
+  },
   "scripts": {
     "build": "node esbuild.mjs",
+    "watch": "node esbuild.mjs --watch",
     "typecheck": "tsc --noEmit",
+    "test:integration": "node esbuild.mjs && node esbuild.test.mjs && node dist/test/runTest.js",
     "package": "pnpm run build --production && vsce package --no-dependencies -o surrounded-by-slop.vsix"
   },
+  "dependencies": {
+    "@surrounded-by-slop/core": "workspace:*",
+    "@surrounded-by-slop/webview": "workspace:*"
+  },
   "devDependencies": {
+    "@types/node": "^26.1.1",
     "@types/vscode": "^1.96.0",
+    "@vscode/test-electron": "^2.4.1",
     "@vscode/vsce": "^3.3.0",
     "esbuild": "^0.28.1",
     "ovsx": "^1.0.2",

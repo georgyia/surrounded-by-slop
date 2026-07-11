@@ -1,14 +1,18 @@
-import type * as vscode from "vscode";
+import * as vscode from "vscode";
+import { visualizeActiveFile } from "./commands/visualizeFile.js";
 
 /**
- * Deliberately minimal: the extension surface (commands, webview panel)
- * arrives with the first visualization feature. The scaffold exists so the
- * project builds, typechecks and packages a valid VSIX from day one.
+ * Activation stays cheap: it only registers commands. Anything heavy — the
+ * analysis core, the layout engine, the TypeScript compiler — is imported
+ * lazily inside the command handlers, so opening the editor never pays for a
+ * feature the user hasn't reached yet.
  */
-export function activate(_context: vscode.ExtensionContext): void {
-  // No activation work yet.
+export function activate(context: vscode.ExtensionContext): void {
+  context.subscriptions.push(
+    vscode.commands.registerCommand("slop.visualizeFile", () => visualizeActiveFile()),
+  );
 }
 
 export function deactivate(): void {
-  // Nothing to dispose yet.
+  // Everything is registered through context.subscriptions and disposed for us.
 }
