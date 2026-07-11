@@ -15,11 +15,13 @@ async function main(): Promise<void> {
   // dist/test/ → packages/extension/
   const extensionDevelopmentPath = resolve(__dirname, "../..");
   const extensionTestsPath = resolve(__dirname, "./suite/index.js");
+  // Open the small multi-file fixture so the workspace command has something to map.
+  const workspaceFixture = resolve(__dirname, "../../test-fixtures/workspace");
   await runTests({
     extensionDevelopmentPath,
     extensionTestsPath,
     // No settings sync, no other extensions — a clean, reproducible host.
-    launchArgs: ["--disable-extensions"],
+    launchArgs: [workspaceFixture, "--disable-extensions"],
   });
 }
 

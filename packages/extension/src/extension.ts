@@ -10,6 +10,7 @@ export interface SlopApi {
   readonly onDidLog: vscode.Event<LogRecord>;
   readonly revealNode: (nodeId: string, toSide?: boolean) => Promise<void>;
   readonly exportDiagram: (target: vscode.Uri) => Promise<void>;
+  readonly visualizeWorkspace: (token?: vscode.CancellationToken) => Promise<void>;
 }
 
 /**
@@ -28,6 +29,9 @@ export function activate(context: vscode.ExtensionContext): SlopApi {
     view,
     controller,
     vscode.commands.registerCommand("slop.visualizeFile", () => controller.visualizeActive()),
+    vscode.commands.registerCommand("slop.visualizeWorkspace", () =>
+      controller.visualizeWorkspace(),
+    ),
     vscode.commands.registerCommand("slop.togglePin", () => controller.togglePin()),
     vscode.commands.registerCommand("slop.followActiveEditor", () => controller.toggleFollow()),
     vscode.commands.registerCommand("slop.exportDiagram", () => controller.exportInteractive()),
@@ -45,6 +49,7 @@ export function activate(context: vscode.ExtensionContext): SlopApi {
     onDidLog: logger.onDidLog,
     revealNode: (nodeId, toSide = false) => view.revealNode(nodeId, toSide),
     exportDiagram: (target) => controller.exportTo(target),
+    visualizeWorkspace: (token) => controller.visualizeWorkspace(token),
   };
 }
 

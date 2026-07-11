@@ -55,10 +55,14 @@ export class DiagramView {
     private readonly logger: Logger,
   ) {}
 
-  /** Show (or update) the diagram, creating/revealing the panel beside the editor. */
-  show(diagram: DiagramData, source: vscode.Uri): void {
-    // Refreshing the same file keeps the current pan/zoom; a different file fits anew.
-    this.currentFit = this.sourceUri?.toString() !== source.toString();
+  /**
+   * Show (or update) the diagram, creating/revealing the panel beside the editor.
+   * `source` is the single file a diagram came from (omitted for a workspace-wide
+   * diagram, where each node resolves to its own file on reveal).
+   */
+  show(diagram: DiagramData, source?: vscode.Uri): void {
+    // Refreshing the same file keeps the current pan/zoom; anything else fits anew.
+    this.currentFit = source === undefined || this.sourceUri?.toString() !== source.toString();
     this.current = diagram;
     this.sourceUri = source;
     if (this.panel === undefined) {

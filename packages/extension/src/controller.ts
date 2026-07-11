@@ -84,6 +84,99 @@ export class VisualizationController implements vscode.Disposable {
     await this.visualize(editor.document);
   }
 
+  /** `Slop: Visualize Workspace` — the module-level map of every source file. */
+  async visualizeWorkspace(token?: vscode.CancellationToken): Promise<void> {
+    if (token !== undefined) {
+      await this.runWorkspace(token);
+      return;
+    }
+    await vscode.window.withProgress(
+      {
+        location: vscode.ProgressLocation.Notification,
+        title: "Surrounded by Slop: analyzing workspace…",
+        cancellable: true,
+      },
+      (_progress, progressToken) => this.runWorkspace(progressToken),
+    );
+  }
+
+  private async runWorkspace(token: vscode.CancellationToken): Promise<void> {
+    const [folder] = vscode.workspace.workspaceFolders ?? [];
+    if (folder === undefined) {
+      void vscode.window.showInformationMessage(
+        "Surrounded by Slop: open a folder to visualize its workspace.",
+      );
+      return;
+    }
+    try {
+      const uris = await vscode.workspace.findFiles(
+        "**/*.{ts,tsx,mts,cts,js,jsx,mjs,cjs}",
+        "**/{node_modules,dist,out,build,coverage,.git}/**",
+        undefined,
+        token,
+      );
+      if (token.isCancellationRequested) {
+        return;
+      }
+      const inputs: { path: string; text: string }[] = [];
+      for (const uri of uris) {
+        if (token.isCancellationRequested) {
+          return;
+        }
+        inputs.push({
+          path: vscode.workspace.asRelativePath(uri, false),
+          text: new TextDecoder().decode(await vscode.workspace.fs.readFile(uri)),
+        });
+      }
+      if (inputs.length === 0) {
+        void vscode.window.showInformationMessage(
+          "Surrounded by Slop: no TypeScript or JavaScript files found here.",
+        );
+        return;
+      }
+
+      const { analyzeTypeScriptProject, collapseToModules, layoutGraph } = await import(
+        "@surrounded-by-slop/core"
+      );
+      // Bridge VS Code's token (isCancellationRequested) to the core's (cancelled).
+      const cancellation = {
+        get cancelled(): boolean {
+          return token.isCancellationRequested;
+        },
+      };
+      const { graph, diagnostics } = analyzeTypeScriptProject(inputs, { cancellation });
+      for (const diagnostic of diagnostics) {
+        this.logger.warn(`${diagnostic.file ?? "workspace"}: ${diagnostic.message}`);
+      }
+      if (token.isCancellationRequested) {
+        return;
+      }
+      // The map opens collapsed to modules — never thousands of nodes by default.
+      const collapsed = collapseToModules(graph);
+      const layout = await layoutGraph(collapsed);
+      if (token.isCancellationRequested) {
+        return;
+      }
+      const diagram: DiagramData = {
+        title: `${folder.name} — workspace`,
+        graph: collapsed,
+        layout,
+      };
+      this.shown = diagram;
+      this.shownUri = undefined;
+      void vscode.commands.executeCommand("setContext", "slop.hasDiagram", true);
+      this.view.show(diagram);
+      this.logger.info(
+        `Visualized workspace ${folder.name}: ${inputs.length} files → ${collapsed.nodes.length} modules`,
+      );
+    } catch (error) {
+      if (error instanceof Error && error.name === "OperationCancelledError") {
+        return;
+      }
+      this.logger.report("Surrounded by Slop couldn't visualize the workspace.", error);
+    }
+  }
+
   /** `Slop: Pin Diagram` — stop (or resume) refreshing on save and following. */
   togglePin(): void {
     this.pinned = !this.pinned;

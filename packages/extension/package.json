@@ -36,6 +36,11 @@
         "icon": "media/slop.svg"
       },
       {
+        "command": "slop.visualizeWorkspace",
+        "title": "Visualize Workspace",
+        "category": "Slop"
+      },
+      {
         "command": "slop.togglePin",
         "title": "Pin Diagram",
         "category": "Slop"

@@ -8,6 +8,7 @@ import "./panel.test.js";
 import "./refresh.test.js";
 import "./reveal.test.js";
 import "./visualize.test.js";
+import "./workspace.test.js";
 
 /** Entry point invoked by @vscode/test-electron inside the host. */
 export function run(): Promise<void> {
