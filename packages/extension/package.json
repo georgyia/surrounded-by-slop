@@ -98,7 +98,74 @@
         "mac": "cmd+shift+v",
         "when": "editorTextFocus && editorLangId =~ /typescript|javascript/"
       }
-    ]
+    ],
+    "configuration": {
+      "title": "Surrounded by Slop",
+      "properties": {
+        "slop.include": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "default": [
+            "**/*.{ts,tsx,mts,cts,js,jsx,mjs,cjs}"
+          ],
+          "description": "Glob patterns for files to include when visualizing the workspace."
+        },
+        "slop.exclude": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "default": [
+            "**/node_modules/**",
+            "**/dist/**",
+            "**/out/**",
+            "**/build/**",
+            "**/coverage/**"
+          ],
+          "description": "Glob patterns to exclude when visualizing the workspace."
+        },
+        "slop.includeTests": {
+          "type": "boolean",
+          "default": false,
+          "description": "Include test files (*.test.*, *.spec.*) in the workspace map."
+        },
+        "slop.showExternalModules": {
+          "type": "boolean",
+          "default": true,
+          "description": "Show external packages and unresolved imports as nodes."
+        },
+        "slop.theme": {
+          "type": "string",
+          "enum": [
+            "auto",
+            "light",
+            "dark"
+          ],
+          "enumDescriptions": [
+            "Follow the editor theme",
+            "Always light",
+            "Always dark"
+          ],
+          "default": "auto",
+          "description": "Diagram color theme."
+        },
+        "slop.layoutDirection": {
+          "type": "string",
+          "enum": [
+            "right",
+            "down"
+          ],
+          "enumDescriptions": [
+            "Left to right",
+            "Top to bottom"
+          ],
+          "default": "right",
+          "description": "Direction the diagram layout flows."
+        }
+      }
+    }
   },
   "scripts": {
     "build": "node esbuild.mjs",

@@ -12,6 +12,12 @@ import type { Logger } from "../log.js";
 export const DIAGRAM_VIEW_TYPE = "slop.diagram";
 
 function currentTheme(): ColorTheme {
+  const setting = vscode.workspace
+    .getConfiguration("slop")
+    .get<"auto" | "light" | "dark">("theme", "auto");
+  if (setting === "light" || setting === "dark") {
+    return setting;
+  }
   const kind = vscode.window.activeColorTheme.kind;
   return kind === vscode.ColorThemeKind.Dark || kind === vscode.ColorThemeKind.HighContrast
     ? "dark"
@@ -161,6 +167,11 @@ export class DiagramView {
       }),
       vscode.window.onDidChangeActiveColorTheme(() => {
         this.post({ type: "theme", theme: currentTheme() });
+      }),
+      vscode.workspace.onDidChangeConfiguration((event) => {
+        if (event.affectsConfiguration("slop.theme")) {
+          this.post({ type: "theme", theme: currentTheme() });
+        }
       }),
     );
   }

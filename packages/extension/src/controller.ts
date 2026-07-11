@@ -1,5 +1,7 @@
+import type { SemanticGraph } from "@surrounded-by-slop/core";
 import type { DiagramData } from "@surrounded-by-slop/webview";
 import * as vscode from "vscode";
+import { readConfig } from "./config.js";
 import type { Logger } from "./log.js";
 import type { DiagramView } from "./panel/diagramView.js";
 
@@ -41,6 +43,30 @@ async function renderExport(format: string, diagram: DiagramData): Promise<strin
     default:
       throw new Error(`unsupported export format ".${format}" — use .drawio, .mmd, .svg or .json`);
   }
+}
+
+/** Drop external (npm / unresolved) nodes and any edge that touched them. */
+function withoutExternalModules(graph: SemanticGraph): SemanticGraph {
+  const kept = new Set(graph.nodes.filter((node) => node.external !== true).map((node) => node.id));
+  return {
+    schemaVersion: graph.schemaVersion,
+    nodes: graph.nodes.filter((node) => kept.has(node.id)),
+    edges: graph.edges.filter((edge) => kept.has(edge.from) && kept.has(edge.to)),
+  };
+}
+
+function isTestFile(path: string): boolean {
+  return /\.(test|spec)\.[cm]?[jt]sx?$/i.test(path);
+}
+
+function braceGlob(globs: readonly string[]): string | undefined {
+  // A single pattern is returned as-is: wrapping it in `{…}` would nest braces
+  // (the default include already contains `{ts,tsx,…}`) and break the matcher.
+  const [first] = globs;
+  if (first === undefined) {
+    return undefined;
+  }
+  return globs.length === 1 ? first : `{${globs.join(",")}}`;
 }
 
 /**
@@ -109,17 +135,19 @@ export class VisualizationController implements vscode.Disposable {
       return;
     }
     try {
+      const config = readConfig();
       const uris = await vscode.workspace.findFiles(
-        "**/*.{ts,tsx,mts,cts,js,jsx,mjs,cjs}",
-        "**/{node_modules,dist,out,build,coverage,.git}/**",
+        braceGlob(config.include) ?? "**/*.{ts,tsx,mts,cts,js,jsx,mjs,cjs}",
+        braceGlob(config.exclude),
         undefined,
         token,
       );
       if (token.isCancellationRequested) {
         return;
       }
+      const sourceUris = config.includeTests ? uris : uris.filter((uri) => !isTestFile(uri.path));
       const inputs: { path: string; text: string }[] = [];
-      for (const uri of uris) {
+      for (const uri of sourceUris) {
         if (token.isCancellationRequested) {
           return;
         }
@@ -144,16 +172,19 @@ export class VisualizationController implements vscode.Disposable {
           return token.isCancellationRequested;
         },
       };
-      const { graph, diagnostics } = analyzeTypeScriptProject(inputs, { cancellation });
-      for (const diagnostic of diagnostics) {
+      const analyzed = analyzeTypeScriptProject(inputs, { cancellation });
+      for (const diagnostic of analyzed.diagnostics) {
         this.logger.warn(`${diagnostic.file ?? "workspace"}: ${diagnostic.message}`);
       }
       if (token.isCancellationRequested) {
         return;
       }
       // The map opens collapsed to modules — never thousands of nodes by default.
-      const collapsed = collapseToModules(graph);
-      const layout = await layoutGraph(collapsed);
+      const base = config.showExternalModules
+        ? analyzed.graph
+        : withoutExternalModules(analyzed.graph);
+      const collapsed = collapseToModules(base);
+      const layout = await layoutGraph(collapsed, { direction: config.layoutDirection });
       if (token.isCancellationRequested) {
         return;
       }
@@ -275,14 +306,18 @@ export class VisualizationController implements vscode.Disposable {
       ? `untitled${suffix}`
       : vscode.workspace.asRelativePath(document.uri);
     try {
+      const config = readConfig();
       const { analyzeTypeScriptProject, layoutGraph } = await import("@surrounded-by-slop/core");
       // A broken file degrades to a partial graph plus diagnostics — surface those
       // as warnings and carry on rather than failing the whole visualization.
-      const { graph, diagnostics } = analyzeTypeScriptProject([{ path, text: document.getText() }]);
-      for (const diagnostic of diagnostics) {
+      const analyzed = analyzeTypeScriptProject([{ path, text: document.getText() }]);
+      for (const diagnostic of analyzed.diagnostics) {
         this.logger.warn(`${diagnostic.file ?? path}: ${diagnostic.message}`);
       }
-      const layout = await layoutGraph(graph);
+      const graph = config.showExternalModules
+        ? analyzed.graph
+        : withoutExternalModules(analyzed.graph);
+      const layout = await layoutGraph(graph, { direction: config.layoutDirection });
       const diagram: DiagramData = { title: path, graph, layout };
       this.shown = diagram;
       this.shownUri = document.uri;

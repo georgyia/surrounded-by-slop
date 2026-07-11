@@ -189,6 +189,29 @@ pnpm package       # → packages/extension/surrounded-by-slop.vsix
 
 Or open the repo in VS Code and hit **F5**. Marketplace and Open VSX listings arrive with M5.
 
+## Using it
+
+| Command | What it does |
+| ------- | ------------ |
+| **Slop: Visualize File** (`ctrl`/`cmd`+`shift`+`v`) | Diagram the active TS/JS file, beside the editor |
+| **Slop: Visualize Workspace** | The module-level map of the whole folder |
+| **Slop: Export Diagram As…** | Save as `.drawio`, `.mmd`, `.svg` or `.json` |
+| **Slop: Copy Diagram as Mermaid** | Mermaid on the clipboard, ready for a PR |
+| **Slop: Pin Diagram** / **Follow Active Editor** | Freeze a diagram, or track whatever file you open |
+
+Click any node to jump to its source; the diagram refreshes when you save the file.
+
+Settings live under `slop.` and apply on the next render — no reload:
+
+| Setting | Default | Description |
+| ------- | ------- | ----------- |
+| `slop.include` | `**/*.{ts,tsx,…}` | Globs to include in **Visualize Workspace** |
+| `slop.exclude` | `node_modules`, build dirs | Globs to exclude |
+| `slop.includeTests` | `false` | Include `*.test.*` / `*.spec.*` files |
+| `slop.showExternalModules` | `true` | Show npm packages / unresolved imports as nodes |
+| `slop.theme` | `auto` | Diagram theme — `auto`, `light` or `dark` |
+| `slop.layoutDirection` | `right` | Layout flow — `right` or `down` |
+
 ## Principles
 
 1. **Local only.** Your slop never leaves your machine. No telemetry, no cloud, no "anonymous usage statistics". A network call in this codebase is a security bug — [we mean it](SECURITY.md).

@@ -7,6 +7,7 @@ import "./manifest.test.js";
 import "./panel.test.js";
 import "./refresh.test.js";
 import "./reveal.test.js";
+import "./settings.test.js";
 import "./visualize.test.js";
 import "./workspace.test.js";
 
