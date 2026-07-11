@@ -81,6 +81,13 @@ function applyTheme(next: ColorTheme): void {
   document.documentElement.dataset.theme = next;
 }
 
+function nodeIdAt(target: EventTarget | null): string | null {
+  if (!(target instanceof Element)) {
+    return null;
+  }
+  return target.closest("[data-node-id]")?.getAttribute("data-node-id") ?? null;
+}
+
 function setupInteractions(root: HTMLElement): void {
   root.addEventListener(
     "wheel",
@@ -103,7 +110,11 @@ function setupInteractions(root: HTMLElement): void {
   );
 
   let dragging = false;
+  let downX = 0;
+  let downY = 0;
   root.addEventListener("pointerdown", (event) => {
+    downX = event.clientX;
+    downY = event.clientY;
     if (viewportEl === null || event.button !== 0) {
       return;
     }
@@ -132,6 +143,27 @@ function setupInteractions(root: HTMLElement): void {
 
   // Double-click empty space to re-fit the whole diagram.
   root.addEventListener("dblclick", refit);
+
+  // Click (or Enter/Space on a focused node) jumps to the declaration; a genuine
+  // pan-drag is ignored so dragging the canvas never triggers a jump.
+  root.addEventListener("click", (event) => {
+    const nodeId = nodeIdAt(event.target);
+    if (nodeId === null || Math.hypot(event.clientX - downX, event.clientY - downY) > 4) {
+      return;
+    }
+    vscode.postMessage({ type: "revealNode", nodeId, toSide: event.ctrlKey || event.metaKey });
+  });
+  root.addEventListener("keydown", (event) => {
+    if (event.key !== "Enter" && event.key !== " ") {
+      return;
+    }
+    const nodeId = nodeIdAt(event.target);
+    if (nodeId === null) {
+      return;
+    }
+    event.preventDefault();
+    vscode.postMessage({ type: "revealNode", nodeId, toSide: event.ctrlKey || event.metaKey });
+  });
 }
 
 window.addEventListener("message", (event: MessageEvent<HostToWebview>) => {

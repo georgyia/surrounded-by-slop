@@ -40,7 +40,7 @@ export async function visualizeActiveFile(view: DiagramView): Promise<void> {
     const { analyzeTypeScriptProject, layoutGraph } = await import("@surrounded-by-slop/core");
     const { graph } = analyzeTypeScriptProject([{ path, text: document.getText() }]);
     const layout = await layoutGraph(graph);
-    view.show({ title: path, graph, layout });
+    view.show({ title: path, graph, layout }, document.uri);
   } catch (error) {
     void vscode.window.showErrorMessage(
       `Surrounded by Slop couldn't visualize ${path}: ${error instanceof Error ? error.message : String(error)}`,

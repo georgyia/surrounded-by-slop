@@ -3,9 +3,10 @@ import * as vscode from "vscode";
 import { visualizeActiveFile } from "./commands/visualizeFile.js";
 import { DIAGRAM_VIEW_TYPE, DiagramView } from "./panel/diagramView.js";
 
-/** What `activate` returns — primarily an observation surface for integration tests. */
+/** What `activate` returns — an observation/automation surface (used by integration tests). */
 export interface SlopApi {
   readonly onDidVisualize: vscode.Event<DiagramData>;
+  readonly revealNode: (nodeId: string, toSide?: boolean) => Promise<void>;
 }
 
 /**
@@ -22,14 +23,17 @@ export function activate(context: vscode.ExtensionContext): SlopApi {
     vscode.commands.registerCommand("slop.visualizeFile", () => visualizeActiveFile(view)),
     // Restore the diagram panel after a window reload.
     vscode.window.registerWebviewPanelSerializer(DIAGRAM_VIEW_TYPE, {
-      deserializeWebviewPanel(panel) {
-        view.restore(panel);
+      deserializeWebviewPanel(panel, state: unknown) {
+        view.restore(panel, state);
         return Promise.resolve();
       },
     }),
   );
 
-  return { onDidVisualize: view.onDidVisualize };
+  return {
+    onDidVisualize: view.onDidVisualize,
+    revealNode: (nodeId, toSide = false) => view.revealNode(nodeId, toSide),
+  };
 }
 
 export function deactivate(): void {

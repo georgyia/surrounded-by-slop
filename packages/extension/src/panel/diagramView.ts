@@ -1,3 +1,4 @@
+import type { SourceSpan } from "@surrounded-by-slop/core";
 import type {
   ColorTheme,
   DiagramData,
@@ -16,6 +17,17 @@ function currentTheme(): ColorTheme {
     : "light";
 }
 
+/** A 1-based IR span as a 0-based editor range, clamped so an edited (shorter) file never throws. */
+function clampSpanToDocument(span: SourceSpan, document: vscode.TextDocument): vscode.Range {
+  const clamp = (value: number, max: number): number => Math.max(0, Math.min(value, max));
+  const lastLine = Math.max(0, document.lineCount - 1);
+  const startLine = clamp(span.startLine - 1, lastLine);
+  const endLine = clamp(span.endLine - 1, lastLine);
+  const startCharacter = clamp(span.startCol - 1, document.lineAt(startLine).text.length);
+  const endCharacter = clamp(span.endCol - 1, document.lineAt(endLine).text.length);
+  return new vscode.Range(startLine, startCharacter, endLine, endCharacter);
+}
+
 /**
  * Owns the single diagram webview panel: creating it beside the editor, feeding
  * it graphs, restoring it after a reload, and keeping its theme in sync.
@@ -27,6 +39,7 @@ function currentTheme(): ColorTheme {
 export class DiagramView {
   private panel: vscode.WebviewPanel | undefined;
   private current: DiagramData | undefined;
+  private sourceUri: vscode.Uri | undefined;
   private ready = false;
   private wasVisible = true;
   private readonly panelDisposables: vscode.Disposable[] = [];
@@ -38,8 +51,9 @@ export class DiagramView {
   constructor(private readonly extensionUri: vscode.Uri) {}
 
   /** Show (or update) the diagram, creating/revealing the panel beside the editor. */
-  show(diagram: DiagramData): void {
+  show(diagram: DiagramData, source: vscode.Uri): void {
     this.current = diagram;
+    this.sourceUri = source;
     if (this.panel === undefined) {
       this.panel = this.create();
     } else {
@@ -51,10 +65,43 @@ export class DiagramView {
   }
 
   /** Re-adopt a panel VS Code restored after a window reload (see the serializer). */
-  restore(panel: vscode.WebviewPanel): void {
+  restore(panel: vscode.WebviewPanel, state: unknown): void {
     this.panel = panel;
+    // Recover the graph so click-to-source still resolves after a reload; the
+    // webview restores its own rendering from `getState`, so we don't resend.
+    const restored = (state as { diagram?: DiagramData } | undefined)?.diagram;
+    if (restored !== undefined) {
+      this.current = restored;
+    }
     this.adopt(panel);
-    // The webview restores its own content from `getState`; nothing to resend.
+  }
+
+  /** Open the declaration a node points at, selecting its source range. */
+  async revealNode(nodeId: string, toSide: boolean): Promise<void> {
+    const span = this.current?.graph.nodes.find((node) => node.id === nodeId)?.span;
+    if (span === undefined) {
+      return; // external or synthesized nodes have no source to open
+    }
+    const uri = this.sourceUri ?? this.workspaceUri(span.file);
+    if (uri === undefined) {
+      return;
+    }
+    try {
+      const document = await vscode.workspace.openTextDocument(uri);
+      const range = clampSpanToDocument(span, document);
+      const editor = await vscode.window.showTextDocument(document, {
+        viewColumn: toSide ? vscode.ViewColumn.Beside : vscode.ViewColumn.One,
+        selection: range,
+      });
+      editor.revealRange(range, vscode.TextEditorRevealType.InCenterIfOutsideViewport);
+    } catch {
+      void vscode.window.showWarningMessage(`Surrounded by Slop couldn't open ${span.file}.`);
+    }
+  }
+
+  private workspaceUri(file: string): vscode.Uri | undefined {
+    const folder = vscode.workspace.workspaceFolders?.[0];
+    return folder === undefined ? undefined : vscode.Uri.joinPath(folder.uri, file);
   }
 
   dispose(): void {
@@ -122,7 +169,10 @@ export class DiagramView {
         }
         break;
       }
-      // revealNode (SBS-044) and error (SBS-051) are handled when those land.
+      case "revealNode":
+        void this.revealNode(message.nodeId, message.toSide);
+        break;
+      // error (SBS-051) is handled when that lands.
     }
   }
 
