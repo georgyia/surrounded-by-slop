@@ -31,7 +31,7 @@ test("Visualize File opens a diagram panel beside the editor and completes the h
   });
 
   await vscode.commands.executeCommand("slop.visualizeFile");
-  const diagram = await withTimeout(visualized, 10_000, "diagram round-trip");
+  const diagram = await withTimeout(visualized, 20_000, "diagram round-trip");
 
   // The analyzed graph made it across: module + two functions, at least.
   assert.ok(

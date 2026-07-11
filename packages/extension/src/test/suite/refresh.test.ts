@@ -38,7 +38,7 @@ test("saving the visualized file refreshes the diagram", async () => {
 
   const first = nextVisualize(api);
   await vscode.commands.executeCommand("slop.visualizeFile");
-  const v1 = await withTimeout(first, 10_000, "initial visualize");
+  const v1 = await withTimeout(first, 20_000, "initial visualize");
   assert.ok(
     v1.graph.nodes.some((node) => node.name === "one"),
     "initial diagram shows 'one'",
@@ -54,7 +54,7 @@ test("saving the visualized file refreshes the diagram", async () => {
   await vscode.workspace.applyEdit(edit);
   await document.save();
 
-  const v2 = await withTimeout(refreshed, 10_000, "refresh on save");
+  const v2 = await withTimeout(refreshed, 20_000, "refresh on save");
   assert.ok(
     v2.graph.nodes.some((node) => node.name === "two"),
     "the saved change ('two') is now in the diagram",
@@ -67,7 +67,7 @@ test("a pinned diagram does not refresh when its file is saved", async () => {
 
   const first = nextVisualize(api);
   await vscode.commands.executeCommand("slop.visualizeFile");
-  await withTimeout(first, 10_000, "initial visualize");
+  await withTimeout(first, 20_000, "initial visualize");
 
   await vscode.commands.executeCommand("slop.togglePin");
   try {

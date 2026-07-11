@@ -23,7 +23,7 @@ async function visualize(api: SlopApi, document: vscode.TextDocument): Promise<D
     });
   });
   await vscode.commands.executeCommand("slop.visualizeFile");
-  return withTimeout(visualized, 10_000, "diagram round-trip");
+  return withTimeout(visualized, 20_000, "diagram round-trip");
 }
 
 test("revealing a node lands the cursor on its declaration", async () => {

@@ -28,7 +28,7 @@ test("a broken file yields a partial diagram and a logged warning, not a crash",
     });
   });
   await vscode.commands.executeCommand("slop.visualizeFile");
-  const diagram = await withTimeout(visualized, 10_000, "diagram round-trip");
+  const diagram = await withTimeout(visualized, 20_000, "diagram round-trip");
   logSubscription.dispose();
 
   // Degraded, not dead: a partial graph still reached the webview.

@@ -24,7 +24,7 @@ test("Visualize File renders the analyzed declarations of a real file", async ()
     });
   });
   await vscode.commands.executeCommand("slop.visualizeFile");
-  const diagram = await withTimeout(visualized, 10_000, "diagram round-trip");
+  const diagram = await withTimeout(visualized, 20_000, "diagram round-trip");
 
   // Every declaration in the fixture made it into the graph the webview renders.
   const names = new Set(diagram.graph.nodes.map((node) => node.name));

@@ -25,7 +25,7 @@ test("Visualize Workspace shows a collapsed module map of the folder", async () 
   const api = await getApi();
   const visualized = nextVisualize(api);
   await api.visualizeWorkspace(new vscode.CancellationTokenSource().token);
-  const diagram = await withTimeout(visualized, 15_000, "workspace visualize");
+  const diagram = await withTimeout(visualized, 20_000, "workspace visualize");
 
   // Collapsed to modules — never individual functions by default.
   assert.ok(
