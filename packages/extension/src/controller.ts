@@ -1,3 +1,4 @@
+import type { DiagramData } from "@surrounded-by-slop/webview";
 import * as vscode from "vscode";
 import type { Logger } from "./log.js";
 import type { DiagramView } from "./panel/diagramView.js";
@@ -16,12 +17,39 @@ function suffixFor(document: vscode.TextDocument): string | undefined {
   return LANGUAGE_EXTENSIONS[document.languageId];
 }
 
+function exportTheme(): "light" | "dark" {
+  const kind = vscode.window.activeColorTheme.kind;
+  return kind === vscode.ColorThemeKind.Dark || kind === vscode.ColorThemeKind.HighContrast
+    ? "dark"
+    : "light";
+}
+
+/** Render the diagram in the format named by a file extension (drawio/svg/mmd/json). */
+async function renderExport(format: string, diagram: DiagramData): Promise<string> {
+  const { drawioExporter, jsonExporter, mermaidExporter, svgExporter } = await import(
+    "@surrounded-by-slop/core"
+  );
+  switch (format) {
+    case "drawio":
+      return drawioExporter.export(diagram.graph, { layout: diagram.layout });
+    case "svg":
+      return svgExporter.export(diagram.graph, { layout: diagram.layout, theme: exportTheme() });
+    case "mmd":
+      return mermaidExporter.export(diagram.graph);
+    case "json":
+      return jsonExporter.export(diagram.graph);
+    default:
+      throw new Error(`unsupported export format ".${format}" — use .drawio, .mmd, .svg or .json`);
+  }
+}
+
 /**
  * Drives visualization: the command, and the live behaviors around it — refresh
  * on save (debounced, viewport preserved by the view), Follow to track the
  * active editor, and Pin to freeze a diagram to its file.
  */
 export class VisualizationController implements vscode.Disposable {
+  private shown: DiagramData | undefined;
   private shownUri: vscode.Uri | undefined;
   private pinned = false;
   private following = false;
@@ -77,6 +105,74 @@ export class VisualizationController implements vscode.Disposable {
     }
   }
 
+  /** `Slop: Export Diagram As…` — pick a file, write the current diagram in that format. */
+  async exportInteractive(): Promise<void> {
+    if (this.shown === undefined) {
+      void vscode.window.showInformationMessage(
+        "Surrounded by Slop: visualize a file first, then export it.",
+      );
+      return;
+    }
+    const defaultUri = this.defaultExportUri(this.shown.title);
+    const target = await vscode.window.showSaveDialog({
+      title: "Export Diagram",
+      filters: { "draw.io": ["drawio"], Mermaid: ["mmd"], SVG: ["svg"], JSON: ["json"] },
+      ...(defaultUri !== undefined ? { defaultUri } : {}),
+    });
+    if (target !== undefined) {
+      await this.exportTo(target);
+    }
+  }
+
+  /** Write the current diagram to `target`, choosing the format from its extension. */
+  async exportTo(target: vscode.Uri): Promise<void> {
+    const diagram = this.shown;
+    if (diagram === undefined) {
+      void vscode.window.showInformationMessage(
+        "Surrounded by Slop: visualize a file first, then export it.",
+      );
+      return;
+    }
+    const format = target.path.slice(target.path.lastIndexOf(".") + 1).toLowerCase();
+    try {
+      const content = await renderExport(format, diagram);
+      await vscode.workspace.fs.writeFile(target, new TextEncoder().encode(content));
+      const name = target.path.split("/").pop() ?? "diagram";
+      // Fire-and-forget: the file is already written; don't block on the toast.
+      void vscode.window.showInformationMessage(`Exported ${name}.`, "Open").then((choice) => {
+        if (choice === "Open") {
+          void vscode.commands.executeCommand("vscode.open", target);
+        }
+      });
+    } catch (error) {
+      this.logger.report("Surrounded by Slop couldn't export the diagram.", error);
+    }
+  }
+
+  /** `Slop: Copy Diagram as Mermaid` — put the current diagram on the clipboard. */
+  async copyMermaid(): Promise<void> {
+    const diagram = this.shown;
+    if (diagram === undefined) {
+      void vscode.window.showInformationMessage(
+        "Surrounded by Slop: visualize a file first, then copy it.",
+      );
+      return;
+    }
+    const { mermaidExporter } = await import("@surrounded-by-slop/core");
+    await vscode.env.clipboard.writeText(mermaidExporter.export(diagram.graph));
+    void vscode.window.showInformationMessage("Diagram copied as Mermaid.");
+  }
+
+  private defaultExportUri(title: string): vscode.Uri | undefined {
+    const base =
+      title
+        .replace(/\.[^.]+$/, "")
+        .split("/")
+        .pop() ?? "diagram";
+    const folder = vscode.workspace.workspaceFolders?.[0]?.uri;
+    return folder === undefined ? undefined : vscode.Uri.joinPath(folder, `${base}.drawio`);
+  }
+
   private async visualize(document: vscode.TextDocument): Promise<void> {
     const suffix = suffixFor(document);
     if (suffix === undefined) {
@@ -94,8 +190,10 @@ export class VisualizationController implements vscode.Disposable {
         this.logger.warn(`${diagnostic.file ?? path}: ${diagnostic.message}`);
       }
       const layout = await layoutGraph(graph);
+      const diagram: DiagramData = { title: path, graph, layout };
+      this.shown = diagram;
       this.shownUri = document.uri;
-      this.view.show({ title: path, graph, layout }, document.uri);
+      this.view.show(diagram, document.uri);
       this.logger.info(
         `Visualized ${path}: ${graph.nodes.length} nodes, ${graph.edges.length} edges`,
       );

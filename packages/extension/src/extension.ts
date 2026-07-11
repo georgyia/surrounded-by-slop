@@ -9,6 +9,7 @@ export interface SlopApi {
   readonly onDidVisualize: vscode.Event<DiagramData>;
   readonly onDidLog: vscode.Event<LogRecord>;
   readonly revealNode: (nodeId: string, toSide?: boolean) => Promise<void>;
+  readonly exportDiagram: (target: vscode.Uri) => Promise<void>;
 }
 
 /**
@@ -29,6 +30,8 @@ export function activate(context: vscode.ExtensionContext): SlopApi {
     vscode.commands.registerCommand("slop.visualizeFile", () => controller.visualizeActive()),
     vscode.commands.registerCommand("slop.togglePin", () => controller.togglePin()),
     vscode.commands.registerCommand("slop.followActiveEditor", () => controller.toggleFollow()),
+    vscode.commands.registerCommand("slop.exportDiagram", () => controller.exportInteractive()),
+    vscode.commands.registerCommand("slop.copyMermaid", () => controller.copyMermaid()),
     vscode.window.registerWebviewPanelSerializer(DIAGRAM_VIEW_TYPE, {
       deserializeWebviewPanel(panel, state: unknown) {
         view.restore(panel, state);
@@ -41,6 +44,7 @@ export function activate(context: vscode.ExtensionContext): SlopApi {
     onDidVisualize: view.onDidVisualize,
     onDidLog: logger.onDidLog,
     revealNode: (nodeId, toSide = false) => view.revealNode(nodeId, toSide),
+    exportDiagram: (target) => controller.exportTo(target),
   };
 }
 

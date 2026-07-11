@@ -44,6 +44,16 @@
         "command": "slop.followActiveEditor",
         "title": "Follow Active Editor",
         "category": "Slop"
+      },
+      {
+        "command": "slop.exportDiagram",
+        "title": "Export Diagram As…",
+        "category": "Slop"
+      },
+      {
+        "command": "slop.copyMermaid",
+        "title": "Copy Diagram as Mermaid",
+        "category": "Slop"
       }
     ]
   },
