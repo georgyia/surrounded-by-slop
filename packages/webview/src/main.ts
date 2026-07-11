@@ -54,7 +54,17 @@ function paint(shouldRefit: boolean): void {
   if (root === null || diagram === undefined) {
     return;
   }
-  root.innerHTML = renderDiagram(diagram.graph, diagram.layout, theme);
+  try {
+    root.innerHTML = renderDiagram(diagram.graph, diagram.layout, theme);
+  } catch (error) {
+    viewportEl = null;
+    setStatus("Couldn't draw this diagram.");
+    vscode.postMessage({
+      type: "error",
+      message: error instanceof Error ? error.message : String(error),
+    });
+    return;
+  }
   viewportEl = root.querySelector<SVGGElement>(".slop-viewport");
   if (shouldRefit) {
     refit();

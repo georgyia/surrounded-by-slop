@@ -1,4 +1,5 @@
 import * as vscode from "vscode";
+import type { Logger } from "../log.js";
 import type { DiagramView } from "../panel/diagramView.js";
 
 /** VS Code language ids the TypeScript adapter understands, and their file suffix. */
@@ -14,7 +15,7 @@ const LANGUAGE_EXTENSIONS: Readonly<Record<string, string>> = {
  * editor. The heavy analysis core and layout engine are imported lazily here,
  * off the activation path.
  */
-export async function visualizeActiveFile(view: DiagramView): Promise<void> {
+export async function visualizeActiveFile(view: DiagramView, logger: Logger): Promise<void> {
   const editor = vscode.window.activeTextEditor;
   if (editor === undefined) {
     void vscode.window.showInformationMessage(
@@ -38,12 +39,16 @@ export async function visualizeActiveFile(view: DiagramView): Promise<void> {
 
   try {
     const { analyzeTypeScriptProject, layoutGraph } = await import("@surrounded-by-slop/core");
-    const { graph } = analyzeTypeScriptProject([{ path, text: document.getText() }]);
+    // A broken file degrades to a partial graph plus diagnostics — surface those
+    // as warnings and carry on rather than failing the whole visualization.
+    const { graph, diagnostics } = analyzeTypeScriptProject([{ path, text: document.getText() }]);
+    for (const diagnostic of diagnostics) {
+      logger.warn(`${diagnostic.file ?? path}: ${diagnostic.message}`);
+    }
     const layout = await layoutGraph(graph);
     view.show({ title: path, graph, layout }, document.uri);
+    logger.info(`Visualized ${path}: ${graph.nodes.length} nodes, ${graph.edges.length} edges`);
   } catch (error) {
-    void vscode.window.showErrorMessage(
-      `Surrounded by Slop couldn't visualize ${path}: ${error instanceof Error ? error.message : String(error)}`,
-    );
+    logger.report(`Surrounded by Slop couldn't visualize ${path}.`, error);
   }
 }

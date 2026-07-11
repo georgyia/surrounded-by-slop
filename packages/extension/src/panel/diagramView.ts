@@ -7,6 +7,7 @@ import type {
 } from "@surrounded-by-slop/webview";
 import { buildDiagramHtml, createNonce, PROTOCOL_VERSION } from "@surrounded-by-slop/webview";
 import * as vscode from "vscode";
+import type { Logger } from "../log.js";
 
 export const DIAGRAM_VIEW_TYPE = "slop.diagram";
 
@@ -48,7 +49,10 @@ export class DiagramView {
   /** Fires once a diagram has been dispatched to a ready webview (host↔webview round-trip complete). */
   readonly onDidVisualize = this.didVisualize.event;
 
-  constructor(private readonly extensionUri: vscode.Uri) {}
+  constructor(
+    private readonly extensionUri: vscode.Uri,
+    private readonly logger: Logger,
+  ) {}
 
   /** Show (or update) the diagram, creating/revealing the panel beside the editor. */
   show(diagram: DiagramData, source: vscode.Uri): void {
@@ -94,8 +98,8 @@ export class DiagramView {
         selection: range,
       });
       editor.revealRange(range, vscode.TextEditorRevealType.InCenterIfOutsideViewport);
-    } catch {
-      void vscode.window.showWarningMessage(`Surrounded by Slop couldn't open ${span.file}.`);
+    } catch (error) {
+      this.logger.report(`Surrounded by Slop couldn't open ${span.file}.`, error);
     }
   }
 
@@ -172,7 +176,9 @@ export class DiagramView {
       case "revealNode":
         void this.revealNode(message.nodeId, message.toSide);
         break;
-      // error (SBS-051) is handled when that lands.
+      case "error":
+        this.logger.warn(`webview: ${message.message}`);
+        break;
     }
   }
 
