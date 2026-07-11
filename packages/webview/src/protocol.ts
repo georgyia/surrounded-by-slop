@@ -26,7 +26,13 @@ export interface DiagramData {
 
 /** Messages the extension host sends to the webview. */
 export type HostToWebview =
-  | { readonly type: "render"; readonly diagram: DiagramData; readonly theme: ColorTheme }
+  | {
+      readonly type: "render";
+      readonly diagram: DiagramData;
+      readonly theme: ColorTheme;
+      /** Fit the diagram to the viewport; false on a same-file refresh so pan/zoom is kept. */
+      readonly fit: boolean;
+    }
   | { readonly type: "theme"; readonly theme: ColorTheme };
 
 /** Messages the webview sends back to the extension host. */

@@ -1,6 +1,6 @@
 import type { DiagramData } from "@surrounded-by-slop/webview";
 import * as vscode from "vscode";
-import { visualizeActiveFile } from "./commands/visualizeFile.js";
+import { VisualizationController } from "./controller.js";
 import { Logger, type LogRecord } from "./log.js";
 import { DIAGRAM_VIEW_TYPE, DiagramView } from "./panel/diagramView.js";
 
@@ -12,20 +12,23 @@ export interface SlopApi {
 }
 
 /**
- * Activation stays cheap: it wires commands and the panel serializer. Anything
- * heavy — the analysis core, the layout engine, the TypeScript compiler — is
- * imported lazily inside the command handlers, so opening the editor never pays
- * for a feature the user hasn't reached yet.
+ * Activation stays cheap: it wires commands, the panel serializer and the
+ * live-refresh listeners. Anything heavy — the analysis core, the layout
+ * engine, the TypeScript compiler — is imported lazily inside the controller,
+ * so opening the editor never pays for a feature the user hasn't reached yet.
  */
 export function activate(context: vscode.ExtensionContext): SlopApi {
   const logger = new Logger();
   const view = new DiagramView(context.extensionUri, logger);
+  const controller = new VisualizationController(view, logger);
 
   context.subscriptions.push(
     logger,
     view,
-    vscode.commands.registerCommand("slop.visualizeFile", () => visualizeActiveFile(view, logger)),
-    // Restore the diagram panel after a window reload.
+    controller,
+    vscode.commands.registerCommand("slop.visualizeFile", () => controller.visualizeActive()),
+    vscode.commands.registerCommand("slop.togglePin", () => controller.togglePin()),
+    vscode.commands.registerCommand("slop.followActiveEditor", () => controller.toggleFollow()),
     vscode.window.registerWebviewPanelSerializer(DIAGRAM_VIEW_TYPE, {
       deserializeWebviewPanel(panel, state: unknown) {
         view.restore(panel, state);

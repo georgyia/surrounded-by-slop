@@ -34,6 +34,16 @@
         "title": "Visualize File",
         "category": "Slop",
         "icon": "media/slop.svg"
+      },
+      {
+        "command": "slop.togglePin",
+        "title": "Pin Diagram",
+        "category": "Slop"
+      },
+      {
+        "command": "slop.followActiveEditor",
+        "title": "Follow Active Editor",
+        "category": "Slop"
       }
     ]
   },

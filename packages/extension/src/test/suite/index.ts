@@ -3,6 +3,7 @@ import { runAll } from "../harness.js";
 import "./activation.test.js";
 import "./errors.test.js";
 import "./panel.test.js";
+import "./refresh.test.js";
 import "./reveal.test.js";
 import "./visualize.test.js";
 

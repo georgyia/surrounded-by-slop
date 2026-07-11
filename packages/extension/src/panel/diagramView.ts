@@ -40,6 +40,7 @@ function clampSpanToDocument(span: SourceSpan, document: vscode.TextDocument): v
 export class DiagramView {
   private panel: vscode.WebviewPanel | undefined;
   private current: DiagramData | undefined;
+  private currentFit = true;
   private sourceUri: vscode.Uri | undefined;
   private ready = false;
   private wasVisible = true;
@@ -56,6 +57,8 @@ export class DiagramView {
 
   /** Show (or update) the diagram, creating/revealing the panel beside the editor. */
   show(diagram: DiagramData, source: vscode.Uri): void {
+    // Refreshing the same file keeps the current pan/zoom; a different file fits anew.
+    this.currentFit = this.sourceUri?.toString() !== source.toString();
     this.current = diagram;
     this.sourceUri = source;
     if (this.panel === undefined) {
@@ -64,7 +67,7 @@ export class DiagramView {
       this.panel.reveal(vscode.ViewColumn.Beside, true);
     }
     if (this.ready) {
-      this.dispatch(diagram);
+      this.dispatch(diagram, this.currentFit);
     }
   }
 
@@ -169,7 +172,7 @@ export class DiagramView {
         }
         this.ready = true;
         if (this.current !== undefined) {
-          this.dispatch(this.current);
+          this.dispatch(this.current, true); // a freshly booted webview fits to view
         }
         break;
       }
@@ -182,8 +185,8 @@ export class DiagramView {
     }
   }
 
-  private dispatch(diagram: DiagramData): void {
-    this.post({ type: "render", diagram, theme: currentTheme() });
+  private dispatch(diagram: DiagramData, fit: boolean): void {
+    this.post({ type: "render", diagram, theme: currentTheme(), fit });
     this.didVisualize.fire(diagram);
   }
 

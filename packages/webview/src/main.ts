@@ -183,7 +183,7 @@ window.addEventListener("message", (event: MessageEvent<HostToWebview>) => {
       applyTheme(message.theme);
       diagram = message.diagram;
       vscode.setState({ diagram: message.diagram });
-      paint(true);
+      paint(message.fit);
       break;
     case "theme":
       applyTheme(message.theme);
