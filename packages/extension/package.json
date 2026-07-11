@@ -55,6 +55,44 @@
         "title": "Copy Diagram as Mermaid",
         "category": "Slop"
       }
+    ],
+    "menus": {
+      "editor/title": [
+        {
+          "command": "slop.visualizeFile",
+          "when": "resourceLangId =~ /typescript|javascript/",
+          "group": "navigation"
+        }
+      ],
+      "editor/context": [
+        {
+          "command": "slop.visualizeFile",
+          "when": "resourceLangId =~ /typescript|javascript/",
+          "group": "navigation"
+        }
+      ],
+      "commandPalette": [
+        {
+          "command": "slop.exportDiagram",
+          "when": "slop.hasDiagram"
+        },
+        {
+          "command": "slop.copyMermaid",
+          "when": "slop.hasDiagram"
+        },
+        {
+          "command": "slop.togglePin",
+          "when": "slop.hasDiagram"
+        }
+      ]
+    },
+    "keybindings": [
+      {
+        "command": "slop.visualizeFile",
+        "key": "ctrl+shift+v",
+        "mac": "cmd+shift+v",
+        "when": "editorTextFocus && editorLangId =~ /typescript|javascript/"
+      }
     ]
   },
   "scripts": {

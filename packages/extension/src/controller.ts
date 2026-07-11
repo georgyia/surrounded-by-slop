@@ -193,6 +193,8 @@ export class VisualizationController implements vscode.Disposable {
       const diagram: DiagramData = { title: path, graph, layout };
       this.shown = diagram;
       this.shownUri = document.uri;
+      // Reveal the diagram-dependent commands (export, copy, pin) in the palette.
+      void vscode.commands.executeCommand("setContext", "slop.hasDiagram", true);
       this.view.show(diagram, document.uri);
       this.logger.info(
         `Visualized ${path}: ${graph.nodes.length} nodes, ${graph.edges.length} edges`,
