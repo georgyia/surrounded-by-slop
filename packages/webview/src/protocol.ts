@@ -1,3 +1,5 @@
+import type { GraphLayout, SemanticGraph } from "@surrounded-by-slop/core";
+
 /**
  * Version of the message protocol between the extension host and the webview.
  *
@@ -7,3 +9,28 @@
  * breaking change to a message shape.
  */
 export const PROTOCOL_VERSION = 1;
+
+/** Which of the two built-in palettes to draw with. */
+export type ColorTheme = "light" | "dark";
+
+/**
+ * One diagram: the semantic graph plus the positions computed for it. Both come
+ * from the pure core; the webview only renders them. This is exactly what the
+ * webview persists (via `setState`) so it can restore after a reload.
+ */
+export interface DiagramData {
+  readonly title: string;
+  readonly graph: SemanticGraph;
+  readonly layout: GraphLayout;
+}
+
+/** Messages the extension host sends to the webview. */
+export type HostToWebview =
+  | { readonly type: "render"; readonly diagram: DiagramData; readonly theme: ColorTheme }
+  | { readonly type: "theme"; readonly theme: ColorTheme };
+
+/** Messages the webview sends back to the extension host. */
+export type WebviewToHost =
+  | { readonly type: "ready"; readonly protocol: number }
+  | { readonly type: "revealNode"; readonly nodeId: string; readonly toSide: boolean }
+  | { readonly type: "error"; readonly message: string };

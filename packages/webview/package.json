@@ -20,6 +20,7 @@
     "typecheck": "tsc --noEmit"
   },
   "devDependencies": {
+    "@surrounded-by-slop/core": "workspace:*",
     "typescript": "^5.8.0"
   }
 }

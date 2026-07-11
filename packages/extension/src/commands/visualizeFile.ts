@@ -1,4 +1,5 @@
 import * as vscode from "vscode";
+import type { DiagramView } from "../panel/diagramView.js";
 
 /** VS Code language ids the TypeScript adapter understands, and their file suffix. */
 const LANGUAGE_EXTENSIONS: Readonly<Record<string, string>> = {
@@ -9,15 +10,11 @@ const LANGUAGE_EXTENSIONS: Readonly<Record<string, string>> = {
 };
 
 /**
- * Analyze the file in the active editor.
- *
- * This first cut reports what it found; the interactive diagram panel lands in
- * SBS-042 and takes over from the notification. Keeping the command real from
- * day one proves the host↔core wiring end to end (and that pulling in the
- * TypeScript compiler stays off the activation path — it is imported here,
- * lazily, not at activation).
+ * Analyze the file in the active editor and show it as a diagram beside the
+ * editor. The heavy analysis core and layout engine are imported lazily here,
+ * off the activation path.
  */
-export async function visualizeActiveFile(): Promise<void> {
+export async function visualizeActiveFile(view: DiagramView): Promise<void> {
   const editor = vscode.window.activeTextEditor;
   if (editor === undefined) {
     void vscode.window.showInformationMessage(
@@ -35,18 +32,18 @@ export async function visualizeActiveFile(): Promise<void> {
     return;
   }
 
-  const { analyzeTypeScriptProject } = await import("@surrounded-by-slop/core");
   const path = document.isUntitled
     ? `untitled${suffix}`
     : vscode.workspace.asRelativePath(document.uri);
-  const { graph, diagnostics } = analyzeTypeScriptProject([{ path, text: document.getText() }]);
 
-  const callable = graph.nodes.filter(
-    (node) => node.kind === "function" || node.kind === "method",
-  ).length;
-  const calls = graph.edges.filter((edge) => edge.kind === "calls").length;
-  const trailer = diagnostics.length > 0 ? ` · ${diagnostics.length} diagnostic(s)` : "";
-  void vscode.window.showInformationMessage(
-    `${path}: ${graph.nodes.length} symbols, ${callable} functions, ${calls} calls${trailer}.`,
-  );
+  try {
+    const { analyzeTypeScriptProject, layoutGraph } = await import("@surrounded-by-slop/core");
+    const { graph } = analyzeTypeScriptProject([{ path, text: document.getText() }]);
+    const layout = await layoutGraph(graph);
+    view.show({ title: path, graph, layout });
+  } catch (error) {
+    void vscode.window.showErrorMessage(
+      `Surrounded by Slop couldn't visualize ${path}: ${error instanceof Error ? error.message : String(error)}`,
+    );
+  }
 }
