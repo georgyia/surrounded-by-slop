@@ -14,6 +14,11 @@ const LANGUAGE_EXTENSIONS: Readonly<Record<string, string>> = {
 };
 
 const REFRESH_DEBOUNCE_MS = 300;
+/** Guardrails so a stray huge tree (a downloaded SDK, a vendored bundle) can't run analysis away. */
+const MAX_WORKSPACE_FILES = 5000;
+const MAX_FILE_BYTES = 512 * 1024;
+/** Above this many collapsed modules the layout would choke — bail with advice instead of crashing. */
+const MAX_LAYOUT_NODES = 1500;
 
 function suffixFor(document: vscode.TextDocument): string | undefined {
   return LANGUAGE_EXTENSIONS[document.languageId];
@@ -139,11 +144,16 @@ export class VisualizationController implements vscode.Disposable {
       const uris = await vscode.workspace.findFiles(
         braceGlob(config.include) ?? "**/*.{ts,tsx,mts,cts,js,jsx,mjs,cjs}",
         braceGlob(config.exclude),
-        undefined,
+        MAX_WORKSPACE_FILES,
         token,
       );
       if (token.isCancellationRequested) {
         return;
+      }
+      if (uris.length >= MAX_WORKSPACE_FILES) {
+        this.logger.warn(
+          `Workspace has more than ${MAX_WORKSPACE_FILES} files; mapping the first ${MAX_WORKSPACE_FILES}. Narrow it with slop.include / slop.exclude.`,
+        );
       }
       const sourceUris = config.includeTests ? uris : uris.filter((uri) => !isTestFile(uri.path));
       const inputs: { path: string; text: string }[] = [];
@@ -151,8 +161,16 @@ export class VisualizationController implements vscode.Disposable {
         if (token.isCancellationRequested) {
           return;
         }
+        const relative = vscode.workspace.asRelativePath(uri, false);
+        // Skip files too big to be hand-written — minified bundles and generated
+        // blobs blow the analyzer's stack and aren't worth visualizing anyway.
+        const stat = await vscode.workspace.fs.stat(uri);
+        if (stat.size > MAX_FILE_BYTES) {
+          this.logger.warn(`Skipped ${relative} (${Math.round(stat.size / 1024)} KB — too large).`);
+          continue;
+        }
         inputs.push({
-          path: vscode.workspace.asRelativePath(uri, false),
+          path: relative,
           text: new TextDecoder().decode(await vscode.workspace.fs.readFile(uri)),
         });
       }
@@ -184,6 +202,15 @@ export class VisualizationController implements vscode.Disposable {
         ? analyzed.graph
         : withoutExternalModules(analyzed.graph);
       const collapsed = collapseToModules(base);
+      if (collapsed.nodes.length > MAX_LAYOUT_NODES) {
+        void vscode.window.showInformationMessage(
+          `Surrounded by Slop: this workspace is too large to map at once (${collapsed.nodes.length} modules). Narrow it with slop.include / slop.exclude, or open a subfolder.`,
+        );
+        this.logger.warn(
+          `Workspace map skipped: ${collapsed.nodes.length} modules exceeds the ${MAX_LAYOUT_NODES}-node guardrail.`,
+        );
+        return;
+      }
       const layout = await layoutGraph(collapsed, { direction: config.layoutDirection });
       if (token.isCancellationRequested) {
         return;

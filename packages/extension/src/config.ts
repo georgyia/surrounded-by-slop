@@ -23,6 +23,15 @@ const DEFAULT_EXCLUDE = [
   "**/out/**",
   "**/build/**",
   "**/coverage/**",
+  "**/.git/**",
+  "**/.vscode-test/**",
+  "**/.next/**",
+  "**/.nuxt/**",
+  "**/.svelte-kit/**",
+  "**/.turbo/**",
+  "**/.cache/**",
+  "**/vendor/**",
+  "**/*.min.js",
 ];
 
 export function readConfig(): SlopConfig {
