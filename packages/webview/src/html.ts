@@ -101,6 +101,28 @@ export function buildDiagramHtml(options: DiagramHtmlOptions): string {
     #legend h2:first-child { margin-top: 0; }
     .slop-legend-row { display: flex; align-items: center; gap: 6px; padding: 1px 0; }
     .slop-legend-row svg { flex: none; }
+    /* Hover card (SBS-064) — details on demand, never intercepts the pointer. */
+    #hovercard {
+      position: fixed; z-index: 6; pointer-events: none; max-width: 320px;
+      padding: 6px 9px; border-radius: 6px; font-size: 11px; line-height: 1.45;
+      background: var(--vscode-editorHoverWidget-background, var(--vscode-editorWidget-background));
+      color: var(--vscode-editorHoverWidget-foreground, var(--vscode-editor-foreground));
+      border: 1px solid var(--vscode-editorHoverWidget-border, var(--vscode-editorWidget-border, #8884));
+      box-shadow: 0 2px 8px rgba(0,0,0,0.35);
+    }
+    #hovercard.slop-hidden { display: none; }
+    #hovercard .slop-hc-name { font-weight: 600; }
+    #hovercard .slop-hc-kind {
+      margin-left: 6px; padding: 0 5px; border-radius: 8px; font-size: 10px;
+      background: var(--vscode-badge-background, #8883); color: var(--vscode-badge-foreground);
+    }
+    #hovercard code {
+      display: block; margin-top: 3px; white-space: pre-wrap; word-break: break-word;
+      font-family: var(--vscode-editor-font-family, ui-monospace, monospace);
+      color: var(--vscode-textPreformat-foreground, inherit);
+    }
+    #hovercard .slop-hc-doc { margin-top: 3px; opacity: 0.85; }
+    #hovercard .slop-hc-meta { margin-top: 4px; opacity: 0.65; }
     .slop-diagram { display: block; animation: slop-fade 140ms ease; }
     @keyframes slop-fade { from { opacity: 0.35; } to { opacity: 1; } }
     @media (prefers-reduced-motion: reduce) { .slop-diagram { animation: none; } }
@@ -135,6 +157,7 @@ export function buildDiagramHtml(options: DiagramHtmlOptions): string {
       title="Explain the colors and line styles">Legend</button>
   </div>
   <aside id="legend" class="slop-hidden" aria-label="Diagram legend"></aside>
+  <div id="hovercard" class="slop-hidden" role="tooltip"></div>
   <div id="root"><div class="slop-status">Loading diagram…</div></div>
   <script nonce="${nonce}" src="${scriptUri}"></script>
 </body>

@@ -8,7 +8,8 @@
  * in the pure `render`/`viewport` modules. It persists the current diagram with
  * `setState`, so a window reload restores the view without re-analyzing.
  */
-import type { NodeKind } from "@surrounded-by-slop/core";
+import type { GraphNode, NodeKind } from "@surrounded-by-slop/core";
+import { type Degree, edgeDegrees, hoverDetails } from "./hover.js";
 import { setupInteractions } from "./interactions.js";
 import { edgeLegend, type LegendEntry, nodeLegend } from "./legend.js";
 import type { ColorTheme, DiagramData, HostToWebview, WebviewToHost } from "./protocol.js";
@@ -48,6 +49,11 @@ let viewportEl: SVGGElement | null = null;
 let filter: FilterState = EMPTY_FILTER;
 let nodeInfos: FilterableNode[] = [];
 let soleMatch: string | null = null;
+let nodeById = new Map<string, GraphNode>();
+let degrees = new Map<string, Degree>();
+let hoverTimer: ReturnType<typeof setTimeout> | undefined;
+let hoverId: string | null = null;
+let hoverEl: Element | null = null;
 
 function rootElement(): HTMLElement | null {
   return document.getElementById("root");
@@ -78,6 +84,7 @@ function paint(shouldRefit: boolean): void {
   if (root === null || diagram === undefined) {
     return;
   }
+  hideHover(); // the SVG is about to be replaced — drop any card tied to it
   try {
     root.innerHTML = renderDiagram(diagram.graph, diagram.layout, theme, diagram.expandableIds);
   } catch (error) {
@@ -132,6 +139,9 @@ function onNewDiagram(next: DiagramData): void {
     kind: node.kind,
     path: node.span?.file ?? node.qualifiedName,
   }));
+  nodeById = new Map(next.graph.nodes.map((node) => [node.id, node]));
+  degrees = edgeDegrees(next.graph);
+  hideHover();
   filter = EMPTY_FILTER;
   const search = byId<HTMLInputElement>("search");
   if (search !== null) {
@@ -330,6 +340,130 @@ function buildLegend(): void {
   section("Edges", edgeLegend(palette), false);
 }
 
+// ---- Hover details (SBS-064) ----
+
+function renderHoverCard(node: GraphNode): void {
+  const card = byId("hovercard");
+  if (card === null) {
+    return;
+  }
+  const details = hoverDetails(node, degrees);
+  card.replaceChildren();
+
+  const header = document.createElement("div");
+  const name = document.createElement("span");
+  name.className = "slop-hc-name";
+  name.textContent = details.name;
+  const kind = document.createElement("span");
+  kind.className = "slop-hc-kind";
+  kind.textContent = details.kind;
+  header.append(name, kind);
+  card.append(header);
+
+  if (details.signature !== undefined) {
+    const code = document.createElement("code");
+    code.textContent = details.signature;
+    card.append(code);
+  }
+  if (details.doc !== undefined) {
+    const doc = document.createElement("div");
+    doc.className = "slop-hc-doc";
+    doc.textContent = details.doc;
+    card.append(doc);
+  }
+  const meta = document.createElement("div");
+  meta.className = "slop-hc-meta";
+  const parts = details.location === undefined ? [] : [details.location];
+  parts.push(`${details.incoming} in · ${details.outgoing} out`);
+  meta.textContent = parts.join("  •  ");
+  card.append(meta);
+}
+
+/** Place the card near (x, y), flipping so it never spills off-screen. */
+function positionHover(x: number, y: number): void {
+  const card = byId("hovercard");
+  if (card === null) {
+    return;
+  }
+  const gap = 14;
+  const rect = card.getBoundingClientRect();
+  let left = x + gap;
+  let top = y + gap;
+  if (left + rect.width > window.innerWidth) {
+    left = x - gap - rect.width;
+  }
+  if (top + rect.height > window.innerHeight) {
+    top = y - gap - rect.height;
+  }
+  card.style.left = `${Math.max(4, left)}px`;
+  card.style.top = `${Math.max(4, top)}px`;
+}
+
+function showHover(id: string, x: number, y: number, element: Element): void {
+  const node = nodeById.get(id);
+  if (node === undefined) {
+    return;
+  }
+  renderHoverCard(node);
+  byId("hovercard")?.classList.remove("slop-hidden");
+  positionHover(x, y);
+  element.setAttribute("aria-describedby", "hovercard");
+}
+
+function hideHover(): void {
+  if (hoverTimer !== undefined) {
+    clearTimeout(hoverTimer);
+    hoverTimer = undefined;
+  }
+  byId("hovercard")?.classList.add("slop-hidden");
+  hoverEl?.removeAttribute("aria-describedby");
+  hoverEl = null;
+  hoverId = null;
+}
+
+function setupHover(root: HTMLElement): void {
+  root.addEventListener("pointermove", (event) => {
+    if (root.classList.contains("slop-dragging")) {
+      hideHover();
+      return;
+    }
+    const element = event.target instanceof Element ? event.target.closest("[data-node-id]") : null;
+    const id = element?.getAttribute("data-node-id") ?? null;
+    if (id === hoverId) {
+      if (id !== null) {
+        positionHover(event.clientX, event.clientY);
+      }
+      return;
+    }
+    hideHover();
+    hoverId = id;
+    hoverEl = element;
+    if (id !== null && element !== null) {
+      const { clientX, clientY } = event;
+      hoverTimer = setTimeout(() => {
+        if (hoverId === id) {
+          showHover(id, clientX, clientY, element);
+        }
+      }, 120);
+    }
+  });
+  root.addEventListener("pointerleave", hideHover);
+  // Keyboard / screen readers: focusing a node reveals its card immediately.
+  root.addEventListener("focusin", (event) => {
+    const element = event.target instanceof Element ? event.target.closest("[data-node-id]") : null;
+    const id = element?.getAttribute("data-node-id") ?? null;
+    if (id === null || element === null) {
+      return;
+    }
+    hideHover();
+    hoverId = id;
+    hoverEl = element;
+    const rect = element.getBoundingClientRect();
+    showHover(id, rect.left, rect.bottom, element);
+  });
+  root.addEventListener("focusout", hideHover);
+}
+
 window.addEventListener("message", (event: MessageEvent<HostToWebview>) => {
   const message = event.data;
   switch (message.type) {
@@ -365,6 +499,7 @@ function boot(): void {
       reveal: (nodeId, toSide) => vscode.postMessage({ type: "revealNode", nodeId, toSide }),
       toggleExpand: (nodeId) => vscode.postMessage({ type: "toggleExpand", nodeId }),
     });
+    setupHover(root);
   }
   setupToolbar();
   // Reload path: VS Code preserves our last setState, so restore before we
