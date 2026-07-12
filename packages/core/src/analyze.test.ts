@@ -90,7 +90,7 @@ describe("project analysis", () => {
     expect(typescriptAdapter.capabilities).toEqual({
       imports: true,
       callGraph: "typed",
-      cfg: false,
+      cfg: true, // extractControlFlow (SBS-070)
       dataflow: false,
     });
     expect(typescriptAdapter.extensions).toEqual([".ts", ".tsx", ".js", ".jsx"]);

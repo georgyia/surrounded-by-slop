@@ -85,6 +85,7 @@ export const typescriptAdapter: LanguageAdapter = {
   id: "typescript",
   displayName: "TypeScript / JavaScript",
   extensions: [".ts", ".tsx", ".js", ".jsx"],
-  capabilities: { imports: true, callGraph: "typed", cfg: false, dataflow: false },
+  // cfg: per-function control flow ships via `extractControlFlow` (SBS-070).
+  capabilities: { imports: true, callGraph: "typed", cfg: true, dataflow: false },
   analyze: analyzeTypeScriptProject,
 };

@@ -23,10 +23,13 @@ interface FixtureCase {
   directory: string;
 }
 
+/** Categories with their own harness and golden format (src/cfg/fixtures.test.ts). */
+const FOREIGN_CATEGORIES = new Set(["cfg"]);
+
 function listCases(): FixtureCase[] {
   const cases: FixtureCase[] = [];
   for (const category of fs.readdirSync(fixturesRoot, { withFileTypes: true })) {
-    if (!category.isDirectory()) {
+    if (!category.isDirectory() || FOREIGN_CATEGORIES.has(category.name)) {
       continue;
     }
     const categoryDir = path.join(fixturesRoot, category.name);

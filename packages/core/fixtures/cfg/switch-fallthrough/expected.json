@@ -1,0 +1,186 @@
+{
+  "cfgs": [
+    {
+      "blocks": [
+        {
+          "id": "entry",
+          "kind": "entry",
+          "spans": [],
+          "statements": []
+        },
+        {
+          "id": "b1",
+          "kind": "basic",
+          "spans": [
+            {
+              "endCol": 16,
+              "endLine": 2,
+              "file": "input.ts",
+              "startCol": 3,
+              "startLine": 2
+            },
+            {
+              "endCol": 12,
+              "endLine": 3,
+              "file": "input.ts",
+              "startCol": 11,
+              "startLine": 3
+            }
+          ],
+          "statements": [
+            "let out = \"\";",
+            "switch k"
+          ]
+        },
+        {
+          "id": "b2",
+          "kind": "basic",
+          "spans": [
+            {
+              "endCol": 14,
+              "endLine": 13,
+              "file": "input.ts",
+              "startCol": 3,
+              "startLine": 13
+            }
+          ],
+          "statements": [
+            "return out;"
+          ]
+        },
+        {
+          "id": "b3",
+          "kind": "basic",
+          "spans": [
+            {
+              "endCol": 18,
+              "endLine": 5,
+              "file": "input.ts",
+              "startCol": 7,
+              "startLine": 5
+            }
+          ],
+          "statements": [
+            "out += \"a\";"
+          ]
+        },
+        {
+          "id": "b4",
+          "kind": "basic",
+          "spans": [
+            {
+              "endCol": 18,
+              "endLine": 7,
+              "file": "input.ts",
+              "startCol": 7,
+              "startLine": 7
+            },
+            {
+              "endCol": 13,
+              "endLine": 8,
+              "file": "input.ts",
+              "startCol": 7,
+              "startLine": 8
+            }
+          ],
+          "statements": [
+            "out += \"b\";",
+            "break;"
+          ]
+        },
+        {
+          "id": "b5",
+          "kind": "basic",
+          "spans": [
+            {
+              "endCol": 18,
+              "endLine": 10,
+              "file": "input.ts",
+              "startCol": 7,
+              "startLine": 10
+            },
+            {
+              "endCol": 13,
+              "endLine": 11,
+              "file": "input.ts",
+              "startCol": 7,
+              "startLine": 11
+            }
+          ],
+          "statements": [
+            "out += \"c\";",
+            "break;"
+          ]
+        },
+        {
+          "id": "exit",
+          "kind": "exit",
+          "spans": [],
+          "statements": []
+        }
+      ],
+      "edges": [
+        {
+          "from": "entry",
+          "kind": "normal",
+          "to": "b1"
+        },
+        {
+          "from": "b1",
+          "kind": "case",
+          "label": "no match",
+          "to": "b2"
+        },
+        {
+          "from": "b1",
+          "kind": "case",
+          "label": "\"a\"",
+          "to": "b3"
+        },
+        {
+          "from": "b1",
+          "kind": "case",
+          "label": "\"b\"",
+          "to": "b4"
+        },
+        {
+          "from": "b1",
+          "kind": "case",
+          "label": "\"c\"",
+          "to": "b5"
+        },
+        {
+          "from": "b2",
+          "kind": "normal",
+          "to": "exit"
+        },
+        {
+          "from": "b3",
+          "kind": "normal",
+          "to": "b4"
+        },
+        {
+          "from": "b4",
+          "kind": "normal",
+          "to": "b2"
+        },
+        {
+          "from": "b5",
+          "kind": "normal",
+          "to": "b2"
+        }
+      ],
+      "entryId": "entry",
+      "exitId": "exit",
+      "name": "describe",
+      "span": {
+        "endCol": 2,
+        "endLine": 14,
+        "file": "input.ts",
+        "startCol": 1,
+        "startLine": 1
+      }
+    }
+  ],
+  "diagnostics": []
+}

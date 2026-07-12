@@ -1,0 +1,127 @@
+{
+  "cfgs": [
+    {
+      "blocks": [
+        {
+          "id": "entry",
+          "kind": "entry",
+          "spans": [],
+          "statements": []
+        },
+        {
+          "id": "b1",
+          "kind": "basic",
+          "spans": [
+            {
+              "endCol": 17,
+              "endLine": 2,
+              "file": "input.ts",
+              "startCol": 8,
+              "startLine": 2
+            }
+          ],
+          "statements": [
+            "let p = 1"
+          ]
+        },
+        {
+          "id": "b2",
+          "kind": "basic",
+          "spans": [
+            {
+              "endCol": 18,
+              "endLine": 3,
+              "file": "input.ts",
+              "startCol": 9,
+              "startLine": 3
+            }
+          ],
+          "statements": [
+            "p > limit"
+          ]
+        },
+        {
+          "id": "b3",
+          "kind": "basic",
+          "spans": [
+            {
+              "endCol": 27,
+              "endLine": 2,
+              "file": "input.ts",
+              "startCol": 21,
+              "startLine": 2
+            }
+          ],
+          "statements": [
+            "p *= 2"
+          ]
+        },
+        {
+          "id": "b4",
+          "kind": "basic",
+          "spans": [
+            {
+              "endCol": 16,
+              "endLine": 4,
+              "file": "input.ts",
+              "startCol": 7,
+              "startLine": 4
+            }
+          ],
+          "statements": [
+            "return p;"
+          ]
+        },
+        {
+          "id": "exit",
+          "kind": "exit",
+          "spans": [],
+          "statements": []
+        }
+      ],
+      "edges": [
+        {
+          "from": "entry",
+          "kind": "normal",
+          "to": "b1"
+        },
+        {
+          "from": "b1",
+          "kind": "normal",
+          "to": "b2"
+        },
+        {
+          "from": "b2",
+          "kind": "false",
+          "to": "b3"
+        },
+        {
+          "from": "b2",
+          "kind": "true",
+          "to": "b4"
+        },
+        {
+          "from": "b3",
+          "kind": "back",
+          "to": "b2"
+        },
+        {
+          "from": "b4",
+          "kind": "normal",
+          "to": "exit"
+        }
+      ],
+      "entryId": "entry",
+      "exitId": "exit",
+      "name": "firstPowerAbove",
+      "span": {
+        "endCol": 2,
+        "endLine": 7,
+        "file": "input.ts",
+        "startCol": 1,
+        "startLine": 1
+      }
+    }
+  ],
+  "diagnostics": []
+}

@@ -1,0 +1,153 @@
+{
+  "cfgs": [
+    {
+      "blocks": [
+        {
+          "id": "entry",
+          "kind": "entry",
+          "spans": [],
+          "statements": []
+        },
+        {
+          "id": "b1",
+          "kind": "basic",
+          "spans": [
+            {
+              "endCol": 11,
+              "endLine": 2,
+              "file": "input.ts",
+              "startCol": 7,
+              "startLine": 2
+            }
+          ],
+          "statements": [
+            "user"
+          ]
+        },
+        {
+          "id": "b2",
+          "kind": "basic",
+          "spans": [
+            {
+              "endCol": 17,
+              "endLine": 8,
+              "file": "input.ts",
+              "startCol": 3,
+              "startLine": 8
+            }
+          ],
+          "statements": [
+            "return \"none\";"
+          ]
+        },
+        {
+          "id": "b3",
+          "kind": "basic",
+          "spans": [
+            {
+              "endCol": 14,
+              "endLine": 3,
+              "file": "input.ts",
+              "startCol": 9,
+              "startLine": 3
+            }
+          ],
+          "statements": [
+            "admin"
+          ]
+        },
+        {
+          "id": "b4",
+          "kind": "basic",
+          "spans": [
+            {
+              "endCol": 22,
+              "endLine": 6,
+              "file": "input.ts",
+              "startCol": 5,
+              "startLine": 6
+            }
+          ],
+          "statements": [
+            "return \"limited\";"
+          ]
+        },
+        {
+          "id": "b5",
+          "kind": "basic",
+          "spans": [
+            {
+              "endCol": 21,
+              "endLine": 4,
+              "file": "input.ts",
+              "startCol": 7,
+              "startLine": 4
+            }
+          ],
+          "statements": [
+            "return \"full\";"
+          ]
+        },
+        {
+          "id": "exit",
+          "kind": "exit",
+          "spans": [],
+          "statements": []
+        }
+      ],
+      "edges": [
+        {
+          "from": "entry",
+          "kind": "normal",
+          "to": "b1"
+        },
+        {
+          "from": "b1",
+          "kind": "false",
+          "to": "b2"
+        },
+        {
+          "from": "b1",
+          "kind": "true",
+          "to": "b3"
+        },
+        {
+          "from": "b2",
+          "kind": "normal",
+          "to": "exit"
+        },
+        {
+          "from": "b3",
+          "kind": "false",
+          "to": "b4"
+        },
+        {
+          "from": "b3",
+          "kind": "true",
+          "to": "b5"
+        },
+        {
+          "from": "b4",
+          "kind": "normal",
+          "to": "exit"
+        },
+        {
+          "from": "b5",
+          "kind": "normal",
+          "to": "exit"
+        }
+      ],
+      "entryId": "entry",
+      "exitId": "exit",
+      "name": "access",
+      "span": {
+        "endCol": 2,
+        "endLine": 9,
+        "file": "input.ts",
+        "startCol": 1,
+        "startLine": 1
+      }
+    }
+  ],
+  "diagnostics": []
+}

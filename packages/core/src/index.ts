@@ -9,6 +9,16 @@ export {
   type LanguageCapabilities,
   OperationCancelledError,
 } from "./adapter.js";
+export { cfgAtLine, extractControlFlow, reachableCfgBlocks } from "./cfg/builder.js";
+export type {
+  CfgBlock,
+  CfgBlockKind,
+  CfgEdge,
+  CfgEdgeKind,
+  ControlFlowGraph,
+  ExtractedControlFlow,
+} from "./cfg/types.js";
+export { validateCfg } from "./cfg/validate.js";
 export { drawioExporter } from "./export/drawio.js";
 export {
   createExporterRegistry,

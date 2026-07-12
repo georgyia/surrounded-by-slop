@@ -1,0 +1,174 @@
+{
+  "cfgs": [
+    {
+      "blocks": [
+        {
+          "id": "entry",
+          "kind": "entry",
+          "spans": [],
+          "statements": []
+        },
+        {
+          "id": "b1",
+          "kind": "basic",
+          "spans": [
+            {
+              "endCol": 28,
+              "endLine": 2,
+              "file": "input.ts",
+              "startCol": 3,
+              "startLine": 2
+            }
+          ],
+          "statements": [
+            "const out: number[] = [];"
+          ]
+        },
+        {
+          "id": "b2",
+          "kind": "basic",
+          "spans": [
+            {
+              "endCol": 29,
+              "endLine": 3,
+              "file": "input.ts",
+              "startCol": 23,
+              "startLine": 3
+            }
+          ],
+          "statements": [
+            "const value of values"
+          ]
+        },
+        {
+          "id": "b3",
+          "kind": "basic",
+          "spans": [
+            {
+              "endCol": 24,
+              "endLine": 4,
+              "file": "input.ts",
+              "startCol": 9,
+              "startLine": 4
+            }
+          ],
+          "statements": [
+            "value % 2 !== 0"
+          ]
+        },
+        {
+          "id": "b4",
+          "kind": "basic",
+          "spans": [
+            {
+              "endCol": 14,
+              "endLine": 9,
+              "file": "input.ts",
+              "startCol": 3,
+              "startLine": 9
+            }
+          ],
+          "statements": [
+            "return out;"
+          ]
+        },
+        {
+          "id": "b5",
+          "kind": "basic",
+          "spans": [
+            {
+              "endCol": 21,
+              "endLine": 7,
+              "file": "input.ts",
+              "startCol": 5,
+              "startLine": 7
+            }
+          ],
+          "statements": [
+            "out.push(value);"
+          ]
+        },
+        {
+          "id": "b6",
+          "kind": "basic",
+          "spans": [
+            {
+              "endCol": 16,
+              "endLine": 5,
+              "file": "input.ts",
+              "startCol": 7,
+              "startLine": 5
+            }
+          ],
+          "statements": [
+            "continue;"
+          ]
+        },
+        {
+          "id": "exit",
+          "kind": "exit",
+          "spans": [],
+          "statements": []
+        }
+      ],
+      "edges": [
+        {
+          "from": "entry",
+          "kind": "normal",
+          "to": "b1"
+        },
+        {
+          "from": "b1",
+          "kind": "normal",
+          "to": "b2"
+        },
+        {
+          "from": "b2",
+          "kind": "true",
+          "to": "b3"
+        },
+        {
+          "from": "b2",
+          "kind": "false",
+          "to": "b4"
+        },
+        {
+          "from": "b3",
+          "kind": "false",
+          "to": "b5"
+        },
+        {
+          "from": "b3",
+          "kind": "true",
+          "to": "b6"
+        },
+        {
+          "from": "b4",
+          "kind": "normal",
+          "to": "exit"
+        },
+        {
+          "from": "b5",
+          "kind": "back",
+          "to": "b2"
+        },
+        {
+          "from": "b6",
+          "kind": "back",
+          "to": "b2"
+        }
+      ],
+      "entryId": "entry",
+      "exitId": "exit",
+      "name": "evens",
+      "span": {
+        "endCol": 2,
+        "endLine": 10,
+        "file": "input.ts",
+        "startCol": 1,
+        "startLine": 1
+      }
+    }
+  ],
+  "diagnostics": []
+}

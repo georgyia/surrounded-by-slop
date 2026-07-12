@@ -1,0 +1,209 @@
+{
+  "cfgs": [
+    {
+      "blocks": [
+        {
+          "id": "entry",
+          "kind": "entry",
+          "spans": [],
+          "statements": []
+        },
+        {
+          "id": "b1",
+          "kind": "basic",
+          "spans": [
+            {
+              "endCol": 21,
+              "endLine": 2,
+              "file": "input.ts",
+              "startCol": 3,
+              "startLine": 2
+            }
+          ],
+          "statements": [
+            "let found = false;"
+          ]
+        },
+        {
+          "id": "b2",
+          "kind": "basic",
+          "spans": [
+            {
+              "endCol": 32,
+              "endLine": 3,
+              "file": "input.ts",
+              "startCol": 28,
+              "startLine": 3
+            }
+          ],
+          "statements": [
+            "const row of grid"
+          ]
+        },
+        {
+          "id": "b3",
+          "kind": "basic",
+          "spans": [
+            {
+              "endCol": 16,
+              "endLine": 11,
+              "file": "input.ts",
+              "startCol": 3,
+              "startLine": 11
+            }
+          ],
+          "statements": [
+            "return found;"
+          ]
+        },
+        {
+          "id": "b4",
+          "kind": "basic",
+          "spans": [
+            {
+              "endCol": 27,
+              "endLine": 4,
+              "file": "input.ts",
+              "startCol": 24,
+              "startLine": 4
+            }
+          ],
+          "statements": [
+            "const cell of row"
+          ]
+        },
+        {
+          "id": "b5",
+          "kind": "basic",
+          "spans": [
+            {
+              "endCol": 26,
+              "endLine": 5,
+              "file": "input.ts",
+              "startCol": 11,
+              "startLine": 5
+            }
+          ],
+          "statements": [
+            "cell === target"
+          ]
+        },
+        {
+          "id": "b6",
+          "kind": "basic",
+          "spans": [],
+          "statements": []
+        },
+        {
+          "id": "b7",
+          "kind": "basic",
+          "spans": [],
+          "statements": []
+        },
+        {
+          "id": "b8",
+          "kind": "basic",
+          "spans": [
+            {
+              "endCol": 22,
+              "endLine": 6,
+              "file": "input.ts",
+              "startCol": 9,
+              "startLine": 6
+            },
+            {
+              "endCol": 21,
+              "endLine": 7,
+              "file": "input.ts",
+              "startCol": 9,
+              "startLine": 7
+            }
+          ],
+          "statements": [
+            "found = true;",
+            "break outer;"
+          ]
+        },
+        {
+          "id": "exit",
+          "kind": "exit",
+          "spans": [],
+          "statements": []
+        }
+      ],
+      "edges": [
+        {
+          "from": "entry",
+          "kind": "normal",
+          "to": "b1"
+        },
+        {
+          "from": "b1",
+          "kind": "normal",
+          "to": "b2"
+        },
+        {
+          "from": "b2",
+          "kind": "false",
+          "to": "b3"
+        },
+        {
+          "from": "b2",
+          "kind": "true",
+          "to": "b4"
+        },
+        {
+          "from": "b3",
+          "kind": "normal",
+          "to": "exit"
+        },
+        {
+          "from": "b4",
+          "kind": "true",
+          "to": "b5"
+        },
+        {
+          "from": "b4",
+          "kind": "false",
+          "to": "b6"
+        },
+        {
+          "from": "b5",
+          "kind": "false",
+          "to": "b7"
+        },
+        {
+          "from": "b5",
+          "kind": "true",
+          "to": "b8"
+        },
+        {
+          "from": "b6",
+          "kind": "back",
+          "to": "b2"
+        },
+        {
+          "from": "b7",
+          "kind": "back",
+          "to": "b4"
+        },
+        {
+          "from": "b8",
+          "kind": "normal",
+          "to": "b3"
+        }
+      ],
+      "entryId": "entry",
+      "exitId": "exit",
+      "name": "findPair",
+      "span": {
+        "endCol": 2,
+        "endLine": 12,
+        "file": "input.ts",
+        "startCol": 1,
+        "startLine": 1
+      }
+    }
+  ],
+  "diagnostics": []
+}

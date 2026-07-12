@@ -1,0 +1,85 @@
+{
+  "cfgs": [
+    {
+      "blocks": [
+        {
+          "id": "entry",
+          "kind": "entry",
+          "spans": [],
+          "statements": []
+        },
+        {
+          "id": "b1",
+          "kind": "basic",
+          "spans": [
+            {
+              "endCol": 15,
+              "endLine": 2,
+              "file": "input.ts",
+              "startCol": 10,
+              "startLine": 2
+            }
+          ],
+          "statements": [
+            "n > 0"
+          ]
+        },
+        {
+          "id": "b2",
+          "kind": "basic",
+          "spans": [
+            {
+              "endCol": 12,
+              "endLine": 3,
+              "file": "input.ts",
+              "startCol": 5,
+              "startLine": 3
+            }
+          ],
+          "statements": [
+            "n -= 1;"
+          ]
+        },
+        {
+          "id": "exit",
+          "kind": "exit",
+          "spans": [],
+          "statements": []
+        }
+      ],
+      "edges": [
+        {
+          "from": "entry",
+          "kind": "normal",
+          "to": "b1"
+        },
+        {
+          "from": "b1",
+          "kind": "true",
+          "to": "b2"
+        },
+        {
+          "from": "b1",
+          "kind": "false",
+          "to": "exit"
+        },
+        {
+          "from": "b2",
+          "kind": "back",
+          "to": "b1"
+        }
+      ],
+      "entryId": "entry",
+      "exitId": "exit",
+      "name": "countdown",
+      "span": {
+        "endCol": 2,
+        "endLine": 5,
+        "file": "input.ts",
+        "startCol": 1,
+        "startLine": 1
+      }
+    }
+  ],
+  "diagnostics": []
+}

@@ -1,0 +1,106 @@
+{
+  "cfgs": [
+    {
+      "blocks": [
+        {
+          "id": "entry",
+          "kind": "entry",
+          "spans": [],
+          "statements": []
+        },
+        {
+          "id": "b1",
+          "kind": "basic",
+          "spans": [
+            {
+              "endCol": 13,
+              "endLine": 2,
+              "file": "input.ts",
+              "startCol": 7,
+              "startLine": 2
+            }
+          ],
+          "statements": [
+            "n >= 0"
+          ]
+        },
+        {
+          "id": "b2",
+          "kind": "basic",
+          "spans": [
+            {
+              "endCol": 23,
+              "endLine": 3,
+              "file": "input.ts",
+              "startCol": 5,
+              "startLine": 3
+            }
+          ],
+          "statements": [
+            "return \"positive\";"
+          ]
+        },
+        {
+          "id": "b3",
+          "kind": "basic",
+          "spans": [
+            {
+              "endCol": 23,
+              "endLine": 5,
+              "file": "input.ts",
+              "startCol": 5,
+              "startLine": 5
+            }
+          ],
+          "statements": [
+            "return \"negative\";"
+          ]
+        },
+        {
+          "id": "exit",
+          "kind": "exit",
+          "spans": [],
+          "statements": []
+        }
+      ],
+      "edges": [
+        {
+          "from": "entry",
+          "kind": "normal",
+          "to": "b1"
+        },
+        {
+          "from": "b1",
+          "kind": "true",
+          "to": "b2"
+        },
+        {
+          "from": "b1",
+          "kind": "false",
+          "to": "b3"
+        },
+        {
+          "from": "b2",
+          "kind": "normal",
+          "to": "exit"
+        },
+        {
+          "from": "b3",
+          "kind": "normal",
+          "to": "exit"
+        }
+      ],
+      "entryId": "entry",
+      "exitId": "exit",
+      "name": "sign",
+      "span": {
+        "endCol": 2,
+        "endLine": 7,
+        "file": "input.ts",
+        "startCol": 1,
+        "startLine": 1
+      }
+    }
+  ],
+  "diagnostics": []
+}

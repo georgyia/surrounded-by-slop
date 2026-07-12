@@ -1,0 +1,211 @@
+{
+  "cfgs": [
+    {
+      "blocks": [
+        {
+          "id": "entry",
+          "kind": "entry",
+          "spans": [],
+          "statements": []
+        },
+        {
+          "id": "b1",
+          "kind": "basic",
+          "spans": [
+            {
+              "endCol": 17,
+              "endLine": 2,
+              "file": "input.ts",
+              "startCol": 3,
+              "startLine": 2
+            }
+          ],
+          "statements": [
+            "let count = 0;"
+          ]
+        },
+        {
+          "id": "b2",
+          "kind": "basic",
+          "spans": [
+            {
+              "endCol": 31,
+              "endLine": 3,
+              "file": "input.ts",
+              "startCol": 27,
+              "startLine": 3
+            }
+          ],
+          "statements": [
+            "const row of grid"
+          ]
+        },
+        {
+          "id": "b3",
+          "kind": "basic",
+          "spans": [
+            {
+              "endCol": 16,
+              "endLine": 11,
+              "file": "input.ts",
+              "startCol": 3,
+              "startLine": 11
+            }
+          ],
+          "statements": [
+            "return count;"
+          ]
+        },
+        {
+          "id": "b4",
+          "kind": "basic",
+          "spans": [
+            {
+              "endCol": 27,
+              "endLine": 4,
+              "file": "input.ts",
+              "startCol": 24,
+              "startLine": 4
+            }
+          ],
+          "statements": [
+            "const cell of row"
+          ]
+        },
+        {
+          "id": "b5",
+          "kind": "basic",
+          "spans": [
+            {
+              "endCol": 19,
+              "endLine": 5,
+              "file": "input.ts",
+              "startCol": 11,
+              "startLine": 5
+            }
+          ],
+          "statements": [
+            "cell < 0"
+          ]
+        },
+        {
+          "id": "b6",
+          "kind": "basic",
+          "spans": [],
+          "statements": []
+        },
+        {
+          "id": "b7",
+          "kind": "basic",
+          "spans": [
+            {
+              "endCol": 18,
+              "endLine": 8,
+              "file": "input.ts",
+              "startCol": 7,
+              "startLine": 8
+            }
+          ],
+          "statements": [
+            "count += 1;"
+          ]
+        },
+        {
+          "id": "b8",
+          "kind": "basic",
+          "spans": [
+            {
+              "endCol": 23,
+              "endLine": 6,
+              "file": "input.ts",
+              "startCol": 9,
+              "startLine": 6
+            }
+          ],
+          "statements": [
+            "continue rows;"
+          ]
+        },
+        {
+          "id": "exit",
+          "kind": "exit",
+          "spans": [],
+          "statements": []
+        }
+      ],
+      "edges": [
+        {
+          "from": "entry",
+          "kind": "normal",
+          "to": "b1"
+        },
+        {
+          "from": "b1",
+          "kind": "normal",
+          "to": "b2"
+        },
+        {
+          "from": "b2",
+          "kind": "false",
+          "to": "b3"
+        },
+        {
+          "from": "b2",
+          "kind": "true",
+          "to": "b4"
+        },
+        {
+          "from": "b3",
+          "kind": "normal",
+          "to": "exit"
+        },
+        {
+          "from": "b4",
+          "kind": "true",
+          "to": "b5"
+        },
+        {
+          "from": "b4",
+          "kind": "false",
+          "to": "b6"
+        },
+        {
+          "from": "b5",
+          "kind": "false",
+          "to": "b7"
+        },
+        {
+          "from": "b5",
+          "kind": "true",
+          "to": "b8"
+        },
+        {
+          "from": "b6",
+          "kind": "back",
+          "to": "b2"
+        },
+        {
+          "from": "b7",
+          "kind": "back",
+          "to": "b4"
+        },
+        {
+          "from": "b8",
+          "kind": "back",
+          "to": "b2"
+        }
+      ],
+      "entryId": "entry",
+      "exitId": "exit",
+      "name": "skipRows",
+      "span": {
+        "endCol": 2,
+        "endLine": 12,
+        "file": "input.ts",
+        "startCol": 1,
+        "startLine": 1
+      }
+    }
+  ],
+  "diagnostics": []
+}

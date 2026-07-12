@@ -1,0 +1,253 @@
+{
+  "cfgs": [
+    {
+      "blocks": [
+        {
+          "id": "entry",
+          "kind": "entry",
+          "spans": [],
+          "statements": []
+        },
+        {
+          "id": "b1",
+          "kind": "basic",
+          "spans": [
+            {
+              "endCol": 31,
+              "endLine": 2,
+              "file": "input.ts",
+              "startCol": 3,
+              "startLine": 2
+            },
+            {
+              "endCol": 17,
+              "endLine": 3,
+              "file": "input.ts",
+              "startCol": 8,
+              "startLine": 3
+            }
+          ],
+          "statements": [
+            "const rows: number[][] = [];",
+            "let i = 0"
+          ]
+        },
+        {
+          "id": "b2",
+          "kind": "basic",
+          "spans": [
+            {
+              "endCol": 24,
+              "endLine": 3,
+              "file": "input.ts",
+              "startCol": 19,
+              "startLine": 3
+            }
+          ],
+          "statements": [
+            "i < n"
+          ]
+        },
+        {
+          "id": "b3",
+          "kind": "basic",
+          "spans": [
+            {
+              "endCol": 30,
+              "endLine": 4,
+              "file": "input.ts",
+              "startCol": 5,
+              "startLine": 4
+            },
+            {
+              "endCol": 19,
+              "endLine": 5,
+              "file": "input.ts",
+              "startCol": 10,
+              "startLine": 5
+            }
+          ],
+          "statements": [
+            "const row: number[] = [];",
+            "let j = 0"
+          ]
+        },
+        {
+          "id": "b4",
+          "kind": "basic",
+          "spans": [
+            {
+              "endCol": 15,
+              "endLine": 10,
+              "file": "input.ts",
+              "startCol": 3,
+              "startLine": 10
+            }
+          ],
+          "statements": [
+            "return rows;"
+          ]
+        },
+        {
+          "id": "b5",
+          "kind": "basic",
+          "spans": [
+            {
+              "endCol": 29,
+              "endLine": 3,
+              "file": "input.ts",
+              "startCol": 26,
+              "startLine": 3
+            }
+          ],
+          "statements": [
+            "i++"
+          ]
+        },
+        {
+          "id": "b6",
+          "kind": "basic",
+          "spans": [
+            {
+              "endCol": 26,
+              "endLine": 5,
+              "file": "input.ts",
+              "startCol": 21,
+              "startLine": 5
+            }
+          ],
+          "statements": [
+            "j < n"
+          ]
+        },
+        {
+          "id": "b7",
+          "kind": "basic",
+          "spans": [
+            {
+              "endCol": 23,
+              "endLine": 6,
+              "file": "input.ts",
+              "startCol": 7,
+              "startLine": 6
+            }
+          ],
+          "statements": [
+            "row.push(i * j);"
+          ]
+        },
+        {
+          "id": "b8",
+          "kind": "basic",
+          "spans": [
+            {
+              "endCol": 20,
+              "endLine": 8,
+              "file": "input.ts",
+              "startCol": 5,
+              "startLine": 8
+            }
+          ],
+          "statements": [
+            "rows.push(row);"
+          ]
+        },
+        {
+          "id": "b9",
+          "kind": "basic",
+          "spans": [
+            {
+              "endCol": 31,
+              "endLine": 5,
+              "file": "input.ts",
+              "startCol": 28,
+              "startLine": 5
+            }
+          ],
+          "statements": [
+            "j++"
+          ]
+        },
+        {
+          "id": "exit",
+          "kind": "exit",
+          "spans": [],
+          "statements": []
+        }
+      ],
+      "edges": [
+        {
+          "from": "entry",
+          "kind": "normal",
+          "to": "b1"
+        },
+        {
+          "from": "b1",
+          "kind": "normal",
+          "to": "b2"
+        },
+        {
+          "from": "b2",
+          "kind": "true",
+          "to": "b3"
+        },
+        {
+          "from": "b2",
+          "kind": "false",
+          "to": "b4"
+        },
+        {
+          "from": "b3",
+          "kind": "normal",
+          "to": "b6"
+        },
+        {
+          "from": "b4",
+          "kind": "normal",
+          "to": "exit"
+        },
+        {
+          "from": "b5",
+          "kind": "back",
+          "to": "b2"
+        },
+        {
+          "from": "b6",
+          "kind": "true",
+          "to": "b7"
+        },
+        {
+          "from": "b6",
+          "kind": "false",
+          "to": "b8"
+        },
+        {
+          "from": "b7",
+          "kind": "normal",
+          "to": "b9"
+        },
+        {
+          "from": "b8",
+          "kind": "normal",
+          "to": "b5"
+        },
+        {
+          "from": "b9",
+          "kind": "back",
+          "to": "b6"
+        }
+      ],
+      "entryId": "entry",
+      "exitId": "exit",
+      "name": "table",
+      "span": {
+        "endCol": 2,
+        "endLine": 11,
+        "file": "input.ts",
+        "startCol": 1,
+        "startLine": 1
+      }
+    }
+  ],
+  "diagnostics": []
+}

@@ -1,0 +1,214 @@
+{
+  "cfgs": [
+    {
+      "blocks": [
+        {
+          "id": "entry",
+          "kind": "entry",
+          "spans": [],
+          "statements": []
+        },
+        {
+          "id": "b1",
+          "kind": "basic",
+          "spans": [
+            {
+              "endCol": 24,
+              "endLine": 5,
+              "file": "input.ts",
+              "startCol": 5,
+              "startLine": 5
+            }
+          ],
+          "statements": [
+            "this.value = start;"
+          ]
+        },
+        {
+          "id": "exit",
+          "kind": "exit",
+          "spans": [],
+          "statements": []
+        }
+      ],
+      "edges": [
+        {
+          "from": "entry",
+          "kind": "normal",
+          "to": "b1"
+        },
+        {
+          "from": "b1",
+          "kind": "normal",
+          "to": "exit"
+        }
+      ],
+      "entryId": "entry",
+      "exitId": "exit",
+      "name": "Counter.constructor",
+      "span": {
+        "endCol": 4,
+        "endLine": 6,
+        "file": "input.ts",
+        "startCol": 3,
+        "startLine": 4
+      }
+    },
+    {
+      "blocks": [
+        {
+          "id": "entry",
+          "kind": "entry",
+          "spans": [],
+          "statements": []
+        },
+        {
+          "id": "b1",
+          "kind": "basic",
+          "spans": [
+            {
+              "endCol": 23,
+              "endLine": 9,
+              "file": "input.ts",
+              "startCol": 5,
+              "startLine": 9
+            }
+          ],
+          "statements": [
+            "return this.value;"
+          ]
+        },
+        {
+          "id": "exit",
+          "kind": "exit",
+          "spans": [],
+          "statements": []
+        }
+      ],
+      "edges": [
+        {
+          "from": "entry",
+          "kind": "normal",
+          "to": "b1"
+        },
+        {
+          "from": "b1",
+          "kind": "normal",
+          "to": "exit"
+        }
+      ],
+      "entryId": "entry",
+      "exitId": "exit",
+      "name": "Counter.get current",
+      "span": {
+        "endCol": 4,
+        "endLine": 10,
+        "file": "input.ts",
+        "startCol": 3,
+        "startLine": 8
+      }
+    },
+    {
+      "blocks": [
+        {
+          "id": "entry",
+          "kind": "entry",
+          "spans": [],
+          "statements": []
+        },
+        {
+          "id": "b1",
+          "kind": "basic",
+          "spans": [
+            {
+              "endCol": 15,
+              "endLine": 13,
+              "file": "input.ts",
+              "startCol": 9,
+              "startLine": 13
+            }
+          ],
+          "statements": [
+            "by > 0"
+          ]
+        },
+        {
+          "id": "b2",
+          "kind": "basic",
+          "spans": [
+            {
+              "endCol": 23,
+              "endLine": 16,
+              "file": "input.ts",
+              "startCol": 5,
+              "startLine": 16
+            }
+          ],
+          "statements": [
+            "return this.value;"
+          ]
+        },
+        {
+          "id": "b3",
+          "kind": "basic",
+          "spans": [
+            {
+              "endCol": 24,
+              "endLine": 14,
+              "file": "input.ts",
+              "startCol": 7,
+              "startLine": 14
+            }
+          ],
+          "statements": [
+            "this.value += by;"
+          ]
+        },
+        {
+          "id": "exit",
+          "kind": "exit",
+          "spans": [],
+          "statements": []
+        }
+      ],
+      "edges": [
+        {
+          "from": "entry",
+          "kind": "normal",
+          "to": "b1"
+        },
+        {
+          "from": "b1",
+          "kind": "false",
+          "to": "b2"
+        },
+        {
+          "from": "b1",
+          "kind": "true",
+          "to": "b3"
+        },
+        {
+          "from": "b2",
+          "kind": "normal",
+          "to": "exit"
+        },
+        {
+          "from": "b3",
+          "kind": "normal",
+          "to": "b2"
+        }
+      ],
+      "entryId": "entry",
+      "exitId": "exit",
+      "name": "Counter.bump",
+      "span": {
+        "endCol": 4,
+        "endLine": 17,
+        "file": "input.ts",
+        "startCol": 3,
+        "startLine": 12
+      }
+    }
+  ],
+  "diagnostics": []
+}

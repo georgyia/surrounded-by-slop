@@ -1,0 +1,127 @@
+{
+  "cfgs": [
+    {
+      "blocks": [
+        {
+          "id": "entry",
+          "kind": "entry",
+          "spans": [],
+          "statements": []
+        },
+        {
+          "id": "b1",
+          "kind": "basic",
+          "spans": [
+            {
+              "endCol": 28,
+              "endLine": 2,
+              "file": "input.ts",
+              "startCol": 3,
+              "startLine": 2
+            }
+          ],
+          "statements": [
+            "const out: string[] = [];"
+          ]
+        },
+        {
+          "id": "b2",
+          "kind": "basic",
+          "spans": [
+            {
+              "endCol": 27,
+              "endLine": 3,
+              "file": "input.ts",
+              "startCol": 21,
+              "startLine": 3
+            }
+          ],
+          "statements": [
+            "const key in record"
+          ]
+        },
+        {
+          "id": "b3",
+          "kind": "basic",
+          "spans": [
+            {
+              "endCol": 19,
+              "endLine": 4,
+              "file": "input.ts",
+              "startCol": 5,
+              "startLine": 4
+            }
+          ],
+          "statements": [
+            "out.push(key);"
+          ]
+        },
+        {
+          "id": "b4",
+          "kind": "basic",
+          "spans": [
+            {
+              "endCol": 14,
+              "endLine": 6,
+              "file": "input.ts",
+              "startCol": 3,
+              "startLine": 6
+            }
+          ],
+          "statements": [
+            "return out;"
+          ]
+        },
+        {
+          "id": "exit",
+          "kind": "exit",
+          "spans": [],
+          "statements": []
+        }
+      ],
+      "edges": [
+        {
+          "from": "entry",
+          "kind": "normal",
+          "to": "b1"
+        },
+        {
+          "from": "b1",
+          "kind": "normal",
+          "to": "b2"
+        },
+        {
+          "from": "b2",
+          "kind": "true",
+          "to": "b3"
+        },
+        {
+          "from": "b2",
+          "kind": "false",
+          "to": "b4"
+        },
+        {
+          "from": "b3",
+          "kind": "back",
+          "to": "b2"
+        },
+        {
+          "from": "b4",
+          "kind": "normal",
+          "to": "exit"
+        }
+      ],
+      "entryId": "entry",
+      "exitId": "exit",
+      "name": "keys",
+      "span": {
+        "endCol": 2,
+        "endLine": 7,
+        "file": "input.ts",
+        "startCol": 1,
+        "startLine": 1
+      }
+    }
+  ],
+  "diagnostics": []
+}

@@ -1,0 +1,135 @@
+{
+  "cfgs": [
+    {
+      "blocks": [
+        {
+          "id": "entry",
+          "kind": "entry",
+          "spans": [],
+          "statements": []
+        },
+        {
+          "id": "b1",
+          "kind": "basic",
+          "spans": [
+            {
+              "endCol": 12,
+              "endLine": 2,
+              "file": "input.ts",
+              "startCol": 11,
+              "startLine": 2
+            }
+          ],
+          "statements": [
+            "switch n"
+          ]
+        },
+        {
+          "id": "b2",
+          "kind": "basic",
+          "spans": [
+            {
+              "endCol": 21,
+              "endLine": 4,
+              "file": "input.ts",
+              "startCol": 7,
+              "startLine": 4
+            }
+          ],
+          "statements": [
+            "return \"zero\";"
+          ]
+        },
+        {
+          "id": "b3",
+          "kind": "basic",
+          "spans": [
+            {
+              "endCol": 20,
+              "endLine": 6,
+              "file": "input.ts",
+              "startCol": 7,
+              "startLine": 6
+            }
+          ],
+          "statements": [
+            "return \"one\";"
+          ]
+        },
+        {
+          "id": "b4",
+          "kind": "basic",
+          "spans": [
+            {
+              "endCol": 21,
+              "endLine": 8,
+              "file": "input.ts",
+              "startCol": 7,
+              "startLine": 8
+            }
+          ],
+          "statements": [
+            "return \"many\";"
+          ]
+        },
+        {
+          "id": "exit",
+          "kind": "exit",
+          "spans": [],
+          "statements": []
+        }
+      ],
+      "edges": [
+        {
+          "from": "entry",
+          "kind": "normal",
+          "to": "b1"
+        },
+        {
+          "from": "b1",
+          "kind": "case",
+          "label": "0",
+          "to": "b2"
+        },
+        {
+          "from": "b1",
+          "kind": "case",
+          "label": "1",
+          "to": "b3"
+        },
+        {
+          "from": "b1",
+          "kind": "case",
+          "label": "default",
+          "to": "b4"
+        },
+        {
+          "from": "b2",
+          "kind": "normal",
+          "to": "exit"
+        },
+        {
+          "from": "b3",
+          "kind": "normal",
+          "to": "exit"
+        },
+        {
+          "from": "b4",
+          "kind": "normal",
+          "to": "exit"
+        }
+      ],
+      "entryId": "entry",
+      "exitId": "exit",
+      "name": "bucket",
+      "span": {
+        "endCol": 2,
+        "endLine": 10,
+        "file": "input.ts",
+        "startCol": 1,
+        "startLine": 1
+      }
+    }
+  ],
+  "diagnostics": []
+}

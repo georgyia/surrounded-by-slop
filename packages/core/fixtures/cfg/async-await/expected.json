@@ -1,0 +1,136 @@
+{
+  "cfgs": [
+    {
+      "blocks": [
+        {
+          "id": "entry",
+          "kind": "entry",
+          "spans": [],
+          "statements": []
+        },
+        {
+          "id": "b1",
+          "kind": "basic",
+          "spans": [
+            {
+              "endCol": 17,
+              "endLine": 2,
+              "file": "input.ts",
+              "startCol": 3,
+              "startLine": 2
+            }
+          ],
+          "statements": [
+            "let total = 0;"
+          ]
+        },
+        {
+          "id": "b2",
+          "kind": "basic",
+          "spans": [
+            {
+              "endCol": 29,
+              "endLine": 3,
+              "file": "input.ts",
+              "startCol": 20,
+              "startLine": 3
+            }
+          ],
+          "statements": [
+            "const id of [1, 2, 3]"
+          ]
+        },
+        {
+          "awaits": true,
+          "id": "b3",
+          "kind": "basic",
+          "spans": [
+            {
+              "endCol": 34,
+              "endLine": 4,
+              "file": "input.ts",
+              "startCol": 5,
+              "startLine": 4
+            },
+            {
+              "endCol": 20,
+              "endLine": 5,
+              "file": "input.ts",
+              "startCol": 5,
+              "startLine": 5
+            }
+          ],
+          "statements": [
+            "const value = await load(id);",
+            "total += value;"
+          ]
+        },
+        {
+          "id": "b4",
+          "kind": "basic",
+          "spans": [
+            {
+              "endCol": 16,
+              "endLine": 7,
+              "file": "input.ts",
+              "startCol": 3,
+              "startLine": 7
+            }
+          ],
+          "statements": [
+            "return total;"
+          ]
+        },
+        {
+          "id": "exit",
+          "kind": "exit",
+          "spans": [],
+          "statements": []
+        }
+      ],
+      "edges": [
+        {
+          "from": "entry",
+          "kind": "normal",
+          "to": "b1"
+        },
+        {
+          "from": "b1",
+          "kind": "normal",
+          "to": "b2"
+        },
+        {
+          "from": "b2",
+          "kind": "true",
+          "to": "b3"
+        },
+        {
+          "from": "b2",
+          "kind": "false",
+          "to": "b4"
+        },
+        {
+          "from": "b3",
+          "kind": "back",
+          "to": "b2"
+        },
+        {
+          "from": "b4",
+          "kind": "normal",
+          "to": "exit"
+        }
+      ],
+      "entryId": "entry",
+      "exitId": "exit",
+      "name": "fetchTotal",
+      "span": {
+        "endCol": 2,
+        "endLine": 8,
+        "file": "input.ts",
+        "startCol": 1,
+        "startLine": 1
+      }
+    }
+  ],
+  "diagnostics": []
+}

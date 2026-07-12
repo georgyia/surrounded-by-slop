@@ -1,0 +1,114 @@
+{
+  "cfgs": [
+    {
+      "blocks": [
+        {
+          "id": "entry",
+          "kind": "entry",
+          "spans": [],
+          "statements": []
+        },
+        {
+          "id": "b1",
+          "kind": "basic",
+          "spans": [
+            {
+              "endCol": 11,
+              "endLine": 3,
+              "file": "input.ts",
+              "startCol": 5,
+              "startLine": 3
+            }
+          ],
+          "statements": [
+            "run();"
+          ]
+        },
+        {
+          "id": "b2",
+          "kind": "basic",
+          "spans": [
+            {
+              "endCol": 12,
+              "endLine": 7,
+              "file": "input.ts",
+              "startCol": 5,
+              "startLine": 7
+            }
+          ],
+          "statements": [
+            "done();"
+          ]
+        },
+        {
+          "id": "b3",
+          "kind": "basic",
+          "spans": [
+            {
+              "endCol": 17,
+              "endLine": 4,
+              "file": "input.ts",
+              "startCol": 12,
+              "startLine": 4
+            },
+            {
+              "endCol": 16,
+              "endLine": 5,
+              "file": "input.ts",
+              "startCol": 5,
+              "startLine": 5
+            }
+          ],
+          "statements": [
+            "catch (error)",
+            "log(error);"
+          ]
+        },
+        {
+          "id": "exit",
+          "kind": "exit",
+          "spans": [],
+          "statements": []
+        }
+      ],
+      "edges": [
+        {
+          "from": "entry",
+          "kind": "normal",
+          "to": "b1"
+        },
+        {
+          "from": "b1",
+          "kind": "normal",
+          "to": "b2"
+        },
+        {
+          "from": "b1",
+          "kind": "exception",
+          "to": "b3"
+        },
+        {
+          "from": "b2",
+          "kind": "normal",
+          "to": "exit"
+        },
+        {
+          "from": "b3",
+          "kind": "normal",
+          "to": "b2"
+        }
+      ],
+      "entryId": "entry",
+      "exitId": "exit",
+      "name": "guarded",
+      "span": {
+        "endCol": 2,
+        "endLine": 9,
+        "file": "input.ts",
+        "startCol": 1,
+        "startLine": 1
+      }
+    }
+  ],
+  "diagnostics": []
+}

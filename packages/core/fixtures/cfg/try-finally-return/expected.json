@@ -1,0 +1,80 @@
+{
+  "cfgs": [
+    {
+      "blocks": [
+        {
+          "id": "entry",
+          "kind": "entry",
+          "spans": [],
+          "statements": []
+        },
+        {
+          "id": "b1",
+          "kind": "basic",
+          "spans": [
+            {
+              "endCol": 18,
+              "endLine": 3,
+              "file": "input.ts",
+              "startCol": 5,
+              "startLine": 3
+            }
+          ],
+          "statements": [
+            "return run();"
+          ]
+        },
+        {
+          "id": "b2",
+          "kind": "basic",
+          "spans": [
+            {
+              "endCol": 15,
+              "endLine": 5,
+              "file": "input.ts",
+              "startCol": 5,
+              "startLine": 5
+            }
+          ],
+          "statements": [
+            "release();"
+          ]
+        },
+        {
+          "id": "exit",
+          "kind": "exit",
+          "spans": [],
+          "statements": []
+        }
+      ],
+      "edges": [
+        {
+          "from": "entry",
+          "kind": "normal",
+          "to": "b1"
+        },
+        {
+          "from": "b1",
+          "kind": "finally",
+          "to": "b2"
+        },
+        {
+          "from": "b2",
+          "kind": "normal",
+          "to": "exit"
+        }
+      ],
+      "entryId": "entry",
+      "exitId": "exit",
+      "name": "withLock",
+      "span": {
+        "endCol": 2,
+        "endLine": 7,
+        "file": "input.ts",
+        "startCol": 1,
+        "startLine": 1
+      }
+    }
+  ],
+  "diagnostics": []
+}

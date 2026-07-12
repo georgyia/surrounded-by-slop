@@ -1,0 +1,75 @@
+{
+  "cfgs": [
+    {
+      "blocks": [
+        {
+          "id": "entry",
+          "kind": "entry",
+          "spans": [],
+          "statements": []
+        },
+        {
+          "id": "b1",
+          "kind": "basic",
+          "spans": [
+            {
+              "endCol": 36,
+              "endLine": 2,
+              "file": "input.ts",
+              "startCol": 3,
+              "startLine": 2
+            },
+            {
+              "endCol": 36,
+              "endLine": 3,
+              "file": "input.ts",
+              "startCol": 3,
+              "startLine": 3
+            },
+            {
+              "endCol": 18,
+              "endLine": 4,
+              "file": "input.ts",
+              "startCol": 3,
+              "startLine": 4
+            }
+          ],
+          "statements": [
+            "const upper = name.toUpperCase();",
+            "const message = `hello ${upper}`;",
+            "return message;"
+          ]
+        },
+        {
+          "id": "exit",
+          "kind": "exit",
+          "spans": [],
+          "statements": []
+        }
+      ],
+      "edges": [
+        {
+          "from": "entry",
+          "kind": "normal",
+          "to": "b1"
+        },
+        {
+          "from": "b1",
+          "kind": "normal",
+          "to": "exit"
+        }
+      ],
+      "entryId": "entry",
+      "exitId": "exit",
+      "name": "greet",
+      "span": {
+        "endCol": 2,
+        "endLine": 5,
+        "file": "input.ts",
+        "startCol": 1,
+        "startLine": 1
+      }
+    }
+  ],
+  "diagnostics": []
+}

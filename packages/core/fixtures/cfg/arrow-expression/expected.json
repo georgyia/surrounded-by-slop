@@ -1,0 +1,59 @@
+{
+  "cfgs": [
+    {
+      "blocks": [
+        {
+          "id": "entry",
+          "kind": "entry",
+          "spans": [],
+          "statements": []
+        },
+        {
+          "id": "b1",
+          "kind": "basic",
+          "spans": [
+            {
+              "endCol": 51,
+              "endLine": 1,
+              "file": "input.ts",
+              "startCol": 46,
+              "startLine": 1
+            }
+          ],
+          "statements": [
+            "n * 2"
+          ]
+        },
+        {
+          "id": "exit",
+          "kind": "exit",
+          "spans": [],
+          "statements": []
+        }
+      ],
+      "edges": [
+        {
+          "from": "entry",
+          "kind": "normal",
+          "to": "b1"
+        },
+        {
+          "from": "b1",
+          "kind": "normal",
+          "to": "exit"
+        }
+      ],
+      "entryId": "entry",
+      "exitId": "exit",
+      "name": "double",
+      "span": {
+        "endCol": 51,
+        "endLine": 1,
+        "file": "input.ts",
+        "startCol": 23,
+        "startLine": 1
+      }
+    }
+  ],
+  "diagnostics": []
+}
