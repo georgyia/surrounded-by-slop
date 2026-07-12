@@ -53,11 +53,17 @@ export class DiagramView {
   private readonly panelDisposables: vscode.Disposable[] = [];
   private readonly didVisualize = new vscode.EventEmitter<DiagramData>();
   private readonly didToggleExpand = new vscode.EventEmitter<string>();
+  private readonly didIsolate = new vscode.EventEmitter<string>();
+  private readonly didResetView = new vscode.EventEmitter<void>();
 
   /** Fires once a diagram has been dispatched to a ready webview (host↔webview round-trip complete). */
   readonly onDidVisualize = this.didVisualize.event;
-  /** Fires when the user double-clicks a container to expand or collapse it (SBS-062). */
+  /** Fires when the user clicks a container to expand or collapse it (SBS-062). */
   readonly onToggleExpand = this.didToggleExpand.event;
+  /** Fires when the user isolates a node's neighborhood (SBS-063). */
+  readonly onIsolate = this.didIsolate.event;
+  /** Fires when the user asks to drop an isolate and see the whole diagram again. */
+  readonly onResetView = this.didResetView.event;
 
   constructor(
     private readonly extensionUri: vscode.Uri,
@@ -139,6 +145,8 @@ export class DiagramView {
   dispose(): void {
     this.didVisualize.dispose();
     this.didToggleExpand.dispose();
+    this.didIsolate.dispose();
+    this.didResetView.dispose();
     this.disposePanel();
   }
 
@@ -212,6 +220,12 @@ export class DiagramView {
         break;
       case "toggleExpand":
         this.didToggleExpand.fire(message.nodeId);
+        break;
+      case "isolate":
+        this.didIsolate.fire(message.nodeId);
+        break;
+      case "resetView":
+        this.didResetView.fire();
         break;
       case "error":
         this.logger.warn(`webview: ${message.message}`);

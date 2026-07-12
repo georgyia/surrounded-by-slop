@@ -27,6 +27,8 @@ export interface DiagramData {
    * can expand (SBS-062). Absent for fully-expanded views like a single file.
    */
   readonly expandableIds?: readonly string[];
+  /** True when this diagram is an isolated slice around one node (SBS-063). */
+  readonly isolated?: boolean;
 }
 
 /** Messages the extension host sends to the webview. */
@@ -45,4 +47,6 @@ export type WebviewToHost =
   | { readonly type: "ready"; readonly protocol: number }
   | { readonly type: "revealNode"; readonly nodeId: string; readonly toSide: boolean }
   | { readonly type: "toggleExpand"; readonly nodeId: string }
+  | { readonly type: "isolate"; readonly nodeId: string }
+  | { readonly type: "resetView" }
   | { readonly type: "error"; readonly message: string };

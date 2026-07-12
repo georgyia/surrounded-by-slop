@@ -13,6 +13,14 @@ import type { ColorTheme, DiagramData, HostToWebview, WebviewToHost } from "./pr
 import { PROTOCOL_VERSION } from "./protocol.js";
 import { renderDiagram } from "./render.js";
 import {
+  EMPTY_FILTER,
+  type FilterableNode,
+  type FilterState,
+  isFiltering,
+  matchingIds,
+  topSegment,
+} from "./search.js";
+import {
   fitViewport,
   isLowDetail,
   panViewport,
@@ -35,6 +43,9 @@ let diagram: DiagramData | undefined;
 let theme: ColorTheme = "light";
 let viewport: Viewport = { x: 0, y: 0, scale: 1 };
 let viewportEl: SVGGElement | null = null;
+let filter: FilterState = EMPTY_FILTER;
+let nodeInfos: FilterableNode[] = [];
+let soleMatch: string | null = null;
 
 function rootElement(): HTMLElement | null {
   return document.getElementById("root");
@@ -82,6 +93,7 @@ function paint(shouldRefit: boolean): void {
   } else {
     applyTransform();
   }
+  applyFilter(); // a fresh SVG has no dim/match classes — re-apply the current filter
 }
 
 function setStatus(text: string): void {
@@ -95,11 +107,142 @@ function setStatus(text: string): void {
   status.textContent = text;
   root.append(status);
   viewportEl = null;
+  byId("toolbar")?.classList.add("slop-hidden");
 }
 
 function applyTheme(next: ColorTheme): void {
   theme = next;
   document.documentElement.dataset.theme = next;
+}
+
+// ---- Search & filter toolbar (SBS-063) ----
+
+function byId<T extends HTMLElement>(id: string): T | null {
+  return document.getElementById(id) as T | null;
+}
+
+/** A new diagram arrived: rebuild the filter chips and clear any active filter. */
+function onNewDiagram(next: DiagramData): void {
+  nodeInfos = next.graph.nodes.map((node) => ({
+    id: node.id,
+    label: node.name,
+    kind: node.kind,
+    path: node.span?.file ?? node.qualifiedName,
+  }));
+  filter = EMPTY_FILTER;
+  const search = byId<HTMLInputElement>("search");
+  if (search !== null) {
+    search.value = "";
+  }
+  rebuildChips();
+  byId("toolbar")?.classList.remove("slop-hidden");
+  byId("reset")?.classList.toggle("slop-hidden", next.isolated !== true);
+}
+
+function rebuildChips(): void {
+  const kinds = [...new Set(nodeInfos.map((node) => node.kind))].sort();
+  const paths = [...new Set(nodeInfos.map((node) => topSegment(node.path)))].sort();
+  fillChipRow(byId("kind-chips"), kinds, "kind");
+  fillChipRow(byId("path-chips"), paths, "path");
+}
+
+function fillChipRow(row: HTMLElement | null, values: string[], group: "kind" | "path"): void {
+  if (row === null) {
+    return;
+  }
+  row.replaceChildren();
+  // A single value can't filter anything — don't clutter the toolbar with it.
+  if (values.length < 2) {
+    return;
+  }
+  for (const value of values) {
+    const chip = document.createElement("button");
+    chip.type = "button";
+    chip.className = "slop-chip";
+    chip.textContent = value;
+    chip.dataset.group = group;
+    chip.dataset.value = value;
+    chip.setAttribute("aria-pressed", "true");
+    row.append(chip);
+  }
+}
+
+function disabledFromChips(group: "kind" | "path"): Set<string> {
+  const disabled = new Set<string>();
+  const chips = document.querySelectorAll<HTMLElement>(`.slop-chip[data-group="${group}"]`);
+  for (const chip of Array.from(chips)) {
+    if (chip.getAttribute("aria-pressed") === "false" && chip.dataset.value !== undefined) {
+      disabled.add(chip.dataset.value);
+    }
+  }
+  return disabled;
+}
+
+/** Toggle dim/match classes on the rendered nodes for the current filter. */
+function applyFilter(): void {
+  const root = rootElement();
+  if (root === null) {
+    return;
+  }
+  const active = isFiltering(filter);
+  const matches = new Set(matchingIds(nodeInfos, filter));
+  for (const node of Array.from(root.querySelectorAll<SVGElement>("[data-node-id]"))) {
+    const id = node.getAttribute("data-node-id");
+    const pass = !active || (id !== null && matches.has(id));
+    node.classList.toggle("slop-dim", active && !pass);
+    node.classList.toggle("slop-match", active && pass);
+  }
+  soleMatch = active && matches.size === 1 ? ([...matches][0] ?? null) : null;
+  const isolate = byId<HTMLButtonElement>("isolate");
+  if (isolate !== null) {
+    isolate.disabled = soleMatch === null;
+  }
+}
+
+function setFilter(next: FilterState): void {
+  filter = next;
+  applyFilter();
+}
+
+function setupToolbar(): void {
+  const search = byId<HTMLInputElement>("search");
+  search?.addEventListener("input", () => setFilter({ ...filter, query: search.value.trim() }));
+  search?.addEventListener("keydown", (event) => {
+    if (event.key === "Escape") {
+      search.value = "";
+      setFilter({ ...filter, query: "" });
+    }
+  });
+
+  byId("toolbar")?.addEventListener("click", (event) => {
+    const target = event.target;
+    if (target instanceof HTMLElement && target.classList.contains("slop-chip")) {
+      const pressed = target.getAttribute("aria-pressed") !== "false";
+      target.setAttribute("aria-pressed", pressed ? "false" : "true");
+      setFilter({
+        ...filter,
+        disabledKinds: disabledFromChips("kind"),
+        disabledPaths: disabledFromChips("path"),
+      });
+    }
+  });
+
+  byId<HTMLButtonElement>("isolate")?.addEventListener("click", () => {
+    if (soleMatch !== null) {
+      vscode.postMessage({ type: "isolate", nodeId: soleMatch });
+    }
+  });
+  byId<HTMLButtonElement>("reset")?.addEventListener("click", () => {
+    vscode.postMessage({ type: "resetView" });
+  });
+
+  // "/" focuses search from anywhere; a keyboard-first way in.
+  document.addEventListener("keydown", (event) => {
+    if (event.key === "/" && document.activeElement !== search) {
+      event.preventDefault();
+      search?.focus();
+    }
+  });
 }
 
 window.addEventListener("message", (event: MessageEvent<HostToWebview>) => {
@@ -109,6 +252,7 @@ window.addEventListener("message", (event: MessageEvent<HostToWebview>) => {
       applyTheme(message.theme);
       diagram = message.diagram;
       vscode.setState({ diagram: message.diagram });
+      onNewDiagram(message.diagram);
       paint(message.fit);
       break;
     case "theme":
@@ -136,11 +280,13 @@ function boot(): void {
       toggleExpand: (nodeId) => vscode.postMessage({ type: "toggleExpand", nodeId }),
     });
   }
+  setupToolbar();
   // Reload path: VS Code preserves our last setState, so restore before we
   // announce readiness (the host has nothing to resend). Fresh path: wait.
   const restored = vscode.getState()?.diagram;
   if (restored !== undefined) {
     diagram = restored;
+    onNewDiagram(restored);
     paint(true);
   } else {
     setStatus("Waiting for a diagram…");

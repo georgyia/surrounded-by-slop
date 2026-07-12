@@ -25,6 +25,8 @@ const MAX_FILE_BYTES = 512 * 1024;
 const MODULE_RENDER_BUDGET = 250;
 /** Above this many nodes even the folded graph would choke the layout — bail with advice. */
 const MAX_LAYOUT_NODES = 1500;
+/** How many hops of neighbors an "isolate" keeps around the chosen node (SBS-063). */
+const ISOLATE_DEPTH = 1;
 
 function suffixFor(document: vscode.TextDocument): string | undefined {
   return LANGUAGE_EXTENSIONS[document.languageId];
@@ -97,6 +99,8 @@ export class VisualizationController implements vscode.Disposable {
   private workspaceGraph: SemanticGraph | undefined;
   private workspaceTitle = "";
   private readonly expanded = new Set<string>();
+  /** The diagram shown before an isolate, so "Show all" can restore it (SBS-063). */
+  private preIsolate: DiagramData | undefined;
   private readonly disposables: vscode.Disposable[];
 
   constructor(
@@ -107,6 +111,8 @@ export class VisualizationController implements vscode.Disposable {
       vscode.workspace.onDidSaveTextDocument((document) => this.onSave(document)),
       vscode.window.onDidChangeActiveTextEditor((editor) => this.onActiveEditor(editor)),
       this.view.onToggleExpand((nodeId) => this.onToggleExpand(nodeId)),
+      this.view.onIsolate((nodeId) => void this.isolate(nodeId)),
+      this.view.onResetView(() => this.resetIsolate()),
     ];
   }
 
@@ -214,6 +220,7 @@ export class VisualizationController implements vscode.Disposable {
         ? analyzed.graph
         : withoutExternalModules(analyzed.graph);
       const modules = collapseToModules(base);
+      this.preIsolate = undefined; // a fresh workspace map is not an isolate
       // Guardrail (SBS-065): past the readability budget, fold modules up to the
       // folder level so a large repo shows as clusters, not a hairball. In that
       // overview expansion is off — narrow the scope to get an expandable map.
@@ -314,7 +321,43 @@ export class VisualizationController implements vscode.Disposable {
     }
   }
 
-  /** Double-click on a container: toggle its expansion and re-render in place. */
+  /** `Isolate`: show only a node's neighborhood, sliced from the current view. */
+  private async isolate(nodeId: string): Promise<void> {
+    const base = this.preIsolate ?? this.shown;
+    if (base === undefined) {
+      return;
+    }
+    try {
+      const config = readConfig();
+      const { sliceAround, layoutGraph } = await import("@surrounded-by-slop/core");
+      const sliced = sliceAround(base.graph, nodeId, ISOLATE_DEPTH);
+      const layout = await layoutGraph(sliced, { direction: config.layoutDirection });
+      this.preIsolate ??= base; // remember the full view to restore later
+      const diagram: DiagramData = {
+        title: `${base.title} — isolated`,
+        graph: sliced,
+        layout,
+        isolated: true,
+      };
+      this.shown = diagram;
+      this.view.show(diagram);
+    } catch (error) {
+      this.logger.report("Surrounded by Slop couldn't isolate that node.", error);
+    }
+  }
+
+  /** `Show all`: drop the isolate and restore the diagram it sliced from. */
+  private resetIsolate(): void {
+    const base = this.preIsolate;
+    if (base === undefined) {
+      return;
+    }
+    this.preIsolate = undefined;
+    this.shown = base;
+    this.view.show(base);
+  }
+
+  /** Click on a container: toggle its expansion and re-render in place. */
   private onToggleExpand(nodeId: string): void {
     if (this.workspaceGraph === undefined) {
       return;
@@ -438,9 +481,10 @@ export class VisualizationController implements vscode.Disposable {
         : withoutExternalModules(analyzed.graph);
       const layout = await layoutGraph(graph, { direction: config.layoutDirection });
       const diagram: DiagramData = { title: path, graph, layout };
-      // A file view is fully expanded already — leave expansion mode.
+      // A file view is fully expanded already — leave expansion/isolate mode.
       this.workspaceGraph = undefined;
       this.expanded.clear();
+      this.preIsolate = undefined;
       this.shown = diagram;
       this.shownUri = document.uri;
       // Reveal the diagram-dependent commands (export, copy, pin) in the palette.
