@@ -100,8 +100,10 @@ export function renderDiagram(
   graph: SemanticGraph,
   layout: GraphLayout,
   theme: ColorTheme,
+  expandableIds: Iterable<string> = [],
 ): string {
   const palette = theme === "dark" ? DARK : LIGHT;
+  const expandable = new Set(expandableIds);
   const nodeById = new Map(graph.nodes.map((node) => [node.id, node]));
   const width = coordinate(layout.width);
   const height = coordinate(layout.height);
@@ -121,9 +123,13 @@ export function renderDiagram(
     .filter((node) => node.container)
     .sort((a, b) => b.width * b.height - a.width * a.height || (a.id < b.id ? -1 : 1));
   for (const box of containers) {
+    // A container is expanded — clicking its frame collapses it back (SBS-062).
     lines.push(
-      `    <rect x="${coordinate(box.x)}" y="${coordinate(box.y)}" width="${coordinate(box.width)}" height="${coordinate(box.height)}" rx="8" fill="${palette.containerFill}" stroke="${palette.containerStroke}" />`,
-      `    <text x="${coordinate(box.x + 10)}" y="${coordinate(box.y + 22)}" fill="${palette.text}" font-weight="600">${escapeXml(box.label)}</text>`,
+      `    <g class="slop-container" data-node-id="${escapeXml(box.id)}" data-expandable="collapse" role="button" tabindex="0" aria-label="${escapeXml(box.label)} (expanded)">`,
+      `      <rect x="${coordinate(box.x)}" y="${coordinate(box.y)}" width="${coordinate(box.width)}" height="${coordinate(box.height)}" rx="8" fill="${palette.containerFill}" stroke="${palette.containerStroke}" />`,
+      `      <text x="${coordinate(box.x + 10)}" y="${coordinate(box.y + 22)}" fill="${palette.text}" font-weight="600">${escapeXml(box.label)}</text>`,
+      `      <text class="slop-caret" x="${coordinate(box.x + box.width - 16)}" y="${coordinate(box.y + 22)}" fill="${palette.text}" aria-hidden="true">▾</text>`,
+      "    </g>",
     );
   }
 
@@ -153,10 +159,19 @@ export function renderDiagram(
     const node = nodeById.get(box.id);
     const style = node === undefined ? palette.kinds.module : palette.kinds[node.kind];
     const dashed = node?.external === true ? ' stroke-dasharray="4 3"' : "";
+    // A collapsed container hiding members shows a ▸ and clicks open to expand.
+    const canExpand = expandable.has(box.id);
+    const expandAttr = canExpand ? ' data-expandable="expand"' : "";
+    const label = canExpand ? `${box.label} (collapsed)` : box.label;
     lines.push(
-      `    <g class="slop-node" data-node-id="${escapeXml(box.id)}" role="button" tabindex="0" aria-label="${escapeXml(box.label)}">`,
+      `    <g class="slop-node" data-node-id="${escapeXml(box.id)}"${expandAttr} role="button" tabindex="0" aria-label="${escapeXml(label)}">`,
       `      <rect x="${coordinate(box.x)}" y="${coordinate(box.y)}" width="${coordinate(box.width)}" height="${coordinate(box.height)}" rx="6" fill="${style.fill}" fill-opacity="${palette.fillOpacity}" stroke="${style.stroke}"${dashed} />`,
       `      <text x="${coordinate(box.x + box.width / 2)}" y="${coordinate(box.y + box.height / 2 + 4)}" text-anchor="middle" fill="${palette.text}">${escapeXml(box.label)}</text>`,
+      ...(canExpand
+        ? [
+            `      <text class="slop-caret" x="${coordinate(box.x + box.width - 12)}" y="${coordinate(box.y + 12)}" fill="${palette.text}" aria-hidden="true">▸</text>`,
+          ]
+        : []),
       "    </g>",
     );
   }

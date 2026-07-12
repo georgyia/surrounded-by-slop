@@ -22,6 +22,11 @@ export interface DiagramData {
   readonly title: string;
   readonly graph: SemanticGraph;
   readonly layout: GraphLayout;
+  /**
+   * Ids of collapsed containers that hide members — the nodes a double-click
+   * can expand (SBS-062). Absent for fully-expanded views like a single file.
+   */
+  readonly expandableIds?: readonly string[];
 }
 
 /** Messages the extension host sends to the webview. */
@@ -39,4 +44,5 @@ export type HostToWebview =
 export type WebviewToHost =
   | { readonly type: "ready"; readonly protocol: number }
   | { readonly type: "revealNode"; readonly nodeId: string; readonly toSide: boolean }
+  | { readonly type: "toggleExpand"; readonly nodeId: string }
   | { readonly type: "error"; readonly message: string };

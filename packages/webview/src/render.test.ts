@@ -20,10 +20,31 @@ describe("renderDiagram", () => {
 
     const leaves = layout.nodes.filter((node) => !node.container);
     expect(leaves.length).toBeGreaterThan(0);
-    expect(countMatches(svg, /data-node-id="/g)).toBe(leaves.length);
+    // One `.slop-node` group per leaf (containers are separate `.slop-container`).
+    expect(countMatches(svg, /class="slop-node"/g)).toBe(leaves.length);
     for (const leaf of leaves) {
       expect(svg).toContain(`data-node-id="${leaf.id}"`);
     }
+  });
+
+  it("marks collapsed containers as expandable and expanded ones as collapsible", async () => {
+    const { graph } = analyzeTypeScriptProject([
+      { path: "m.ts", text: "export function a() {}\nexport function b() { a(); }\n" },
+    ]);
+    const layout = await layoutGraph(graph);
+    // The module is a container in this layout; render it as collapsed instead.
+    const flat: GraphLayout = {
+      ...layout,
+      nodes: layout.nodes.map((node) => ({ ...node, container: false })),
+    };
+    const moduleId = graph.nodes.find((node) => node.kind === "module")?.id ?? "";
+    const svg = renderDiagram(graph, flat, "light", [moduleId]);
+    expect(svg).toContain('data-expandable="expand"');
+    expect(svg).toContain(`data-node-id="${moduleId}"`);
+
+    // With the real (nested) layout the module is a container → collapsible.
+    const nested = renderDiagram(graph, layout, "light", []);
+    expect(nested).toContain('data-expandable="collapse"');
   });
 
   it("wraps the drawing in a single pan/zoom viewport group", () => {

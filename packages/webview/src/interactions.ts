@@ -14,15 +14,19 @@ export interface DiagramSurface {
   fit(): void;
   /** A node was activated by click or keyboard. */
   reveal(nodeId: string, toSide: boolean): void;
+  /** Expand a collapsed container, or collapse an expanded one (SBS-062). */
+  toggleExpand(nodeId: string): void;
 }
 
 /** How far the pointer may travel before a press counts as a drag rather than a click. */
 const DRAG_THRESHOLD = 4;
 
+function nodeAt(target: EventTarget | null): Element | null {
+  return target instanceof Element ? target.closest("[data-node-id]") : null;
+}
+
 function nodeIdAt(target: EventTarget | null): string | null {
-  return target instanceof Element
-    ? (target.closest("[data-node-id]")?.getAttribute("data-node-id") ?? null)
-    : null;
+  return nodeAt(target)?.getAttribute("data-node-id") ?? null;
 }
 
 export function setupInteractions(root: HTMLElement, surface: DiagramSurface): void {
@@ -84,19 +88,25 @@ export function setupInteractions(root: HTMLElement, surface: DiagramSurface): v
   root.addEventListener("pointerup", endDrag);
   root.addEventListener("pointercancel", endDrag);
 
-  // Double-click empty space to re-fit the whole diagram.
-  root.addEventListener("dblclick", () => surface.fit());
+  // Double-click *empty space* re-fits the whole diagram. (A node's own toggle
+  // lives on the single click, so double-clicking a node just cancels itself.)
+  root.addEventListener("dblclick", (event) => {
+    if (nodeIdAt(event.target) === null) {
+      surface.fit();
+    }
+  });
 
-  // A click that didn't travel (i.e. wasn't a pan) jumps to the node's source.
+  // A click that didn't travel (i.e. wasn't a pan): expandable containers toggle
+  // open/closed; plain nodes (and cmd/ctrl-click on anything) jump to source.
   root.addEventListener("click", (event) => {
-    const nodeId = nodeIdAt(event.target);
+    const node = nodeAt(event.target);
     if (
-      nodeId === null ||
+      node === null ||
       Math.hypot(event.clientX - downX, event.clientY - downY) > DRAG_THRESHOLD
     ) {
       return;
     }
-    surface.reveal(nodeId, event.ctrlKey || event.metaKey);
+    activate(node, event.ctrlKey || event.metaKey);
   });
 
   // Keyboard: Enter/Space on a focused node does the same.
@@ -104,11 +114,23 @@ export function setupInteractions(root: HTMLElement, surface: DiagramSurface): v
     if (event.key !== "Enter" && event.key !== " ") {
       return;
     }
-    const nodeId = nodeIdAt(event.target);
-    if (nodeId === null) {
+    const node = nodeAt(event.target);
+    if (node === null) {
       return;
     }
     event.preventDefault();
-    surface.reveal(nodeId, event.ctrlKey || event.metaKey);
+    activate(node, event.ctrlKey || event.metaKey);
   });
+
+  function activate(node: Element, modifier: boolean): void {
+    const nodeId = node.getAttribute("data-node-id");
+    if (nodeId === null) {
+      return;
+    }
+    if (node.hasAttribute("data-expandable") && !modifier) {
+      surface.toggleExpand(nodeId);
+    } else {
+      surface.reveal(nodeId, modifier);
+    }
+  }
 }

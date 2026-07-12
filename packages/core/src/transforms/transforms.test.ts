@@ -4,6 +4,8 @@ import { analyzeTypeScriptProject } from "../typescript/adapter.js";
 import {
   collapseToFolders,
   collapseToModules,
+  expandableIds,
+  expandNodes,
   filterGraph,
   reachableFrom,
   sliceAround,
@@ -87,6 +89,55 @@ describe("collapseToModules", () => {
 
   it("is idempotent", () => {
     expect(collapseToModules(collapsed)).toEqual(collapsed);
+  });
+});
+
+describe("expandNodes", () => {
+  it("with no expansion is the module map — members hidden", () => {
+    const collapsed = expandNodes(graph, []);
+    expect(collapsed.nodes.some((node) => node.id === "module:src/app.ts")).toBe(true);
+    expect(collapsed.nodes.some((node) => node.id === "function:src/app.ts#main")).toBe(false);
+    expect(validateGraph(collapsed)).toEqual([]);
+  });
+
+  it("reveals a module's members when it is expanded, and keeps the nesting", () => {
+    const expanded = expandNodes(graph, ["module:src/app.ts"]);
+    expect(expanded.nodes.some((node) => node.id === "function:src/app.ts#main")).toBe(true);
+    // The containment edge to the revealed member survives so the layout nests it.
+    expect(
+      expanded.edges.some(
+        (edge) =>
+          edge.kind === "contains" &&
+          edge.from === "module:src/app.ts" &&
+          edge.to === "function:src/app.ts#main",
+      ),
+    ).toBe(true);
+    // An unexpanded module stays a leaf.
+    expect(expanded.nodes.some((node) => node.id === "function:src/store/db.ts#save")).toBe(false);
+    expect(validateGraph(expanded)).toEqual([]);
+  });
+
+  it("lifts a revealed member's call edge to the still-collapsed target module", () => {
+    const expanded = expandNodes(graph, ["module:src/app.ts"]);
+    expect(
+      expanded.edges.some(
+        (edge) =>
+          edge.kind === "calls" &&
+          edge.from === "function:src/app.ts#main" &&
+          edge.to === "module:src/store/db.ts",
+      ),
+    ).toBe(true);
+  });
+
+  it("names the expandable nodes: containers with hidden members that are shown", () => {
+    const displayed = expandNodes(graph, []);
+    const ids = expandableIds(graph, displayed, []);
+    expect(ids).toContain("module:src/app.ts");
+    // Once expanded it is no longer 'expandable' (it is collapsible instead).
+    const afterExpand = expandNodes(graph, ["module:src/app.ts"]);
+    expect(expandableIds(graph, afterExpand, ["module:src/app.ts"])).not.toContain(
+      "module:src/app.ts",
+    );
   });
 });
 

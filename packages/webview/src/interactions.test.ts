@@ -28,6 +28,7 @@ function makeSurface(overrides: Partial<DiagramSurface> = {}): DiagramSurface {
     zoom: vi.fn(),
     fit: vi.fn(),
     reveal: vi.fn(),
+    toggleExpand: vi.fn(),
     ...overrides,
   };
 }
@@ -102,6 +103,30 @@ describe("setupInteractions", () => {
     press(dom.rect, 10, 10);
     click(dom.rect, 10, 10, "meta");
     expect(surface.reveal).toHaveBeenCalledWith("func:a.ts#alpha", true);
+  });
+
+  it("toggles expansion when a click lands on an expandable container", () => {
+    dom.node.setAttribute("data-expandable", "expand");
+    press(dom.rect, 10, 10);
+    click(dom.rect, 10, 10);
+    expect(surface.toggleExpand).toHaveBeenCalledWith("func:a.ts#alpha");
+    expect(surface.reveal).not.toHaveBeenCalled();
+  });
+
+  it("cmd-clicking an expandable node reveals its source instead of expanding", () => {
+    dom.node.setAttribute("data-expandable", "collapse");
+    press(dom.rect, 10, 10);
+    click(dom.rect, 10, 10, "meta");
+    expect(surface.reveal).toHaveBeenCalledWith("func:a.ts#alpha", true);
+    expect(surface.toggleExpand).not.toHaveBeenCalled();
+  });
+
+  it("does not re-fit when a node itself is double-clicked", () => {
+    dom.root.dispatchEvent(new MouseEvent("dblclick", { bubbles: true }));
+    expect(surface.fit).toHaveBeenCalledTimes(1); // empty-canvas dblclick fits
+    (surface.fit as ReturnType<typeof vi.fn>).mockClear();
+    dom.rect.dispatchEvent(new MouseEvent("dblclick", { bubbles: true }));
+    expect(surface.fit).not.toHaveBeenCalled(); // over a node it does not
   });
 
   it("reveals on Enter over a focused node", () => {

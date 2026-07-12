@@ -21,6 +21,8 @@ it("exports exactly the documented public api", () => {
     "displayLabel",
     "drawioExporter",
     "edgeId",
+    "expandNodes",
+    "expandableIds",
     "externalModuleId",
     "filterGraph",
     "jsonExporter",

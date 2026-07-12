@@ -133,6 +133,60 @@ export function collapseToFolders(graph: SemanticGraph, depth = 1): SemanticGrap
   });
 }
 
+/**
+ * Progressive expand/collapse (SBS-062). Every node folds into its nearest
+ * ancestor that is still hidden, where a container reveals its children only if
+ * its id is in `expandedIds`. With an empty set the result is the module map
+ * (members hidden); expanding a module reveals its declarations, expanding a
+ * class within it reveals its methods, and so on. Containment edges between
+ * visible nodes are kept so the layout still nests them.
+ */
+export function expandNodes(graph: SemanticGraph, expandedIds: Iterable<string>): SemanticGraph {
+  const expanded = new Set(expandedIds);
+  const parents = containsParents(graph);
+  const target = new Map<string, string>();
+  const resolve = (id: string): string => {
+    const cached = target.get(id);
+    if (cached !== undefined) {
+      return cached;
+    }
+    const parentId = parents.get(id);
+    // A node is visible where it is when it has no container, or its container
+    // is expanded; otherwise it collapses to wherever its container lands.
+    const result = parentId === undefined || expanded.has(parentId) ? id : resolve(parentId);
+    target.set(id, result);
+    return result;
+  };
+  for (const node of graph.nodes) {
+    resolve(node.id);
+  }
+  const keptNodes = graph.nodes.filter((node) => target.get(node.id) === node.id);
+  return canonicalizeGraph({
+    schemaVersion: graph.schemaVersion,
+    nodes: keptNodes,
+    edges: liftEdges(graph.edges, target, { dropKinds: new Set() }),
+  });
+}
+
+/** The ids that have hidden members under the current expansion — the nodes a
+ * double-click can open. A node qualifies when it has containment children but
+ * is not itself expanded, and it survives into `displayed`. */
+export function expandableIds(
+  fullGraph: SemanticGraph,
+  displayed: SemanticGraph,
+  expandedIds: Iterable<string>,
+): string[] {
+  const expanded = new Set(expandedIds);
+  const shown = new Set(displayed.nodes.map((node) => node.id));
+  const hasChildren = new Set<string>();
+  for (const edge of fullGraph.edges) {
+    if (edge.kind === "contains") {
+      hasChildren.add(edge.from);
+    }
+  }
+  return [...hasChildren].filter((id) => !expanded.has(id) && shown.has(id)).sort();
+}
+
 interface LiftOptions {
   dropKinds: ReadonlySet<EdgeKind>;
 }

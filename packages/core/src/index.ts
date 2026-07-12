@@ -55,6 +55,8 @@ export { stableStringify } from "./stable-json.js";
 export {
   collapseToFolders,
   collapseToModules,
+  expandableIds,
+  expandNodes,
   type FilterOptions,
   filterGraph,
   reachableFrom,

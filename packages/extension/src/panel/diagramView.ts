@@ -52,9 +52,12 @@ export class DiagramView {
   private wasVisible = true;
   private readonly panelDisposables: vscode.Disposable[] = [];
   private readonly didVisualize = new vscode.EventEmitter<DiagramData>();
+  private readonly didToggleExpand = new vscode.EventEmitter<string>();
 
   /** Fires once a diagram has been dispatched to a ready webview (host↔webview round-trip complete). */
   readonly onDidVisualize = this.didVisualize.event;
+  /** Fires when the user double-clicks a container to expand or collapse it (SBS-062). */
+  readonly onToggleExpand = this.didToggleExpand.event;
 
   constructor(
     private readonly extensionUri: vscode.Uri,
@@ -78,6 +81,18 @@ export class DiagramView {
     }
     if (this.ready) {
       this.dispatch(diagram, this.currentFit);
+    }
+  }
+
+  /**
+   * Replace the diagram in place, keeping the current pan/zoom — used when
+   * expanding or collapsing a container so the view doesn't jump (SBS-062).
+   */
+  update(diagram: DiagramData): void {
+    this.current = diagram;
+    this.currentFit = false;
+    if (this.ready) {
+      this.dispatch(diagram, false);
     }
   }
 
@@ -123,6 +138,7 @@ export class DiagramView {
 
   dispose(): void {
     this.didVisualize.dispose();
+    this.didToggleExpand.dispose();
     this.disposePanel();
   }
 
@@ -193,6 +209,9 @@ export class DiagramView {
       }
       case "revealNode":
         void this.revealNode(message.nodeId, message.toSide);
+        break;
+      case "toggleExpand":
+        this.didToggleExpand.fire(message.nodeId);
         break;
       case "error":
         this.logger.warn(`webview: ${message.message}`);

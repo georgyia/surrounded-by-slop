@@ -47,7 +47,13 @@ export function buildDiagramHtml(options: DiagramHtmlOptions): string {
     }
     #root { width: 100vw; height: 100vh; cursor: grab; }
     #root.slop-dragging { cursor: grabbing; }
-    .slop-diagram { display: block; }
+    .slop-diagram { display: block; animation: slop-fade 140ms ease; }
+    @keyframes slop-fade { from { opacity: 0.35; } to { opacity: 1; } }
+    @media (prefers-reduced-motion: reduce) { .slop-diagram { animation: none; } }
+    .slop-container { cursor: pointer; }
+    .slop-container:focus-visible { outline: none; }
+    .slop-container:focus-visible rect { stroke-width: 2; }
+    .slop-caret { pointer-events: none; opacity: 0.6; }
     .slop-node { cursor: pointer; }
     .slop-node:focus-visible { outline: none; }
     .slop-node:focus-visible rect { stroke-width: 2.5; }

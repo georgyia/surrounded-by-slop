@@ -66,7 +66,7 @@ function paint(shouldRefit: boolean): void {
     return;
   }
   try {
-    root.innerHTML = renderDiagram(diagram.graph, diagram.layout, theme);
+    root.innerHTML = renderDiagram(diagram.graph, diagram.layout, theme, diagram.expandableIds);
   } catch (error) {
     viewportEl = null;
     setStatus("Couldn't draw this diagram.");
@@ -133,6 +133,7 @@ function boot(): void {
       },
       fit: refit,
       reveal: (nodeId, toSide) => vscode.postMessage({ type: "revealNode", nodeId, toSide }),
+      toggleExpand: (nodeId) => vscode.postMessage({ type: "toggleExpand", nodeId }),
     });
   }
   // Reload path: VS Code preserves our last setState, so restore before we
