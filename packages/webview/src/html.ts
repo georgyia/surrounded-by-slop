@@ -85,6 +85,22 @@ export function buildDiagramHtml(options: DiagramHtmlOptions): string {
     /* Filter feedback: matches keep full opacity, the rest dims. */
     .slop-dim { opacity: 0.12; }
     .slop-node.slop-match rect { stroke-width: 2.5; }
+    /* Legend (SBS-061) — a floating key to the visual language. */
+    #legend {
+      position: fixed; bottom: 8px; left: 8px; z-index: 5;
+      max-width: 240px; padding: 8px 10px; border-radius: 8px;
+      background: var(--vscode-editorWidget-background, var(--vscode-editor-background));
+      border: 1px solid var(--vscode-editorWidget-border, transparent);
+      box-shadow: 0 1px 4px rgba(0,0,0,0.25); font-size: 11px;
+    }
+    #legend.slop-hidden { display: none; }
+    #legend h2 {
+      margin: 6px 0 3px; font-size: 10px; font-weight: 600; text-transform: uppercase;
+      letter-spacing: 0.04em; opacity: 0.6;
+    }
+    #legend h2:first-child { margin-top: 0; }
+    .slop-legend-row { display: flex; align-items: center; gap: 6px; padding: 1px 0; }
+    .slop-legend-row svg { flex: none; }
     .slop-diagram { display: block; animation: slop-fade 140ms ease; }
     @keyframes slop-fade { from { opacity: 0.35; } to { opacity: 1; } }
     @media (prefers-reduced-motion: reduce) { .slop-diagram { animation: none; } }
@@ -115,7 +131,10 @@ export function buildDiagramHtml(options: DiagramHtmlOptions): string {
       title="Show only this node and its neighbors">Isolate</button>
     <button id="reset" class="slop-btn slop-hidden" type="button"
       title="Show the whole diagram again">Show all</button>
+    <button id="legend-toggle" class="slop-btn" type="button" aria-expanded="false"
+      title="Explain the colors and line styles">Legend</button>
   </div>
+  <aside id="legend" class="slop-hidden" aria-label="Diagram legend"></aside>
   <div id="root"><div class="slop-status">Loading diagram…</div></div>
   <script nonce="${nonce}" src="${scriptUri}"></script>
 </body>

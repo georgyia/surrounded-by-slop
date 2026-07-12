@@ -12,12 +12,12 @@ import type { ColorTheme } from "./protocol.js";
  * the result into the panel with `innerHTML` (SVG only, no scripts — CSP-safe).
  */
 
-interface KindStyle {
+export interface KindStyle {
   readonly fill: string;
   readonly stroke: string;
 }
 
-interface Theme {
+export interface Theme {
   readonly text: string;
   readonly containerFill: string;
   readonly containerStroke: string;
@@ -70,6 +70,11 @@ const DARK: Theme = {
   },
 };
 
+/** The palette a theme draws with — shared so the legend swatches match exactly. */
+export function paletteFor(theme: ColorTheme): Theme {
+  return theme === "dark" ? DARK : LIGHT;
+}
+
 function escapeXml(text: string): string {
   return text
     .replaceAll("&", "&amp;")
@@ -102,7 +107,7 @@ export function renderDiagram(
   theme: ColorTheme,
   expandableIds: Iterable<string> = [],
 ): string {
-  const palette = theme === "dark" ? DARK : LIGHT;
+  const palette = paletteFor(theme);
   const expandable = new Set(expandableIds);
   const nodeById = new Map(graph.nodes.map((node) => [node.id, node]));
   const width = coordinate(layout.width);

@@ -8,10 +8,12 @@
  * in the pure `render`/`viewport` modules. It persists the current diagram with
  * `setState`, so a window reload restores the view without re-analyzing.
  */
+import type { NodeKind } from "@surrounded-by-slop/core";
 import { setupInteractions } from "./interactions.js";
+import { edgeLegend, type LegendEntry, nodeLegend } from "./legend.js";
 import type { ColorTheme, DiagramData, HostToWebview, WebviewToHost } from "./protocol.js";
 import { PROTOCOL_VERSION } from "./protocol.js";
-import { renderDiagram } from "./render.js";
+import { paletteFor, renderDiagram } from "./render.js";
 import {
   EMPTY_FILTER,
   type FilterableNode,
@@ -108,6 +110,7 @@ function setStatus(text: string): void {
   root.append(status);
   viewportEl = null;
   byId("toolbar")?.classList.add("slop-hidden");
+  byId("legend")?.classList.add("slop-hidden");
 }
 
 function applyTheme(next: ColorTheme): void {
@@ -135,6 +138,7 @@ function onNewDiagram(next: DiagramData): void {
     search.value = "";
   }
   rebuildChips();
+  buildLegend();
   byId("toolbar")?.classList.remove("slop-hidden");
   byId("reset")?.classList.toggle("slop-hidden", next.isolated !== true);
 }
@@ -235,6 +239,10 @@ function setupToolbar(): void {
   byId<HTMLButtonElement>("reset")?.addEventListener("click", () => {
     vscode.postMessage({ type: "resetView" });
   });
+  byId<HTMLButtonElement>("legend-toggle")?.addEventListener("click", () => {
+    const hidden = byId("legend")?.classList.toggle("slop-hidden");
+    byId("legend-toggle")?.setAttribute("aria-expanded", hidden === false ? "true" : "false");
+  });
 
   // "/" focuses search from anywhere; a keyboard-first way in.
   document.addEventListener("keydown", (event) => {
@@ -243,6 +251,83 @@ function setupToolbar(): void {
       search?.focus();
     }
   });
+}
+
+// ---- Legend (SBS-061) ----
+
+const SVG_NS = "http://www.w3.org/2000/svg";
+
+/** A small SVG swatch for a legend entry — built with presentation attributes
+ * (never inline CSS) so it renders under the strict webview CSP. */
+function legendSwatch(entry: LegendEntry, isNode: boolean): SVGSVGElement {
+  const svg = document.createElementNS(SVG_NS, "svg");
+  if (isNode) {
+    svg.setAttribute("width", "14");
+    svg.setAttribute("height", "14");
+    const rect = document.createElementNS(SVG_NS, "rect");
+    for (const [name, value] of [
+      ["x", "1"],
+      ["y", "1"],
+      ["width", "12"],
+      ["height", "12"],
+      ["rx", "3"],
+      ["fill", entry.fill],
+      ["fill-opacity", paletteFor(theme).fillOpacity],
+      ["stroke", entry.stroke],
+    ]) {
+      rect.setAttribute(name ?? "", value ?? "");
+    }
+    svg.append(rect);
+  } else {
+    svg.setAttribute("width", "24");
+    svg.setAttribute("height", "10");
+    const line = document.createElementNS(SVG_NS, "line");
+    for (const [name, value] of [
+      ["x1", "1"],
+      ["y1", "5"],
+      ["x2", "23"],
+      ["y2", "5"],
+      ["stroke", entry.stroke],
+      ["stroke-width", "2"],
+    ]) {
+      line.setAttribute(name ?? "", value ?? "");
+    }
+    if (entry.dashed === true) {
+      line.setAttribute("stroke-dasharray", "5 3");
+    }
+    svg.append(line);
+  }
+  return svg;
+}
+
+/** Rebuild the legend for the kinds present in the current diagram and theme. */
+function buildLegend(): void {
+  const container = byId("legend");
+  if (container === null) {
+    return;
+  }
+  const palette = paletteFor(theme);
+  const kinds = [...new Set(nodeInfos.map((node) => node.kind))] as NodeKind[];
+  container.replaceChildren();
+  const section = (title: string, entries: LegendEntry[], isNode: boolean): void => {
+    if (entries.length === 0) {
+      return;
+    }
+    const heading = document.createElement("h2");
+    heading.textContent = title;
+    container.append(heading);
+    for (const entry of entries) {
+      const row = document.createElement("div");
+      row.className = "slop-legend-row";
+      row.append(legendSwatch(entry, isNode));
+      const label = document.createElement("span");
+      label.textContent = entry.label;
+      row.append(label);
+      container.append(row);
+    }
+  };
+  section("Nodes", nodeLegend(kinds, palette), true);
+  section("Edges", edgeLegend(palette), false);
 }
 
 window.addEventListener("message", (event: MessageEvent<HostToWebview>) => {
@@ -258,6 +343,7 @@ window.addEventListener("message", (event: MessageEvent<HostToWebview>) => {
     case "theme":
       applyTheme(message.theme);
       paint(false); // re-color, keep the current pan/zoom
+      buildLegend(); // swatches follow the new palette
       break;
   }
 });
