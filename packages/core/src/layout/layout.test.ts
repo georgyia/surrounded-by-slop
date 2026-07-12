@@ -96,6 +96,54 @@ describe("layoutGraph", () => {
     checkInvariants(sampleGraph, layout);
   });
 
+  it("routes edges between container members in absolute coordinates", async () => {
+    // Two functions in one module that call each other: the call edge lives
+    // inside the module container, so ELK emits it in container-relative
+    // coordinates. The layout must translate it back into absolute space.
+    const modulePath = "src/pair.ts";
+    const moduleNodeId = moduleId(modulePath);
+    const alpha = declarationId("function", modulePath, "alpha");
+    const beta = declarationId("function", modulePath, "beta");
+    const nodes: GraphNode[] = [
+      { id: moduleNodeId, kind: "module", name: modulePath, qualifiedName: modulePath },
+      { id: alpha, kind: "function", name: "alpha", qualifiedName: "alpha" },
+      { id: beta, kind: "function", name: "beta", qualifiedName: "beta" },
+    ];
+    const edges: GraphEdge[] = [
+      {
+        id: edgeId("contains", moduleNodeId, alpha),
+        kind: "contains",
+        from: moduleNodeId,
+        to: alpha,
+      },
+      {
+        id: edgeId("contains", moduleNodeId, beta),
+        kind: "contains",
+        from: moduleNodeId,
+        to: beta,
+      },
+      { id: edgeId("calls", alpha, beta), kind: "calls", from: alpha, to: beta },
+    ];
+    const graph = buildGraph(nodes, edges);
+    const layout = await layoutGraph(graph);
+    checkInvariants(graph, layout);
+
+    const container = layout.nodes.find((node) => node.id === moduleNodeId);
+    const callEdge = layout.edges.find((edge) => edge.id === edgeId("calls", alpha, beta));
+    expect(container).toBeDefined();
+    expect(callEdge).toBeDefined();
+    if (container && callEdge) {
+      // Every routed point sits inside the (absolute) container box. Under the
+      // old bug the points were container-relative — near the origin, outside.
+      for (const point of callEdge.points) {
+        expect(point.x).toBeGreaterThanOrEqual(container.x - 0.5);
+        expect(point.x).toBeLessThanOrEqual(container.x + container.width + 0.5);
+        expect(point.y).toBeGreaterThanOrEqual(container.y - 0.5);
+        expect(point.y).toBeLessThanOrEqual(container.y + container.height + 0.5);
+      }
+    }
+  });
+
   it("lays out 200 nodes well under a second", async () => {
     const nodes: GraphNode[] = [];
     const edges: GraphEdge[] = [];

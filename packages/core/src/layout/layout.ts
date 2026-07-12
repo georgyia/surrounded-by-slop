@@ -73,6 +73,7 @@ export async function layoutGraph(
   options: LayoutGraphOptions = {},
 ): Promise<GraphLayout> {
   const children = new Map<string, string[]>();
+  const parentOf = new Map<string, string>();
   const hasParent = new Set<string>();
   for (const edge of graph.edges) {
     if (edge.kind !== "contains") {
@@ -81,6 +82,7 @@ export async function layoutGraph(
     const list = children.get(edge.from) ?? [];
     list.push(edge.to);
     children.set(edge.from, list);
+    parentOf.set(edge.to, edge.from);
     hasParent.add(edge.to);
   }
   const nodeById = new Map(graph.nodes.map((node) => [node.id, node]));
@@ -130,11 +132,13 @@ export async function layoutGraph(
   const laidOut = await new ElkClass().layout(rootGraph);
 
   const nodes: LayoutNode[] = [];
+  const absById = new Map<string, LayoutPoint>();
   const collect = (elkNode: ElkNode, offsetX: number, offsetY: number): void => {
     for (const child of elkNode.children ?? []) {
       const x = offsetX + (child.x ?? 0);
       const y = offsetY + (child.y ?? 0);
       const source = nodeById.get(child.id);
+      absById.set(child.id, { x, y });
       nodes.push({
         id: child.id,
         x,
@@ -150,16 +154,56 @@ export async function layoutGraph(
   collect(laidOut, 0, 0);
   nodes.sort((a, b) => (a.id < b.id ? -1 : a.id > b.id ? 1 : 0));
 
+  // ELK expresses every edge's coordinates relative to the least common
+  // ancestor of its endpoints (INCLUDE_CHILDREN), not to the root — so an edge
+  // between two members of the same container is container-relative. Offset each
+  // by that container's absolute position, or the arrows land in the wrong place.
+  const ancestors = (id: string): string[] => {
+    const chain: string[] = [];
+    let current = parentOf.get(id);
+    while (current !== undefined) {
+      chain.push(current);
+      current = parentOf.get(current);
+    }
+    return chain;
+  };
+  const commonAncestor = (from: string, to: string): string | undefined => {
+    const toAncestors = new Set(ancestors(to));
+    return ancestors(from).find((id) => toAncestors.has(id));
+  };
+  const endpointsById = new Map(elkEdges.map((edge) => [edge.id, edge]));
+
+  // Edges may sit at any level of the tree; gather them all, then place each in
+  // absolute space using its LCA container as the origin.
+  const elkEdgesFlat: ElkExtendedEdge[] = [];
+  const gatherEdges = (elkNode: ElkNode): void => {
+    for (const edge of elkNode.edges ?? []) {
+      elkEdgesFlat.push(edge);
+    }
+    for (const child of elkNode.children ?? []) {
+      gatherEdges(child);
+    }
+  };
+  gatherEdges(laidOut);
+
   const edges: LayoutEdge[] = [];
-  for (const edge of laidOut.edges ?? []) {
+  const seenEdges = new Set<string>();
+  for (const edge of elkEdgesFlat) {
     const section = edge.sections?.[0];
-    if (section === undefined) {
+    if (section === undefined || seenEdges.has(edge.id)) {
       continue;
     }
+    seenEdges.add(edge.id);
+    const endpoints = endpointsById.get(edge.id);
+    const container =
+      endpoints === undefined
+        ? undefined
+        : commonAncestor(endpoints.sources[0] ?? "", endpoints.targets[0] ?? "");
+    const origin = (container === undefined ? undefined : absById.get(container)) ?? { x: 0, y: 0 };
     edges.push({
       id: edge.id,
       points: [section.startPoint, ...(section.bendPoints ?? []), section.endPoint].map(
-        (point) => ({ x: point.x, y: point.y }),
+        (point) => ({ x: point.x + origin.x, y: point.y + origin.y }),
       ),
     });
   }
