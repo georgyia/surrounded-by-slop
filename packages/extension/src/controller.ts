@@ -17,7 +17,13 @@ const REFRESH_DEBOUNCE_MS = 300;
 /** Guardrails so a stray huge tree (a downloaded SDK, a vendored bundle) can't run analysis away. */
 const MAX_WORKSPACE_FILES = 5000;
 const MAX_FILE_BYTES = 512 * 1024;
-/** Above this many collapsed modules the layout would choke — bail with advice instead of crashing. */
+/**
+ * Above this many modules the map stops being readable — fold up to the folder
+ * level so a big repo opens as a handful of clusters rather than a hairball
+ * (SBS-065). Drill back into modules by narrowing the scope.
+ */
+const MODULE_RENDER_BUDGET = 250;
+/** Above this many nodes even the folded graph would choke the layout — bail with advice. */
 const MAX_LAYOUT_NODES = 1500;
 
 function suffixFor(document: vscode.TextDocument): string | undefined {
@@ -181,9 +187,8 @@ export class VisualizationController implements vscode.Disposable {
         return;
       }
 
-      const { analyzeTypeScriptProject, collapseToModules, layoutGraph } = await import(
-        "@surrounded-by-slop/core"
-      );
+      const { analyzeTypeScriptProject, collapseToFolders, collapseToModules, layoutGraph } =
+        await import("@surrounded-by-slop/core");
       // Bridge VS Code's token (isCancellationRequested) to the core's (cancelled).
       const cancellation = {
         get cancelled(): boolean {
@@ -201,13 +206,24 @@ export class VisualizationController implements vscode.Disposable {
       const base = config.showExternalModules
         ? analyzed.graph
         : withoutExternalModules(analyzed.graph);
-      const collapsed = collapseToModules(base);
+      const modules = collapseToModules(base);
+      // Guardrail (SBS-065): past the readability budget, fold modules up to the
+      // folder level so a large repo shows as clusters, not a hairball.
+      let collapsed = modules;
+      let level: "modules" | "folders" = "modules";
+      if (modules.nodes.length > MODULE_RENDER_BUDGET) {
+        const folders = collapseToFolders(base, 1);
+        if (folders.nodes.length < modules.nodes.length) {
+          collapsed = folders;
+          level = "folders";
+        }
+      }
       if (collapsed.nodes.length > MAX_LAYOUT_NODES) {
         void vscode.window.showInformationMessage(
-          `Surrounded by Slop: this workspace is too large to map at once (${collapsed.nodes.length} modules). Narrow it with slop.include / slop.exclude, or open a subfolder.`,
+          `Surrounded by Slop: this workspace is too large to map at once (${collapsed.nodes.length} groups). Narrow it with slop.include / slop.exclude, or open a subfolder.`,
         );
         this.logger.warn(
-          `Workspace map skipped: ${collapsed.nodes.length} modules exceeds the ${MAX_LAYOUT_NODES}-node guardrail.`,
+          `Workspace map skipped: ${collapsed.nodes.length} groups exceeds the ${MAX_LAYOUT_NODES}-node guardrail.`,
         );
         return;
       }
@@ -216,7 +232,10 @@ export class VisualizationController implements vscode.Disposable {
         return;
       }
       const diagram: DiagramData = {
-        title: `${folder.name} — workspace`,
+        title:
+          level === "folders"
+            ? `${folder.name} — workspace (folders)`
+            : `${folder.name} — workspace`,
         graph: collapsed,
         layout,
       };
@@ -225,8 +244,24 @@ export class VisualizationController implements vscode.Disposable {
       void vscode.commands.executeCommand("setContext", "slop.hasDiagram", true);
       this.view.show(diagram);
       this.logger.info(
-        `Visualized workspace ${folder.name}: ${inputs.length} files → ${collapsed.nodes.length} modules`,
+        `Visualized workspace ${folder.name}: ${inputs.length} files → ${collapsed.nodes.length} ${level}`,
       );
+      if (level === "folders") {
+        // Tell the user why they're seeing folders, and offer the way back in.
+        void vscode.window
+          .showInformationMessage(
+            `Surrounded by Slop: ${modules.nodes.length} modules is a lot — showing a folder-level overview. Narrow the scope to see individual modules.`,
+            "Configure scope",
+          )
+          .then((choice) => {
+            if (choice === "Configure scope") {
+              void vscode.commands.executeCommand(
+                "workbench.action.openSettings",
+                "surrounded-by-slop",
+              );
+            }
+          });
+      }
     } catch (error) {
       if (error instanceof Error && error.name === "OperationCancelledError") {
         return;

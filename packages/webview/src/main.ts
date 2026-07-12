@@ -12,7 +12,14 @@ import { setupInteractions } from "./interactions.js";
 import type { ColorTheme, DiagramData, HostToWebview, WebviewToHost } from "./protocol.js";
 import { PROTOCOL_VERSION } from "./protocol.js";
 import { renderDiagram } from "./render.js";
-import { fitViewport, panViewport, toTransform, type Viewport, zoomViewport } from "./viewport.js";
+import {
+  fitViewport,
+  isLowDetail,
+  panViewport,
+  toTransform,
+  type Viewport,
+  zoomViewport,
+} from "./viewport.js";
 
 interface VsCodeApi {
   postMessage(message: WebviewToHost): void;
@@ -35,6 +42,8 @@ function rootElement(): HTMLElement | null {
 
 function applyTransform(): void {
   viewportEl?.setAttribute("transform", toTransform(viewport));
+  // Level-of-detail: zoomed far out, hide unreadable member labels (SBS-065).
+  rootElement()?.classList.toggle("slop-lod", isLowDetail(viewport.scale));
 }
 
 function refit(): void {

@@ -51,6 +51,10 @@ export function buildDiagramHtml(options: DiagramHtmlOptions): string {
     .slop-node { cursor: pointer; }
     .slop-node:focus-visible { outline: none; }
     .slop-node:focus-visible rect { stroke-width: 2.5; }
+    /* Level-of-detail: zoomed far out, fade unreadable member labels (SBS-065). */
+    .slop-node text { transition: opacity 120ms ease; }
+    #root.slop-lod .slop-node text { opacity: 0; }
+    @media (prefers-reduced-motion: reduce) { .slop-node text { transition: none; } }
     .slop-status {
       display: flex; align-items: center; justify-content: center;
       height: 100%; padding: 1rem; text-align: center; opacity: 0.7;

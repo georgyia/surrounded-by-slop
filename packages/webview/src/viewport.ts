@@ -16,6 +16,17 @@ export interface Viewport {
 export const MIN_SCALE = 0.1;
 export const MAX_SCALE = 4;
 const FIT_PADDING = 24;
+/**
+ * Below this scale, leaf labels are too small to read and only add clutter and
+ * render cost — drop to a level-of-detail view that keeps the boxes and cluster
+ * labels but hides member text (SBS-065).
+ */
+export const LOD_SCALE = 0.4;
+
+/** Whether the diagram should render in low-detail mode at the given zoom. */
+export function isLowDetail(scale: number): boolean {
+  return scale < LOD_SCALE;
+}
 
 function clampScale(scale: number): number {
   return Math.min(MAX_SCALE, Math.max(MIN_SCALE, scale));

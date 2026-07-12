@@ -1,6 +1,8 @@
 import { describe, expect, it } from "vitest";
 import {
   fitViewport,
+  isLowDetail,
+  LOD_SCALE,
   MAX_SCALE,
   MIN_SCALE,
   panViewport,
@@ -48,6 +50,14 @@ describe("zoomViewport", () => {
 describe("panViewport", () => {
   it("translates by the screen delta", () => {
     expect(panViewport({ x: 5, y: 5, scale: 2 }, 10, -3)).toEqual({ x: 15, y: 2, scale: 2 });
+  });
+});
+
+describe("isLowDetail", () => {
+  it("enables low-detail only when zoomed below the threshold", () => {
+    expect(isLowDetail(LOD_SCALE - 0.01)).toBe(true);
+    expect(isLowDetail(LOD_SCALE)).toBe(false);
+    expect(isLowDetail(1)).toBe(false);
   });
 });
 
