@@ -3,7 +3,7 @@ import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { describe, expect, it } from "vitest";
 import { stableStringify } from "../stable-json.js";
-import { extractControlFlow } from "./builder.js";
+import { extractControlFlow, reachableCfgBlocks } from "./builder.js";
 import { validateCfg } from "./validate.js";
 
 /**
@@ -44,13 +44,22 @@ function readInput(directory: string): { path: string; text: string } {
 
 const cases = listCases();
 
-describe.each(cases)("cfg fixture $name", ({ directory }) => {
+/** The only fixtures allowed to contain unreachable blocks — by design.
+ * Anything else flagged unreachable is a reachability false positive (SBS-073). */
+const EXPECTED_UNREACHABLE = new Set(["unreachable-after-return"]);
+
+describe.each(cases)("cfg fixture $name", ({ name, directory }) => {
   it("matches its golden CFG, validates and is deterministic", () => {
     const input = readInput(directory);
     const result = extractControlFlow(input);
 
     for (const cfg of result.cfgs) {
       expect(validateCfg(cfg), `cfg ${cfg.name}`).toEqual([]);
+      if (!EXPECTED_UNREACHABLE.has(name)) {
+        const reachable = reachableCfgBlocks(cfg);
+        const dead = cfg.blocks.filter((block) => !reachable.has(block.id));
+        expect(dead, `no false-positive unreachable blocks in ${cfg.name}`).toEqual([]);
+      }
     }
 
     const serialized = `${stableStringify(result, 2)}\n`;

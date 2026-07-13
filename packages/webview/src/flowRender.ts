@@ -1,4 +1,9 @@
-import type { CfgEdgeKind, ControlFlowGraph, GraphLayout } from "@surrounded-by-slop/core";
+import {
+  type CfgEdgeKind,
+  type ControlFlowGraph,
+  type GraphLayout,
+  reachableCfgBlocks,
+} from "@surrounded-by-slop/core";
 import type { ColorTheme } from "./protocol.js";
 import { paletteFor, type Theme } from "./render.js";
 
@@ -65,6 +70,8 @@ export function renderFlowDiagram(
 ): string {
   const palette = paletteFor(theme);
   const blockById = new Map(flow.blocks.map((block) => [block.id, block]));
+  // Blocks with no path from entry are dead code — dim them and say so (SBS-073).
+  const reachable = reachableCfgBlocks(flow);
   const width = coordinate(layout.width);
   const height = coordinate(layout.height);
 
@@ -149,10 +156,17 @@ export function renderFlowDiagram(
     const radius = isTerminal ? box.height / 2 : 4;
     // The box was sized for exactly this text (the synthetic node's name).
     const label = box.label;
+    const dead = !reachable.has(box.id);
+    const aria = dead ? `${label} (unreachable code)` : label;
     lines.push(
-      `    <g class="slop-node" data-node-id="${escapeXml(box.id)}" role="button" tabindex="0" aria-label="${escapeXml(label)}">`,
-      `      <rect x="${coordinate(box.x)}" y="${coordinate(box.y)}" width="${coordinate(box.width)}" height="${coordinate(box.height)}" rx="${coordinate(radius)}" fill="${style.fill}" fill-opacity="${palette.fillOpacity}" stroke="${style.stroke}" />`,
+      `    <g class="slop-node${dead ? " slop-unreachable" : ""}" data-node-id="${escapeXml(box.id)}"${dead ? ' opacity="0.45"' : ""} role="button" tabindex="0" aria-label="${escapeXml(aria)}">`,
+      `      <rect x="${coordinate(box.x)}" y="${coordinate(box.y)}" width="${coordinate(box.width)}" height="${coordinate(box.height)}" rx="${coordinate(radius)}" fill="${style.fill}" fill-opacity="${palette.fillOpacity}" stroke="${style.stroke}"${dead ? ' stroke-dasharray="4 3"' : ""} />`,
       `      <text x="${coordinate(box.x + box.width / 2)}" y="${coordinate(box.y + box.height / 2 + 4)}" text-anchor="middle" fill="${palette.text}">${escapeXml(label)}</text>`,
+      ...(dead
+        ? [
+            `      <text class="slop-badge" x="${coordinate(box.x + box.width / 2)}" y="${coordinate(box.y - 4)}" text-anchor="middle" font-size="9" font-style="italic" fill="${palette.kinds.enum.stroke}">unreachable</text>`,
+          ]
+        : []),
       "    </g>",
     );
   }

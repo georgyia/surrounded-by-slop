@@ -74,6 +74,25 @@ describe("renderFlowDiagram", () => {
     expect(polylines.length).toBe(pairs.size);
   });
 
+  it("dims code after a return and badges it as unreachable", async () => {
+    const cfg = cfgOf('function f() {\n  return 1;\n  console.log("never");\n}\n');
+    const svg = renderFlowDiagram(cfg, await layoutFor(cfg), "light");
+    expect(svg).toContain("slop-unreachable");
+    expect(svg).toContain(">unreachable</text>");
+    const deadLine = svg.split("\n").find((line) => line.includes("slop-unreachable"));
+    expect(deadLine).toContain('opacity="0.45"');
+    expect(deadLine).toContain("(unreachable code)"); // announced to screen readers
+  });
+
+  it("never badges reachable code (no false positives)", async () => {
+    const cfg = cfgOf(
+      "function f(n: number) {\n  if (n > 0) {\n    return n;\n  }\n  for (let i = 0; i < n; i++) {\n    n += i;\n  }\n  return n;\n}\n",
+    );
+    const svg = renderFlowDiagram(cfg, await layoutFor(cfg), "light");
+    expect(svg).not.toContain("slop-unreachable");
+    expect(svg).not.toContain(">unreachable</text>");
+  });
+
   it("escapes hostile statement text", async () => {
     const cfg = cfgOf('function f() {\n  const s = "<img>";\n  return s;\n}\n');
     const svg = renderFlowDiagram(cfg, await layoutFor(cfg), "light");
