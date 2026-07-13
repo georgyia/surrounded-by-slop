@@ -1,0 +1,46 @@
+{
+  "diagnostics": [],
+  "functions": [
+    {
+      "name": "gross",
+      "span": {
+        "endCol": 2,
+        "endLine": 5,
+        "file": "input.ts",
+        "startCol": 1,
+        "startLine": 3
+      },
+      "variables": [
+        {
+          "declarationSpan": {
+            "endCol": 26,
+            "endLine": 3,
+            "file": "input.ts",
+            "startCol": 23,
+            "startLine": 3
+          },
+          "id": "net@3:23",
+          "name": "net",
+          "reads": [
+            {
+              "endCol": 13,
+              "endLine": 4,
+              "file": "input.ts",
+              "startCol": 10,
+              "startLine": 4
+            }
+          ],
+          "writes": [
+            {
+              "endCol": 26,
+              "endLine": 3,
+              "file": "input.ts",
+              "startCol": 23,
+              "startLine": 3
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

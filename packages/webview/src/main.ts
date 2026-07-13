@@ -9,6 +9,7 @@
  * `setState`, so a window reload restores the view without re-analyzing.
  */
 import type { GraphNode, NodeKind } from "@surrounded-by-slop/core";
+import { highlightForVariable } from "./dataflowHighlight.js";
 import { renderFlowDiagram } from "./flowRender.js";
 import { type Degree, edgeDegrees, hoverDetails } from "./hover.js";
 import { setupInteractions } from "./interactions.js";
@@ -52,6 +53,8 @@ let nodeInfos: FilterableNode[] = [];
 let soleMatch: string | null = null;
 let nodeById = new Map<string, GraphNode>();
 let degrees = new Map<string, Degree>();
+/** The variable whose data flow is highlighted in a flow diagram (SBS-072). */
+let selectedVariable: string | null = null;
 let hoverTimer: ReturnType<typeof setTimeout> | undefined;
 let hoverId: string | null = null;
 let hoverEl: Element | null = null;
@@ -107,6 +110,7 @@ function paint(shouldRefit: boolean): void {
     applyTransform();
   }
   applyFilter(); // a fresh SVG has no dim/match classes — re-apply the current filter
+  applyDataflowHighlight(); // …and the variable highlight, if one is selected
 }
 
 function setStatus(text: string): void {
@@ -147,6 +151,7 @@ function onNewDiagram(next: DiagramData): void {
   degrees = edgeDegrees(next.graph);
   hideHover();
   filter = EMPTY_FILTER;
+  selectedVariable = null;
   const search = byId<HTMLInputElement>("search");
   if (search !== null) {
     search.value = "";
@@ -158,10 +163,66 @@ function onNewDiagram(next: DiagramData): void {
 }
 
 function rebuildChips(): void {
+  // Flow diagrams swap the structural chips for the function's variables:
+  // kind/path are meaningless for blocks, but data flow is the whole point.
+  if (diagram?.flow !== undefined) {
+    fillChipRow(byId("kind-chips"), [], "kind");
+    fillChipRow(byId("path-chips"), [], "path");
+    rebuildVariableChips();
+    return;
+  }
   const kinds = [...new Set(nodeInfos.map((node) => node.kind))].sort();
   const paths = [...new Set(nodeInfos.map((node) => topSegment(node.path)))].sort();
   fillChipRow(byId("kind-chips"), kinds, "kind");
   fillChipRow(byId("path-chips"), paths, "path");
+  byId("var-chips")?.replaceChildren();
+}
+
+function rebuildVariableChips(): void {
+  const row = byId("var-chips");
+  if (row === null) {
+    return;
+  }
+  row.replaceChildren();
+  for (const variable of diagram?.dataflow?.variables ?? []) {
+    const chip = document.createElement("button");
+    chip.type = "button";
+    chip.className = "slop-chip";
+    chip.textContent = variable.captured === true ? `${variable.name} ⇡` : variable.name;
+    chip.title =
+      variable.captured === true
+        ? `${variable.name} — captured from an enclosing function`
+        : `Highlight where ${variable.name} is written and read`;
+    chip.dataset.group = "variable";
+    chip.dataset.value = variable.id;
+    chip.dataset.selected = "false";
+    row.append(chip);
+  }
+}
+
+/** Toggle the write/read highlight for the selected variable, if any. */
+function applyDataflowHighlight(): void {
+  const root = rootElement();
+  const flow = diagram?.flow;
+  const dataflow = diagram?.dataflow;
+  if (root === null || flow === undefined || dataflow === undefined) {
+    return;
+  }
+  const highlight =
+    selectedVariable === null ? undefined : highlightForVariable(flow, dataflow, selectedVariable);
+  for (const node of Array.from(root.querySelectorAll<SVGElement>("[data-node-id]"))) {
+    const id = node.getAttribute("data-node-id") ?? "";
+    const writes = highlight?.writes.has(id) === true;
+    const reads = highlight?.reads.has(id) === true;
+    node.classList.toggle("slop-df-write", writes);
+    node.classList.toggle("slop-df-read", reads);
+    if (highlight !== undefined) {
+      node.classList.toggle("slop-dim", !writes && !reads);
+    }
+  }
+  if (highlight === undefined) {
+    applyFilter(); // restore plain search/filter dimming
+  }
 }
 
 function fillChipRow(row: HTMLElement | null, values: string[], group: "kind" | "path"): void {
@@ -236,15 +297,28 @@ function setupToolbar(): void {
 
   byId("toolbar")?.addEventListener("click", (event) => {
     const target = event.target;
-    if (target instanceof HTMLElement && target.classList.contains("slop-chip")) {
-      const pressed = target.getAttribute("aria-pressed") !== "false";
-      target.setAttribute("aria-pressed", pressed ? "false" : "true");
-      setFilter({
-        ...filter,
-        disabledKinds: disabledFromChips("kind"),
-        disabledPaths: disabledFromChips("path"),
-      });
+    if (!(target instanceof HTMLElement) || !target.classList.contains("slop-chip")) {
+      return;
     }
+    if (target.dataset.group === "variable") {
+      // Exclusive selection: clicking the active variable clears it.
+      const id = target.dataset.value ?? null;
+      selectedVariable = selectedVariable === id ? null : id;
+      for (const chip of Array.from(
+        document.querySelectorAll<HTMLElement>('.slop-chip[data-group="variable"]'),
+      )) {
+        chip.dataset.selected = String(chip.dataset.value === selectedVariable);
+      }
+      applyDataflowHighlight();
+      return;
+    }
+    const pressed = target.getAttribute("aria-pressed") !== "false";
+    target.setAttribute("aria-pressed", pressed ? "false" : "true");
+    setFilter({
+      ...filter,
+      disabledKinds: disabledFromChips("kind"),
+      disabledPaths: disabledFromChips("path"),
+    });
   });
 
   byId<HTMLButtonElement>("isolate")?.addEventListener("click", () => {

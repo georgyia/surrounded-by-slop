@@ -44,6 +44,11 @@ const webview = {
   format: "iife",
   platform: "browser",
   target: "es2022",
+  // The webview imports pure helpers from core; tree-shaking (core is
+  // sideEffects-free) keeps elkjs/typescript out of the emitted bundle, but
+  // esbuild still *resolves* every import it parses — so elkjs's optional
+  // `require("web-worker")` must be external here exactly as in the host.
+  external: ["web-worker"],
 };
 
 if (watch) {

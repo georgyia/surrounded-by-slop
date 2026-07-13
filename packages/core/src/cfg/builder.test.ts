@@ -1,5 +1,6 @@
 import { describe, expect, it } from "vitest";
-import { cfgAtLine, extractControlFlow, reachableCfgBlocks } from "./builder.js";
+import { cfgAtLine, extractControlFlow } from "./builder.js";
+import { reachableCfgBlocks } from "./queries.js";
 import type { ControlFlowGraph } from "./types.js";
 import { validateCfg } from "./validate.js";
 

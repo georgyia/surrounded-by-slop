@@ -1,0 +1,190 @@
+{
+  "diagnostics": [],
+  "functions": [
+    {
+      "name": "unpack",
+      "span": {
+        "endCol": 2,
+        "endLine": 6,
+        "file": "input.ts",
+        "startCol": 1,
+        "startLine": 1
+      },
+      "variables": [
+        {
+          "declarationSpan": {
+            "endCol": 29,
+            "endLine": 1,
+            "file": "input.ts",
+            "startCol": 24,
+            "startLine": 1
+          },
+          "id": "order@1:24",
+          "name": "order",
+          "reads": [
+            {
+              "endCol": 47,
+              "endLine": 2,
+              "file": "input.ts",
+              "startCol": 42,
+              "startLine": 2
+            }
+          ],
+          "writes": [
+            {
+              "endCol": 29,
+              "endLine": 1,
+              "file": "input.ts",
+              "startCol": 24,
+              "startLine": 1
+            }
+          ]
+        },
+        {
+          "declarationSpan": {
+            "endCol": 13,
+            "endLine": 2,
+            "file": "input.ts",
+            "startCol": 11,
+            "startLine": 2
+          },
+          "id": "id@2:11",
+          "name": "id",
+          "reads": [
+            {
+              "endCol": 15,
+              "endLine": 5,
+              "file": "input.ts",
+              "startCol": 13,
+              "startLine": 5
+            }
+          ],
+          "writes": [
+            {
+              "endCol": 13,
+              "endLine": 2,
+              "file": "input.ts",
+              "startCol": 11,
+              "startLine": 2
+            }
+          ]
+        },
+        {
+          "declarationSpan": {
+            "endCol": 27,
+            "endLine": 2,
+            "file": "input.ts",
+            "startCol": 23,
+            "startLine": 2
+          },
+          "id": "head@2:23",
+          "name": "head",
+          "reads": [
+            {
+              "endCol": 23,
+              "endLine": 5,
+              "file": "input.ts",
+              "startCol": 19,
+              "startLine": 5
+            }
+          ],
+          "writes": [
+            {
+              "endCol": 27,
+              "endLine": 2,
+              "file": "input.ts",
+              "startCol": 23,
+              "startLine": 2
+            }
+          ]
+        },
+        {
+          "declarationSpan": {
+            "endCol": 9,
+            "endLine": 3,
+            "file": "input.ts",
+            "startCol": 8,
+            "startLine": 3
+          },
+          "id": "a@3:8",
+          "name": "a",
+          "reads": [
+            {
+              "endCol": 17,
+              "endLine": 4,
+              "file": "input.ts",
+              "startCol": 16,
+              "startLine": 4
+            },
+            {
+              "endCol": 28,
+              "endLine": 5,
+              "file": "input.ts",
+              "startCol": 27,
+              "startLine": 5
+            }
+          ],
+          "writes": [
+            {
+              "endCol": 9,
+              "endLine": 3,
+              "file": "input.ts",
+              "startCol": 8,
+              "startLine": 3
+            },
+            {
+              "endCol": 5,
+              "endLine": 4,
+              "file": "input.ts",
+              "startCol": 4,
+              "startLine": 4
+            }
+          ]
+        },
+        {
+          "declarationSpan": {
+            "endCol": 12,
+            "endLine": 3,
+            "file": "input.ts",
+            "startCol": 11,
+            "startLine": 3
+          },
+          "id": "b@3:11",
+          "name": "b",
+          "reads": [
+            {
+              "endCol": 14,
+              "endLine": 4,
+              "file": "input.ts",
+              "startCol": 13,
+              "startLine": 4
+            },
+            {
+              "endCol": 32,
+              "endLine": 5,
+              "file": "input.ts",
+              "startCol": 31,
+              "startLine": 5
+            }
+          ],
+          "writes": [
+            {
+              "endCol": 12,
+              "endLine": 3,
+              "file": "input.ts",
+              "startCol": 11,
+              "startLine": 3
+            },
+            {
+              "endCol": 8,
+              "endLine": 4,
+              "file": "input.ts",
+              "startCol": 7,
+              "startLine": 4
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

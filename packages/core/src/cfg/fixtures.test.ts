@@ -3,7 +3,8 @@ import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { describe, expect, it } from "vitest";
 import { stableStringify } from "../stable-json.js";
-import { extractControlFlow, reachableCfgBlocks } from "./builder.js";
+import { extractControlFlow } from "./builder.js";
+import { reachableCfgBlocks } from "./queries.js";
 import { validateCfg } from "./validate.js";
 
 /**

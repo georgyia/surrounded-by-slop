@@ -1,0 +1,175 @@
+{
+  "diagnostics": [],
+  "functions": [
+    {
+      "name": "tally",
+      "span": {
+        "endCol": 2,
+        "endLine": 9,
+        "file": "input.ts",
+        "startCol": 1,
+        "startLine": 1
+      },
+      "variables": [
+        {
+          "declarationSpan": {
+            "endCol": 27,
+            "endLine": 1,
+            "file": "input.ts",
+            "startCol": 23,
+            "startLine": 1
+          },
+          "id": "rows@1:23",
+          "name": "rows",
+          "reads": [
+            {
+              "endCol": 25,
+              "endLine": 3,
+              "file": "input.ts",
+              "startCol": 21,
+              "startLine": 3
+            }
+          ],
+          "writes": [
+            {
+              "endCol": 27,
+              "endLine": 1,
+              "file": "input.ts",
+              "startCol": 23,
+              "startLine": 1
+            }
+          ]
+        },
+        {
+          "declarationSpan": {
+            "endCol": 10,
+            "endLine": 2,
+            "file": "input.ts",
+            "startCol": 7,
+            "startLine": 2
+          },
+          "id": "sum@2:7",
+          "name": "sum",
+          "reads": [
+            {
+              "endCol": 10,
+              "endLine": 5,
+              "file": "input.ts",
+              "startCol": 7,
+              "startLine": 5
+            },
+            {
+              "endCol": 13,
+              "endLine": 8,
+              "file": "input.ts",
+              "startCol": 10,
+              "startLine": 8
+            }
+          ],
+          "writes": [
+            {
+              "endCol": 10,
+              "endLine": 2,
+              "file": "input.ts",
+              "startCol": 7,
+              "startLine": 2
+            },
+            {
+              "endCol": 10,
+              "endLine": 5,
+              "file": "input.ts",
+              "startCol": 7,
+              "startLine": 5
+            }
+          ]
+        },
+        {
+          "declarationSpan": {
+            "endCol": 17,
+            "endLine": 3,
+            "file": "input.ts",
+            "startCol": 14,
+            "startLine": 3
+          },
+          "id": "row@3:14",
+          "name": "row",
+          "reads": [
+            {
+              "endCol": 28,
+              "endLine": 4,
+              "file": "input.ts",
+              "startCol": 25,
+              "startLine": 4
+            },
+            {
+              "endCol": 17,
+              "endLine": 5,
+              "file": "input.ts",
+              "startCol": 14,
+              "startLine": 5
+            }
+          ],
+          "writes": [
+            {
+              "endCol": 17,
+              "endLine": 3,
+              "file": "input.ts",
+              "startCol": 14,
+              "startLine": 3
+            }
+          ]
+        },
+        {
+          "declarationSpan": {
+            "endCol": 15,
+            "endLine": 4,
+            "file": "input.ts",
+            "startCol": 14,
+            "startLine": 4
+          },
+          "id": "i@4:14",
+          "name": "i",
+          "reads": [
+            {
+              "endCol": 22,
+              "endLine": 4,
+              "file": "input.ts",
+              "startCol": 21,
+              "startLine": 4
+            },
+            {
+              "endCol": 38,
+              "endLine": 4,
+              "file": "input.ts",
+              "startCol": 37,
+              "startLine": 4
+            },
+            {
+              "endCol": 19,
+              "endLine": 5,
+              "file": "input.ts",
+              "startCol": 18,
+              "startLine": 5
+            }
+          ],
+          "writes": [
+            {
+              "endCol": 15,
+              "endLine": 4,
+              "file": "input.ts",
+              "startCol": 14,
+              "startLine": 4
+            },
+            {
+              "endCol": 38,
+              "endLine": 4,
+              "file": "input.ts",
+              "startCol": 37,
+              "startLine": 4
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

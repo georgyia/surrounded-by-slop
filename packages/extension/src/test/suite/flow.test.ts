@@ -53,6 +53,13 @@ test("Visualize Function Flow charts the function under the cursor", async () =>
   for (const block of diagram.flow.blocks) {
     assert.ok(positioned.has(block.id), `block ${block.id} has a layout position`);
   }
+
+  // The def-use overlay rides along (SBS-072): pickLane's variables are listed.
+  assert.ok(diagram.dataflow, "the diagram carries the function's dataflow");
+  const variables = new Set(diagram.dataflow.variables.map((variable) => variable.name));
+  for (const expected of ["load", "attempt"]) {
+    assert.ok(variables.has(expected), `dataflow lists '${expected}'`);
+  }
 });
 
 test("the Mermaid export of a flow diagram matches the interactive view", async () => {

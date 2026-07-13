@@ -91,7 +91,7 @@ describe("project analysis", () => {
       imports: true,
       callGraph: "typed",
       cfg: true, // extractControlFlow (SBS-070)
-      dataflow: false,
+      dataflow: true, // extractDataflow (SBS-072)
     });
     expect(typescriptAdapter.extensions).toEqual([".ts", ".tsx", ".js", ".jsx"]);
   });

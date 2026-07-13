@@ -85,6 +85,13 @@ export function buildDiagramHtml(options: DiagramHtmlOptions): string {
     /* Filter feedback: matches keep full opacity, the rest dims. */
     .slop-dim { opacity: 0.12; }
     .slop-node.slop-match rect { stroke-width: 2.5; }
+    /* Data-flow overlay (SBS-072): writes orange, reads blue, rest dimmed. */
+    .slop-chip[data-selected="true"] { outline: 1.5px solid var(--vscode-focusBorder, #54aeff); }
+    .slop-node.slop-df-write rect { stroke: #f0883e; stroke-width: 3; }
+    .slop-node.slop-df-read rect { stroke: #54aeff; stroke-width: 2.5; }
+    .slop-node.slop-df-write.slop-df-read rect {
+      stroke: #f0883e; stroke-width: 3; stroke-dasharray: 8 3;
+    }
     /* Legend (SBS-061) — a floating key to the visual language. */
     #legend {
       position: fixed; bottom: 8px; left: 8px; z-index: 5;
@@ -149,6 +156,7 @@ export function buildDiagramHtml(options: DiagramHtmlOptions): string {
       aria-label="Search nodes" autocomplete="off" spellcheck="false" />
     <div id="kind-chips" class="slop-chip-row" aria-label="Filter by kind"></div>
     <div id="path-chips" class="slop-chip-row" aria-label="Filter by path"></div>
+    <div id="var-chips" class="slop-chip-row" aria-label="Highlight a variable's data flow"></div>
     <button id="isolate" class="slop-btn" type="button" disabled
       title="Show only this node and its neighbors">Isolate</button>
     <button id="reset" class="slop-btn slop-hidden" type="button"

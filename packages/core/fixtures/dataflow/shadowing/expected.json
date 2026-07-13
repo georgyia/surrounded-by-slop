@@ -1,0 +1,111 @@
+{
+  "diagnostics": [],
+  "functions": [
+    {
+      "name": "render",
+      "span": {
+        "endCol": 2,
+        "endLine": 8,
+        "file": "input.ts",
+        "startCol": 1,
+        "startLine": 1
+      },
+      "variables": [
+        {
+          "declarationSpan": {
+            "endCol": 29,
+            "endLine": 1,
+            "file": "input.ts",
+            "startCol": 24,
+            "startLine": 1
+          },
+          "id": "theme@1:24",
+          "name": "theme",
+          "reads": [
+            {
+              "endCol": 22,
+              "endLine": 2,
+              "file": "input.ts",
+              "startCol": 17,
+              "startLine": 2
+            }
+          ],
+          "writes": [
+            {
+              "endCol": 29,
+              "endLine": 1,
+              "file": "input.ts",
+              "startCol": 24,
+              "startLine": 1
+            }
+          ]
+        },
+        {
+          "declarationSpan": {
+            "endCol": 14,
+            "endLine": 2,
+            "file": "input.ts",
+            "startCol": 9,
+            "startLine": 2
+          },
+          "id": "label@2:9",
+          "name": "label",
+          "reads": [
+            {
+              "endCol": 12,
+              "endLine": 3,
+              "file": "input.ts",
+              "startCol": 7,
+              "startLine": 3
+            },
+            {
+              "endCol": 15,
+              "endLine": 7,
+              "file": "input.ts",
+              "startCol": 10,
+              "startLine": 7
+            }
+          ],
+          "writes": [
+            {
+              "endCol": 14,
+              "endLine": 2,
+              "file": "input.ts",
+              "startCol": 9,
+              "startLine": 2
+            }
+          ]
+        },
+        {
+          "declarationSpan": {
+            "endCol": 16,
+            "endLine": 4,
+            "file": "input.ts",
+            "startCol": 11,
+            "startLine": 4
+          },
+          "id": "label@4:11",
+          "name": "label",
+          "reads": [
+            {
+              "endCol": 17,
+              "endLine": 5,
+              "file": "input.ts",
+              "startCol": 12,
+              "startLine": 5
+            }
+          ],
+          "writes": [
+            {
+              "endCol": 16,
+              "endLine": 4,
+              "file": "input.ts",
+              "startCol": 11,
+              "startLine": 4
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

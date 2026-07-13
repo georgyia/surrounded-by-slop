@@ -163,8 +163,16 @@ export class VisualizationController implements vscode.Disposable {
       ? `untitled${suffixFor(document) ?? ".ts"}`
       : vscode.workspace.asRelativePath(document.uri);
     try {
-      const { buildGraph, cfgAtLine, cfgBlockLabel, edgeId, extractControlFlow, layoutGraph } =
-        await import("@surrounded-by-slop/core");
+      const {
+        buildGraph,
+        cfgAtLine,
+        cfgBlockLabel,
+        dataflowForSpan,
+        edgeId,
+        extractControlFlow,
+        extractDataflow,
+        layoutGraph,
+      } = await import("@surrounded-by-slop/core");
       const { cfgs, diagnostics } = extractControlFlow({ path, text: document.getText() });
       for (const diagnostic of diagnostics) {
         this.logger.warn(`${diagnostic.file ?? path}: ${diagnostic.message}`);
@@ -200,11 +208,17 @@ export class VisualizationController implements vscode.Disposable {
       const graph = buildGraph(nodes, edges);
       // Flowcharts read top-down regardless of the diagram direction setting.
       const layout = await layoutGraph(graph, { direction: "DOWN" });
+      // Def-use overlay (SBS-072): aligned to this function by its span.
+      const dataflow = dataflowForSpan(
+        extractDataflow({ path, text: document.getText() }).functions,
+        cfg.span,
+      );
       const diagram: DiagramData = {
         title: `${cfg.name} — flow`,
         graph,
         layout,
         flow: cfg,
+        ...(dataflow !== undefined ? { dataflow } : {}),
       };
       this.workspaceGraph = undefined;
       this.expanded.clear();

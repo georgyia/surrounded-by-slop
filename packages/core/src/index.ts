@@ -9,13 +9,16 @@ export {
   type LanguageCapabilities,
   OperationCancelledError,
 } from "./adapter.js";
+export { cfgAtLine, extractControlFlow } from "./cfg/builder.js";
 export {
-  cfgAtLine,
-  cfgBlockLabel,
-  extractControlFlow,
-  reachableCfgBlocks,
-} from "./cfg/builder.js";
+  dataflowForSpan,
+  type ExtractedDataflow,
+  extractDataflow,
+  type FunctionDataflow,
+  type VariableFlow,
+} from "./cfg/dataflow.js";
 export { cfgToMermaid } from "./cfg/mermaid.js";
+export { cfgBlockLabel, reachableCfgBlocks } from "./cfg/queries.js";
 export type {
   CfgBlock,
   CfgBlockKind,

@@ -23,8 +23,8 @@ interface FixtureCase {
   directory: string;
 }
 
-/** Categories with their own harness and golden format (src/cfg/fixtures.test.ts). */
-const FOREIGN_CATEGORIES = new Set(["cfg"]);
+/** Categories with their own harness and golden format (see src/cfg/). */
+const FOREIGN_CATEGORIES = new Set(["cfg", "dataflow"]);
 
 function listCases(): FixtureCase[] {
   const cases: FixtureCase[] = [];

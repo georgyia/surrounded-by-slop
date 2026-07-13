@@ -1,4 +1,9 @@
-import type { ControlFlowGraph, GraphLayout, SemanticGraph } from "@surrounded-by-slop/core";
+import type {
+  ControlFlowGraph,
+  FunctionDataflow,
+  GraphLayout,
+  SemanticGraph,
+} from "@surrounded-by-slop/core";
 
 /**
  * Version of the message protocol between the extension host and the webview.
@@ -35,6 +40,11 @@ export interface DiagramData {
    * and `flow` carries the real edges, kinds and condition labels to draw.
    */
   readonly flow?: ControlFlowGraph;
+  /**
+   * The flow function's def-use record (SBS-072): picking a variable in the
+   * toolbar highlights the blocks that write and read it.
+   */
+  readonly dataflow?: FunctionDataflow;
 }
 
 /** Messages the extension host sends to the webview. */

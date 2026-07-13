@@ -1,0 +1,145 @@
+{
+  "diagnostics": [],
+  "functions": [
+    {
+      "name": "makeCounter",
+      "span": {
+        "endCol": 2,
+        "endLine": 8,
+        "file": "input.ts",
+        "startCol": 1,
+        "startLine": 1
+      },
+      "variables": [
+        {
+          "declarationSpan": {
+            "endCol": 34,
+            "endLine": 1,
+            "file": "input.ts",
+            "startCol": 29,
+            "startLine": 1
+          },
+          "id": "start@1:29",
+          "name": "start",
+          "reads": [
+            {
+              "endCol": 20,
+              "endLine": 2,
+              "file": "input.ts",
+              "startCol": 15,
+              "startLine": 2
+            }
+          ],
+          "writes": [
+            {
+              "endCol": 34,
+              "endLine": 1,
+              "file": "input.ts",
+              "startCol": 29,
+              "startLine": 1
+            }
+          ]
+        },
+        {
+          "declarationSpan": {
+            "endCol": 12,
+            "endLine": 2,
+            "file": "input.ts",
+            "startCol": 7,
+            "startLine": 2
+          },
+          "id": "count@2:7",
+          "name": "count",
+          "reads": [],
+          "writes": [
+            {
+              "endCol": 12,
+              "endLine": 2,
+              "file": "input.ts",
+              "startCol": 7,
+              "startLine": 2
+            }
+          ]
+        },
+        {
+          "declarationSpan": {
+            "endCol": 13,
+            "endLine": 3,
+            "file": "input.ts",
+            "startCol": 9,
+            "startLine": 3
+          },
+          "id": "bump@3:9",
+          "name": "bump",
+          "reads": [
+            {
+              "endCol": 14,
+              "endLine": 7,
+              "file": "input.ts",
+              "startCol": 10,
+              "startLine": 7
+            }
+          ],
+          "writes": [
+            {
+              "endCol": 13,
+              "endLine": 3,
+              "file": "input.ts",
+              "startCol": 9,
+              "startLine": 3
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "bump",
+      "span": {
+        "endCol": 4,
+        "endLine": 6,
+        "file": "input.ts",
+        "startCol": 16,
+        "startLine": 3
+      },
+      "variables": [
+        {
+          "captured": true,
+          "declarationSpan": {
+            "endCol": 12,
+            "endLine": 2,
+            "file": "input.ts",
+            "startCol": 7,
+            "startLine": 2
+          },
+          "id": "count@2:7",
+          "name": "count",
+          "reads": [
+            {
+              "endCol": 10,
+              "endLine": 4,
+              "file": "input.ts",
+              "startCol": 5,
+              "startLine": 4
+            },
+            {
+              "endCol": 17,
+              "endLine": 5,
+              "file": "input.ts",
+              "startCol": 12,
+              "startLine": 5
+            }
+          ],
+          "writes": [
+            {
+              "endCol": 10,
+              "endLine": 4,
+              "file": "input.ts",
+              "startCol": 5,
+              "startLine": 4
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

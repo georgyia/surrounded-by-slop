@@ -1,0 +1,154 @@
+{
+  "diagnostics": [],
+  "functions": [
+    {
+      "name": "pad",
+      "span": {
+        "endCol": 2,
+        "endLine": 7,
+        "file": "input.ts",
+        "startCol": 1,
+        "startLine": 1
+      },
+      "variables": [
+        {
+          "declarationSpan": {
+            "endCol": 25,
+            "endLine": 1,
+            "file": "input.ts",
+            "startCol": 21,
+            "startLine": 1
+          },
+          "id": "text@1:21",
+          "name": "text",
+          "reads": [
+            {
+              "endCol": 17,
+              "endLine": 2,
+              "file": "input.ts",
+              "startCol": 13,
+              "startLine": 2
+            }
+          ],
+          "writes": [
+            {
+              "endCol": 25,
+              "endLine": 1,
+              "file": "input.ts",
+              "startCol": 21,
+              "startLine": 1
+            }
+          ]
+        },
+        {
+          "declarationSpan": {
+            "endCol": 40,
+            "endLine": 1,
+            "file": "input.ts",
+            "startCol": 35,
+            "startLine": 1
+          },
+          "id": "width@1:35",
+          "name": "width",
+          "reads": [
+            {
+              "endCol": 28,
+              "endLine": 3,
+              "file": "input.ts",
+              "startCol": 23,
+              "startLine": 3
+            }
+          ],
+          "writes": [
+            {
+              "endCol": 40,
+              "endLine": 1,
+              "file": "input.ts",
+              "startCol": 35,
+              "startLine": 1
+            }
+          ]
+        },
+        {
+          "declarationSpan": {
+            "endCol": 54,
+            "endLine": 1,
+            "file": "input.ts",
+            "startCol": 50,
+            "startLine": 1
+          },
+          "id": "fill@1:50",
+          "name": "fill",
+          "reads": [
+            {
+              "endCol": 16,
+              "endLine": 4,
+              "file": "input.ts",
+              "startCol": 12,
+              "startLine": 4
+            }
+          ],
+          "writes": [
+            {
+              "endCol": 54,
+              "endLine": 1,
+              "file": "input.ts",
+              "startCol": 50,
+              "startLine": 1
+            }
+          ]
+        },
+        {
+          "declarationSpan": {
+            "endCol": 10,
+            "endLine": 2,
+            "file": "input.ts",
+            "startCol": 7,
+            "startLine": 2
+          },
+          "id": "out@2:7",
+          "name": "out",
+          "reads": [
+            {
+              "endCol": 13,
+              "endLine": 3,
+              "file": "input.ts",
+              "startCol": 10,
+              "startLine": 3
+            },
+            {
+              "endCol": 8,
+              "endLine": 4,
+              "file": "input.ts",
+              "startCol": 5,
+              "startLine": 4
+            },
+            {
+              "endCol": 13,
+              "endLine": 6,
+              "file": "input.ts",
+              "startCol": 10,
+              "startLine": 6
+            }
+          ],
+          "writes": [
+            {
+              "endCol": 10,
+              "endLine": 2,
+              "file": "input.ts",
+              "startCol": 7,
+              "startLine": 2
+            },
+            {
+              "endCol": 8,
+              "endLine": 4,
+              "file": "input.ts",
+              "startCol": 5,
+              "startLine": 4
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
