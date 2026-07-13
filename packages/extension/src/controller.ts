@@ -41,18 +41,29 @@ function exportTheme(): "light" | "dark" {
 
 /** Render the diagram in the format named by a file extension (drawio/svg/mmd/json). */
 async function renderExport(format: string, diagram: DiagramData): Promise<string> {
-  const { drawioExporter, jsonExporter, mermaidExporter, svgExporter } = await import(
-    "@surrounded-by-slop/core"
-  );
+  const {
+    cfgToMermaid,
+    drawioExporter,
+    jsonExporter,
+    mermaidExporter,
+    stableStringify,
+    svgExporter,
+  } = await import("@surrounded-by-slop/core");
   switch (format) {
     case "drawio":
+      // Flow charts export their synthetic block graph — positions and block
+      // text are faithful; the condition labels live in the mmd/json formats.
       return drawioExporter.export(diagram.graph, { layout: diagram.layout });
     case "svg":
       return svgExporter.export(diagram.graph, { layout: diagram.layout, theme: exportTheme() });
     case "mmd":
-      return mermaidExporter.export(diagram.graph);
+      return diagram.flow === undefined
+        ? mermaidExporter.export(diagram.graph)
+        : cfgToMermaid(diagram.flow);
     case "json":
-      return jsonExporter.export(diagram.graph);
+      return diagram.flow === undefined
+        ? jsonExporter.export(diagram.graph)
+        : `${stableStringify(diagram.flow, 2)}\n`;
     default:
       throw new Error(`unsupported export format ".${format}" — use .drawio, .mmd, .svg or .json`);
   }
@@ -132,6 +143,84 @@ export class VisualizationController implements vscode.Disposable {
       return;
     }
     await this.visualize(editor.document);
+  }
+
+  /**
+   * `Slop: Visualize Function Flow` — the control-flow chart of the function
+   * under the cursor (SBS-071). Layout runs on a synthetic one-node-per-block
+   * graph; the webview draws the real CFG edges, kinds and condition labels.
+   */
+  async visualizeFunctionFlow(): Promise<void> {
+    const editor = vscode.window.activeTextEditor;
+    if (editor === undefined || suffixFor(editor.document) === undefined) {
+      void vscode.window.showInformationMessage(
+        "Surrounded by Slop: open a TypeScript or JavaScript file and put the cursor inside a function.",
+      );
+      return;
+    }
+    const document = editor.document;
+    const path = document.isUntitled
+      ? `untitled${suffixFor(document) ?? ".ts"}`
+      : vscode.workspace.asRelativePath(document.uri);
+    try {
+      const { buildGraph, cfgAtLine, cfgBlockLabel, edgeId, extractControlFlow, layoutGraph } =
+        await import("@surrounded-by-slop/core");
+      const { cfgs, diagnostics } = extractControlFlow({ path, text: document.getText() });
+      for (const diagnostic of diagnostics) {
+        this.logger.warn(`${diagnostic.file ?? path}: ${diagnostic.message}`);
+      }
+      const line = editor.selection.active.line + 1; // vscode is 0-based, spans are 1-based
+      const cfg = cfgAtLine(cfgs, line);
+      if (cfg === undefined) {
+        void vscode.window.showInformationMessage(
+          "Surrounded by Slop: put the cursor inside a function body to see its flow.",
+        );
+        return;
+      }
+      // Synthetic layout graph: one plain-labeled node per block. Entry/exit
+      // carry the function's own span so clicking Start/End jumps to its head.
+      const nodes = cfg.blocks.map((block) => ({
+        id: block.id,
+        kind: "variable" as const,
+        name: cfgBlockLabel(block),
+        qualifiedName: block.id,
+        span: block.spans[0] ?? cfg.span,
+        // Full statement list rides along for the hover card.
+        ...(block.statements.length > 0 ? { signature: block.statements.join("\n") } : {}),
+      }));
+      const seen = new Set<string>();
+      const edges = [];
+      for (const edge of cfg.edges) {
+        const id = edgeId("calls", edge.from, edge.to);
+        if (!seen.has(id) && edge.from !== edge.to) {
+          seen.add(id);
+          edges.push({ id, kind: "calls" as const, from: edge.from, to: edge.to });
+        }
+      }
+      const graph = buildGraph(nodes, edges);
+      // Flowcharts read top-down regardless of the diagram direction setting.
+      const layout = await layoutGraph(graph, { direction: "DOWN" });
+      const diagram: DiagramData = {
+        title: `${cfg.name} — flow`,
+        graph,
+        layout,
+        flow: cfg,
+      };
+      this.workspaceGraph = undefined;
+      this.expanded.clear();
+      this.preIsolate = undefined;
+      this.shown = diagram;
+      // No live-refresh for flow charts (the function may move on edit); reveal
+      // resolves through the workspace-relative span paths instead.
+      this.shownUri = undefined;
+      void vscode.commands.executeCommand("setContext", "slop.hasDiagram", true);
+      this.view.show(diagram, document.isUntitled ? document.uri : undefined);
+      this.logger.info(
+        `Visualized flow of ${cfg.name} (${path}): ${cfg.blocks.length} blocks, ${cfg.edges.length} edges`,
+      );
+    } catch (error) {
+      this.logger.report(`Surrounded by Slop couldn't chart the function flow in ${path}.`, error);
+    }
   }
 
   /** `Slop: Visualize Workspace` — the module-level map of every source file. */
@@ -444,8 +533,12 @@ export class VisualizationController implements vscode.Disposable {
       );
       return;
     }
-    const { mermaidExporter } = await import("@surrounded-by-slop/core");
-    await vscode.env.clipboard.writeText(mermaidExporter.export(diagram.graph));
+    const { cfgToMermaid, mermaidExporter } = await import("@surrounded-by-slop/core");
+    const mermaid =
+      diagram.flow === undefined
+        ? mermaidExporter.export(diagram.graph)
+        : cfgToMermaid(diagram.flow);
+    await vscode.env.clipboard.writeText(mermaid);
     void vscode.window.showInformationMessage("Diagram copied as Mermaid.");
   }
 

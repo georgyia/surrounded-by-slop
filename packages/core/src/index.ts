@@ -9,7 +9,13 @@ export {
   type LanguageCapabilities,
   OperationCancelledError,
 } from "./adapter.js";
-export { cfgAtLine, extractControlFlow, reachableCfgBlocks } from "./cfg/builder.js";
+export {
+  cfgAtLine,
+  cfgBlockLabel,
+  extractControlFlow,
+  reachableCfgBlocks,
+} from "./cfg/builder.js";
+export { cfgToMermaid } from "./cfg/mermaid.js";
 export type {
   CfgBlock,
   CfgBlockKind,

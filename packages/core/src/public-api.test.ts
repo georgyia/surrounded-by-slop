@@ -14,6 +14,8 @@ it("exports exactly the documented public api", () => {
     "buildGraph",
     "canonicalizeGraph",
     "cfgAtLine",
+    "cfgBlockLabel",
+    "cfgToMermaid",
     "collapseToFolders",
     "collapseToModules",
     "createAdapterRegistry",

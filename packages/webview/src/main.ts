@@ -9,9 +9,10 @@
  * `setState`, so a window reload restores the view without re-analyzing.
  */
 import type { GraphNode, NodeKind } from "@surrounded-by-slop/core";
+import { renderFlowDiagram } from "./flowRender.js";
 import { type Degree, edgeDegrees, hoverDetails } from "./hover.js";
 import { setupInteractions } from "./interactions.js";
-import { edgeLegend, type LegendEntry, nodeLegend } from "./legend.js";
+import { edgeLegend, flowLegend, type LegendEntry, nodeLegend } from "./legend.js";
 import type { ColorTheme, DiagramData, HostToWebview, WebviewToHost } from "./protocol.js";
 import { PROTOCOL_VERSION } from "./protocol.js";
 import { paletteFor, renderDiagram } from "./render.js";
@@ -86,7 +87,10 @@ function paint(shouldRefit: boolean): void {
   }
   hideHover(); // the SVG is about to be replaced — drop any card tied to it
   try {
-    root.innerHTML = renderDiagram(diagram.graph, diagram.layout, theme, diagram.expandableIds);
+    root.innerHTML =
+      diagram.flow === undefined
+        ? renderDiagram(diagram.graph, diagram.layout, theme, diagram.expandableIds)
+        : renderFlowDiagram(diagram.flow, diagram.layout, theme);
   } catch (error) {
     viewportEl = null;
     setStatus("Couldn't draw this diagram.");
@@ -206,7 +210,9 @@ function applyFilter(): void {
     node.classList.toggle("slop-dim", active && !pass);
     node.classList.toggle("slop-match", active && pass);
   }
-  soleMatch = active && matches.size === 1 ? ([...matches][0] ?? null) : null;
+  // Isolate slices the semantic graph — meaningless for a flowchart's blocks.
+  soleMatch =
+    active && diagram?.flow === undefined && matches.size === 1 ? ([...matches][0] ?? null) : null;
   const isolate = byId<HTMLButtonElement>("isolate");
   if (isolate !== null) {
     isolate.disabled = soleMatch === null;
@@ -336,8 +342,12 @@ function buildLegend(): void {
       container.append(row);
     }
   };
-  section("Nodes", nodeLegend(kinds, palette), true);
-  section("Edges", edgeLegend(palette), false);
+  if (diagram?.flow === undefined) {
+    section("Nodes", nodeLegend(kinds, palette), true);
+    section("Edges", edgeLegend(palette), false);
+  } else {
+    section("Flow", flowLegend(palette), false);
+  }
 }
 
 // ---- Hover details (SBS-064) ----
@@ -356,7 +366,8 @@ function renderHoverCard(node: GraphNode): void {
   name.textContent = details.name;
   const kind = document.createElement("span");
   kind.className = "slop-hc-kind";
-  kind.textContent = details.kind;
+  // Flowchart nodes are CFG blocks, whatever kind the synthetic layout node used.
+  kind.textContent = diagram?.flow === undefined ? details.kind : "block";
   header.append(name, kind);
   card.append(header);
 

@@ -29,6 +29,9 @@ export function activate(context: vscode.ExtensionContext): SlopApi {
     view,
     controller,
     vscode.commands.registerCommand("slop.visualizeFile", () => controller.visualizeActive()),
+    vscode.commands.registerCommand("slop.visualizeFunctionFlow", () =>
+      controller.visualizeFunctionFlow(),
+    ),
     vscode.commands.registerCommand("slop.visualizeWorkspace", () =>
       controller.visualizeWorkspace(),
     ),

@@ -48,3 +48,13 @@ export function edgeLegend(palette: Theme): LegendEntry[] {
     { label: "inferred (low confidence)", fill: "none", stroke: palette.edgeLow, dashed: true },
   ];
 }
+
+/** The flowchart vocabulary (SBS-071): what a function-flow diagram's lines mean. */
+export function flowLegend(palette: Theme): LegendEntry[] {
+  return [
+    { label: "flow / branch (labeled)", fill: "none", stroke: palette.edge },
+    { label: "loop back", fill: "none", stroke: palette.heritage, dashed: true },
+    { label: "throws", fill: "none", stroke: palette.kinds.enum.stroke, dashed: true },
+    { label: "finally re-route", fill: "none", stroke: palette.edgeLow, dashed: true },
+  ];
+}

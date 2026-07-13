@@ -1,4 +1,4 @@
-import type { GraphLayout, SemanticGraph } from "@surrounded-by-slop/core";
+import type { ControlFlowGraph, GraphLayout, SemanticGraph } from "@surrounded-by-slop/core";
 
 /**
  * Version of the message protocol between the extension host and the webview.
@@ -29,6 +29,12 @@ export interface DiagramData {
   readonly expandableIds?: readonly string[];
   /** True when this diagram is an isolated slice around one node (SBS-063). */
   readonly isolated?: boolean;
+  /**
+   * When present, this diagram is a function flowchart (SBS-071): `graph`
+   * holds one synthetic node per block (for layout, hover and click-to-source)
+   * and `flow` carries the real edges, kinds and condition labels to draw.
+   */
+  readonly flow?: ControlFlowGraph;
 }
 
 /** Messages the extension host sends to the webview. */

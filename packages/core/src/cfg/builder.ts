@@ -804,6 +804,22 @@ export function cfgAtLine(
   return best;
 }
 
+/**
+ * The one-line display label for a block, shared by the flowchart view and the
+ * synthetic layout graph so boxes are always sized for exactly this text.
+ */
+export function cfgBlockLabel(block: CfgBlock): string {
+  if (block.kind === "entry") {
+    return "Start";
+  }
+  if (block.kind === "exit") {
+    return "End";
+  }
+  const awaits = block.awaits === true ? "⏳ " : "";
+  const more = block.statements.length > 1 ? " ⋯" : "";
+  return `${awaits}${block.statements[0] ?? "·"}${more}`;
+}
+
 /** Block ids reachable from the entry — the complement is unreachable code. */
 export function reachableCfgBlocks(cfg: ControlFlowGraph): Set<string> {
   const successors = new Map<string, string[]>();
