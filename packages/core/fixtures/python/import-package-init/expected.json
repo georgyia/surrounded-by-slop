@@ -1,0 +1,80 @@
+{
+  "diagnostics": [],
+  "graph": {
+    "edges": [
+      {
+        "from": "module:main.py",
+        "id": "contains:module:main.py->function:main.py#boot",
+        "kind": "contains",
+        "to": "function:main.py#boot"
+      },
+      {
+        "from": "module:services/__init__.py",
+        "id": "contains:module:services/__init__.py->function:services/__init__.py#registry",
+        "kind": "contains",
+        "to": "function:services/__init__.py#registry"
+      },
+      {
+        "from": "module:main.py",
+        "id": "imports:module:main.py->module:services/__init__.py",
+        "kind": "imports",
+        "to": "module:services/__init__.py"
+      }
+    ],
+    "nodes": [
+      {
+        "id": "function:main.py#boot",
+        "kind": "function",
+        "name": "boot",
+        "qualifiedName": "boot",
+        "span": {
+          "endCol": 31,
+          "endLine": 4,
+          "file": "main.py",
+          "startCol": 1,
+          "startLine": 3
+        }
+      },
+      {
+        "id": "function:services/__init__.py#registry",
+        "kind": "function",
+        "name": "registry",
+        "qualifiedName": "registry",
+        "span": {
+          "endCol": 14,
+          "endLine": 2,
+          "file": "services/__init__.py",
+          "startCol": 1,
+          "startLine": 1
+        }
+      },
+      {
+        "id": "module:main.py",
+        "kind": "module",
+        "name": "main.py",
+        "qualifiedName": "main.py",
+        "span": {
+          "endCol": 1,
+          "endLine": 5,
+          "file": "main.py",
+          "startCol": 1,
+          "startLine": 1
+        }
+      },
+      {
+        "id": "module:services/__init__.py",
+        "kind": "module",
+        "name": "__init__.py",
+        "qualifiedName": "services/__init__.py",
+        "span": {
+          "endCol": 1,
+          "endLine": 3,
+          "file": "services/__init__.py",
+          "startCol": 1,
+          "startLine": 1
+        }
+      }
+    ],
+    "schemaVersion": 1
+  }
+}

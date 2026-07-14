@@ -1,0 +1,68 @@
+{
+  "diagnostics": [],
+  "graph": {
+    "edges": [
+      {
+        "from": "module:input.py",
+        "id": "contains:module:input.py->function:input.py#view",
+        "kind": "contains",
+        "to": "function:input.py#view"
+      },
+      {
+        "from": "module:input.py",
+        "id": "imports:module:input.py->module:external:django.http",
+        "kind": "imports",
+        "to": "module:external:django.http"
+      },
+      {
+        "from": "module:input.py",
+        "id": "imports:module:input.py->module:external:numpy",
+        "kind": "imports",
+        "to": "module:external:numpy"
+      }
+    ],
+    "nodes": [
+      {
+        "id": "function:input.py#view",
+        "kind": "function",
+        "name": "view",
+        "qualifiedName": "view",
+        "span": {
+          "endCol": 38,
+          "endLine": 5,
+          "file": "input.py",
+          "startCol": 1,
+          "startLine": 4
+        }
+      },
+      {
+        "external": true,
+        "id": "module:external:django.http",
+        "kind": "module",
+        "name": "django.http",
+        "qualifiedName": "django.http"
+      },
+      {
+        "external": true,
+        "id": "module:external:numpy",
+        "kind": "module",
+        "name": "numpy",
+        "qualifiedName": "numpy"
+      },
+      {
+        "id": "module:input.py",
+        "kind": "module",
+        "name": "input.py",
+        "qualifiedName": "input.py",
+        "span": {
+          "endCol": 1,
+          "endLine": 6,
+          "file": "input.py",
+          "startCol": 1,
+          "startLine": 1
+        }
+      }
+    ],
+    "schemaVersion": 1
+  }
+}

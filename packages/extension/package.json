@@ -70,14 +70,14 @@
       "editor/title": [
         {
           "command": "slop.visualizeFile",
-          "when": "resourceLangId =~ /typescript|javascript/",
+          "when": "resourceLangId =~ /typescript|javascript|python/",
           "group": "navigation"
         }
       ],
       "editor/context": [
         {
           "command": "slop.visualizeFile",
-          "when": "resourceLangId =~ /typescript|javascript/",
+          "when": "resourceLangId =~ /typescript|javascript|python/",
           "group": "navigation"
         },
         {
@@ -106,7 +106,7 @@
         "command": "slop.visualizeFile",
         "key": "ctrl+shift+v",
         "mac": "cmd+shift+v",
-        "when": "editorTextFocus && editorLangId =~ /typescript|javascript/"
+        "when": "editorTextFocus && editorLangId =~ /typescript|javascript|python/"
       }
     ],
     "configuration": {
@@ -118,7 +118,7 @@
             "type": "string"
           },
           "default": [
-            "**/*.{ts,tsx,mts,cts,js,jsx,mjs,cjs}"
+            "**/*.{ts,tsx,mts,cts,js,jsx,mjs,cjs,py}"
           ],
           "description": "Glob patterns for files to include when visualizing the workspace."
         },

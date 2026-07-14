@@ -1,0 +1,42 @@
+{
+  "diagnostics": [],
+  "graph": {
+    "edges": [
+      {
+        "from": "module:input.py",
+        "id": "contains:module:input.py->function:input.py#greet",
+        "kind": "contains",
+        "to": "function:input.py#greet"
+      }
+    ],
+    "nodes": [
+      {
+        "id": "function:input.py#greet",
+        "kind": "function",
+        "name": "greet",
+        "qualifiedName": "greet",
+        "span": {
+          "endCol": 33,
+          "endLine": 4,
+          "file": "input.py",
+          "startCol": 1,
+          "startLine": 3
+        }
+      },
+      {
+        "id": "module:input.py",
+        "kind": "module",
+        "name": "input.py",
+        "qualifiedName": "input.py",
+        "span": {
+          "endCol": 1,
+          "endLine": 5,
+          "file": "input.py",
+          "startCol": 1,
+          "startLine": 1
+        }
+      }
+    ],
+    "schemaVersion": 1
+  }
+}

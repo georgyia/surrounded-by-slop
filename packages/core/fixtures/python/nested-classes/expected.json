@@ -1,0 +1,99 @@
+{
+  "diagnostics": [],
+  "graph": {
+    "edges": [
+      {
+        "from": "class:input.py#Outer",
+        "id": "contains:class:input.py#Outer->class:input.py#Outer.Inner",
+        "kind": "contains",
+        "to": "class:input.py#Outer.Inner"
+      },
+      {
+        "from": "class:input.py#Outer",
+        "id": "contains:class:input.py#Outer->method:input.py#Outer.use",
+        "kind": "contains",
+        "to": "method:input.py#Outer.use"
+      },
+      {
+        "from": "class:input.py#Outer.Inner",
+        "id": "contains:class:input.py#Outer.Inner->method:input.py#Outer.Inner.ping",
+        "kind": "contains",
+        "to": "method:input.py#Outer.Inner.ping"
+      },
+      {
+        "from": "module:input.py",
+        "id": "contains:module:input.py->class:input.py#Outer",
+        "kind": "contains",
+        "to": "class:input.py#Outer"
+      }
+    ],
+    "nodes": [
+      {
+        "id": "class:input.py#Outer",
+        "kind": "class",
+        "name": "Outer",
+        "qualifiedName": "Outer",
+        "span": {
+          "endCol": 29,
+          "endLine": 7,
+          "file": "input.py",
+          "startCol": 1,
+          "startLine": 1
+        }
+      },
+      {
+        "id": "class:input.py#Outer.Inner",
+        "kind": "class",
+        "name": "Inner",
+        "qualifiedName": "Outer.Inner",
+        "span": {
+          "endCol": 26,
+          "endLine": 4,
+          "file": "input.py",
+          "startCol": 5,
+          "startLine": 2
+        }
+      },
+      {
+        "id": "method:input.py#Outer.Inner.ping",
+        "kind": "method",
+        "name": "ping",
+        "qualifiedName": "Outer.Inner.ping",
+        "span": {
+          "endCol": 26,
+          "endLine": 4,
+          "file": "input.py",
+          "startCol": 9,
+          "startLine": 3
+        }
+      },
+      {
+        "id": "method:input.py#Outer.use",
+        "kind": "method",
+        "name": "use",
+        "qualifiedName": "Outer.use",
+        "span": {
+          "endCol": 29,
+          "endLine": 7,
+          "file": "input.py",
+          "startCol": 5,
+          "startLine": 6
+        }
+      },
+      {
+        "id": "module:input.py",
+        "kind": "module",
+        "name": "input.py",
+        "qualifiedName": "input.py",
+        "span": {
+          "endCol": 1,
+          "endLine": 8,
+          "file": "input.py",
+          "startCol": 1,
+          "startLine": 1
+        }
+      }
+    ],
+    "schemaVersion": 1
+  }
+}

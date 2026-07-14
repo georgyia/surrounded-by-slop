@@ -1,0 +1,80 @@
+{
+  "diagnostics": [],
+  "graph": {
+    "edges": [
+      {
+        "from": "module:main.py",
+        "id": "contains:module:main.py->function:main.py#run",
+        "kind": "contains",
+        "to": "function:main.py#run"
+      },
+      {
+        "from": "module:util.py",
+        "id": "contains:module:util.py->function:util.py#fmt",
+        "kind": "contains",
+        "to": "function:util.py#fmt"
+      },
+      {
+        "from": "module:main.py",
+        "id": "imports:module:main.py->module:util.py",
+        "kind": "imports",
+        "to": "module:util.py"
+      }
+    ],
+    "nodes": [
+      {
+        "id": "function:main.py#run",
+        "kind": "function",
+        "name": "run",
+        "qualifiedName": "run",
+        "span": {
+          "endCol": 20,
+          "endLine": 4,
+          "file": "main.py",
+          "startCol": 1,
+          "startLine": 3
+        }
+      },
+      {
+        "id": "function:util.py#fmt",
+        "kind": "function",
+        "name": "fmt",
+        "qualifiedName": "fmt",
+        "span": {
+          "endCol": 18,
+          "endLine": 2,
+          "file": "util.py",
+          "startCol": 1,
+          "startLine": 1
+        }
+      },
+      {
+        "id": "module:main.py",
+        "kind": "module",
+        "name": "main.py",
+        "qualifiedName": "main.py",
+        "span": {
+          "endCol": 1,
+          "endLine": 5,
+          "file": "main.py",
+          "startCol": 1,
+          "startLine": 1
+        }
+      },
+      {
+        "id": "module:util.py",
+        "kind": "module",
+        "name": "util.py",
+        "qualifiedName": "util.py",
+        "span": {
+          "endCol": 1,
+          "endLine": 3,
+          "file": "util.py",
+          "startCol": 1,
+          "startLine": 1
+        }
+      }
+    ],
+    "schemaVersion": 1
+  }
+}

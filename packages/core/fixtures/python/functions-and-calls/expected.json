@@ -1,0 +1,94 @@
+{
+  "diagnostics": [],
+  "graph": {
+    "edges": [
+      {
+        "confidence": "low",
+        "from": "function:input.py#load",
+        "id": "calls:function:input.py#load->function:input.py#parse",
+        "kind": "calls",
+        "to": "function:input.py#parse"
+      },
+      {
+        "confidence": "low",
+        "from": "function:input.py#load",
+        "id": "calls:function:input.py#load->function:input.py#render",
+        "kind": "calls",
+        "to": "function:input.py#render"
+      },
+      {
+        "from": "module:input.py",
+        "id": "contains:module:input.py->function:input.py#load",
+        "kind": "contains",
+        "to": "function:input.py#load"
+      },
+      {
+        "from": "module:input.py",
+        "id": "contains:module:input.py->function:input.py#parse",
+        "kind": "contains",
+        "to": "function:input.py#parse"
+      },
+      {
+        "from": "module:input.py",
+        "id": "contains:module:input.py->function:input.py#render",
+        "kind": "contains",
+        "to": "function:input.py#render"
+      }
+    ],
+    "nodes": [
+      {
+        "id": "function:input.py#load",
+        "kind": "function",
+        "name": "load",
+        "qualifiedName": "load",
+        "span": {
+          "endCol": 24,
+          "endLine": 6,
+          "file": "input.py",
+          "startCol": 1,
+          "startLine": 4
+        }
+      },
+      {
+        "id": "function:input.py#parse",
+        "kind": "function",
+        "name": "parse",
+        "qualifiedName": "parse",
+        "span": {
+          "endCol": 23,
+          "endLine": 2,
+          "file": "input.py",
+          "startCol": 1,
+          "startLine": 1
+        }
+      },
+      {
+        "id": "function:input.py#render",
+        "kind": "function",
+        "name": "render",
+        "qualifiedName": "render",
+        "span": {
+          "endCol": 24,
+          "endLine": 9,
+          "file": "input.py",
+          "startCol": 1,
+          "startLine": 8
+        }
+      },
+      {
+        "id": "module:input.py",
+        "kind": "module",
+        "name": "input.py",
+        "qualifiedName": "input.py",
+        "span": {
+          "endCol": 1,
+          "endLine": 10,
+          "file": "input.py",
+          "startCol": 1,
+          "startLine": 1
+        }
+      }
+    ],
+    "schemaVersion": 1
+  }
+}

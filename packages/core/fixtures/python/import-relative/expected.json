@@ -1,0 +1,93 @@
+{
+  "diagnostics": [],
+  "graph": {
+    "edges": [
+      {
+        "from": "module:pkg/api.py",
+        "id": "contains:module:pkg/api.py->function:pkg/api.py#handler",
+        "kind": "contains",
+        "to": "function:pkg/api.py#handler"
+      },
+      {
+        "from": "module:pkg/db.py",
+        "id": "contains:module:pkg/db.py->function:pkg/db.py#query",
+        "kind": "contains",
+        "to": "function:pkg/db.py#query"
+      },
+      {
+        "from": "module:pkg/api.py",
+        "id": "imports:module:pkg/api.py->module:pkg/db.py",
+        "kind": "imports",
+        "to": "module:pkg/db.py"
+      }
+    ],
+    "nodes": [
+      {
+        "id": "function:pkg/api.py#handler",
+        "kind": "function",
+        "name": "handler",
+        "qualifiedName": "handler",
+        "span": {
+          "endCol": 29,
+          "endLine": 4,
+          "file": "pkg/api.py",
+          "startCol": 1,
+          "startLine": 3
+        }
+      },
+      {
+        "id": "function:pkg/db.py#query",
+        "kind": "function",
+        "name": "query",
+        "qualifiedName": "query",
+        "span": {
+          "endCol": 15,
+          "endLine": 2,
+          "file": "pkg/db.py",
+          "startCol": 1,
+          "startLine": 1
+        }
+      },
+      {
+        "id": "module:pkg/__init__.py",
+        "kind": "module",
+        "name": "__init__.py",
+        "qualifiedName": "pkg/__init__.py",
+        "span": {
+          "endCol": 1,
+          "endLine": 1,
+          "file": "pkg/__init__.py",
+          "startCol": 1,
+          "startLine": 1
+        }
+      },
+      {
+        "id": "module:pkg/api.py",
+        "kind": "module",
+        "name": "api.py",
+        "qualifiedName": "pkg/api.py",
+        "span": {
+          "endCol": 1,
+          "endLine": 5,
+          "file": "pkg/api.py",
+          "startCol": 1,
+          "startLine": 1
+        }
+      },
+      {
+        "id": "module:pkg/db.py",
+        "kind": "module",
+        "name": "db.py",
+        "qualifiedName": "pkg/db.py",
+        "span": {
+          "endCol": 1,
+          "endLine": 3,
+          "file": "pkg/db.py",
+          "startCol": 1,
+          "startLine": 1
+        }
+      }
+    ],
+    "schemaVersion": 1
+  }
+}

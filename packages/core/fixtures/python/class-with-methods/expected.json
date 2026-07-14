@@ -1,0 +1,80 @@
+{
+  "diagnostics": [],
+  "graph": {
+    "edges": [
+      {
+        "from": "class:input.py#Account",
+        "id": "contains:class:input.py#Account->method:input.py#Account.__init__",
+        "kind": "contains",
+        "to": "method:input.py#Account.__init__"
+      },
+      {
+        "from": "class:input.py#Account",
+        "id": "contains:class:input.py#Account->method:input.py#Account.deposit",
+        "kind": "contains",
+        "to": "method:input.py#Account.deposit"
+      },
+      {
+        "from": "module:input.py",
+        "id": "contains:module:input.py->class:input.py#Account",
+        "kind": "contains",
+        "to": "class:input.py#Account"
+      }
+    ],
+    "nodes": [
+      {
+        "id": "class:input.py#Account",
+        "kind": "class",
+        "name": "Account",
+        "qualifiedName": "Account",
+        "span": {
+          "endCol": 28,
+          "endLine": 8,
+          "file": "input.py",
+          "startCol": 1,
+          "startLine": 1
+        }
+      },
+      {
+        "id": "method:input.py#Account.__init__",
+        "kind": "method",
+        "name": "__init__",
+        "qualifiedName": "Account.__init__",
+        "span": {
+          "endCol": 25,
+          "endLine": 4,
+          "file": "input.py",
+          "startCol": 5,
+          "startLine": 2
+        }
+      },
+      {
+        "id": "method:input.py#Account.deposit",
+        "kind": "method",
+        "name": "deposit",
+        "qualifiedName": "Account.deposit",
+        "span": {
+          "endCol": 28,
+          "endLine": 8,
+          "file": "input.py",
+          "startCol": 5,
+          "startLine": 6
+        }
+      },
+      {
+        "id": "module:input.py",
+        "kind": "module",
+        "name": "input.py",
+        "qualifiedName": "input.py",
+        "span": {
+          "endCol": 1,
+          "endLine": 9,
+          "file": "input.py",
+          "startCol": 1,
+          "startLine": 1
+        }
+      }
+    ],
+    "schemaVersion": 1
+  }
+}

@@ -1,0 +1,42 @@
+{
+  "diagnostics": [],
+  "graph": {
+    "edges": [
+      {
+        "from": "module:input.py",
+        "id": "contains:module:input.py->function:input.py#countdown",
+        "kind": "contains",
+        "to": "function:input.py#countdown"
+      }
+    ],
+    "nodes": [
+      {
+        "id": "function:input.py#countdown",
+        "kind": "function",
+        "name": "countdown",
+        "qualifiedName": "countdown",
+        "span": {
+          "endCol": 28,
+          "endLine": 4,
+          "file": "input.py",
+          "startCol": 1,
+          "startLine": 1
+        }
+      },
+      {
+        "id": "module:input.py",
+        "kind": "module",
+        "name": "input.py",
+        "qualifiedName": "input.py",
+        "span": {
+          "endCol": 1,
+          "endLine": 5,
+          "file": "input.py",
+          "startCol": 1,
+          "startLine": 1
+        }
+      }
+    ],
+    "schemaVersion": 1
+  }
+}

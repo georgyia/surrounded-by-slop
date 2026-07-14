@@ -1,0 +1,61 @@
+{
+  "diagnostics": [],
+  "graph": {
+    "edges": [
+      {
+        "from": "function:input.py#outer",
+        "id": "contains:function:input.py#outer->function:input.py#outer.key",
+        "kind": "contains",
+        "to": "function:input.py#outer.key"
+      },
+      {
+        "from": "module:input.py",
+        "id": "contains:module:input.py->function:input.py#outer",
+        "kind": "contains",
+        "to": "function:input.py#outer"
+      }
+    ],
+    "nodes": [
+      {
+        "id": "function:input.py#outer",
+        "kind": "function",
+        "name": "outer",
+        "qualifiedName": "outer",
+        "span": {
+          "endCol": 34,
+          "endLine": 5,
+          "file": "input.py",
+          "startCol": 1,
+          "startLine": 1
+        }
+      },
+      {
+        "id": "function:input.py#outer.key",
+        "kind": "function",
+        "name": "key",
+        "qualifiedName": "outer.key",
+        "span": {
+          "endCol": 25,
+          "endLine": 3,
+          "file": "input.py",
+          "startCol": 5,
+          "startLine": 2
+        }
+      },
+      {
+        "id": "module:input.py",
+        "kind": "module",
+        "name": "input.py",
+        "qualifiedName": "input.py",
+        "span": {
+          "endCol": 1,
+          "endLine": 6,
+          "file": "input.py",
+          "startCol": 1,
+          "startLine": 1
+        }
+      }
+    ],
+    "schemaVersion": 1
+  }
+}

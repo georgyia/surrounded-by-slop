@@ -1,0 +1,81 @@
+{
+  "diagnostics": [],
+  "graph": {
+    "edges": [
+      {
+        "confidence": "low",
+        "from": "function:input.py#main",
+        "id": "calls:function:input.py#main->function:input.py#fetch",
+        "kind": "calls",
+        "to": "function:input.py#fetch"
+      },
+      {
+        "from": "module:input.py",
+        "id": "contains:module:input.py->function:input.py#fetch",
+        "kind": "contains",
+        "to": "function:input.py#fetch"
+      },
+      {
+        "from": "module:input.py",
+        "id": "contains:module:input.py->function:input.py#main",
+        "kind": "contains",
+        "to": "function:input.py#main"
+      },
+      {
+        "from": "module:input.py",
+        "id": "imports:module:input.py->module:external:asyncio",
+        "kind": "imports",
+        "to": "module:external:asyncio"
+      }
+    ],
+    "nodes": [
+      {
+        "id": "function:input.py#fetch",
+        "kind": "function",
+        "name": "fetch",
+        "qualifiedName": "fetch",
+        "span": {
+          "endCol": 15,
+          "endLine": 5,
+          "file": "input.py",
+          "startCol": 1,
+          "startLine": 3
+        }
+      },
+      {
+        "id": "function:input.py#main",
+        "kind": "function",
+        "name": "main",
+        "qualifiedName": "main",
+        "span": {
+          "endCol": 47,
+          "endLine": 8,
+          "file": "input.py",
+          "startCol": 1,
+          "startLine": 7
+        }
+      },
+      {
+        "external": true,
+        "id": "module:external:asyncio",
+        "kind": "module",
+        "name": "asyncio",
+        "qualifiedName": "asyncio"
+      },
+      {
+        "id": "module:input.py",
+        "kind": "module",
+        "name": "input.py",
+        "qualifiedName": "input.py",
+        "span": {
+          "endCol": 1,
+          "endLine": 9,
+          "file": "input.py",
+          "startCol": 1,
+          "startLine": 1
+        }
+      }
+    ],
+    "schemaVersion": 1
+  }
+}

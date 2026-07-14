@@ -1,0 +1,93 @@
+{
+  "diagnostics": [],
+  "graph": {
+    "edges": [
+      {
+        "from": "class:input.py#Api",
+        "id": "contains:class:input.py#Api->method:input.py#Api.ping",
+        "kind": "contains",
+        "to": "method:input.py#Api.ping"
+      },
+      {
+        "from": "module:input.py",
+        "id": "contains:module:input.py->class:input.py#Api",
+        "kind": "contains",
+        "to": "class:input.py#Api"
+      },
+      {
+        "from": "module:input.py",
+        "id": "contains:module:input.py->function:input.py#fib",
+        "kind": "contains",
+        "to": "function:input.py#fib"
+      },
+      {
+        "from": "module:input.py",
+        "id": "imports:module:input.py->module:external:functools",
+        "kind": "imports",
+        "to": "module:external:functools"
+      }
+    ],
+    "nodes": [
+      {
+        "id": "class:input.py#Api",
+        "kind": "class",
+        "name": "Api",
+        "qualifiedName": "Api",
+        "span": {
+          "endCol": 20,
+          "endLine": 12,
+          "file": "input.py",
+          "startCol": 1,
+          "startLine": 9
+        }
+      },
+      {
+        "id": "function:input.py#fib",
+        "kind": "function",
+        "name": "fib",
+        "qualifiedName": "fib",
+        "span": {
+          "endCol": 35,
+          "endLine": 7,
+          "file": "input.py",
+          "startCol": 1,
+          "startLine": 4
+        }
+      },
+      {
+        "id": "method:input.py#Api.ping",
+        "kind": "method",
+        "name": "ping",
+        "qualifiedName": "Api.ping",
+        "span": {
+          "endCol": 20,
+          "endLine": 12,
+          "file": "input.py",
+          "startCol": 5,
+          "startLine": 11
+        }
+      },
+      {
+        "external": true,
+        "id": "module:external:functools",
+        "kind": "module",
+        "name": "functools",
+        "qualifiedName": "functools"
+      },
+      {
+        "id": "module:input.py",
+        "kind": "module",
+        "name": "input.py",
+        "qualifiedName": "input.py",
+        "span": {
+          "endCol": 1,
+          "endLine": 13,
+          "file": "input.py",
+          "startCol": 1,
+          "startLine": 1
+        }
+      }
+    ],
+    "schemaVersion": 1
+  }
+}

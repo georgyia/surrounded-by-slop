@@ -1,0 +1,68 @@
+{
+  "diagnostics": [],
+  "graph": {
+    "edges": [
+      {
+        "from": "module:input.py",
+        "id": "contains:module:input.py->function:input.py#dump",
+        "kind": "contains",
+        "to": "function:input.py#dump"
+      },
+      {
+        "from": "module:input.py",
+        "id": "imports:module:input.py->module:external:json",
+        "kind": "imports",
+        "to": "module:external:json"
+      },
+      {
+        "from": "module:input.py",
+        "id": "imports:module:input.py->module:external:os",
+        "kind": "imports",
+        "to": "module:external:os"
+      }
+    ],
+    "nodes": [
+      {
+        "id": "function:input.py#dump",
+        "kind": "function",
+        "name": "dump",
+        "qualifiedName": "dump",
+        "span": {
+          "endCol": 28,
+          "endLine": 5,
+          "file": "input.py",
+          "startCol": 1,
+          "startLine": 4
+        }
+      },
+      {
+        "external": true,
+        "id": "module:external:json",
+        "kind": "module",
+        "name": "json",
+        "qualifiedName": "json"
+      },
+      {
+        "external": true,
+        "id": "module:external:os",
+        "kind": "module",
+        "name": "os",
+        "qualifiedName": "os"
+      },
+      {
+        "id": "module:input.py",
+        "kind": "module",
+        "name": "input.py",
+        "qualifiedName": "input.py",
+        "span": {
+          "endCol": 1,
+          "endLine": 6,
+          "file": "input.py",
+          "startCol": 1,
+          "startLine": 1
+        }
+      }
+    ],
+    "schemaVersion": 1
+  }
+}

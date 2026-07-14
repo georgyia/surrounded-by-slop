@@ -33,9 +33,35 @@ test("Visualize Workspace shows a collapsed module map of the folder", async () 
     "every node is a module or folder",
   );
   const names = diagram.graph.nodes.map((node) => node.name);
-  for (const file of ["alpha.ts", "beta.ts", "gamma.ts"]) {
+  // TypeScript and Python modules land on one map (SBS-081).
+  for (const file of ["alpha.ts", "beta.ts", "gamma.ts", "tasks.py"]) {
     assert.ok(names.includes(file), `the map includes ${file} (got ${names.join(", ")})`);
   }
+});
+
+test("Visualize File charts a Python file through the tree-sitter adapter", async () => {
+  const api = await getApi();
+  const folder = vscode.workspace.workspaceFolders?.[0];
+  assert.ok(folder, "a workspace folder is open");
+  const document = await vscode.workspace.openTextDocument(
+    vscode.Uri.joinPath(folder.uri, "tasks.py"),
+  );
+  await vscode.window.showTextDocument(document, vscode.ViewColumn.One);
+
+  const visualized = nextVisualize(api);
+  await vscode.commands.executeCommand("slop.visualizeFile");
+  const diagram = await withTimeout(visualized, 20_000, "python visualize round-trip");
+
+  const byName = new Map(diagram.graph.nodes.map((node) => [node.name, node]));
+  assert.ok(byName.has("TaskList"), "class extracted");
+  assert.strictEqual(byName.get("add")?.kind, "method", "method inside the class");
+  assert.strictEqual(byName.get("summarize")?.kind, "function", "module-level function");
+  // The heuristic same-module call is present and marked low-confidence.
+  const call = diagram.graph.edges.find(
+    (edge) => edge.kind === "calls" && edge.to === byName.get("summarize")?.id,
+  );
+  assert.ok(call, "add → summarize call edge");
+  assert.strictEqual(call.confidence, "low", "heuristic calls are honest about it");
 });
 
 test("a cancelled Visualize Workspace renders nothing", async () => {

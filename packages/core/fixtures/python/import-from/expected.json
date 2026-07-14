@@ -1,0 +1,80 @@
+{
+  "diagnostics": [],
+  "graph": {
+    "edges": [
+      {
+        "from": "module:app.py",
+        "id": "contains:module:app.py->function:app.py#main",
+        "kind": "contains",
+        "to": "function:app.py#main"
+      },
+      {
+        "from": "module:store.py",
+        "id": "contains:module:store.py->function:store.py#save",
+        "kind": "contains",
+        "to": "function:store.py#save"
+      },
+      {
+        "from": "module:app.py",
+        "id": "imports:module:app.py->module:store.py",
+        "kind": "imports",
+        "to": "module:store.py"
+      }
+    ],
+    "nodes": [
+      {
+        "id": "function:app.py#main",
+        "kind": "function",
+        "name": "main",
+        "qualifiedName": "main",
+        "span": {
+          "endCol": 19,
+          "endLine": 4,
+          "file": "app.py",
+          "startCol": 1,
+          "startLine": 3
+        }
+      },
+      {
+        "id": "function:store.py#save",
+        "kind": "function",
+        "name": "save",
+        "qualifiedName": "save",
+        "span": {
+          "endCol": 17,
+          "endLine": 2,
+          "file": "store.py",
+          "startCol": 1,
+          "startLine": 1
+        }
+      },
+      {
+        "id": "module:app.py",
+        "kind": "module",
+        "name": "app.py",
+        "qualifiedName": "app.py",
+        "span": {
+          "endCol": 1,
+          "endLine": 5,
+          "file": "app.py",
+          "startCol": 1,
+          "startLine": 1
+        }
+      },
+      {
+        "id": "module:store.py",
+        "kind": "module",
+        "name": "store.py",
+        "qualifiedName": "store.py",
+        "span": {
+          "endCol": 1,
+          "endLine": 3,
+          "file": "store.py",
+          "startCol": 1,
+          "startLine": 1
+        }
+      }
+    ],
+    "schemaVersion": 1
+  }
+}

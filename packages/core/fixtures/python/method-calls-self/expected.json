@@ -1,0 +1,113 @@
+{
+  "diagnostics": [],
+  "graph": {
+    "edges": [
+      {
+        "confidence": "low",
+        "from": "method:input.py#Pipeline.run",
+        "id": "calls:method:input.py#Pipeline.run->method:input.py#Pipeline.clean",
+        "kind": "calls",
+        "to": "method:input.py#Pipeline.clean"
+      },
+      {
+        "confidence": "low",
+        "from": "method:input.py#Pipeline.run",
+        "id": "calls:method:input.py#Pipeline.run->method:input.py#Pipeline.publish",
+        "kind": "calls",
+        "to": "method:input.py#Pipeline.publish"
+      },
+      {
+        "from": "class:input.py#Pipeline",
+        "id": "contains:class:input.py#Pipeline->method:input.py#Pipeline.clean",
+        "kind": "contains",
+        "to": "method:input.py#Pipeline.clean"
+      },
+      {
+        "from": "class:input.py#Pipeline",
+        "id": "contains:class:input.py#Pipeline->method:input.py#Pipeline.publish",
+        "kind": "contains",
+        "to": "method:input.py#Pipeline.publish"
+      },
+      {
+        "from": "class:input.py#Pipeline",
+        "id": "contains:class:input.py#Pipeline->method:input.py#Pipeline.run",
+        "kind": "contains",
+        "to": "method:input.py#Pipeline.run"
+      },
+      {
+        "from": "module:input.py",
+        "id": "contains:module:input.py->class:input.py#Pipeline",
+        "kind": "contains",
+        "to": "class:input.py#Pipeline"
+      }
+    ],
+    "nodes": [
+      {
+        "id": "class:input.py#Pipeline",
+        "kind": "class",
+        "name": "Pipeline",
+        "qualifiedName": "Pipeline",
+        "span": {
+          "endCol": 25,
+          "endLine": 10,
+          "file": "input.py",
+          "startCol": 1,
+          "startLine": 1
+        }
+      },
+      {
+        "id": "method:input.py#Pipeline.clean",
+        "kind": "method",
+        "name": "clean",
+        "qualifiedName": "Pipeline.clean",
+        "span": {
+          "endCol": 28,
+          "endLine": 7,
+          "file": "input.py",
+          "startCol": 5,
+          "startLine": 6
+        }
+      },
+      {
+        "id": "method:input.py#Pipeline.publish",
+        "kind": "method",
+        "name": "publish",
+        "qualifiedName": "Pipeline.publish",
+        "span": {
+          "endCol": 25,
+          "endLine": 10,
+          "file": "input.py",
+          "startCol": 5,
+          "startLine": 9
+        }
+      },
+      {
+        "id": "method:input.py#Pipeline.run",
+        "kind": "method",
+        "name": "run",
+        "qualifiedName": "Pipeline.run",
+        "span": {
+          "endCol": 37,
+          "endLine": 4,
+          "file": "input.py",
+          "startCol": 5,
+          "startLine": 2
+        }
+      },
+      {
+        "id": "module:input.py",
+        "kind": "module",
+        "name": "input.py",
+        "qualifiedName": "input.py",
+        "span": {
+          "endCol": 1,
+          "endLine": 11,
+          "file": "input.py",
+          "startCol": 1,
+          "startLine": 1
+        }
+      }
+    ],
+    "schemaVersion": 1
+  }
+}

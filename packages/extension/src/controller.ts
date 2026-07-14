@@ -5,13 +5,56 @@ import { readConfig } from "./config.js";
 import type { Logger } from "./log.js";
 import type { DiagramView } from "./panel/diagramView.js";
 
-/** VS Code language ids the TypeScript adapter understands, and their file suffix. */
+/** VS Code language ids the analyzers understand, and their file suffix. */
 const LANGUAGE_EXTENSIONS: Readonly<Record<string, string>> = {
   typescript: ".ts",
   typescriptreact: ".tsx",
   javascript: ".js",
   javascriptreact: ".jsx",
+  python: ".py",
 };
+
+/**
+ * The Python adapter loads its tree-sitter grammar on first use (SBS-081);
+ * the wasm binaries sit next to the host bundle (see esbuild.mjs).
+ */
+let pythonAdapterPromise: Promise<import("@surrounded-by-slop/core").LanguageAdapter> | undefined;
+function pythonAdapter(): Promise<import("@surrounded-by-slop/core").LanguageAdapter> {
+  if (pythonAdapterPromise === undefined) {
+    pythonAdapterPromise = (async () => {
+      const { readFile } = await import("node:fs/promises");
+      const { join } = await import("node:path");
+      const { createPythonAdapter } = await import("@surrounded-by-slop/core");
+      return createPythonAdapter({
+        runtime: new Uint8Array(await readFile(join(__dirname, "web-tree-sitter.wasm"))),
+        python: new Uint8Array(await readFile(join(__dirname, "tree-sitter-python.wasm"))),
+      });
+    })();
+  }
+  return pythonAdapterPromise;
+}
+
+/** Merge per-language analyses into one workspace graph (ids never collide). */
+async function mergeResults(
+  results: readonly import("@surrounded-by-slop/core").AnalysisResult[],
+): Promise<import("@surrounded-by-slop/core").AnalysisResult> {
+  const [first, ...rest] = results;
+  if (first === undefined) {
+    return { graph: { schemaVersion: 1, nodes: [], edges: [] }, diagnostics: [] };
+  }
+  if (rest.length === 0) {
+    return first;
+  }
+  const { canonicalizeGraph } = await import("@surrounded-by-slop/core");
+  return {
+    graph: canonicalizeGraph({
+      schemaVersion: first.graph.schemaVersion,
+      nodes: results.flatMap((result) => result.graph.nodes),
+      edges: results.flatMap((result) => result.graph.edges),
+    }),
+    diagnostics: results.flatMap((result) => result.diagnostics),
+  };
+}
 
 const REFRESH_DEBOUNCE_MS = 300;
 /** Guardrails so a stray huge tree (a downloaded SDK, a vendored bundle) can't run analysis away. */
@@ -91,7 +134,9 @@ function withoutExternalModules(graph: SemanticGraph): SemanticGraph {
 }
 
 function isTestFile(path: string): boolean {
-  return /\.(test|spec)\.[cm]?[jt]sx?$/i.test(path);
+  return (
+    /\.(test|spec)\.[cm]?[jt]sx?$/i.test(path) || /(^|\/)(test_[^/]+|[^/]+_test)\.py$/i.test(path)
+  );
 }
 
 function braceGlob(globs: readonly string[]): string | undefined {
@@ -163,7 +208,11 @@ export class VisualizationController implements vscode.Disposable {
    */
   async visualizeFunctionFlow(): Promise<void> {
     const editor = vscode.window.activeTextEditor;
-    if (editor === undefined || suffixFor(editor.document) === undefined) {
+    if (
+      editor === undefined ||
+      suffixFor(editor.document) === undefined ||
+      editor.document.languageId === "python" // CFG extraction is TS/JS-only so far
+    ) {
       void vscode.window.showInformationMessage(
         "Surrounded by Slop: open a TypeScript or JavaScript file and put the cursor inside a function.",
       );
@@ -275,7 +324,7 @@ export class VisualizationController implements vscode.Disposable {
     try {
       const config = readConfig();
       const uris = await vscode.workspace.findFiles(
-        braceGlob(config.include) ?? "**/*.{ts,tsx,mts,cts,js,jsx,mjs,cjs}",
+        braceGlob(config.include) ?? "**/*.{ts,tsx,mts,cts,js,jsx,mjs,cjs,py}",
         braceGlob(config.exclude),
         MAX_WORKSPACE_FILES,
         token,
@@ -322,7 +371,18 @@ export class VisualizationController implements vscode.Disposable {
           return token.isCancellationRequested;
         },
       };
-      const analyzed = analyzeTypeScriptProject(inputs, { cancellation });
+      // Each language analyzes with its own adapter; the maps merge afterwards
+      // (module ids are path-based, so they can never collide).
+      const pythonInputs = inputs.filter((input) => input.path.endsWith(".py"));
+      const tsInputs = inputs.filter((input) => !input.path.endsWith(".py"));
+      const results = [];
+      if (tsInputs.length > 0) {
+        results.push(analyzeTypeScriptProject(tsInputs, { cancellation }));
+      }
+      if (pythonInputs.length > 0) {
+        results.push((await pythonAdapter()).analyze(pythonInputs, { cancellation }));
+      }
+      const analyzed = await mergeResults(results);
       for (const diagnostic of analyzed.diagnostics) {
         this.logger.warn(`${diagnostic.file ?? "workspace"}: ${diagnostic.message}`);
       }
@@ -599,7 +659,10 @@ export class VisualizationController implements vscode.Disposable {
       const { analyzeTypeScriptProject, layoutGraph } = await import("@surrounded-by-slop/core");
       // A broken file degrades to a partial graph plus diagnostics — surface those
       // as warnings and carry on rather than failing the whole visualization.
-      const analyzed = analyzeTypeScriptProject([{ path, text: document.getText() }]);
+      const analyzed =
+        document.languageId === "python"
+          ? (await pythonAdapter()).analyze([{ path, text: document.getText() }])
+          : analyzeTypeScriptProject([{ path, text: document.getText() }]);
       for (const diagnostic of analyzed.diagnostics) {
         this.logger.warn(`${diagnostic.file ?? path}: ${diagnostic.message}`);
       }

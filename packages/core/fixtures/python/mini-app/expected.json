@@ -1,0 +1,297 @@
+{
+  "diagnostics": [],
+  "graph": {
+    "edges": [
+      {
+        "confidence": "low",
+        "from": "function:shop/orders/views.py#place_order",
+        "id": "calls:function:shop/orders/views.py#place_order->function:shop/orders/views.py#error",
+        "kind": "calls",
+        "to": "function:shop/orders/views.py#error"
+      },
+      {
+        "from": "class:shop/orders/models.py#Order",
+        "id": "contains:class:shop/orders/models.py#Order->method:shop/orders/models.py#Order.__init__",
+        "kind": "contains",
+        "to": "method:shop/orders/models.py#Order.__init__"
+      },
+      {
+        "from": "class:shop/orders/models.py#Order",
+        "id": "contains:class:shop/orders/models.py#Order->method:shop/orders/models.py#Order.total",
+        "kind": "contains",
+        "to": "method:shop/orders/models.py#Order.total"
+      },
+      {
+        "from": "module:shop/billing/charges.py",
+        "id": "contains:module:shop/billing/charges.py->function:shop/billing/charges.py#charge",
+        "kind": "contains",
+        "to": "function:shop/billing/charges.py#charge"
+      },
+      {
+        "from": "module:shop/catalog/stock.py",
+        "id": "contains:module:shop/catalog/stock.py->function:shop/catalog/stock.py#reserve",
+        "kind": "contains",
+        "to": "function:shop/catalog/stock.py#reserve"
+      },
+      {
+        "from": "module:shop/orders/models.py",
+        "id": "contains:module:shop/orders/models.py->class:shop/orders/models.py#Order",
+        "kind": "contains",
+        "to": "class:shop/orders/models.py#Order"
+      },
+      {
+        "from": "module:shop/orders/views.py",
+        "id": "contains:module:shop/orders/views.py->function:shop/orders/views.py#error",
+        "kind": "contains",
+        "to": "function:shop/orders/views.py#error"
+      },
+      {
+        "from": "module:shop/orders/views.py",
+        "id": "contains:module:shop/orders/views.py->function:shop/orders/views.py#place_order",
+        "kind": "contains",
+        "to": "function:shop/orders/views.py#place_order"
+      },
+      {
+        "from": "module:shop/billing/charges.py",
+        "id": "imports:module:shop/billing/charges.py->module:shop/settings.py",
+        "kind": "imports",
+        "to": "module:shop/settings.py"
+      },
+      {
+        "from": "module:shop/catalog/stock.py",
+        "id": "imports:module:shop/catalog/stock.py->module:shop/settings.py",
+        "kind": "imports",
+        "to": "module:shop/settings.py"
+      },
+      {
+        "from": "module:shop/orders/views.py",
+        "id": "imports:module:shop/orders/views.py->module:shop/billing/charges.py",
+        "kind": "imports",
+        "to": "module:shop/billing/charges.py"
+      },
+      {
+        "from": "module:shop/orders/views.py",
+        "id": "imports:module:shop/orders/views.py->module:shop/catalog/stock.py",
+        "kind": "imports",
+        "to": "module:shop/catalog/stock.py"
+      },
+      {
+        "from": "module:shop/orders/views.py",
+        "id": "imports:module:shop/orders/views.py->module:shop/orders/models.py",
+        "kind": "imports",
+        "to": "module:shop/orders/models.py"
+      }
+    ],
+    "nodes": [
+      {
+        "id": "class:shop/orders/models.py#Order",
+        "kind": "class",
+        "name": "Order",
+        "qualifiedName": "Order",
+        "span": {
+          "endCol": 54,
+          "endLine": 6,
+          "file": "shop/orders/models.py",
+          "startCol": 1,
+          "startLine": 1
+        }
+      },
+      {
+        "id": "function:shop/billing/charges.py#charge",
+        "kind": "function",
+        "name": "charge",
+        "qualifiedName": "charge",
+        "span": {
+          "endCol": 34,
+          "endLine": 4,
+          "file": "shop/billing/charges.py",
+          "startCol": 1,
+          "startLine": 3
+        }
+      },
+      {
+        "id": "function:shop/catalog/stock.py#reserve",
+        "kind": "function",
+        "name": "reserve",
+        "qualifiedName": "reserve",
+        "span": {
+          "endCol": 56,
+          "endLine": 8,
+          "file": "shop/catalog/stock.py",
+          "startCol": 1,
+          "startLine": 5
+        }
+      },
+      {
+        "id": "function:shop/orders/views.py#error",
+        "kind": "function",
+        "name": "error",
+        "qualifiedName": "error",
+        "span": {
+          "endCol": 30,
+          "endLine": 12,
+          "file": "shop/orders/views.py",
+          "startCol": 1,
+          "startLine": 11
+        }
+      },
+      {
+        "id": "function:shop/orders/views.py#place_order",
+        "kind": "function",
+        "name": "place_order",
+        "qualifiedName": "place_order",
+        "span": {
+          "endCol": 33,
+          "endLine": 9,
+          "file": "shop/orders/views.py",
+          "startCol": 1,
+          "startLine": 5
+        }
+      },
+      {
+        "id": "method:shop/orders/models.py#Order.__init__",
+        "kind": "method",
+        "name": "__init__",
+        "qualifiedName": "Order.__init__",
+        "span": {
+          "endCol": 27,
+          "endLine": 3,
+          "file": "shop/orders/models.py",
+          "startCol": 5,
+          "startLine": 2
+        }
+      },
+      {
+        "id": "method:shop/orders/models.py#Order.total",
+        "kind": "method",
+        "name": "total",
+        "qualifiedName": "Order.total",
+        "span": {
+          "endCol": 54,
+          "endLine": 6,
+          "file": "shop/orders/models.py",
+          "startCol": 5,
+          "startLine": 5
+        }
+      },
+      {
+        "id": "module:shop/__init__.py",
+        "kind": "module",
+        "name": "__init__.py",
+        "qualifiedName": "shop/__init__.py",
+        "span": {
+          "endCol": 1,
+          "endLine": 1,
+          "file": "shop/__init__.py",
+          "startCol": 1,
+          "startLine": 1
+        }
+      },
+      {
+        "id": "module:shop/billing/__init__.py",
+        "kind": "module",
+        "name": "__init__.py",
+        "qualifiedName": "shop/billing/__init__.py",
+        "span": {
+          "endCol": 1,
+          "endLine": 1,
+          "file": "shop/billing/__init__.py",
+          "startCol": 1,
+          "startLine": 1
+        }
+      },
+      {
+        "id": "module:shop/billing/charges.py",
+        "kind": "module",
+        "name": "charges.py",
+        "qualifiedName": "shop/billing/charges.py",
+        "span": {
+          "endCol": 1,
+          "endLine": 5,
+          "file": "shop/billing/charges.py",
+          "startCol": 1,
+          "startLine": 1
+        }
+      },
+      {
+        "id": "module:shop/catalog/__init__.py",
+        "kind": "module",
+        "name": "__init__.py",
+        "qualifiedName": "shop/catalog/__init__.py",
+        "span": {
+          "endCol": 1,
+          "endLine": 1,
+          "file": "shop/catalog/__init__.py",
+          "startCol": 1,
+          "startLine": 1
+        }
+      },
+      {
+        "id": "module:shop/catalog/stock.py",
+        "kind": "module",
+        "name": "stock.py",
+        "qualifiedName": "shop/catalog/stock.py",
+        "span": {
+          "endCol": 1,
+          "endLine": 9,
+          "file": "shop/catalog/stock.py",
+          "startCol": 1,
+          "startLine": 1
+        }
+      },
+      {
+        "id": "module:shop/orders/__init__.py",
+        "kind": "module",
+        "name": "__init__.py",
+        "qualifiedName": "shop/orders/__init__.py",
+        "span": {
+          "endCol": 1,
+          "endLine": 1,
+          "file": "shop/orders/__init__.py",
+          "startCol": 1,
+          "startLine": 1
+        }
+      },
+      {
+        "id": "module:shop/orders/models.py",
+        "kind": "module",
+        "name": "models.py",
+        "qualifiedName": "shop/orders/models.py",
+        "span": {
+          "endCol": 1,
+          "endLine": 7,
+          "file": "shop/orders/models.py",
+          "startCol": 1,
+          "startLine": 1
+        }
+      },
+      {
+        "id": "module:shop/orders/views.py",
+        "kind": "module",
+        "name": "views.py",
+        "qualifiedName": "shop/orders/views.py",
+        "span": {
+          "endCol": 1,
+          "endLine": 13,
+          "file": "shop/orders/views.py",
+          "startCol": 1,
+          "startLine": 1
+        }
+      },
+      {
+        "id": "module:shop/settings.py",
+        "kind": "module",
+        "name": "settings.py",
+        "qualifiedName": "shop/settings.py",
+        "span": {
+          "endCol": 1,
+          "endLine": 3,
+          "file": "shop/settings.py",
+          "startCol": 1,
+          "startLine": 1
+        }
+      }
+    ],
+    "schemaVersion": 1
+  }
+}

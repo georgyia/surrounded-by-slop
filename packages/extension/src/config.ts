@@ -16,7 +16,7 @@ export interface SlopConfig {
   readonly layoutDirection: "RIGHT" | "DOWN";
 }
 
-const DEFAULT_INCLUDE = ["**/*.{ts,tsx,mts,cts,js,jsx,mjs,cjs}"];
+const DEFAULT_INCLUDE = ["**/*.{ts,tsx,mts,cts,js,jsx,mjs,cjs,py}"];
 const DEFAULT_EXCLUDE = [
   "**/node_modules/**",
   "**/dist/**",
