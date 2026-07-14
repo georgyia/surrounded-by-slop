@@ -71,6 +71,12 @@ export {
   type LayoutPoint,
   layoutGraph,
 } from "./layout/layout.js";
+export {
+  createPythonAdapter,
+  type PythonWasm,
+  pythonQueries,
+  resolvePythonModule,
+} from "./python/adapter.js";
 export { stableStringify } from "./stable-json.js";
 export {
   collapseToFolders,
@@ -82,4 +88,10 @@ export {
   reachableFrom,
   sliceAround,
 } from "./transforms/transforms.js";
+export {
+  analyzeWithTreeSitter,
+  type LanguageQueries,
+  type TreeSitterAnalysisOptions,
+} from "./treesitter/mapper.js";
+export { type LoadedLanguage, loadTreeSitterLanguage } from "./treesitter/runtime.js";
 export { analyzeTypeScriptProject, typescriptAdapter } from "./typescript/adapter.js";
