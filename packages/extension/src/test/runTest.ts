@@ -17,7 +17,11 @@ async function main(): Promise<void> {
   const extensionTestsPath = resolve(__dirname, "./suite/index.js");
   // Open the small multi-file fixture so the workspace command has something to map.
   const workspaceFixture = resolve(__dirname, "../../test-fixtures/workspace");
+  // CI also runs the suite against the oldest supported VS Code (SBS-092):
+  // VSCODE_TEST_VERSION=1.96.0. Default is the current stable.
+  const version = process.env.VSCODE_TEST_VERSION ?? "stable";
   await runTests({
+    version,
     extensionDevelopmentPath,
     extensionTestsPath,
     // No settings sync, no other extensions — a clean, reproducible host.
