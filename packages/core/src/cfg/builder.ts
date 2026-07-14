@@ -315,7 +315,18 @@ class FunctionCfgBuilder {
     this.addText(stmt, firstLine(stmt.getText(this.sourceFile)));
   }
 
+  /** Cut the block so a condition/dispatch starts fresh: branches must visibly
+   * leave a box whose label *is* the condition, not preceding statements. */
+  private startConditionBlock(): void {
+    if (this.current !== undefined && this.current.statements.length > 0) {
+      const condition = this.newBlock();
+      this.edge(this.current, condition, "normal");
+      this.current = condition;
+    }
+  }
+
   private ifStatement(stmt: ts.IfStatement): void {
+    this.startConditionBlock();
     this.addText(stmt.expression, firstLine(stmt.expression.getText(this.sourceFile)));
     const condition = this.ensureCurrent();
     const after = this.newBlock();
@@ -466,6 +477,7 @@ class FunctionCfgBuilder {
   }
 
   private switchStatement(stmt: ts.SwitchStatement): void {
+    this.startConditionBlock();
     this.addText(stmt.expression, firstLine(`switch ${stmt.expression.getText(this.sourceFile)}`));
     const dispatch = this.ensureCurrent();
     const after = this.newBlock();

@@ -18,7 +18,16 @@
               "file": "input.ts",
               "startCol": 3,
               "startLine": 2
-            },
+            }
+          ],
+          "statements": [
+            "const value = Number(raw);"
+          ]
+        },
+        {
+          "id": "b2",
+          "kind": "basic",
+          "spans": [
             {
               "endCol": 26,
               "endLine": 3,
@@ -28,12 +37,11 @@
             }
           ],
           "statements": [
-            "const value = Number(raw);",
             "Number.isNaN(value)"
           ]
         },
         {
-          "id": "b2",
+          "id": "b3",
           "kind": "basic",
           "spans": [
             {
@@ -49,7 +57,7 @@
           ]
         },
         {
-          "id": "b3",
+          "id": "b4",
           "kind": "basic",
           "spans": [
             {
@@ -79,21 +87,26 @@
         },
         {
           "from": "b1",
-          "kind": "false",
+          "kind": "normal",
           "to": "b2"
         },
         {
-          "from": "b1",
-          "kind": "true",
+          "from": "b2",
+          "kind": "false",
           "to": "b3"
         },
         {
           "from": "b2",
+          "kind": "true",
+          "to": "b4"
+        },
+        {
+          "from": "b3",
           "kind": "normal",
           "to": "exit"
         },
         {
-          "from": "b3",
+          "from": "b4",
           "kind": "exception",
           "to": "exit"
         }

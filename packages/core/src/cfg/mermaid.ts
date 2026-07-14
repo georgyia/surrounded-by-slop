@@ -29,7 +29,14 @@ function blockLabel(cfg: ControlFlowGraph, id: string): string | undefined {
   }
   const text = block.statements.join("<br/>");
   const awaits = block.awaits === true ? "⏳ " : "";
-  return `${id}["${awaits}${escapeLabel(text)}"]`;
+  // Blocks that branch (true/false/case out-edges) are decision diamonds.
+  const branches = cfg.edges.some(
+    (edge) =>
+      edge.from === id && (edge.kind === "true" || edge.kind === "false" || edge.kind === "case"),
+  );
+  return branches
+    ? `${id}{"${awaits}${escapeLabel(text)}"}`
+    : `${id}["${awaits}${escapeLabel(text)}"]`;
 }
 
 function edgeLabel(edge: CfgEdge): string | undefined {

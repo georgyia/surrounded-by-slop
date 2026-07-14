@@ -18,7 +18,16 @@
               "file": "input.ts",
               "startCol": 3,
               "startLine": 2
-            },
+            }
+          ],
+          "statements": [
+            "let out = \"\";"
+          ]
+        },
+        {
+          "id": "b2",
+          "kind": "basic",
+          "spans": [
             {
               "endCol": 12,
               "endLine": 3,
@@ -28,12 +37,11 @@
             }
           ],
           "statements": [
-            "let out = \"\";",
             "switch k"
           ]
         },
         {
-          "id": "b2",
+          "id": "b3",
           "kind": "basic",
           "spans": [
             {
@@ -49,7 +57,7 @@
           ]
         },
         {
-          "id": "b3",
+          "id": "b4",
           "kind": "basic",
           "spans": [
             {
@@ -65,7 +73,7 @@
           ]
         },
         {
-          "id": "b4",
+          "id": "b5",
           "kind": "basic",
           "spans": [
             {
@@ -89,7 +97,7 @@
           ]
         },
         {
-          "id": "b5",
+          "id": "b6",
           "kind": "basic",
           "spans": [
             {
@@ -127,47 +135,52 @@
         },
         {
           "from": "b1",
-          "kind": "case",
-          "label": "no match",
+          "kind": "normal",
           "to": "b2"
         },
         {
-          "from": "b1",
+          "from": "b2",
           "kind": "case",
-          "label": "\"a\"",
+          "label": "no match",
           "to": "b3"
         },
         {
-          "from": "b1",
+          "from": "b2",
           "kind": "case",
-          "label": "\"b\"",
+          "label": "\"a\"",
           "to": "b4"
         },
         {
-          "from": "b1",
+          "from": "b2",
           "kind": "case",
-          "label": "\"c\"",
+          "label": "\"b\"",
           "to": "b5"
         },
         {
           "from": "b2",
-          "kind": "normal",
-          "to": "exit"
+          "kind": "case",
+          "label": "\"c\"",
+          "to": "b6"
         },
         {
           "from": "b3",
           "kind": "normal",
-          "to": "b4"
+          "to": "exit"
         },
         {
           "from": "b4",
           "kind": "normal",
-          "to": "b2"
+          "to": "b5"
         },
         {
           "from": "b5",
           "kind": "normal",
-          "to": "b2"
+          "to": "b3"
+        },
+        {
+          "from": "b6",
+          "kind": "normal",
+          "to": "b3"
         }
       ],
       "entryId": "entry",
