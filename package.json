@@ -20,7 +20,8 @@
     "test": "vitest run --coverage",
     "test:watch": "vitest",
     "package": "pnpm --filter surrounded-by-slop run package",
-    "changeset": "changeset"
+    "changeset": "changeset",
+    "bench": "pnpm --filter @surrounded-by-slop/core build && node scripts/bench.mjs"
   },
   "devDependencies": {
     "@biomejs/biome": "^2.0.0",

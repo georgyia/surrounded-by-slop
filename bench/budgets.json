@@ -1,0 +1,12 @@
+{
+  "small.analyzeMs": 6000,
+  "small.layoutMs": 6000,
+  "small.heapMB": 400,
+  "medium.analyzeMs": 15000,
+  "medium.layoutMs": 6000,
+  "medium.heapMB": 800,
+  "large.analyzeMs": 40000,
+  "large.layoutMs": 6000,
+  "large.heapMB": 1600,
+  "dense.layoutMs": 30000
+}

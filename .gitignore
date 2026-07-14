@@ -22,3 +22,4 @@ coverage/
 /try.mjs
 /graph.json
 /out/
+bench/baseline.local.json

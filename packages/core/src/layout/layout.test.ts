@@ -144,6 +144,30 @@ describe("layoutGraph", () => {
     }
   });
 
+  it("stays fast on dense graphs by dropping to polyline routing", async () => {
+    // ~1,200 flat edges: orthogonal routing here took ~15 s and ran out of
+    // memory not far beyond (found by the SBS-090 bench) — the fallback must
+    // keep dense module maps interactive.
+    const nodes: GraphNode[] = [];
+    const edges: GraphEdge[] = [];
+    for (let m = 0; m < 300; m += 1) {
+      const id = moduleId(`src/m${m}.ts`);
+      nodes.push({ id, kind: "module", name: `m${m}.ts`, qualifiedName: `src/m${m}.ts` });
+      for (let k = 1; k <= 4 && m - k >= 0; k += 1) {
+        const target = moduleId(`src/m${m - k}.ts`);
+        edges.push({ id: edgeId("imports", id, target), kind: "imports", from: id, to: target });
+      }
+    }
+    const graph = buildGraph(nodes, edges);
+    expect(graph.edges.length).toBeGreaterThan(1000);
+
+    const startedAt = performance.now();
+    const layout = await layoutGraph(graph);
+    const elapsed = performance.now() - startedAt;
+    checkInvariants(graph, layout);
+    expect(elapsed).toBeLessThan(5000);
+  });
+
   it("lays out 200 nodes well under a second", async () => {
     const nodes: GraphNode[] = [];
     const edges: GraphEdge[] = [];

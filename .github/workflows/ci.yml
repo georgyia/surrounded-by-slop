@@ -84,6 +84,26 @@ jobs:
           path: packages/extension/.vscode-test/user-data/logs/
           if-no-files-found: ignore
 
+  bench:
+    name: Benchmarks
+    # Trend tracking on main only — PRs stay fast; budgets still gate here.
+    if: github.event_name == 'push'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: pnpm/action-setup@v6
+      - uses: actions/setup-node@v6
+        with:
+          node-version-file: .nvmrc
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm --filter @surrounded-by-slop/core build
+      - run: node scripts/bench.mjs --json bench-report.json
+      - uses: actions/upload-artifact@v7
+        with:
+          name: bench-report-${{ github.sha }}
+          path: bench-report.json
+
   package:
     name: Package VSIX
     needs: [quality, test]

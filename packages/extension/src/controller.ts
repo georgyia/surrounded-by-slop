@@ -23,8 +23,19 @@ const MAX_FILE_BYTES = 512 * 1024;
  * (SBS-065). Drill back into modules by narrowing the scope.
  */
 const MODULE_RENDER_BUDGET = 250;
+/**
+ * Density guardrail (SBS-090 benchmarks): layout cost is driven by edges, not
+ * nodes — ~200 modules sharing hub utilities already means >1,000 edges and a
+ * multi-second layout. Fold to folders past this many non-containment edges
+ * even when the module count looks harmless.
+ */
+const EDGE_RENDER_BUDGET = 600;
 /** Above this many nodes even the folded graph would choke the layout — bail with advice. */
 const MAX_LAYOUT_NODES = 1500;
+
+function flatEdgeCount(graph: SemanticGraph): number {
+  return graph.edges.filter((edge) => edge.kind !== "contains").length;
+}
 /** How many hops of neighbors an "isolate" keeps around the chosen node (SBS-063). */
 const ISOLATE_DEPTH = 1;
 
@@ -324,11 +335,20 @@ export class VisualizationController implements vscode.Disposable {
         : withoutExternalModules(analyzed.graph);
       const modules = collapseToModules(base);
       this.preIsolate = undefined; // a fresh workspace map is not an isolate
-      // Guardrail (SBS-065): past the readability budget, fold modules up to the
-      // folder level so a large repo shows as clusters, not a hairball. In that
-      // overview expansion is off — narrow the scope to get an expandable map.
-      if (modules.nodes.length > MODULE_RENDER_BUDGET) {
-        const folders = collapseToFolders(base, 1);
+      // Guardrail (SBS-065 + SBS-090): past the readability budget — by module
+      // count or by edge density — fold up to the folder level so a large repo
+      // shows as clusters, not a hairball. In that overview expansion is off —
+      // narrow the scope to get an expandable map.
+      if (
+        modules.nodes.length > MODULE_RENDER_BUDGET ||
+        flatEdgeCount(modules) > EDGE_RENDER_BUDGET
+      ) {
+        // A src-rooted repo folds to a single useless box at depth 1 — deepen
+        // until the overview has enough groups to be a map.
+        let folders = collapseToFolders(base, 1);
+        if (folders.nodes.filter((node) => node.kind === "folder").length < 4) {
+          folders = collapseToFolders(base, 2);
+        }
         const overview = folders.nodes.length < modules.nodes.length ? folders : modules;
         if (overview.nodes.length > MAX_LAYOUT_NODES) {
           void vscode.window.showInformationMessage(

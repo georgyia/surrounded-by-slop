@@ -59,6 +59,16 @@ const LEAF_HEIGHT = 32;
 const LEAF_MIN_WIDTH = 72;
 const LABEL_PADDING = 28;
 const CONTAINER_PADDING = "[top=40,left=16,bottom=16,right=16]";
+/**
+ * Above this many routed edges, ELK's layered defaults turn pathological on
+ * hub-heavy graphs (benchmarked at ~1,100 edges: orthogonal routing ~15 s,
+ * heap exhaustion by ~2,800). Densities past the limit drop to polyline
+ * routing, skip the quadratic greedy-switch crossing pass and lower the
+ * layering thoroughness — measured 15 s → ~6.5 s at 203 nodes / 1,132 edges.
+ * Callers (the workspace command) are expected to fold graphs long before
+ * this; the fallback keeps a worst-case layout from hanging the host.
+ */
+const DENSE_EDGE_LIMIT = 600;
 
 function leafSize(node: GraphNode): { width: number; height: number } {
   const label = displayLabel(node);
@@ -123,7 +133,13 @@ export async function layoutGraph(
       "elk.spacing.nodeNode": "24",
       "elk.layered.spacing.nodeNodeBetweenLayers": "40",
       "elk.spacing.componentComponent": "48",
-      "elk.edgeRouting": "ORTHOGONAL",
+      ...(elkEdges.length > DENSE_EDGE_LIMIT
+        ? {
+            "elk.edgeRouting": "POLYLINE",
+            "elk.layered.crossingMinimization.greedySwitch.type": "OFF",
+            "elk.layered.thoroughness": "1",
+          }
+        : { "elk.edgeRouting": "ORTHOGONAL" }),
     },
     children: roots.map(toElkNode),
     edges: elkEdges,
