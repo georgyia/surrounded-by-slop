@@ -20,6 +20,7 @@ it("exports exactly the documented public api", () => {
     "collapseToModules",
     "createAdapterRegistry",
     "createExporterRegistry",
+    "createIncrementalAnalyzer",
     "dataflowForSpan",
     "declarationId",
     "displayLabel",

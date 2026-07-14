@@ -39,6 +39,7 @@ export {
 export { jsonExporter } from "./export/json.js";
 export { mermaidExporter } from "./export/mermaid.js";
 export { svgExporter } from "./export/svg.js";
+export { createIncrementalAnalyzer, type IncrementalAnalyzer } from "./incremental.js";
 export {
   buildGraph,
   canonicalizeGraph,
