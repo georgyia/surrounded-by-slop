@@ -230,6 +230,13 @@ A Swedish author sold five million books explaining that the people around you a
 **Cursor?**
 Yes — Cursor, VSCodium, and anything else that speaks VS Code extensions. Open VSX publishing is part of the release pipeline, not an afterthought.
 
+## Docs
+
+- [User guide](docs/user-guide.md) — every command, setting and gesture.
+- [Architecture](docs/architecture.md) — how the pieces fit, with module maps drawn by the tool itself (`pnpm docs:diagrams`).
+- [IR spec](docs/ir-spec.md) — the Semantic Graph contract everything consumes.
+- [Adding a language](docs/adding-a-language.md) — three queries and an afternoon.
+
 ## Contributing
 
 Come help people understand code they didn't write. Start with [CONTRIBUTING.md](CONTRIBUTING.md) — setup takes under ten minutes, the rules are short, and the CI tells you the truth.
