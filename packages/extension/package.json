@@ -196,5 +196,9 @@
     "esbuild": "^0.28.1",
     "ovsx": "^1.0.2",
     "typescript": "^5.8.0"
+  },
+  "galleryBanner": {
+    "color": "#10151f",
+    "theme": "dark"
   }
 }
