@@ -24,6 +24,10 @@ jobs:
           node-version-file: .nvmrc
           cache: pnpm
       - run: pnpm install --frozen-lockfile
+      # core and webview publish their types from dist/, so anything that
+      # resolves `@surrounded-by-slop/core` needs them built first. A clean
+      # checkout has no dist/ — only a stale local one hides this.
+      - run: pnpm build
       - run: pnpm lint
       - run: pnpm typecheck
 
@@ -42,6 +46,7 @@ jobs:
           node-version-file: .nvmrc
           cache: pnpm
       - run: pnpm install --frozen-lockfile
+      - run: pnpm build
       - run: pnpm test
 
   integration:
@@ -116,6 +121,7 @@ jobs:
           node-version-file: .nvmrc
           cache: pnpm
       - run: pnpm install --frozen-lockfile
+      - run: pnpm build
       - run: pnpm package
       - uses: actions/upload-artifact@v7
         with:
