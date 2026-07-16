@@ -8,7 +8,9 @@ import { build, context } from "esbuild";
 const require = createRequire(import.meta.url);
 // Both wasm packages are core's dependencies; resolve them through core so
 // the extension can't drift to a different version.
-const coreDir = dirname(require.resolve("@surrounded-by-slop/core", { paths: [import.meta.dirname] }));
+const coreDir = dirname(
+  require.resolve("@surrounded-by-slop/core", { paths: [import.meta.dirname] }),
+);
 const fromCore = (spec) => require.resolve(spec, { paths: [coreDir] });
 mkdirSync("dist", { recursive: true });
 copyFileSync(fromCore("web-tree-sitter/web-tree-sitter.wasm"), "dist/web-tree-sitter.wasm");

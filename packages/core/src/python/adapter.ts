@@ -47,7 +47,8 @@ export function resolvePythonModule(
     const fromDir = fromFile.split("/").slice(0, -1);
     // One dot = the file's own package; each further dot climbs one package up.
     const baseSegments = fromDir.slice(0, fromDir.length - (dots - 1));
-    if (baseSegments.length < 0 || dots - 1 > fromDir.length) {
+    // More dots than packages to climb: the import escapes the project.
+    if (dots - 1 > fromDir.length) {
       return undefined;
     }
     const base = [...baseSegments, ...rest].join("/");
