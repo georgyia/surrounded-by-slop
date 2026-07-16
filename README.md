@@ -41,6 +41,18 @@ flowchart LR
 
 Open a file — get its structure and call graph as an interactive diagram. Click a node — land on the exact line. Zoom out — see the whole workspace as a map instead of a folder tree you keep pretending to understand. Export to **draw.io**, **Mermaid**, or **SVG** and paste it into the PR description that nobody was going to read either.
 
+## See it move
+
+Open a file, get its map, visualize the whole workspace — every box jumps to its source line ([demo repo](examples/orders-app), MIT like everything here):
+
+![Visualize a file, then map the workspace](assets/workspace-map.gif)
+
+Chart any function's control flow from the cursor, then export exactly what you see as draw.io:
+
+![Visualize Function Flow](assets/function-flow.gif)
+
+![Export to draw.io](assets/export-drawio.gif)
+
 ## What it will do
 
 - 🗺️ **Workspace map** — modules, imports, and who actually depends on whom (spoiler: everything on `utils`)

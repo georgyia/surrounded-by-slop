@@ -6,6 +6,8 @@ when nobody read what was written, the map is how you stay oriented.
 
 Everything runs locally. No code ever leaves your machine.
 
+![Visualize a file, then map the workspace](https://raw.githubusercontent.com/georgyia/surrounded-by-slop/main/assets/workspace-map.gif)
+
 ## What you get
 
 - **Visualize File** (`⌘⇧V`) — structure + call diagram of the current file.

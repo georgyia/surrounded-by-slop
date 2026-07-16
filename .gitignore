@@ -23,3 +23,4 @@ coverage/
 /graph.json
 /out/
 bench/baseline.local.json
+videos/
