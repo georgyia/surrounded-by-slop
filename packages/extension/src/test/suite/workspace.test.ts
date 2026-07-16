@@ -37,6 +37,34 @@ test("Visualize Workspace shows a collapsed module map of the folder", async () 
   for (const file of ["alpha.ts", "beta.ts", "gamma.ts", "tasks.py"]) {
     assert.ok(names.includes(file), `the map includes ${file} (got ${names.join(", ")})`);
   }
+  // Unresolved-call sinks (Promise, Math, …) never blanket a workspace map.
+  assert.ok(
+    diagram.graph.nodes.every((node) => !node.id.startsWith("function:unresolved#")),
+    "no unresolved sinks on the workspace map",
+  );
+});
+
+test("Visualize Workspace skips small minified bundles", async () => {
+  const api = await getApi();
+  const folder = vscode.workspace.workspaceFolders?.[0];
+  assert.ok(folder, "a workspace folder is open");
+  // Under the 512 KB cap, but unmistakably minified: one enormous line.
+  const uri = vscode.Uri.joinPath(folder.uri, "bundle.js");
+  const calls = Array.from(
+    { length: 2000 },
+    (_, i) => `function q${i}(){return q${i > 0 ? i - 1 : 0}()}`,
+  );
+  await vscode.workspace.fs.writeFile(uri, new TextEncoder().encode(calls.join(";")));
+  try {
+    const visualized = nextVisualize(api);
+    await api.visualizeWorkspace(new vscode.CancellationTokenSource().token);
+    const diagram = await withTimeout(visualized, 20_000, "workspace visualize");
+    const names = new Set(diagram.graph.nodes.map((node) => node.name));
+    assert.ok(!names.has("bundle.js"), "the minified bundle is not mapped");
+    assert.ok(names.has("alpha.ts"), "real files still are");
+  } finally {
+    await vscode.workspace.fs.delete(uri);
+  }
 });
 
 test("Visualize File charts a Python file through the tree-sitter adapter", async () => {

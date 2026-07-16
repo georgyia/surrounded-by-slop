@@ -132,7 +132,16 @@
             "**/dist/**",
             "**/out/**",
             "**/build/**",
-            "**/coverage/**"
+            "**/coverage/**",
+            "**/.git/**",
+            "**/.vscode-test/**",
+            "**/.next/**",
+            "**/.nuxt/**",
+            "**/.svelte-kit/**",
+            "**/.turbo/**",
+            "**/.cache/**",
+            "**/vendor/**",
+            "**/*.min.js"
           ],
           "description": "Glob patterns to exclude when visualizing the workspace."
         },

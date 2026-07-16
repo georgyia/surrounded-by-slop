@@ -133,6 +133,40 @@ function withoutExternalModules(graph: SemanticGraph): SemanticGraph {
   };
 }
 
+/**
+ * Drop unresolved-call sink nodes (every `Promise(...)`, `Math.max(...)`, …
+ * lands on one). Informative in a single-file view; on a workspace map they
+ * are parentless orphans that blanket the fold as hundreds of tiny chips.
+ */
+function withoutUnresolvedSinks(graph: SemanticGraph): SemanticGraph {
+  const kept = new Set(
+    graph.nodes
+      .filter((node) => !(node.external === true && node.kind !== "module"))
+      .map((node) => node.id),
+  );
+  return {
+    schemaVersion: graph.schemaVersion,
+    nodes: graph.nodes.filter((node) => kept.has(node.id)),
+    edges: graph.edges.filter((edge) => kept.has(edge.from) && kept.has(edge.to)),
+  };
+}
+
+/**
+ * Minified bundles under the byte cap still poison a map with alphabet-soup
+ * identifiers; the classic signature is very long lines. Cheap and safe: a
+ * hand-written file never averages hundreds of chars per line.
+ */
+function looksMinified(text: string): boolean {
+  if (text.length < 20_000) {
+    return false;
+  }
+  let lines = 1;
+  for (let at = text.indexOf("\n"); at !== -1; at = text.indexOf("\n", at + 1)) {
+    lines += 1;
+  }
+  return text.length / lines > 400;
+}
+
 function isTestFile(path: string): boolean {
   return (
     /\.(test|spec)\.[cm]?[jt]sx?$/i.test(path) || /(^|\/)(test_[^/]+|[^/]+_test)\.py$/i.test(path)
@@ -351,10 +385,12 @@ export class VisualizationController implements vscode.Disposable {
           this.logger.warn(`Skipped ${relative} (${Math.round(stat.size / 1024)} KB — too large).`);
           continue;
         }
-        inputs.push({
-          path: relative,
-          text: new TextDecoder().decode(await vscode.workspace.fs.readFile(uri)),
-        });
+        const text = new TextDecoder().decode(await vscode.workspace.fs.readFile(uri));
+        if (looksMinified(text)) {
+          this.logger.warn(`Skipped ${relative} (looks minified/generated — not worth mapping).`);
+          continue;
+        }
+        inputs.push({ path: relative, text });
       }
       if (inputs.length === 0) {
         void vscode.window.showInformationMessage(
@@ -389,10 +425,11 @@ export class VisualizationController implements vscode.Disposable {
       if (token.isCancellationRequested) {
         return;
       }
-      // The map opens collapsed to modules — never thousands of nodes by default.
-      const base = config.showExternalModules
-        ? analyzed.graph
-        : withoutExternalModules(analyzed.graph);
+      // The map opens collapsed to modules — never thousands of nodes by
+      // default — and unresolved sinks never belong on a workspace map.
+      const base = withoutUnresolvedSinks(
+        config.showExternalModules ? analyzed.graph : withoutExternalModules(analyzed.graph),
+      );
       const modules = collapseToModules(base);
       this.preIsolate = undefined; // a fresh workspace map is not an isolate
       // Guardrail (SBS-065 + SBS-090): past the readability budget — by module
