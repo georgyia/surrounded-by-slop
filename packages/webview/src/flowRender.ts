@@ -159,7 +159,7 @@ export function renderFlowDiagram(
     const dead = !reachable.has(box.id);
     const aria = dead ? `${label} (unreachable code)` : label;
     lines.push(
-      `    <g class="slop-node${dead ? " slop-unreachable" : ""}" data-node-id="${escapeXml(box.id)}"${dead ? ' opacity="0.45"' : ""} role="button" tabindex="0" aria-label="${escapeXml(aria)}">`,
+      `    <g class="slop-node${dead ? " slop-unreachable" : ""}" data-node-id="${escapeXml(box.id)}"${dead ? ' opacity="0.45"' : ""} data-vscode-context="${escapeXml(JSON.stringify({ slopNodeId: box.id, preventDefaultContextMenuItems: true }))}" role="button" tabindex="0" aria-label="${escapeXml(aria)}">`,
       `      <rect x="${coordinate(box.x)}" y="${coordinate(box.y)}" width="${coordinate(box.width)}" height="${coordinate(box.height)}" rx="${coordinate(radius)}" fill="${style.fill}" fill-opacity="${palette.fillOpacity}" stroke="${style.stroke}"${dead ? ' stroke-dasharray="4 3"' : ""} />`,
       `      <text x="${coordinate(box.x + box.width / 2)}" y="${coordinate(box.y + box.height / 2 + 4)}" text-anchor="middle" fill="${palette.text}">${escapeXml(label)}</text>`,
       ...(dead

@@ -64,6 +64,21 @@
         "command": "slop.copyMermaid",
         "title": "Copy Diagram as Mermaid",
         "category": "Slop"
+      },
+      {
+        "command": "slop.contextJumpToSource",
+        "title": "Jump to Source",
+        "category": "Slop"
+      },
+      {
+        "command": "slop.contextOpenToSide",
+        "title": "Open to the Side",
+        "category": "Slop"
+      },
+      {
+        "command": "slop.contextIsolate",
+        "title": "Isolate Node",
+        "category": "Slop"
       }
     ],
     "menus": {
@@ -86,7 +101,36 @@
           "group": "navigation"
         }
       ],
+      "webview/context": [
+        {
+          "command": "slop.contextJumpToSource",
+          "when": "webviewId == 'slop.diagram' && slopNodeId",
+          "group": "navigation@1"
+        },
+        {
+          "command": "slop.contextOpenToSide",
+          "when": "webviewId == 'slop.diagram' && slopNodeId",
+          "group": "navigation@2"
+        },
+        {
+          "command": "slop.contextIsolate",
+          "when": "webviewId == 'slop.diagram' && slopCanIsolate",
+          "group": "navigation@3"
+        }
+      ],
       "commandPalette": [
+        {
+          "command": "slop.contextJumpToSource",
+          "when": "false"
+        },
+        {
+          "command": "slop.contextOpenToSide",
+          "when": "false"
+        },
+        {
+          "command": "slop.contextIsolate",
+          "when": "false"
+        },
         {
           "command": "slop.exportDiagram",
           "when": "slop.hasDiagram"

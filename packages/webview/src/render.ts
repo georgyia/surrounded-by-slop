@@ -130,7 +130,7 @@ export function renderDiagram(
   for (const box of containers) {
     // A container is expanded — clicking its frame collapses it back (SBS-062).
     lines.push(
-      `    <g class="slop-container" data-node-id="${escapeXml(box.id)}" data-expandable="collapse" role="button" tabindex="0" aria-label="${escapeXml(box.label)} (expanded)">`,
+      `    <g class="slop-container" data-node-id="${escapeXml(box.id)}" data-expandable="collapse" data-vscode-context="${escapeXml(JSON.stringify({ slopNodeId: box.id, slopCanIsolate: true, preventDefaultContextMenuItems: true }))}" role="button" tabindex="0" aria-label="${escapeXml(box.label)} (expanded)">`,
       `      <rect x="${coordinate(box.x)}" y="${coordinate(box.y)}" width="${coordinate(box.width)}" height="${coordinate(box.height)}" rx="8" fill="${palette.containerFill}" stroke="${palette.containerStroke}" />`,
       `      <text x="${coordinate(box.x + 10)}" y="${coordinate(box.y + 22)}" fill="${palette.text}" font-weight="600">${escapeXml(box.label)}</text>`,
       `      <text class="slop-caret" x="${coordinate(box.x + box.width - 16)}" y="${coordinate(box.y + 22)}" fill="${palette.text}" aria-hidden="true">▾</text>`,
@@ -169,7 +169,7 @@ export function renderDiagram(
     const expandAttr = canExpand ? ' data-expandable="expand"' : "";
     const label = canExpand ? `${box.label} (collapsed)` : box.label;
     lines.push(
-      `    <g class="slop-node" data-node-id="${escapeXml(box.id)}"${expandAttr} role="button" tabindex="0" aria-label="${escapeXml(label)}">`,
+      `    <g class="slop-node" data-node-id="${escapeXml(box.id)}"${expandAttr} data-vscode-context="${escapeXml(JSON.stringify({ slopNodeId: box.id, slopCanIsolate: true, preventDefaultContextMenuItems: true }))}" role="button" tabindex="0" aria-label="${escapeXml(label)}">`,
       `      <rect x="${coordinate(box.x)}" y="${coordinate(box.y)}" width="${coordinate(box.width)}" height="${coordinate(box.height)}" rx="6" fill="${style.fill}" fill-opacity="${palette.fillOpacity}" stroke="${style.stroke}"${dashed} />`,
       `      <text x="${coordinate(box.x + box.width / 2)}" y="${coordinate(box.y + box.height / 2 + 4)}" text-anchor="middle" fill="${palette.text}">${escapeXml(box.label)}</text>`,
       ...(canExpand

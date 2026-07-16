@@ -542,7 +542,8 @@ export class VisualizationController implements vscode.Disposable {
   }
 
   /** `Isolate`: show only a node's neighborhood, sliced from the current view. */
-  private async isolate(nodeId: string): Promise<void> {
+  /** Also reachable from the diagram's native context menu. */
+  async isolate(nodeId: string): Promise<void> {
     const base = this.preIsolate ?? this.shown;
     if (base === undefined) {
       return;

@@ -38,6 +38,29 @@ export function activate(context: vscode.ExtensionContext): SlopApi {
     vscode.commands.registerCommand("slop.togglePin", () => controller.togglePin()),
     vscode.commands.registerCommand("slop.followActiveEditor", () => controller.toggleFollow()),
     vscode.commands.registerCommand("slop.exportDiagram", () => controller.exportInteractive()),
+    // The diagram's native right-click menu: VS Code hands the node's
+    // data-vscode-context object to the command (see render.ts).
+    vscode.commands.registerCommand(
+      "slop.contextJumpToSource",
+      (context?: { slopNodeId?: string }) => {
+        if (context?.slopNodeId !== undefined) {
+          void view.revealNode(context.slopNodeId, false);
+        }
+      },
+    ),
+    vscode.commands.registerCommand(
+      "slop.contextOpenToSide",
+      (context?: { slopNodeId?: string }) => {
+        if (context?.slopNodeId !== undefined) {
+          void view.revealNode(context.slopNodeId, true);
+        }
+      },
+    ),
+    vscode.commands.registerCommand("slop.contextIsolate", (context?: { slopNodeId?: string }) => {
+      if (context?.slopNodeId !== undefined) {
+        void controller.isolate(context.slopNodeId);
+      }
+    }),
     vscode.commands.registerCommand("slop.copyMermaid", () => controller.copyMermaid()),
     vscode.window.registerWebviewPanelSerializer(DIAGRAM_VIEW_TYPE, {
       deserializeWebviewPanel(panel, state: unknown) {
