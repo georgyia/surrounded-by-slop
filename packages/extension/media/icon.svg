@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 16 16" role="img" aria-label="Surrounded by Slop">
+  <title>Surrounded by Slop</title>
+  <!-- Source of media/icon.png (see media/README.md). The command icon in
+       media/slop.svg stays monochrome and theme-driven; this one is the
+       marketplace listing icon, so it carries its own background and colours. -->
+  <rect width="16" height="16" fill="#10151f" />
+  <g fill="none" stroke-width="1.2" stroke-linejoin="round" stroke-linecap="round">
+    <!-- The two modules you never read… -->
+    <g stroke="#7d8590">
+      <rect x="1.5" y="1.75" width="5" height="3.5" rx="1" />
+      <rect x="9.5" y="1.75" width="5" height="3.5" rx="1" />
+    </g>
+    <!-- …and the one the diagram puts you back in front of. -->
+    <path d="M4 5.25v2.25h8V5.25M8 7.5v3.25" stroke="#7d8590" />
+    <rect x="5.5" y="10.75" width="5" height="3.5" rx="1" stroke="#e6edf3" />
+  </g>
+</svg>

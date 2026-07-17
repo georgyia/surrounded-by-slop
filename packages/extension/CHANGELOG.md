@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.1.1
+
+- Add the marketplace listing icon. 0.1.0 shipped without one and both
+  listings fell back to a placeholder.
+
 ## 0.1.0
 
 First public release.
