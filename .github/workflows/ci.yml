@@ -63,9 +63,6 @@ jobs:
     runs-on: ${{ matrix.os }}
     env:
       VSCODE_TEST_VERSION: ${{ matrix.vscode }}
-      # Short path: VS Code's IPC socket lives here and macOS caps unix socket
-      # paths at ~104 chars, which the in-repo default blows past on runners.
-      VSCODE_TEST_USER_DATA_DIR: ${{ runner.temp }}/sbs-user-data
     steps:
       - uses: actions/checkout@v7
       - uses: pnpm/action-setup@v6
@@ -77,6 +74,11 @@ jobs:
       - run: pnpm --filter @surrounded-by-slop/core build && pnpm --filter @surrounded-by-slop/webview build
       - name: Run integration suite
         # The downloaded VS Code needs a display server on Linux.
+        env:
+          # Short path: VS Code's IPC socket lives here and macOS caps unix
+          # socket paths at ~104 chars, which the in-repo default blows past on
+          # runners. `runner` resolves per step, never in a job-level env block.
+          VSCODE_TEST_USER_DATA_DIR: ${{ runner.temp }}/sbs-user-data
         run: |
           if [ "$RUNNER_OS" = "Linux" ]; then
             xvfb-run -a pnpm --filter surrounded-by-slop test:integration
