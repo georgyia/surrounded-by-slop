@@ -1,4 +1,6 @@
-import { resolve } from "node:path";
+import { mkdirSync } from "node:fs";
+import { tmpdir } from "node:os";
+import { join, resolve } from "node:path";
 import { runTests } from "@vscode/test-electron";
 
 /**
@@ -20,12 +22,19 @@ async function main(): Promise<void> {
   // CI also runs the suite against the oldest supported VS Code (SBS-092):
   // VSCODE_TEST_VERSION=1.96.0. Default is the current stable.
   const version = process.env.VSCODE_TEST_VERSION ?? "stable";
+  // VS Code opens its IPC socket inside --user-data-dir, and macOS rejects unix
+  // socket paths over ~104 chars. The default (.vscode-test/user-data, deep
+  // under the repo) overflows that on CI, where the checkout path is already
+  // long, and the editor dies with EINVAL before any test runs. Keep the
+  // directory short, and let CI point it somewhere it can collect logs from.
+  const userDataDir = process.env.VSCODE_TEST_USER_DATA_DIR ?? join(tmpdir(), "sbs-vscode-test");
+  mkdirSync(userDataDir, { recursive: true });
   await runTests({
     version,
     extensionDevelopmentPath,
     extensionTestsPath,
     // No settings sync, no other extensions — a clean, reproducible host.
-    launchArgs: [workspaceFixture, "--disable-extensions"],
+    launchArgs: [workspaceFixture, "--disable-extensions", "--user-data-dir", userDataDir],
   });
 }
 

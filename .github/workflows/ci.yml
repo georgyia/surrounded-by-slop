@@ -63,6 +63,9 @@ jobs:
     runs-on: ${{ matrix.os }}
     env:
       VSCODE_TEST_VERSION: ${{ matrix.vscode }}
+      # Short path: VS Code's IPC socket lives here and macOS caps unix socket
+      # paths at ~104 chars, which the in-repo default blows past on runners.
+      VSCODE_TEST_USER_DATA_DIR: ${{ runner.temp }}/sbs-user-data
     steps:
       - uses: actions/checkout@v7
       - uses: pnpm/action-setup@v6
@@ -86,7 +89,7 @@ jobs:
         uses: actions/upload-artifact@v7
         with:
           name: vscode-logs-${{ matrix.os }}-${{ matrix.vscode }}
-          path: packages/extension/.vscode-test/user-data/logs/
+          path: ${{ runner.temp }}/sbs-user-data/logs/
           if-no-files-found: ignore
 
   bench:
