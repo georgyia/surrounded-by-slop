@@ -96,3 +96,55 @@ describe("project analysis", () => {
     expect(typescriptAdapter.extensions).toEqual([".ts", ".tsx", ".js", ".jsx"]);
   });
 });
+
+describe("module formats beyond .ts/.js", () => {
+  // Found in the field: a Next.js repo whose six .mjs files (postcss.config.mjs
+  // and scripts/*.mjs) were silently missing from the workspace map, while
+  // every .ts/.tsx showed up. slop.include collects .mts/.cts/.mjs/.cjs, so the
+  // adapter has to keep them.
+  const project: FileInput[] = [
+    { path: "src/lib.ts", text: "export function helper(): number {\n  return 1;\n}" },
+    {
+      path: "scripts/gen.mjs",
+      text: 'import { helper } from "../src/lib.ts";\nexport function gen() {\n  return helper();\n}',
+    },
+    {
+      path: "tools/legacy.cjs",
+      text: "function legacy() {\n  return 2;\n}\nmodule.exports = { legacy };",
+    },
+    { path: "src/typed.mts", text: "export const typed: number = 3;" },
+    { path: "src/common.cts", text: "export const common: number = 4;" },
+  ];
+
+  it("maps .mjs, .cjs, .mts and .cts modules", () => {
+    const result = analyzeTypeScriptProject(project);
+    const modules = result.graph.nodes
+      .filter((node) => node.kind === "module" && node.external !== true)
+      .map((node) => node.qualifiedName)
+      .sort();
+    expect(modules).toEqual([
+      "scripts/gen.mjs",
+      "src/common.cts",
+      "src/lib.ts",
+      "src/typed.mts",
+      "tools/legacy.cjs",
+    ]);
+  });
+
+  it("finds declarations inside a .mjs module", () => {
+    const result = analyzeTypeScriptProject(project);
+    const names = result.graph.nodes
+      .filter((node) => node.span?.file === "scripts/gen.mjs" && node.kind === "function")
+      .map((node) => node.name);
+    expect(names).toContain("gen");
+  });
+
+  it("resolves an import from .mjs into a .ts module", () => {
+    const result = analyzeTypeScriptProject(project);
+    const imports = result.graph.edges.filter(
+      (edge) => edge.kind === "imports" && edge.from.includes("scripts/gen.mjs"),
+    );
+    expect(imports).toHaveLength(1);
+    expect(imports[0]?.to).toContain("src/lib.ts");
+  });
+});

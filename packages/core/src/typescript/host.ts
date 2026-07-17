@@ -9,7 +9,19 @@ import type { FileInput } from "../adapter.js";
  * (docs/ir-spec.md, "Call-graph precision").
  */
 
-const ANALYZABLE_EXTENSIONS = [".ts", ".tsx", ".js", ".jsx"] as const;
+// Every extension `slop.include` collects, minus `.py` (a different adapter).
+// Leaving one out drops those files from the program silently: they simply
+// never appear on the map, with no diagnostic to explain the hole.
+const ANALYZABLE_EXTENSIONS = [
+  ".ts",
+  ".tsx",
+  ".mts",
+  ".cts",
+  ".js",
+  ".jsx",
+  ".mjs",
+  ".cjs",
+] as const;
 
 export function isAnalyzablePath(path: string): boolean {
   const lower = path.toLowerCase();
@@ -54,9 +66,10 @@ function scriptKindFor(path: string): ts.ScriptKind {
   if (lower.endsWith(".jsx")) {
     return ts.ScriptKind.JSX;
   }
-  if (lower.endsWith(".js")) {
+  if (lower.endsWith(".js") || lower.endsWith(".mjs") || lower.endsWith(".cjs")) {
     return ts.ScriptKind.JS;
   }
+  // .ts, .mts, .cts.
   return ts.ScriptKind.TS;
 }
 

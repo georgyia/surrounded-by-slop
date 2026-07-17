@@ -23,4 +23,14 @@ describe("path handling", () => {
     expect(isAnalyzablePath("a.css")).toBe(false);
     expect(isAnalyzablePath("Makefile")).toBe(false);
   });
+
+  it("accepts every extension the workspace scan is told to collect", () => {
+    // slop.include ships `**/*.{ts,tsx,mts,cts,js,jsx,mjs,cjs,py}`, so the
+    // extension hands all of these to this adapter. Anything rejected here is
+    // dropped from the program and vanishes from the map with no diagnostic.
+    for (const path of ["a.ts", "a.tsx", "a.mts", "a.cts", "a.js", "a.jsx", "a.mjs", "a.cjs"]) {
+      expect(isAnalyzablePath(path), path).toBe(true);
+    }
+    expect(isAnalyzablePath("a.MJS")).toBe(true);
+  });
 });

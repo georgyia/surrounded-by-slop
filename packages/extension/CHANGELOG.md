@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.1.2
+
+- Fix `.mjs`, `.cjs`, `.mts` and `.cts` files being silently missing from the
+  workspace map. They were collected by the include glob and then dropped by
+  the TypeScript adapter, so a repo's config and script files just weren't
+  there — with nothing to say why. `.mjs`/`.cjs` are also parsed as JavaScript
+  now rather than TypeScript.
+
 ## 0.1.1
 
 - Add the marketplace listing icon. 0.1.0 shipped without one and both
