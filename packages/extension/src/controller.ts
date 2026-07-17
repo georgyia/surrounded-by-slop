@@ -447,8 +447,13 @@ export class VisualizationController implements vscode.Disposable {
       }
       // The map opens collapsed to modules — never thousands of nodes by
       // default — and unresolved sinks never belong on a workspace map.
+      // Workspace overview hides external packages unless the user opted in:
+      // react/next/etc. are fan-in hubs that turn the map into a hairball (on
+      // this repo, ~70% of edges and the densest nodes were external).
       const base = withoutUnresolvedSinks(
-        config.showExternalModules ? analyzed.graph : withoutExternalModules(analyzed.graph),
+        (config.showExternalModules ?? false)
+          ? analyzed.graph
+          : withoutExternalModules(analyzed.graph),
       );
       const modules = collapseToModules(base);
       this.preIsolate = undefined; // a fresh workspace map is not an isolate
@@ -724,9 +729,12 @@ export class VisualizationController implements vscode.Disposable {
       for (const diagnostic of analyzed.diagnostics) {
         this.logger.warn(`${diagnostic.file ?? path}: ${diagnostic.message}`);
       }
-      const graph = config.showExternalModules
-        ? analyzed.graph
-        : withoutExternalModules(analyzed.graph);
+      // Single file: external deps are the point ("what does this import"), so
+      // show them unless the user turned them off.
+      const graph =
+        (config.showExternalModules ?? true)
+          ? analyzed.graph
+          : withoutExternalModules(analyzed.graph);
       const layout = await layoutGraph(graph, { direction: config.layoutDirection });
       const diagram: DiagramData = { title: path, graph, layout };
       // A file view is fully expanded already — leave expansion/isolate mode.

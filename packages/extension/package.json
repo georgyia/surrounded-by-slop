@@ -1,7 +1,7 @@
 {
   "name": "surrounded-by-slop",
   "displayName": "Surrounded by Slop",
-  "version": "0.1.3",
+  "version": "0.1.4",
   "private": true,
   "description": "See the code you'll never read — automatic diagrams for your codebase.",
   "publisher": "georgyia",
@@ -198,7 +198,7 @@
         "slop.showExternalModules": {
           "type": "boolean",
           "default": true,
-          "description": "Show external packages and unresolved imports as nodes."
+          "description": "Show external packages and unresolved imports as nodes. Left at the default, the single-file view shows them and the workspace map hides them (external packages are fan-in hubs — noise on an architecture overview). Set it explicitly to force one behavior in both views."
         },
         "slop.theme": {
           "type": "string",

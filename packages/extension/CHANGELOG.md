@@ -1,5 +1,14 @@
 # Changelog
 
+## 0.1.4
+
+- The workspace map now hides external packages by default. They're fan-in hubs
+  (react, next, …) that turned the overview into a hairball — on a real
+  Next.js repo they were ~70% of the edges. The single-file view still shows
+  them (that's where "what does this import" matters). Set `slop.showExternalModules`
+  explicitly to force one behavior in both views; the on-diagram controls still
+  toggle them live.
+
 ## 0.1.3
 
 - Resolve `tsconfig` path aliases (`@/*` and friends) on the workspace map.
