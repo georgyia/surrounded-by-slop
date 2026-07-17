@@ -24,3 +24,9 @@ coverage/
 /out/
 bench/baseline.local.json
 videos/
+
+# launch copy — private until posted
+LAUNCH.md
+
+# diagrams exported while testing
+*.drawio
