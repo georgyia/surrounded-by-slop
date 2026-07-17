@@ -1,0 +1,10 @@
+{
+  "compilerOptions": {
+    // Comments and trailing commas are legal in tsconfig — the discovery path
+    // must use the TypeScript parser, not JSON.parse (#68).
+    "strict": true,
+    "paths": {
+      "@/*": ["./*"]
+    }
+  }
+}

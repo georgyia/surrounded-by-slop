@@ -140,3 +140,31 @@ test("Visualize Workspace ignores excluded folders and oversized files", async (
     await vscode.workspace.fs.delete(oversized);
   }
 });
+
+test("Visualize Workspace resolves tsconfig path aliases to real modules", async () => {
+  const api = await getApi();
+  const visualized = nextVisualize(api);
+  await api.visualizeWorkspace(new vscode.CancellationTokenSource().token);
+  const diagram = await withTimeout(visualized, 20_000, "workspace alias visualize");
+
+  const names = diagram.graph.nodes.map((node) => node.name);
+  assert.ok(names.includes("delta.ts"), `the map includes delta.ts (got ${names.join(", ")})`);
+
+  // delta.ts imports "@/gamma". Without the project's aliases that resolves to
+  // nothing and gets drawn as an external package — the project's own code
+  // wearing an npm costume (#68).
+  const invented = diagram.graph.nodes.filter((node) => node.name.startsWith("@/"));
+  assert.deepStrictEqual(
+    invented.map((node) => node.name),
+    [],
+    "no invented @/ external nodes",
+  );
+
+  const delta = diagram.graph.nodes.find((node) => node.name === "delta.ts");
+  const gamma = diagram.graph.nodes.find((node) => node.name === "gamma.ts");
+  assert.ok(delta && gamma, "both modules are on the map");
+  const resolved = diagram.graph.edges.some(
+    (edge) => edge.kind === "imports" && edge.from === delta.id && edge.to === gamma.id,
+  );
+  assert.ok(resolved, "the aliased import resolves to gamma.ts");
+});

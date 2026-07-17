@@ -4,6 +4,7 @@ import * as vscode from "vscode";
 import { readConfig } from "./config.js";
 import type { Logger } from "./log.js";
 import type { DiagramView } from "./panel/diagramView.js";
+import { discoverAliasOptions } from "./tsconfig.js";
 
 /** VS Code language ids the analyzers understand, and their file suffix. */
 const LANGUAGE_EXTENSIONS: Readonly<Record<string, string>> = {
@@ -413,7 +414,26 @@ export class VisualizationController implements vscode.Disposable {
       const tsInputs = inputs.filter((input) => !input.path.endsWith(".py"));
       const results = [];
       if (tsInputs.length > 0) {
-        results.push(analyzeTypeScriptProject(tsInputs, { cancellation }));
+        // Without the project's own aliases, every `@/foo` import resolves to
+        // nothing and the map draws the project's own code as external
+        // packages — the map is then confidently wrong rather than empty (#68).
+        const aliases = await discoverAliasOptions(folder.uri.fsPath);
+        if (aliases.options === undefined) {
+          this.logger.info(`Path aliases: ${aliases.reason ?? "none"}.`);
+        } else {
+          const count = Object.keys(aliases.options.paths).length;
+          this.logger.info(
+            `Path aliases: resolving ${count} pattern(s) against ${aliases.options.baseUrl}.`,
+          );
+        }
+        results.push(
+          analyzeTypeScriptProject(tsInputs, {
+            cancellation,
+            ...(aliases.options === undefined
+              ? {}
+              : { adapterOptions: { compilerOptions: aliases.options } }),
+          }),
+        );
       }
       if (pythonInputs.length > 0) {
         results.push((await pythonAdapter()).analyze(pythonInputs, { cancellation }));

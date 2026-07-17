@@ -84,7 +84,7 @@ function compilerOptionsFrom(
 export const typescriptAdapter: LanguageAdapter = {
   id: "typescript",
   displayName: "TypeScript / JavaScript",
-  extensions: [".ts", ".tsx", ".js", ".jsx"],
+  extensions: [".ts", ".tsx", ".mts", ".cts", ".js", ".jsx", ".mjs", ".cjs"],
   // cfg/dataflow ship via `extractControlFlow` (SBS-070) / `extractDataflow` (SBS-072).
   capabilities: { imports: true, callGraph: "typed", cfg: true, dataflow: true },
   analyze: analyzeTypeScriptProject,

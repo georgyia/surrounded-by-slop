@@ -93,7 +93,18 @@ describe("project analysis", () => {
       cfg: true, // extractControlFlow (SBS-070)
       dataflow: true, // extractDataflow (SBS-072)
     });
-    expect(typescriptAdapter.extensions).toEqual([".ts", ".tsx", ".js", ".jsx"]);
+    // Must stay in step with ANALYZABLE_EXTENSIONS: a registry lookup that
+    // claims not to handle .mjs while the analyzer does is a lie either way.
+    expect(typescriptAdapter.extensions).toEqual([
+      ".ts",
+      ".tsx",
+      ".mts",
+      ".cts",
+      ".js",
+      ".jsx",
+      ".mjs",
+      ".cjs",
+    ]);
   });
 });
 
@@ -146,5 +157,50 @@ describe("module formats beyond .ts/.js", () => {
     );
     expect(imports).toHaveLength(1);
     expect(imports[0]?.to).toContain("src/lib.ts");
+  });
+});
+
+describe("tsconfig path aliases", () => {
+  // The core never reads a tsconfig — the host discovers it and passes the
+  // mapping through adapterOptions (#68). What is under test is that the seam
+  // actually reaches module resolution.
+  const project: FileInput[] = [
+    { path: "lib/site.ts", text: "export const SITE = 1;" },
+    {
+      path: "app/page.tsx",
+      text: 'import { SITE } from "@/lib/site";\nexport const url = SITE;',
+    },
+  ];
+  const withAliases = {
+    adapterOptions: { compilerOptions: { baseUrl: "/", paths: { "@/*": ["./*"] } } },
+  };
+
+  it("resolves an aliased import to the real module", () => {
+    const result = analyzeTypeScriptProject(project, withAliases);
+    const page = result.graph.nodes.find((node) => node.qualifiedName === "app/page.tsx");
+    const site = result.graph.nodes.find((node) => node.qualifiedName === "lib/site.ts");
+    expect(page && site).toBeTruthy();
+    const edge = result.graph.edges.find(
+      (e) => e.kind === "imports" && e.from === page?.id && e.to === site?.id,
+    );
+    expect(edge).toBeDefined();
+    expect(result.graph.nodes.filter((node) => node.external === true)).toEqual([]);
+  });
+
+  it("falls back to an external node when no aliases are supplied", () => {
+    // This is the #68 bug preserved as a test: the project's own lib/site.ts
+    // shows up as if it were an npm package.
+    const result = analyzeTypeScriptProject(project);
+    const external = result.graph.nodes.filter((node) => node.external === true);
+    expect(external.map((node) => node.name)).toEqual(["@/lib"]);
+  });
+
+  it("keeps aliases out of the way of relative imports", () => {
+    const relative: FileInput[] = [
+      { path: "lib/site.ts", text: "export const SITE = 1;" },
+      { path: "lib/use.ts", text: 'import { SITE } from "./site.js";\nexport const x = SITE;' },
+    ];
+    const result = analyzeTypeScriptProject(relative, withAliases);
+    expect(result.graph.nodes.filter((node) => node.external === true)).toEqual([]);
   });
 });

@@ -1,5 +1,15 @@
 # Changelog
 
+## 0.1.3
+
+- Resolve `tsconfig` path aliases (`@/*` and friends) on the workspace map.
+  They previously resolved to nothing, so a project's own code was drawn as
+  external packages and almost no internal edges appeared. On a stock Next.js
+  app this took internal import edges from 3 to 132 and removed four invented
+  `@/…` package boxes. `extends` chains, comments and trailing commas in
+  tsconfig are all handled; a project without a tsconfig behaves as before.
+  The Output panel now says which aliases were applied, or why none were.
+
 ## 0.1.2
 
 - Fix `.mjs`, `.cjs`, `.mts` and `.cts` files being silently missing from the
