@@ -5,7 +5,7 @@ import { build } from "esbuild";
 // to `dist/test/`, mirroring the `src/test/` layout. `vscode` is provided by
 // the host; `@vscode/test-electron` is a Node dependency of the launcher only.
 await build({
-  entryPoints: ["src/test/runTest.ts", "src/test/suite/index.ts"],
+  entryPoints: ["src/test/runTest.ts", "src/test/suite/index.ts", "src/test/multi-root/index.ts"],
   outdir: "dist/test",
   outbase: "src/test",
   bundle: true,

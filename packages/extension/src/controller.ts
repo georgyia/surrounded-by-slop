@@ -349,17 +349,35 @@ export class VisualizationController implements vscode.Disposable {
   }
 
   private async runWorkspace(token: vscode.CancellationToken): Promise<void> {
-    const [folder] = vscode.workspace.workspaceFolders ?? [];
+    const folders = vscode.workspace.workspaceFolders ?? [];
+    const [folder] = folders;
     if (folder === undefined) {
       void vscode.window.showInformationMessage(
         "Surrounded by Slop: open a folder to visualize its workspace.",
       );
       return;
     }
+    // Multi-root: module ids are root-relative paths, so two roots can both
+    // contain src/index.ts and collide — an id scheme for that is still open
+    // (#74). Until then map the first root only, and say so out loud instead
+    // of silently mixing roots into one confidently-wrong graph.
+    if (folders.length > 1) {
+      const skipped = folders.slice(1).map((other) => other.name);
+      this.logger.warn(
+        `Multi-root workspace: mapping only "${folder.name}". Not mapped: ${skipped.join(", ")}. ` +
+          "Multi-root support is tracked at https://github.com/georgyia/surrounded-by-slop/issues/74.",
+      );
+      void vscode.window.showWarningMessage(
+        `Surrounded by Slop: multi-root workspaces aren't supported yet — mapping only "${folder.name}" (${skipped.length} other root${skipped.length === 1 ? "" : "s"} left off the map).`,
+      );
+    }
     try {
       const config = readConfig();
       const uris = await vscode.workspace.findFiles(
-        braceGlob(config.include) ?? "**/*.{ts,tsx,mts,cts,js,jsx,mjs,cjs,py}",
+        new vscode.RelativePattern(
+          folder,
+          braceGlob(config.include) ?? "**/*.{ts,tsx,mts,cts,js,jsx,mjs,cjs,py}",
+        ),
         braceGlob(config.exclude),
         MAX_WORKSPACE_FILES,
         token,

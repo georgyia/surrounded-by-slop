@@ -1,5 +1,14 @@
 # Changelog
 
+## 0.1.5
+
+- Multi-root workspaces: the workspace map used to scan whichever files it
+  found across all roots while resolving paths and aliases against the first
+  root only — quietly producing a wrong or partial map. It now maps the first
+  root explicitly and says so: a warning names the roots left off the map,
+  and the Output panel links the tracking issue. Full multi-root support is
+  [#74](https://github.com/georgyia/surrounded-by-slop/issues/74).
+
 ## 0.1.4
 
 - The workspace map now hides external packages by default. They're fan-in hubs

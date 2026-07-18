@@ -1,7 +1,7 @@
 {
   "name": "surrounded-by-slop",
   "displayName": "Surrounded by Slop",
-  "version": "0.1.4",
+  "version": "0.1.5",
   "private": true,
   "description": "See the code you'll never read — automatic diagrams for your codebase.",
   "publisher": "georgyia",

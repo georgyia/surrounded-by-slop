@@ -57,6 +57,9 @@ routes.
 - Files over 512 KB and folders like `node_modules` are skipped, and a
   workspace analysis caps at 5,000 files; the log (Output → Surrounded by
   Slop) says exactly what was skipped and why.
+- **Multi-root workspaces** map only the first root folder for now (a warning
+  names the roots left off the map). Full multi-root support is tracked in
+  [#74](https://github.com/georgyia/surrounded-by-slop/issues/74).
 
 ## Privacy
 

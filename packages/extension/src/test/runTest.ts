@@ -36,6 +36,15 @@ async function main(): Promise<void> {
     // No settings sync, no other extensions — a clean, reproducible host.
     launchArgs: [workspaceFixture, "--disable-extensions", "--user-data-dir", userDataDir],
   });
+  // Second host, opened on a two-root .code-workspace: the multi-root suite
+  // asserts the workspace map covers the first root only and says so (#74).
+  const multiRootFixture = resolve(__dirname, "../../test-fixtures/multi-root.code-workspace");
+  await runTests({
+    version,
+    extensionDevelopmentPath,
+    extensionTestsPath: resolve(__dirname, "./multi-root/index.js"),
+    launchArgs: [multiRootFixture, "--disable-extensions", "--user-data-dir", userDataDir],
+  });
 }
 
 main().catch((error) => {
