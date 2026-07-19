@@ -1,6 +1,7 @@
 import { type ArgSpec, parseArgs, UsageError } from "./args.js";
 import { analyzeCommand } from "./commands/analyze.js";
 import { exportCommand } from "./commands/export.js";
+import { mapCommand } from "./commands/map.js";
 import type { CommandContext } from "./context.js";
 
 /**
@@ -19,6 +20,7 @@ const BOOLEAN_FLAGS: ArgSpec = {
 const COMMANDS = new Map<string, Command>([
   ["analyze", analyzeCommand],
   ["export", exportCommand],
+  ["map", mapCommand],
 ]);
 
 const HELP = `sbs — headless code analysis for AI agents and CI
@@ -26,10 +28,12 @@ const HELP = `sbs — headless code analysis for AI agents and CI
 Usage: sbs <command> [path] [options]
 
 Commands:
+  map [path]                     Ranked, token-budgeted repo map for AI agents
   analyze [path]                 Print the Semantic Graph as canonical JSON
   export --format mermaid|json   Render the graph in a text format
 
 Options:
+  --budget <tokens>              Token budget for the map (default 2000)
   --include <glob>               Replace the default include glob (repeatable)
   --exclude <glob>               Add an exclude on top of the defaults (repeatable)
   --include-tests                Analyze test files too (excluded by default)
