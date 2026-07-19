@@ -3,6 +3,7 @@ import { analyzeCommand } from "./commands/analyze.js";
 import { exportCommand } from "./commands/export.js";
 import { impactCommand } from "./commands/impact.js";
 import { mapCommand } from "./commands/map.js";
+import { mcpCommand } from "./commands/mcp.js";
 import { queryCommand } from "./commands/query.js";
 import type { CommandContext } from "./context.js";
 
@@ -25,6 +26,7 @@ const COMMANDS = new Map<string, Command>([
   ["map", mapCommand],
   ["query", queryCommand],
   ["impact", impactCommand],
+  ["mcp", mcpCommand],
 ]);
 
 const HELP = `sbs — headless code analysis for AI agents and CI
@@ -41,6 +43,7 @@ Commands:
                                    slice <symbol>        neighborhood (--depth k)
                                    path <from> <to>      shortest call/import chain
   impact [--staged|--diff <ref>|-]  Blast radius of a diff (callers, tests)
+  mcp [path]                     Run the MCP server over stdio (for AI agents)
   analyze [path]                 Print the Semantic Graph as canonical JSON
   export --format mermaid|json   Render the graph in a text format
 

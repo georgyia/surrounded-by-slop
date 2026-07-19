@@ -71,6 +71,37 @@ Cursor tracks VS Code with a lag, so the extension uses only stable APIs — no
 `enableProposedApi`, and every editor API it calls predates its `engines.vscode`
 floor (`^1.96.0`, a version Cursor already ships). Keep it that way.
 
+## MCP server checklist (`sbs mcp`)
+
+Run against a built CLI (`pnpm --filter @surrounded-by-slop/cli build`) before a
+release that touches `packages/cli`. The server speaks newline-delimited
+JSON-RPC 2.0 over stdio; it is local-only (no sockets, no network — Rule 9).
+
+Quick smoke test from a shell:
+
+```sh
+printf '%s\n' \
+  '{"jsonrpc":"2.0","id":1,"method":"initialize","params":{}}' \
+  '{"jsonrpc":"2.0","id":2,"method":"tools/list"}' \
+  | node packages/cli/dist/bin.js mcp .
+```
+
+In **Claude Code**: `claude mcp add slop -- sbs mcp` (or point at
+`node .../packages/cli/dist/bin.js mcp`), then in a session:
+
+- [ ] `initialize` returns `protocolVersion` and `serverInfo.name = surrounded-by-slop`
+- [ ] `tools/list` shows all 8 tools (repo_map, find_symbol, callers, callees,
+      importers, slice, path, impact) with input schemas
+- [ ] Calling `repo_map` returns a ranked map; `callers`/`callees`/`path` answer
+- [ ] A bad symbol returns a tool result with `isError: true`, not a crash
+- [ ] Editing a file mid-session is reflected on the next tool call (warm
+      incremental re-analysis)
+- [ ] Every response stays within the ~1500-token ceiling (oversized results end
+      with a `… (truncated …)` notice)
+
+In **Cursor**: add the same command under Settings → MCP, confirm the tools list
+and a `callers` call.
+
 ## Issue triage
 
 - First response within 48h, even if it's just a label.
