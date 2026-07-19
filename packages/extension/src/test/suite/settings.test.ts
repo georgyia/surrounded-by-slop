@@ -61,7 +61,9 @@ test("workspace map hides externals by default; single-file view shows them", as
   await config.update("showExternalModules", undefined, vscode.ConfigurationTarget.Global);
 
   // epsilon.ts imports "react". On its own file view that external is the point.
-  const epsilon = vscode.Uri.joinPath(vscode.workspace.workspaceFolders![0]!.uri, "epsilon.ts");
+  const workspaceRoot = vscode.workspace.workspaceFolders?.[0];
+  assert.ok(workspaceRoot, "expected an open workspace folder");
+  const epsilon = vscode.Uri.joinPath(workspaceRoot.uri, "epsilon.ts");
   const document = await vscode.workspace.openTextDocument(epsilon);
   await vscode.window.showTextDocument(document, vscode.ViewColumn.One);
   const fileView = await visualizeOnce(api);

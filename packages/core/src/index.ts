@@ -78,6 +78,12 @@ export {
   resolvePythonModule,
 } from "./python/adapter.js";
 export { stableStringify } from "./stable-json.js";
+export { globToRegExp, matchesAnyGlob } from "./transforms/glob.js";
+export {
+  type RankedNode,
+  type RankOptions,
+  rankNodes,
+} from "./transforms/rank.js";
 export {
   collapseToFolders,
   collapseToModules,
@@ -86,6 +92,8 @@ export {
   type FilterOptions,
   filterGraph,
   reachableFrom,
+  reachedBy,
+  shortestPath,
   sliceAround,
 } from "./transforms/transforms.js";
 export {

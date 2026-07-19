@@ -113,3 +113,16 @@ as thrown errors. A broken file yields a partial graph plus diagnostics.
 `validateGraph` is the machine check every golden fixture runs through:
 unique ids, edge endpoints exist, canonical ordering, sane spans, id/kind
 consistency, acyclic containment. Exporters may assume a valid graph.
+
+## Derived data (non-schema)
+
+Some consumers need rankings or metrics computed *from* the graph. These are
+returned by transforms, never stored on the IR — the graph stays the single
+canonical artifact, so adding them never touches `schemaVersion`.
+
+- `rankNodes(graph, options?)` — weighted PageRank over `calls`/`imports` edges;
+  edge weight is `count`, halved for `confidence: "low"` calls and quartered for
+  `typeOnly` imports. Deterministic: a fixed iteration count (not an epsilon),
+  sorted-id iteration order, lexicographic tie-break. Powers the token-budgeted
+  repo map. Optional `seeds` supply a personalization vector for task-focused
+  rankings.
