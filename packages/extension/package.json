@@ -249,7 +249,7 @@
     "@vscode/vsce": "^3.3.0",
     "esbuild": "^0.28.1",
     "ovsx": "^1.0.2",
-    "typescript": "^5.8.0"
+    "typescript": "^7.0.2"
   },
   "galleryBanner": {
     "color": "#10151f",
