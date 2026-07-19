@@ -40,6 +40,7 @@ it("exports exactly the documented public api", () => {
     "mermaidExporter",
     "moduleId",
     "pythonQueries",
+    "rankNodes",
     "reachableCfgBlocks",
     "reachableFrom",
     "requiredLayout",

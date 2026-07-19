@@ -79,6 +79,11 @@ export {
 } from "./python/adapter.js";
 export { stableStringify } from "./stable-json.js";
 export {
+  type RankedNode,
+  type RankOptions,
+  rankNodes,
+} from "./transforms/rank.js";
+export {
   collapseToFolders,
   collapseToModules,
   expandableIds,
