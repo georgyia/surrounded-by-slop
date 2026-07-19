@@ -78,6 +78,7 @@ export {
   resolvePythonModule,
 } from "./python/adapter.js";
 export { stableStringify } from "./stable-json.js";
+export { globToRegExp, matchesAnyGlob } from "./transforms/glob.js";
 export {
   type RankedNode,
   type RankOptions,
