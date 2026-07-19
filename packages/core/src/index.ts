@@ -91,6 +91,8 @@ export {
   type FilterOptions,
   filterGraph,
   reachableFrom,
+  reachedBy,
+  shortestPath,
   sliceAround,
 } from "./transforms/transforms.js";
 export {

@@ -8,6 +8,8 @@ import {
   expandNodes,
   filterGraph,
   reachableFrom,
+  reachedBy,
+  shortestPath,
   sliceAround,
 } from "./transforms.js";
 
@@ -188,5 +190,62 @@ describe("reachableFrom", () => {
 
   it("throws for unknown nodes", () => {
     expect(() => reachableFrom(graph, "module:ghost.ts")).toThrow(/not in the graph/);
+  });
+});
+
+describe("reachedBy", () => {
+  it("finds the callers of a function", () => {
+    const callers = reachedBy(graph, "function:src/store/db.ts#save");
+    const ids = callers.nodes.map((node) => node.id);
+    expect(ids).toContain("function:src/app.ts#main"); // main calls save
+    expect(ids).not.toContain("function:src/util.ts#fmt"); // fmt does not reach save
+    expect(validateGraph(callers)).toEqual([]);
+  });
+
+  it("finds the importers of a module", () => {
+    const importers = reachedBy(graph, "module:src/store/db.ts", ["imports"]);
+    const ids = importers.nodes.map((node) => node.id);
+    expect(ids).toContain("module:src/app.ts"); // app imports the db module
+    expect(ids).not.toContain("module:vendor.ts");
+  });
+
+  it("returns just the start node when nothing reaches it", () => {
+    const callers = reachedBy(graph, "function:src/app.ts#main");
+    expect(callers.nodes.map((node) => node.id)).toEqual(["function:src/app.ts#main"]);
+  });
+
+  it("bounds the walk with maxDepth", () => {
+    // main → fmt (depth 1) is reachable forward; depth 0 keeps only the start.
+    const depth0 = reachableFrom(graph, "function:src/app.ts#main", ["calls"], 0);
+    expect(depth0.nodes.map((node) => node.id)).toEqual(["function:src/app.ts#main"]);
+    const depth1 = reachableFrom(graph, "function:src/app.ts#main", ["calls"], 1);
+    expect(depth1.nodes.map((node) => node.id)).toContain("function:src/util.ts#fmt");
+  });
+
+  it("throws for unknown nodes", () => {
+    expect(() => reachedBy(graph, "module:ghost.ts")).toThrow(/not in the graph/);
+  });
+});
+
+describe("shortestPath", () => {
+  it("finds the directed chain from one symbol to another", () => {
+    const path = shortestPath(graph, "function:src/app.ts#main", "function:src/store/db.ts#save");
+    expect(path).toEqual(["function:src/app.ts#main", "function:src/store/db.ts#save"]);
+  });
+
+  it("returns a single-node path from a node to itself", () => {
+    const path = shortestPath(graph, "function:src/app.ts#main", "function:src/app.ts#main");
+    expect(path).toEqual(["function:src/app.ts#main"]);
+  });
+
+  it("returns undefined when the target is unreachable", () => {
+    const path = shortestPath(graph, "function:src/store/db.ts#save", "function:src/app.ts#main");
+    expect(path).toBeUndefined();
+  });
+
+  it("throws when an endpoint is missing", () => {
+    expect(() => shortestPath(graph, "function:src/app.ts#main", "module:ghost.ts")).toThrow(
+      /not in the graph/,
+    );
   });
 });

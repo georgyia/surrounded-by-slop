@@ -285,9 +285,85 @@ export function reachableFrom(
   graph: SemanticGraph,
   startId: string,
   kinds: readonly EdgeKind[] = ["calls", "imports"],
+  maxDepth = Number.POSITIVE_INFINITY,
+): SemanticGraph {
+  return traverse(graph, startId, kinds, "forward", "reachableFrom", maxDepth);
+}
+
+/**
+ * Reverse reachability: everything that reaches `startId` over the given edge
+ * kinds — the callers of a function, the importers of a module, transitively.
+ * The mirror of {@link reachableFrom}, and the backbone of `sbs query callers`
+ * and `sbs impact`. `maxDepth` bounds how many hops out to walk (default:
+ * unbounded). Returns the subgraph including the start node.
+ */
+export function reachedBy(
+  graph: SemanticGraph,
+  startId: string,
+  kinds: readonly EdgeKind[] = ["calls", "imports"],
+  maxDepth = Number.POSITIVE_INFINITY,
+): SemanticGraph {
+  return traverse(graph, startId, kinds, "backward", "reachedBy", maxDepth);
+}
+
+/** Shared BFS core for forward/backward reachability, optionally depth-bounded. */
+function traverse(
+  graph: SemanticGraph,
+  startId: string,
+  kinds: readonly EdgeKind[],
+  direction: "forward" | "backward",
+  label: string,
+  maxDepth: number,
 ): SemanticGraph {
   if (!graph.nodes.some((node) => node.id === startId)) {
-    throw new Error(`reachableFrom: node ${startId} is not in the graph`);
+    throw new Error(`${label}: node ${startId} is not in the graph`);
+  }
+  const wanted = new Set(kinds);
+  const adjacency = new Map<string, string[]>();
+  for (const edge of graph.edges) {
+    if (!wanted.has(edge.kind)) {
+      continue;
+    }
+    const [key, value] = direction === "forward" ? [edge.from, edge.to] : [edge.to, edge.from];
+    const list = adjacency.get(key) ?? [];
+    list.push(value);
+    adjacency.set(key, list);
+  }
+  const kept = new Set<string>([startId]);
+  let frontier = [startId];
+  for (let depth = 0; depth < maxDepth && frontier.length > 0; depth += 1) {
+    const next: string[] = [];
+    for (const current of frontier) {
+      for (const neighbor of adjacency.get(current) ?? []) {
+        if (!kept.has(neighbor)) {
+          kept.add(neighbor);
+          next.push(neighbor);
+        }
+      }
+    }
+    frontier = next;
+  }
+  return subgraph(graph, kept);
+}
+
+/**
+ * The shortest directed chain from `fromId` to `toId` over the given edge kinds
+ * (default: calls + imports) — how one symbol reaches another. Returns the ids
+ * along one shortest path (inclusive of both ends), or `undefined` when `toId`
+ * is unreachable. BFS explores neighbours in ascending-id order, so when several
+ * shortest paths exist the returned one is deterministic. Throws if either
+ * endpoint is missing.
+ */
+export function shortestPath(
+  graph: SemanticGraph,
+  fromId: string,
+  toId: string,
+  kinds: readonly EdgeKind[] = ["calls", "imports"],
+): string[] | undefined {
+  for (const id of [fromId, toId]) {
+    if (!graph.nodes.some((node) => node.id === id)) {
+      throw new Error(`shortestPath: node ${id} is not in the graph`);
+    }
   }
   const wanted = new Set(kinds);
   const forward = new Map<string, string[]>();
@@ -299,19 +375,34 @@ export function reachableFrom(
     list.push(edge.to);
     forward.set(edge.from, list);
   }
-  const kept = new Set<string>([startId]);
-  const queue = [startId];
-  while (queue.length > 0) {
-    const current = queue.shift();
-    if (current === undefined) {
-      break;
-    }
-    for (const next of forward.get(current) ?? []) {
-      if (!kept.has(next)) {
-        kept.add(next);
-        queue.push(next);
+  const cameFrom = new Map<string, string>();
+  const seen = new Set<string>([fromId]);
+  let frontier = [fromId];
+  while (frontier.length > 0) {
+    const next: string[] = [];
+    for (const id of frontier) {
+      if (id === toId) {
+        const path = [toId];
+        let step = toId;
+        while (step !== fromId) {
+          const prev = cameFrom.get(step);
+          if (prev === undefined) {
+            break;
+          }
+          path.push(prev);
+          step = prev;
+        }
+        return path.reverse();
+      }
+      for (const neighbor of (forward.get(id) ?? []).slice().sort()) {
+        if (!seen.has(neighbor)) {
+          seen.add(neighbor);
+          cameFrom.set(neighbor, id);
+          next.push(neighbor);
+        }
       }
     }
+    frontier = next;
   }
-  return subgraph(graph, kept);
+  return undefined;
 }
