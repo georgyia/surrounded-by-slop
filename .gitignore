@@ -1,5 +1,6 @@
 # private roadmap — published as issues when ready
 PROJECT.md
+drafts/
 
 # dependencies
 node_modules/
@@ -27,6 +28,7 @@ videos/
 
 # launch copy — private until posted
 LAUNCH.md
+MARKETING.md
 
 # diagrams exported while testing
 *.drawio
