@@ -2,6 +2,7 @@ import { type ArgSpec, parseArgs, UsageError } from "./args.js";
 import { analyzeCommand } from "./commands/analyze.js";
 import { exportCommand } from "./commands/export.js";
 import { mapCommand } from "./commands/map.js";
+import { queryCommand } from "./commands/query.js";
 import type { CommandContext } from "./context.js";
 
 /**
@@ -21,6 +22,7 @@ const COMMANDS = new Map<string, Command>([
   ["analyze", analyzeCommand],
   ["export", exportCommand],
   ["map", mapCommand],
+  ["query", queryCommand],
 ]);
 
 const HELP = `sbs — headless code analysis for AI agents and CI
@@ -29,11 +31,21 @@ Usage: sbs <command> [path] [options]
 
 Commands:
   map [path]                     Ranked, token-budgeted repo map for AI agents
+  query <sub> <symbol>           Ask the graph instead of grepping:
+                                   defs <pattern>        matching declarations
+                                   callers <symbol>      who calls it (--depth k)
+                                   callees <symbol>      what it calls (--depth k)
+                                   importers <file>      who imports the file
+                                   slice <symbol>        neighborhood (--depth k)
+                                   path <from> <to>      shortest call/import chain
   analyze [path]                 Print the Semantic Graph as canonical JSON
   export --format mermaid|json   Render the graph in a text format
 
 Options:
   --budget <tokens>              Token budget for the map (default 2000)
+  --depth <k>                    Hops for callers/callees/slice
+  --root <path>                  Project root for query (default: cwd)
+  --json                         Emit canonical IR JSON instead of text
   --include <glob>               Replace the default include glob (repeatable)
   --exclude <glob>               Add an exclude on top of the defaults (repeatable)
   --include-tests                Analyze test files too (excluded by default)
