@@ -1,6 +1,7 @@
 import { type ArgSpec, parseArgs, UsageError } from "./args.js";
 import { analyzeCommand } from "./commands/analyze.js";
 import { exportCommand } from "./commands/export.js";
+import { impactCommand } from "./commands/impact.js";
 import { mapCommand } from "./commands/map.js";
 import { queryCommand } from "./commands/query.js";
 import type { CommandContext } from "./context.js";
@@ -15,7 +16,7 @@ type Command = (ctx: CommandContext, parsed: ReturnType<typeof parseArgs>) => nu
 
 /** Flags that never consume a following value, across all commands. */
 const BOOLEAN_FLAGS: ArgSpec = {
-  booleans: ["json", "verbose", "include-tests", "help"],
+  booleans: ["json", "verbose", "include-tests", "staged", "help"],
 };
 
 const COMMANDS = new Map<string, Command>([
@@ -23,6 +24,7 @@ const COMMANDS = new Map<string, Command>([
   ["export", exportCommand],
   ["map", mapCommand],
   ["query", queryCommand],
+  ["impact", impactCommand],
 ]);
 
 const HELP = `sbs — headless code analysis for AI agents and CI
@@ -38,13 +40,16 @@ Commands:
                                    importers <file>      who imports the file
                                    slice <symbol>        neighborhood (--depth k)
                                    path <from> <to>      shortest call/import chain
+  impact [--staged|--diff <ref>|-]  Blast radius of a diff (callers, tests)
   analyze [path]                 Print the Semantic Graph as canonical JSON
   export --format mermaid|json   Render the graph in a text format
 
 Options:
   --budget <tokens>              Token budget for the map (default 2000)
-  --depth <k>                    Hops for callers/callees/slice
-  --root <path>                  Project root for query (default: cwd)
+  --depth <k>                    Hops for callers/callees/slice/impact (impact: 2)
+  --staged                       impact: diff the staged index against HEAD
+  --diff <ref>                   impact: diff the working tree against a ref
+  --root <path>                  Project root for query/impact (default: cwd)
   --json                         Emit canonical IR JSON instead of text
   --include <glob>               Replace the default include glob (repeatable)
   --exclude <glob>               Add an exclude on top of the defaults (repeatable)
