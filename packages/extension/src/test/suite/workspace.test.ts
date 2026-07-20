@@ -67,6 +67,32 @@ test("Visualize Workspace skips small minified bundles", async () => {
   }
 });
 
+test("Visualize Workspace respects includeTests for test directories", async () => {
+  const api = await getApi();
+  const configuration = vscode.workspace.getConfiguration("slop");
+
+  const withoutTests = nextVisualize(api);
+  await api.visualizeWorkspace(new vscode.CancellationTokenSource().token);
+  const defaultDiagram = await withTimeout(withoutTests, 20_000, "workspace without tests");
+  assert.ok(
+    !defaultDiagram.graph.nodes.some((node) => node.id === "module:__tests__/hidden-helper.ts"),
+    "the __tests__ file is excluded by default",
+  );
+
+  await configuration.update("includeTests", true, vscode.ConfigurationTarget.Workspace);
+  try {
+    const withTests = nextVisualize(api);
+    await api.visualizeWorkspace(new vscode.CancellationTokenSource().token);
+    const includedDiagram = await withTimeout(withTests, 20_000, "workspace with tests");
+    assert.ok(
+      includedDiagram.graph.nodes.some((node) => node.id === "module:__tests__/hidden-helper.ts"),
+      "the __tests__ file is included when includeTests is true",
+    );
+  } finally {
+    await configuration.update("includeTests", undefined, vscode.ConfigurationTarget.Workspace);
+  }
+});
+
 test("Visualize File charts a Python file through the tree-sitter adapter", async () => {
   const api = await getApi();
   const folder = vscode.workspace.workspaceFolders?.[0];

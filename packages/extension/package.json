@@ -193,7 +193,7 @@
         "slop.includeTests": {
           "type": "boolean",
           "default": false,
-          "description": "Include test files (*.test.*, *.spec.*) in the workspace map."
+          "description": "Include test files and files in __tests__, tests, or spec directories in the workspace map."
         },
         "slop.showExternalModules": {
           "type": "boolean",

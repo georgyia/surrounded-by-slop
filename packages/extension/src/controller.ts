@@ -170,7 +170,9 @@ function looksMinified(text: string): boolean {
 
 function isTestFile(path: string): boolean {
   return (
-    /\.(test|spec)\.[cm]?[jt]sx?$/i.test(path) || /(^|\/)(test_[^/]+|[^/]+_test)\.py$/i.test(path)
+    /(^|\/)(__tests__|tests|spec)\//i.test(path) ||
+    /\.(test|spec)\.[cm]?[jt]sx?$/i.test(path) ||
+    /(^|\/)(test_[^/]+|[^/]+_test)\.py$/i.test(path)
   );
 }
 
