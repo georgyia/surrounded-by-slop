@@ -5,30 +5,20 @@
  * `<!-- diagram:<name> -->` markers. Drift-proof: if the code changes shape,
  * rerunning this script changes the docs.
  */
-import { readdirSync, readFileSync, statSync, writeFileSync } from "node:fs";
+import { readFileSync, writeFileSync } from "node:fs";
 import { dirname, join, relative, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 
 const root = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 const core = await import(new URL(`file://${root}/packages/core/dist/index.js`).href);
+const { discoverFiles } = await import(
+  new URL(`file://${root}/packages/host/dist/discovery.js`).href
+);
 
 function sourcesOf(packageDir) {
-  const files = [];
-  const walk = (dir) => {
-    for (const entry of readdirSync(dir)) {
-      const full = join(dir, entry);
-      if (statSync(full).isDirectory()) {
-        walk(full);
-      } else if (/\.ts$/.test(entry) && !/\.test\.ts$/.test(entry)) {
-        files.push({
-          path: relative(join(packageDir, "src"), full).replaceAll("\\", "/"),
-          text: readFileSync(full, "utf8"),
-        });
-      }
-    }
-  };
-  walk(join(packageDir, "src"));
-  return files.sort((a, b) => a.path.localeCompare(b.path));
+  // Preserve the historic docs input exactly: package-local fixtures are part
+  // of the architecture diagram; only test files are omitted.
+  return discoverFiles(join(packageDir, "src"), { include: ["**/*.ts"], exclude: [] });
 }
 
 function moduleDiagram(packageName) {

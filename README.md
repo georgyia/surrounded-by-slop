@@ -189,29 +189,43 @@ Pre-alpha. The foundation is built and gated (strict TS, 3-OS CI, coverage thres
 
 Issues are opened in waves as each milestone starts, so the tracker only ever contains work that's actually actionable.
 
-## Try it (from source, for now)
+## Install
+
+Install the editor extension from the VS Code Marketplace or Open VSX. For a
+headless map in any repository:
+
+```bash
+npx @surrounded-by-slop/cli map
+npx @surrounded-by-slop/cli query callers <symbol>
+git diff | npx @surrounded-by-slop/cli impact -
+```
+
+To build the extension from source:
 
 ```bash
 git clone https://github.com/georgyia/surrounded-by-slop.git
 cd surrounded-by-slop
 pnpm install
+pnpm build
 pnpm test          # see for yourself
 pnpm package       # → packages/extension/surrounded-by-slop.vsix
 ```
 
-Or open the repo in VS Code and hit **F5**. Marketplace and Open VSX listings arrive with M5.
+Or open the repo in VS Code and hit **F5**.
 
 ## Using it
 
 | Command | What it does |
 | ------- | ------------ |
 | **Slop: Visualize File** (`ctrl`/`cmd`+`shift`+`v`) | Diagram the active TS/JS file, beside the editor |
-| **Slop: Visualize Workspace** | The module-level map of the whole folder |
+| **Slop: Visualize Workspace** | Module map of the folder; toggle a folder overview and drill folder → module → function |
 | **Slop: Export Diagram As…** | Save as `.drawio`, `.mmd`, `.svg` or `.json` |
 | **Slop: Copy Diagram as Mermaid** | Mermaid on the clipboard, ready for a PR |
 | **Slop: Pin Diagram** / **Follow Active Editor** | Freeze a diagram, or track whatever file you open |
 
-Click any node to jump to its source; the diagram refreshes when you save the file.
+Click any node to jump to its source; the diagram refreshes when you save the
+file. On workspace maps, **Group folders / Show modules** switches level without
+re-analyzing, and expanding a folder reveals its modules inline.
 
 Settings live under `slop.` and apply on the next render — no reload:
 
@@ -219,7 +233,7 @@ Settings live under `slop.` and apply on the next render — no reload:
 | ------- | ------- | ----------- |
 | `slop.include` | `**/*.{ts,tsx,…}` | Globs to include in **Visualize Workspace** |
 | `slop.exclude` | `node_modules`, build dirs | Globs to exclude |
-| `slop.includeTests` | `false` | Include `*.test.*` / `*.spec.*` files |
+| `slop.includeTests` | `false` | Include test filenames and `__tests__` / `tests` / `spec` directories |
 | `slop.showExternalModules` | `true` | Show npm packages / unresolved imports as nodes |
 | `slop.theme` | `auto` | Diagram theme — `auto`, `light` or `dark` |
 | `slop.layoutDirection` | `right` | Layout flow — `right` or `down` |

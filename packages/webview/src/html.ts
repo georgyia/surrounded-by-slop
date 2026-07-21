@@ -161,6 +161,8 @@ export function buildDiagramHtml(options: DiagramHtmlOptions): string {
       title="Show only this node and its neighbors">Isolate</button>
     <button id="reset" class="slop-btn slop-hidden" type="button"
       title="Show the whole diagram again">Show all</button>
+    <button id="workspace-view" class="slop-btn slop-hidden" type="button"
+      title="Switch between module and folder views">Group folders</button>
     <button id="legend-toggle" class="slop-btn" type="button" aria-expanded="false"
       title="Explain the colors and line styles">Legend</button>
   </div>
