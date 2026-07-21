@@ -174,6 +174,31 @@ flowchart LR
 ```
 <!-- dogfood:end -->
 
+## Built with Codex & GPT‑5.6 — and built *for* it
+
+*(OpenAI Codex hackathon submission — full write‑up in [CODEX.md](CODEX.md).)*
+
+An LLM dropped into a 3,000‑line repo has your problem: it can't read its way to
+understanding. So this project runs both ways.
+
+- **Built *for* GPT‑5.6.** It ships an **Agent Interface** — an MCP server and a
+  headless `sbs` CLI — that hands a model a *semantic graph* of any codebase
+  instead of a pile of files:
+  - `sbs mcp` — Model Context Protocol server; Codex/GPT‑5.6 call `map`, `query`,
+    `impact` as native tools.
+  - `sbs map --budget <tokens>` — a token‑budgeted repo map that *fits the context
+    window*.
+  - `sbs query callers|callees|slice` — call edges resolved by the TypeScript
+    compiler, not regex, so the model gets ground truth it can't hallucinate.
+  - `git diff | sbs impact -` — the real blast‑radius of a change before an agent
+    makes it.
+- **Built *with* Codex.** Codex was the pair‑programmer, held to exactly the same
+  bar as any human PR — strict TS, coverage the linter enforces, a written
+  justification for every dependency. [That bar is the point](#principles).
+
+> The tool that makes slop legible to humans hands the same map to the model.
+> Details, commands, and the development story: **[CODEX.md](CODEX.md)**.
+
 ## Status
 
 Pre-alpha. The foundation is built and gated (strict TS, 3-OS CI, coverage thresholds the linter actually enforces); the visualization pipeline is landing milestone by milestone:
