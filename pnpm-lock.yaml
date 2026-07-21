@@ -36,9 +36,15 @@ importers:
         specifier: ^5.9.3
         version: 5.9.3
     devDependencies:
+      '@surrounded-by-slop/host':
+        specifier: workspace:*
+        version: link:../host
       '@types/node':
         specifier: ^26.1.1
         version: 26.1.1
+      esbuild:
+        specifier: ^0.28.1
+        version: 0.28.1
 
   packages/core:
     dependencies:
@@ -64,6 +70,9 @@ importers:
       '@surrounded-by-slop/core':
         specifier: workspace:*
         version: link:../core
+      '@surrounded-by-slop/host':
+        specifier: workspace:*
+        version: link:../host
       '@surrounded-by-slop/webview':
         specifier: workspace:*
         version: link:../webview
@@ -89,6 +98,19 @@ importers:
       typescript:
         specifier: ^5.8.0
         version: 5.9.3
+
+  packages/host:
+    dependencies:
+      '@surrounded-by-slop/core':
+        specifier: workspace:*
+        version: link:../core
+      typescript:
+        specifier: ^5.9.3
+        version: 5.9.3
+    devDependencies:
+      '@types/node':
+        specifier: ^26.1.1
+        version: 26.1.1
 
   packages/webview:
     devDependencies:

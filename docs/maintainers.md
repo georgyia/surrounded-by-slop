@@ -37,9 +37,12 @@ change.
    git tag v<extension-version>
    git push && git push --tags
    ```
-2. The `Release` workflow then: verifies (lint/typecheck/test), packages the
-   VSIX, creates a GitHub Release with generated notes, and publishes to the
-   VS Code Marketplace and Open VSX **if the tokens are configured**.
+2. The `Release` workflow then: verifies (lint/typecheck/test plus clean npm
+   pack/install smoke tests), publishes `@surrounded-by-slop/core` and
+   `@surrounded-by-slop/cli` with npm provenance, packages the VSIX, creates a
+   GitHub Release, and publishes to the VS Code Marketplace and Open VSX when
+   their tokens are configured. Without `NPM_TOKEN`, npm publication is a dry
+   run so forks remain safe.
 
 ### Publishing tokens (one-time setup)
 
@@ -47,9 +50,26 @@ change.
 | ---------- | --------------- |
 | `VSCE_PAT` | Azure DevOps personal access token with **Marketplace → Manage** scope, for publisher `georgyia` (create the publisher once at marketplace.visualstudio.com/manage) |
 | `OVSX_PAT` | open-vsx.org → user settings → Access Tokens (create the `georgyia` namespace first: `npx ovsx create-namespace georgyia -p <token>`) |
+| `NPM_TOKEN` | npmjs.com access token allowed to publish the `@surrounded-by-slop` scope; configure 2FA for authorization-only or use a granular automation token |
 
-Until the secrets exist, the release workflow skips publishing with a notice —
-it never fails because of missing tokens.
+### First npm publication and token rotation
+
+Before the first tagged release, create or claim the `@surrounded-by-slop`
+organization on npm, grant the publishing account access to both `core` and
+`cli`, and add `NPM_TOKEN` as a repository Actions secret. Run `pnpm test:pack`
+locally first; it audits archive contents and installs both tarballs into a
+clean temporary project before invoking `npx --no-install sbs map .`.
+
+The workflow publishes `core` before `cli` because the CLI declares the exact
+workspace-rewritten core version. GitHub's OIDC token plus `--provenance`
+attaches the repository/workflow attestation shown on npm. After the first
+release, verify that provenance badge on both package pages. Rotate a granular
+token in npm, replace the repository secret, run one tagged release, then
+revoke the old token; never overlap valid tokens longer than that verification.
+
+Until the npm secret exists, the release workflow performs public-package dry
+runs with a notice; Marketplace and Open VSX publishing are skipped when their
+respective tokens are absent.
 
 ## Cursor compatibility checklist
 

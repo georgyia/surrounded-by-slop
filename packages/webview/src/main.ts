@@ -160,6 +160,15 @@ function onNewDiagram(next: DiagramData): void {
   buildLegend();
   byId("toolbar")?.classList.remove("slop-hidden");
   byId("reset")?.classList.toggle("slop-hidden", next.isolated !== true);
+  const workspaceView = byId<HTMLButtonElement>("workspace-view");
+  if (workspaceView !== null) {
+    workspaceView.classList.toggle(
+      "slop-hidden",
+      next.workspaceView === undefined || next.isolated === true,
+    );
+    workspaceView.textContent = next.workspaceView === "folders" ? "Show modules" : "Group folders";
+    workspaceView.setAttribute("aria-pressed", String(next.workspaceView === "folders"));
+  }
 }
 
 function rebuildChips(): void {
@@ -328,6 +337,9 @@ function setupToolbar(): void {
   });
   byId<HTMLButtonElement>("reset")?.addEventListener("click", () => {
     vscode.postMessage({ type: "resetView" });
+  });
+  byId<HTMLButtonElement>("workspace-view")?.addEventListener("click", () => {
+    vscode.postMessage({ type: "toggleWorkspaceView" });
   });
   byId<HTMLButtonElement>("legend-toggle")?.addEventListener("click", () => {
     const hidden = byId("legend")?.classList.toggle("slop-hidden");

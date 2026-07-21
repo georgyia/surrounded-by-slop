@@ -1,0 +1,61 @@
+{
+  "name": "@surrounded-by-slop/host",
+  "version": "0.0.0",
+  "private": true,
+  "description": "Shared filesystem discovery and project-configuration host logic for Surrounded by Slop.",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/georgyia/surrounded-by-slop.git",
+    "directory": "packages/host"
+  },
+  "license": "MIT",
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "typesVersions": {
+    "*": {
+      "decisions": [
+        "dist/decisions.d.ts"
+      ],
+      "discovery": [
+        "dist/discovery.d.ts"
+      ],
+      "tsconfig": [
+        "dist/tsconfig.d.ts"
+      ]
+    }
+  },
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    },
+    "./decisions": {
+      "types": "./dist/decisions.d.ts",
+      "import": "./dist/decisions.js"
+    },
+    "./discovery": {
+      "types": "./dist/discovery.d.ts",
+      "import": "./dist/discovery.js"
+    },
+    "./tsconfig": {
+      "types": "./dist/tsconfig.d.ts",
+      "import": "./dist/tsconfig.js"
+    }
+  },
+  "sideEffects": false,
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsc -p tsconfig.build.json",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@surrounded-by-slop/core": "workspace:*",
+    "typescript": "^5.9.3"
+  },
+  "devDependencies": {
+    "@types/node": "^26.1.1"
+  }
+}

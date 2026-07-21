@@ -1,10 +1,10 @@
 import type { SemanticGraph } from "@surrounded-by-slop/core";
+import { isTestFile, looksMinified } from "@surrounded-by-slop/host/decisions";
 import type { DiagramData } from "@surrounded-by-slop/webview";
 import * as vscode from "vscode";
 import { readConfig } from "./config.js";
 import type { Logger } from "./log.js";
 import type { DiagramView } from "./panel/diagramView.js";
-import { discoverAliasOptions } from "./tsconfig.js";
 
 /** VS Code language ids the analyzers understand, and their file suffix. */
 const LANGUAGE_EXTENSIONS: Readonly<Record<string, string>> = {
@@ -152,30 +152,6 @@ function withoutUnresolvedSinks(graph: SemanticGraph): SemanticGraph {
   };
 }
 
-/**
- * Minified bundles under the byte cap still poison a map with alphabet-soup
- * identifiers; the classic signature is very long lines. Cheap and safe: a
- * hand-written file never averages hundreds of chars per line.
- */
-function looksMinified(text: string): boolean {
-  if (text.length < 20_000) {
-    return false;
-  }
-  let lines = 1;
-  for (let at = text.indexOf("\n"); at !== -1; at = text.indexOf("\n", at + 1)) {
-    lines += 1;
-  }
-  return text.length / lines > 400;
-}
-
-function isTestFile(path: string): boolean {
-  return (
-    /(^|\/)(__tests__|tests|spec)\//i.test(path) ||
-    /\.(test|spec)\.[cm]?[jt]sx?$/i.test(path) ||
-    /(^|\/)(test_[^/]+|[^/]+_test)\.py$/i.test(path)
-  );
-}
-
 function braceGlob(globs: readonly string[]): string | undefined {
   // A single pattern is returned as-is: wrapping it in `{…}` would nest braces
   // (the default include already contains `{ts,tsx,…}`) and break the matcher.
@@ -197,11 +173,12 @@ export class VisualizationController implements vscode.Disposable {
   private pinned = false;
   private following = false;
   private refreshTimer: ReturnType<typeof setTimeout> | undefined;
-  /** The full workspace graph behind an expandable module map, and which
-   * containers the user has opened (SBS-062). Undefined for a file view or a
-   * folder-level overview, where expansion doesn't apply. */
+  /** The full workspace graph behind both module and folder views. */
   private workspaceGraph: SemanticGraph | undefined;
   private workspaceTitle = "";
+  private workspaceView: "modules" | "folders" = "modules";
+  private workspaceFolderDepth = 1;
+  /** Stable folder/module expansion keys survive view toggles and refreshes. */
   private readonly expanded = new Set<string>();
   /** The diagram shown before an isolate, so "Show all" can restore it (SBS-063). */
   private preIsolate: DiagramData | undefined;
@@ -214,7 +191,8 @@ export class VisualizationController implements vscode.Disposable {
     this.disposables = [
       vscode.workspace.onDidSaveTextDocument((document) => this.onSave(document)),
       vscode.window.onDidChangeActiveTextEditor((editor) => this.onActiveEditor(editor)),
-      this.view.onToggleExpand((nodeId) => this.onToggleExpand(nodeId)),
+      this.view.onToggleExpand((nodeId) => this.toggleWorkspaceNode(nodeId)),
+      this.view.onToggleWorkspaceView(() => this.toggleWorkspaceView()),
       this.view.onIsolate((nodeId) => void this.isolate(nodeId)),
       this.view.onResetView(() => this.resetIsolate()),
     ];
@@ -420,8 +398,8 @@ export class VisualizationController implements vscode.Disposable {
         return;
       }
 
-      const { analyzeTypeScriptProject, collapseToFolders, collapseToModules, layoutGraph } =
-        await import("@surrounded-by-slop/core");
+      const core = await import("@surrounded-by-slop/core");
+      const { analyzeTypeScriptProject, collapseToFolders, collapseToModules } = core;
       // Bridge VS Code's token (isCancellationRequested) to the core's (cancelled).
       const cancellation = {
         get cancelled(): boolean {
@@ -437,7 +415,8 @@ export class VisualizationController implements vscode.Disposable {
         // Without the project's own aliases, every `@/foo` import resolves to
         // nothing and the map draws the project's own code as external
         // packages — the map is then confidently wrong rather than empty (#68).
-        const aliases = await discoverAliasOptions(folder.uri.fsPath);
+        const { discoverAliasOptions } = await import("@surrounded-by-slop/host/tsconfig");
+        const aliases = discoverAliasOptions(folder.uri.fsPath);
         if (aliases.options === undefined) {
           this.logger.info(`Path aliases: ${aliases.reason ?? "none"}.`);
         } else {
@@ -477,21 +456,38 @@ export class VisualizationController implements vscode.Disposable {
       );
       const modules = collapseToModules(base);
       this.preIsolate = undefined; // a fresh workspace map is not an isolate
+      this.workspaceGraph = base;
+      this.workspaceTitle = `${folder.name} — workspace`;
+      this.workspaceView = "modules";
+      this.workspaceFolderDepth = 1;
+      this.expanded.clear();
+      this.shownUri = undefined;
+      // A src-rooted repo folds to one useless box at depth 1. Use the same
+      // depth heuristic for automatic folding and the manual toolbar toggle.
+      let folderOverview = collapseToFolders(base, 1);
+      const depthOneFolders = folderOverview.nodes.filter((node) => node.kind === "folder").length;
+      if (depthOneFolders < 4) {
+        const depthTwoOverview = collapseToFolders(base, 2);
+        const depthTwoFolders = depthTwoOverview.nodes.filter(
+          (node) => node.kind === "folder",
+        ).length;
+        // Prefer the deeper view only when it reveals more meaningful groups;
+        // a flat src/ directory is still better represented by one folder than
+        // by a misleading "folders" view containing no folders at all.
+        if (depthTwoFolders > depthOneFolders) {
+          folderOverview = depthTwoOverview;
+          this.workspaceFolderDepth = 2;
+        }
+      }
       // Guardrail (SBS-065 + SBS-090): past the readability budget — by module
       // count or by edge density — fold up to the folder level so a large repo
-      // shows as clusters, not a hairball. In that overview expansion is off —
-      // narrow the scope to get an expandable map.
+      // shows as clusters, not a hairball. Folders remain expandable (#77).
       if (
         modules.nodes.length > MODULE_RENDER_BUDGET ||
         flatEdgeCount(modules) > EDGE_RENDER_BUDGET
       ) {
-        // A src-rooted repo folds to a single useless box at depth 1 — deepen
-        // until the overview has enough groups to be a map.
-        let folders = collapseToFolders(base, 1);
-        if (folders.nodes.filter((node) => node.kind === "folder").length < 4) {
-          folders = collapseToFolders(base, 2);
-        }
-        const overview = folders.nodes.length < modules.nodes.length ? folders : modules;
+        const overview =
+          folderOverview.nodes.length < modules.nodes.length ? folderOverview : modules;
         if (overview.nodes.length > MAX_LAYOUT_NODES) {
           void vscode.window.showInformationMessage(
             `Surrounded by Slop: this workspace is too large to map at once (${overview.nodes.length} groups). Narrow it with slop.include / slop.exclude, or open a subfolder.`,
@@ -499,48 +495,24 @@ export class VisualizationController implements vscode.Disposable {
           this.logger.warn(
             `Workspace map skipped: ${overview.nodes.length} groups exceeds the ${MAX_LAYOUT_NODES}-node guardrail.`,
           );
+          this.workspaceGraph = undefined;
           return;
         }
-        const layout = await layoutGraph(overview, { direction: config.layoutDirection });
-        if (token.isCancellationRequested) {
-          return;
-        }
-        this.workspaceGraph = undefined;
-        this.expanded.clear();
-        const diagram: DiagramData = {
-          title: `${folder.name} — workspace (folders)`,
-          graph: overview,
-          layout,
-        };
-        this.shown = diagram;
-        this.shownUri = undefined;
-        void vscode.commands.executeCommand("setContext", "slop.hasDiagram", true);
-        this.view.show(diagram);
+        this.workspaceView = overview === folderOverview ? "folders" : "modules";
+        await this.renderWorkspaceExpansion(true, token);
         this.logger.info(
           `Visualized workspace ${folder.name}: ${inputs.length} files → ${overview.nodes.length} groups`,
         );
-        void vscode.window
-          .showInformationMessage(
-            `Surrounded by Slop: ${modules.nodes.length} modules is a lot — showing a folder-level overview. Narrow the scope to see individual modules.`,
-            "Configure scope",
-          )
-          .then((choice) => {
-            if (choice === "Configure scope") {
-              void vscode.commands.executeCommand(
-                "workbench.action.openSettings",
-                "surrounded-by-slop",
-              );
-            }
-          });
+        void vscode.window.showInformationMessage(
+          this.workspaceView === "folders"
+            ? `Surrounded by Slop: ${modules.nodes.length} modules is a lot — showing folders first. Expand a folder or use Show modules to drill in.`
+            : `Surrounded by Slop: ${modules.nodes.length} modules is a lot, but this workspace has no useful folder grouping — showing modules.`,
+        );
         return;
       }
 
       // Small enough to be an expandable module map: keep the full graph and
-      // open every module collapsed; double-clicking one reveals its members.
-      this.workspaceGraph = base;
-      this.workspaceTitle = `${folder.name} — workspace`;
-      this.expanded.clear();
-      this.shownUri = undefined;
+      // open every module collapsed; clicking one reveals its members.
       await this.renderWorkspaceExpansion(true, token);
       this.logger.info(
         `Visualized workspace ${folder.name}: ${inputs.length} files → ${modules.nodes.length} modules`,
@@ -564,18 +536,31 @@ export class VisualizationController implements vscode.Disposable {
       return;
     }
     const config = readConfig();
-    const { expandNodes, expandableIds, layoutGraph } = await import("@surrounded-by-slop/core");
-    const display = expandNodes(base, this.expanded);
-    const ids = expandableIds(base, display, this.expanded);
+    const core = await import("@surrounded-by-slop/core");
+    const { expandNodes, expandableIds, layoutGraph, withFolderHierarchy } = core;
+    const hierarchy =
+      this.workspaceView === "folders"
+        ? withFolderHierarchy(base, this.workspaceFolderDepth)
+        : base;
+    const display = expandNodes(hierarchy, this.expanded);
+    if (display.nodes.length > MAX_LAYOUT_NODES) {
+      void vscode.window.showInformationMessage(
+        `Surrounded by Slop: expanding this view would show ${display.nodes.length} nodes. Collapse a group or narrow slop.include / slop.exclude first.`,
+      );
+      return;
+    }
+    const ids = expandableIds(hierarchy, display, this.expanded);
     const layout = await layoutGraph(display, { direction: config.layoutDirection });
     if (token?.isCancellationRequested) {
       return;
     }
     const diagram: DiagramData = {
-      title: this.workspaceTitle,
+      title:
+        this.workspaceView === "folders" ? `${this.workspaceTitle} (folders)` : this.workspaceTitle,
       graph: display,
       layout,
       expandableIds: ids,
+      workspaceView: this.workspaceView,
     };
     this.shown = diagram;
     void vscode.commands.executeCommand("setContext", "slop.hasDiagram", true);
@@ -624,7 +609,7 @@ export class VisualizationController implements vscode.Disposable {
   }
 
   /** Click on a container: toggle its expansion and re-render in place. */
-  private onToggleExpand(nodeId: string): void {
+  toggleWorkspaceNode(nodeId: string): void {
     if (this.workspaceGraph === undefined) {
       return;
     }
@@ -633,6 +618,16 @@ export class VisualizationController implements vscode.Disposable {
     } else {
       this.expanded.add(nodeId);
     }
+    void this.renderWorkspaceExpansion(false);
+  }
+
+  /** Switch the current workspace map between its module and folder hierarchy. */
+  toggleWorkspaceView(): void {
+    if (this.workspaceGraph === undefined) {
+      return;
+    }
+    this.workspaceView = this.workspaceView === "modules" ? "folders" : "modules";
+    this.preIsolate = undefined;
     void this.renderWorkspaceExpansion(false);
   }
 

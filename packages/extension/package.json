@@ -186,6 +186,8 @@
             "**/.turbo/**",
             "**/.cache/**",
             "**/vendor/**",
+            "**/fixtures/**",
+            "**/testdata/**",
             "**/*.min.js"
           ],
           "description": "Glob patterns to exclude when visualizing the workspace."
@@ -240,6 +242,7 @@
   },
   "dependencies": {
     "@surrounded-by-slop/core": "workspace:*",
+    "@surrounded-by-slop/host": "workspace:*",
     "@surrounded-by-slop/webview": "workspace:*"
   },
   "devDependencies": {

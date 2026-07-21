@@ -18,11 +18,13 @@
     "lint": "biome check .",
     "lint:fix": "biome check --write .",
     "test": "vitest run --coverage",
+    "test:pack": "pnpm build && node scripts/package-smoke.mjs",
     "test:watch": "vitest",
     "package": "pnpm --filter surrounded-by-slop run package",
     "changeset": "changeset",
     "bench": "pnpm --filter @surrounded-by-slop/core build && node scripts/bench.mjs",
-    "docs:diagrams": "pnpm --filter @surrounded-by-slop/core build && node scripts/architecture-diagrams.mjs"
+    "bench:layout-direction": "pnpm --filter @surrounded-by-slop/core build && pnpm --filter @surrounded-by-slop/host build && node scripts/layout-direction.mjs",
+    "docs:diagrams": "pnpm --filter @surrounded-by-slop/core build && pnpm --filter @surrounded-by-slop/host build && node scripts/architecture-diagrams.mjs"
   },
   "devDependencies": {
     "@biomejs/biome": "^2.0.0",

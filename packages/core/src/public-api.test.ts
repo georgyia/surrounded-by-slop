@@ -56,6 +56,7 @@ it("exports exactly the documented public api", () => {
     "unresolvedFunctionId",
     "validateCfg",
     "validateGraph",
+    "withFolderHierarchy",
   ]);
   expect(core.SCHEMA_VERSION).toBe(1);
 });

@@ -1,28 +1,12 @@
 import * as path from "node:path";
 import ts from "typescript";
 
-/**
- * tsconfig discovery is a host concern by design: the core takes source text and
- * never touches the filesystem. What it does accept is
- * `adapterOptions.compilerOptions`, so a project's path aliases have to be found
- * here and handed over — otherwise every `@/foo` import resolves to nothing and
- * the analysis draws the project's own code as external packages (#68).
- *
- * Ported from `packages/extension/src/tsconfig.ts`; SBS-118 folds the two copies
- * back together once the CLI's shape has settled.
- */
-
 export interface AliasOptions {
-  /** Where `paths` are anchored inside the core's virtual filesystem (rooted at "/"). */
+  /** Where `paths` are anchored inside the core's virtual filesystem. */
   baseUrl: string;
   paths: Record<string, string[]>;
 }
 
-/**
- * Rebase a project's alias base onto the virtual root the core analyzes under,
- * where every file id is workspace-relative. Returns undefined when the base
- * sits outside the workspace, since nothing there is in the program anyway.
- */
 export function toVirtualAliasOptions(
   workspaceRoot: string,
   aliasBase: string,
@@ -38,17 +22,11 @@ export function toVirtualAliasOptions(
 
 export interface AliasDiscovery {
   options: AliasOptions | undefined;
-  /** Why there is nothing to pass, for `--verbose`. Undefined when there is. */
+  /** Why there is nothing to pass. Undefined when aliases were discovered. */
   reason?: string;
 }
 
-/**
- * Find the nearest tsconfig for a workspace and extract its alias mapping.
- *
- * Uses the TypeScript API rather than JSON.parse: tsconfig allows comments and
- * trailing commas, and `extends` chains are routine — both of which hand-rolled
- * parsing gets wrong.
- */
+/** Find the nearest tsconfig and translate its aliases to the core's virtual root. */
 export function discoverAliasOptions(workspaceRoot: string): AliasDiscovery {
   const configPath = ts.findConfigFile(workspaceRoot, ts.sys.fileExists, "tsconfig.json");
   if (configPath === undefined) {
@@ -75,11 +53,10 @@ export function discoverAliasOptions(workspaceRoot: string): AliasDiscovery {
     return { options: undefined, reason: `${configPath} has paths but no resolvable base` };
   }
   const options = toVirtualAliasOptions(workspaceRoot, aliasBase, paths);
-  if (options === undefined) {
-    return {
-      options: undefined,
-      reason: `${configPath} anchors its aliases outside the workspace; ignoring them`,
-    };
-  }
-  return { options };
+  return options === undefined
+    ? {
+        options: undefined,
+        reason: `${configPath} anchors its aliases outside the workspace; ignoring them`,
+      }
+    : { options };
 }

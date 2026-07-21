@@ -1,7 +1,6 @@
 {
   "name": "@surrounded-by-slop/core",
   "version": "0.0.1",
-  "private": true,
   "description": "Language-agnostic code analysis: source → Semantic Graph IR → exporters. Pure TypeScript, no editor dependencies.",
   "repository": {
     "type": "git",
@@ -12,10 +11,27 @@
   "type": "module",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "default": "./dist/index.js"
+    }
+  },
   "sideEffects": false,
   "files": [
-    "dist"
+    "dist/**/*.js",
+    "dist/**/*.d.ts",
+    "README.md",
+    "LICENSE"
   ],
+  "engines": {
+    "node": ">=20.19"
+  },
+  "publishConfig": {
+    "access": "public",
+    "provenance": true
+  },
   "scripts": {
     "build": "tsc -p tsconfig.build.json",
     "typecheck": "tsc --noEmit"

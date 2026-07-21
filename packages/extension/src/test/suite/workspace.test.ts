@@ -42,6 +42,61 @@ test("Visualize Workspace shows a collapsed module map of the folder", async () 
     diagram.graph.nodes.every((node) => !node.id.startsWith("function:unresolved#")),
     "no unresolved sinks on the workspace map",
   );
+  assert.strictEqual(diagram.workspaceView, "modules", "workspace maps start in module view");
+});
+
+test("Workspace map toggles to folders and drills folder → module → function", async () => {
+  const api = await getApi();
+  const first = nextVisualize(api);
+  await api.visualizeWorkspace(new vscode.CancellationTokenSource().token);
+  await withTimeout(first, 20_000, "initial module view");
+
+  const folded = nextVisualize(api);
+  api.toggleWorkspaceView();
+  const folderDiagram = await withTimeout(folded, 20_000, "folder view");
+  assert.strictEqual(folderDiagram.workspaceView, "folders");
+  assert.ok(
+    folderDiagram.graph.nodes.some((node) => node.id === "folder:app"),
+    "app folder shown",
+  );
+  assert.ok(
+    !folderDiagram.graph.nodes.some((node) => node.id === "module:app/service.ts"),
+    "the folder initially hides its module",
+  );
+
+  const modules = nextVisualize(api);
+  api.toggleWorkspaceNode("folder:app");
+  const moduleDiagram = await withTimeout(modules, 20_000, "expanded folder");
+  assert.ok(
+    moduleDiagram.graph.nodes.some((node) => node.id === "module:app/service.ts"),
+    "expanding a folder reveals its module",
+  );
+  assert.ok(
+    moduleDiagram.graph.edges.some(
+      (edge) =>
+        edge.kind === "contains" &&
+        edge.from === "folder:app" &&
+        edge.to === "module:app/service.ts",
+    ),
+    "the revealed module stays nested in its folder",
+  );
+
+  const members = nextVisualize(api);
+  api.toggleWorkspaceNode("module:app/service.ts");
+  const memberDiagram = await withTimeout(members, 20_000, "expanded module");
+  assert.ok(
+    memberDiagram.graph.nodes.some((node) => node.id === "function:app/service.ts#serve"),
+    "expanding the module reveals its function",
+  );
+
+  const restored = nextVisualize(api);
+  api.toggleWorkspaceView();
+  const moduleView = await withTimeout(restored, 20_000, "restored module view");
+  assert.strictEqual(moduleView.workspaceView, "modules");
+  assert.ok(
+    moduleView.graph.nodes.some((node) => node.id === "function:app/service.ts#serve"),
+    "module expansion state survives the folder/module toggle",
+  );
 });
 
 test("Visualize Workspace skips small minified bundles", async () => {
@@ -67,7 +122,7 @@ test("Visualize Workspace skips small minified bundles", async () => {
   }
 });
 
-test("Visualize Workspace respects includeTests for test directories", async () => {
+test("Visualize Workspace respects includeTests for shared test-directory rules", async () => {
   const api = await getApi();
   const configuration = vscode.workspace.getConfiguration("slop");
 

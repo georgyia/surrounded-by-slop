@@ -4,7 +4,7 @@ import {
   reachedBy,
   type SemanticGraph,
 } from "@surrounded-by-slop/core";
-import { isTestFile } from "../host/discovery.js";
+import { isTestFile } from "@surrounded-by-slop/host/decisions";
 import { formatNodes, symbolText } from "../query/format.js";
 import type { ChangedLines } from "./diff.js";
 

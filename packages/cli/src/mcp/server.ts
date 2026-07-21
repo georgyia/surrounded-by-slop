@@ -1,8 +1,8 @@
 import { createInterface } from "node:readline";
 import { createIncrementalAnalyzer } from "@surrounded-by-slop/core";
-import { discoverFiles } from "../host/discovery.js";
+import { discoverFiles } from "@surrounded-by-slop/host/discovery";
+import { discoverAliasOptions } from "@surrounded-by-slop/host/tsconfig";
 import { type DiffSource, gitDiff } from "../host/git.js";
-import { discoverAliasOptions } from "../host/tsconfig.js";
 import { handleRpc, type ProtocolDeps, parseErrorResponse } from "./protocol.js";
 import type { ToolContext } from "./tools.js";
 

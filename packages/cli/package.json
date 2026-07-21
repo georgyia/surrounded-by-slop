@@ -1,7 +1,6 @@
 {
   "name": "@surrounded-by-slop/cli",
   "version": "0.0.1",
-  "private": true,
   "description": "Headless code analysis for AI agents and CI — the Surrounded by Slop semantic graph from the terminal.",
   "repository": {
     "type": "git",
@@ -12,14 +11,30 @@
   "type": "module",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    }
+  },
   "bin": {
     "sbs": "./dist/bin.js"
   },
   "files": [
-    "dist"
+    "dist/**/*.js",
+    "dist/**/*.d.ts",
+    "README.md",
+    "LICENSE"
   ],
+  "engines": {
+    "node": ">=20.19"
+  },
+  "publishConfig": {
+    "access": "public",
+    "provenance": true
+  },
   "scripts": {
-    "build": "tsc -p tsconfig.build.json",
+    "build": "node esbuild.mjs && tsc -p tsconfig.build.json --emitDeclarationOnly",
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
@@ -27,6 +42,8 @@
     "typescript": "^5.9.3"
   },
   "devDependencies": {
-    "@types/node": "^26.1.1"
+    "@surrounded-by-slop/host": "workspace:*",
+    "@types/node": "^26.1.1",
+    "esbuild": "^0.28.1"
   }
 }

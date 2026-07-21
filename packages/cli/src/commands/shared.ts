@@ -1,8 +1,8 @@
 import type { Diagnostic } from "@surrounded-by-slop/core";
+import { DEFAULT_EXCLUDE } from "@surrounded-by-slop/host/decisions";
 import { optionValues, type ParsedArgs } from "../args.js";
 import type { CommandContext } from "../context.js";
 import { type AnalyzeProjectResult, analyzeProject } from "../host/analyze.js";
-import { DEFAULT_EXCLUDE } from "../host/discovery.js";
 
 /**
  * Discovery options shared by every command, read from the common flags.

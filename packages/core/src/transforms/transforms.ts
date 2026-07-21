@@ -134,6 +134,48 @@ export function collapseToFolders(graph: SemanticGraph, depth = 1): SemanticGrap
 }
 
 /**
+ * Add a folder containment layer without discarding modules or their members.
+ * With {@link expandNodes}, an empty expansion renders the folder overview;
+ * expanding a folder reveals its modules, and expanding a module then reveals
+ * its declarations — one stable folders → modules → members hierarchy.
+ */
+export function withFolderHierarchy(graph: SemanticGraph, depth = 1): SemanticGraph {
+  const groupDepth = Math.max(depth, 1);
+  const folders = new Map<string, GraphNode>();
+  const contains: GraphEdge[] = [];
+  for (const node of graph.nodes) {
+    if (node.kind !== "module" || node.external === true || node.span === undefined) {
+      continue;
+    }
+    const segments = node.qualifiedName.split("/");
+    if (segments.length - 1 < groupDepth) {
+      continue;
+    }
+    const folderPath = segments.slice(0, groupDepth).join("/");
+    const folderId = `folder:${folderPath}`;
+    if (!folders.has(folderId)) {
+      folders.set(folderId, {
+        id: folderId,
+        kind: "folder",
+        name: segments[groupDepth - 1] ?? folderPath,
+        qualifiedName: folderPath,
+      });
+    }
+    contains.push({
+      id: edgeId("contains", folderId, node.id),
+      kind: "contains",
+      from: folderId,
+      to: node.id,
+    });
+  }
+  return canonicalizeGraph({
+    schemaVersion: graph.schemaVersion,
+    nodes: [...graph.nodes, ...folders.values()],
+    edges: [...graph.edges, ...contains],
+  });
+}
+
+/**
  * Progressive expand/collapse (SBS-062). Every node folds into its nearest
  * ancestor that is still hidden, where a container reveals its children only if
  * its id is in `expandedIds`. With an empty set the result is the module map
