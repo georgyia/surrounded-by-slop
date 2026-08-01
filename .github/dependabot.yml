@@ -11,6 +11,14 @@ updates:
       dev-dependencies:
         dependency-type: development
         update-types: ["minor", "patch"]
+    ignore:
+      # TypeScript 7 is the native port: its main entry is the version constant
+      # and the compiler API moved to `typescript/unstable/*`. Core is built on
+      # that API (createProgram, TypeChecker, the ts.isX guards) — the bump is
+      # 318 compile errors, not a migration we can take from a dependabot PR.
+      # Adopting it is a deliberate decision; 5.x minor/patch still flow.
+      - dependency-name: typescript
+        update-types: ["version-update:semver-major"]
   - package-ecosystem: github-actions
     directory: /
     schedule:
