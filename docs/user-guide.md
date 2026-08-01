@@ -11,7 +11,7 @@ command below from the Command Palette (`⌘⇧P` / `Ctrl+Shift+P`, prefix
 |---|---|
 | **Slop: Visualize File** (`⌘⇧V` / `Ctrl+Shift+V`) | Structure + call diagram of the active file. TS/JS via the type checker; Python via tree-sitter. |
 | **Slop: Visualize Function Flow** | Control-flow chart of the function under the cursor (TS/JS): condition-labeled branches, dashed loop back-edges, dimmed unreachable code, and a variable picker that highlights each variable's reads (blue) and writes (orange). |
-| **Slop: Visualize Workspace** | Module map of the whole workspace, TS and Python merged. Opens collapsed to modules; very large or dense repos fold to folder level automatically. |
+| **Slop: Visualize Workspace** | Module map of the whole workspace, TS and Python merged. Opens collapsed to modules; very large or dense repos fold to an expandable folder level automatically. |
 | **Slop: Pin Diagram** | Freeze the current diagram — it stops refreshing on save until unpinned. |
 | **Slop: Follow Active Editor** | Re-visualize whenever you switch editors. |
 | **Slop: Export Diagram As…** | Save the current diagram as `.drawio`, `.mmd` (Mermaid), `.svg`, or `.json`. Flow charts export their CFG faithfully in Mermaid/JSON. |
@@ -21,7 +21,10 @@ command below from the Command Palette (`⌘⇧P` / `Ctrl+Shift+P`, prefix
 
 - **Click** a node → jump to its source line. **Cmd/Ctrl-click** → open to the side.
 - **Click** a collapsed module/class (▸) to expand its members; click an
-  expanded container (▾) to fold it back. State survives refresh-on-save.
+  expanded container (▾) to fold it back. Folder views use the same gesture:
+  folder → module → function. State survives view toggles and refresh-on-save.
+- **Group folders / Show modules** switches a workspace map between its folder
+  overview and module view without re-running analysis.
 - **Drag** to pan, **wheel** to zoom, **double-click empty canvas** to re-fit.
 - **Search box** (`/` to focus): fuzzy-matches names and paths; matches stay
   bright, everything else dims. **Esc** clears.
@@ -37,8 +40,8 @@ command below from the Command Palette (`⌘⇧P` / `Ctrl+Shift+P`, prefix
 | Setting | Default | Meaning |
 |---|---|---|
 | `slop.include` | `**/*.{ts,tsx,mts,cts,js,jsx,mjs,cjs,py}` | Globs analyzed by Visualize Workspace. |
-| `slop.exclude` | `node_modules`, `dist`, `out`, `build`, `coverage` | Globs skipped everywhere. |
-| `slop.includeTests` | `false` | Include `*.test.*`/`*.spec.*`/`test_*.py` files in the workspace map. |
+| `slop.exclude` | dependencies, build output, fixtures | Globs skipped everywhere. |
+| `slop.includeTests` | `false` | Include test filenames and files under `__tests__/`, `tests/`, or `spec/` in the workspace map. |
 | `slop.showExternalModules` | `true` | Show external packages and unresolved imports as dashed nodes. |
 | `slop.theme` | `auto` | Diagram palette: follow the editor, or force light/dark. |
 | `slop.layoutDirection` | `right` | Diagram flow direction (`right` or `down`). Flow charts are always top-down. |
@@ -53,7 +56,8 @@ routes.
 ## Guardrails you may notice
 
 - Workspaces past ~250 modules or ~600 edges open as a **folder-level
-  overview** (with a notice) — narrow `slop.include` to drill into modules.
+  overview** (with a notice). Expand folders inline or use **Show modules**;
+  narrow `slop.include` only when the expanded graph exceeds the hard limit.
 - Files over 512 KB and folders like `node_modules` are skipped, and a
   workspace analysis caps at 5,000 files; the log (Output → Surrounded by
   Slop) says exactly what was skipped and why.

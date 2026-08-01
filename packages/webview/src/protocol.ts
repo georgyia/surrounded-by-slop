@@ -13,7 +13,7 @@ import type {
  * an update must fail loudly, not render a subtly wrong diagram. Bump on any
  * breaking change to a message shape.
  */
-export const PROTOCOL_VERSION = 1;
+export const PROTOCOL_VERSION = 2;
 
 /** Which of the two built-in palettes to draw with. */
 export type ColorTheme = "light" | "dark";
@@ -32,6 +32,8 @@ export interface DiagramData {
    * can expand (SBS-062). Absent for fully-expanded views like a single file.
    */
   readonly expandableIds?: readonly string[];
+  /** Present only for workspace maps; drives the modules/folders toolbar toggle. */
+  readonly workspaceView?: "modules" | "folders";
   /** True when this diagram is an isolated slice around one node (SBS-063). */
   readonly isolated?: boolean;
   /**
@@ -63,6 +65,7 @@ export type WebviewToHost =
   | { readonly type: "ready"; readonly protocol: number }
   | { readonly type: "revealNode"; readonly nodeId: string; readonly toSide: boolean }
   | { readonly type: "toggleExpand"; readonly nodeId: string }
+  | { readonly type: "toggleWorkspaceView" }
   | { readonly type: "isolate"; readonly nodeId: string }
   | { readonly type: "resetView" }
   | { readonly type: "error"; readonly message: string };

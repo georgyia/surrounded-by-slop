@@ -53,6 +53,7 @@ export class DiagramView {
   private readonly panelDisposables: vscode.Disposable[] = [];
   private readonly didVisualize = new vscode.EventEmitter<DiagramData>();
   private readonly didToggleExpand = new vscode.EventEmitter<string>();
+  private readonly didToggleWorkspaceView = new vscode.EventEmitter<void>();
   private readonly didIsolate = new vscode.EventEmitter<string>();
   private readonly didResetView = new vscode.EventEmitter<void>();
 
@@ -60,6 +61,8 @@ export class DiagramView {
   readonly onDidVisualize = this.didVisualize.event;
   /** Fires when the user clicks a container to expand or collapse it (SBS-062). */
   readonly onToggleExpand = this.didToggleExpand.event;
+  /** Fires when the workspace toolbar switches between modules and folders. */
+  readonly onToggleWorkspaceView = this.didToggleWorkspaceView.event;
   /** Fires when the user isolates a node's neighborhood (SBS-063). */
   readonly onIsolate = this.didIsolate.event;
   /** Fires when the user asks to drop an isolate and see the whole diagram again. */
@@ -145,6 +148,7 @@ export class DiagramView {
   dispose(): void {
     this.didVisualize.dispose();
     this.didToggleExpand.dispose();
+    this.didToggleWorkspaceView.dispose();
     this.didIsolate.dispose();
     this.didResetView.dispose();
     this.disposePanel();
@@ -220,6 +224,9 @@ export class DiagramView {
         break;
       case "toggleExpand":
         this.didToggleExpand.fire(message.nodeId);
+        break;
+      case "toggleWorkspaceView":
+        this.didToggleWorkspaceView.fire();
         break;
       case "isolate":
         this.didIsolate.fire(message.nodeId);

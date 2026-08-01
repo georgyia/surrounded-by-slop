@@ -23,7 +23,10 @@ let initialized: Promise<typeof import("web-tree-sitter")> | undefined;
 function runtimeModule(runtimeWasm: Uint8Array): Promise<typeof import("web-tree-sitter")> {
   if (initialized === undefined) {
     initialized = import("web-tree-sitter").then(async (module) => {
-      await module.Parser.init({ wasmBinary: runtimeWasm });
+      // `@types/emscripten` declares `wasmBinary: ArrayBuffer`, but the runtime
+      // forwards it straight to WebAssembly.instantiate, which takes any
+      // BufferSource. Passing the view keeps us from copying the whole runtime.
+      await module.Parser.init({ wasmBinary: runtimeWasm as unknown as ArrayBuffer });
       return module;
     });
   }

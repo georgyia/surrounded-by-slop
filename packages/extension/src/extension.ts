@@ -11,6 +11,8 @@ export interface SlopApi {
   readonly revealNode: (nodeId: string, toSide?: boolean) => Promise<void>;
   readonly exportDiagram: (target: vscode.Uri) => Promise<void>;
   readonly visualizeWorkspace: (token?: vscode.CancellationToken) => Promise<void>;
+  readonly toggleWorkspaceView: () => void;
+  readonly toggleWorkspaceNode: (nodeId: string) => void;
 }
 
 /**
@@ -76,6 +78,8 @@ export function activate(context: vscode.ExtensionContext): SlopApi {
     revealNode: (nodeId, toSide = false) => view.revealNode(nodeId, toSide),
     exportDiagram: (target) => controller.exportTo(target),
     visualizeWorkspace: (token) => controller.visualizeWorkspace(token),
+    toggleWorkspaceView: () => controller.toggleWorkspaceView(),
+    toggleWorkspaceNode: (nodeId) => controller.toggleWorkspaceNode(nodeId),
   };
 }
 

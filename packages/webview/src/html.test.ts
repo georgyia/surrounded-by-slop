@@ -33,6 +33,11 @@ describe("buildDiagramHtml", () => {
   it("carries the initial theme so the first paint matches the editor", () => {
     expect(html).toContain('data-theme="dark"');
   });
+
+  it("includes the workspace fold toggle, hidden until a workspace map arrives", () => {
+    expect(html).toContain('id="workspace-view"');
+    expect(html).toContain('id="workspace-view" class="slop-btn slop-hidden"');
+  });
 });
 
 describe("createNonce", () => {

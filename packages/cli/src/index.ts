@@ -10,9 +10,11 @@ export {
   analyzeProject,
 } from "./host/analyze.js";
 export {
+  type AliasDiscovery,
+  type AliasOptions,
   DEFAULT_EXCLUDE,
   DEFAULT_INCLUDE,
   type DiscoverOptions,
+  discoverAliasOptions,
   discoverFiles,
-} from "./host/discovery.js";
-export { type AliasDiscovery, type AliasOptions, discoverAliasOptions } from "./host/tsconfig.js";
+} from "./public-host.js";

@@ -9,22 +9,12 @@ import {
   filterGraph,
   mermaidExporter,
 } from "../packages/core/dist/index.js";
+import { discoverFiles } from "../packages/host/dist/discovery.js";
 
 const repoRoot = fileURLToPath(new URL("..", import.meta.url));
 const sourceRoot = path.join(repoRoot, "packages/core/src");
 
-const files = [];
-(function walk(dir) {
-  for (const entry of fs.readdirSync(dir, { withFileTypes: true })) {
-    const full = path.join(dir, entry.name);
-    if (entry.isDirectory()) walk(full);
-    else if (entry.name.endsWith(".ts") && !entry.name.endsWith(".test.ts"))
-      files.push({
-        path: path.relative(sourceRoot, full).replaceAll(path.sep, "/"),
-        text: fs.readFileSync(full, "utf8"),
-      });
-  }
-})(sourceRoot);
+const files = discoverFiles(sourceRoot, { include: ["**/*.ts"], exclude: [] });
 
 const { graph } = analyzeTypeScriptProject(files);
 // Module map only: unresolved-builtin sinks are precision bookkeeping, not architecture.

@@ -9,6 +9,7 @@ export default defineConfig({
       "packages/core/src/**/*.test.ts",
       "packages/webview/src/**/*.test.ts",
       "packages/cli/src/**/*.test.ts",
+      "packages/host/src/**/*.test.ts",
     ],
     coverage: {
       provider: "v8",
@@ -19,6 +20,7 @@ export default defineConfig({
         "packages/core/src/**/*.ts",
         "packages/webview/src/**/*.ts",
         "packages/cli/src/**/*.ts",
+        "packages/host/src/**/*.ts",
       ],
       // `main.ts` is the browser bootstrap (DOM globals, `acquireVsCodeApi`):
       // like the extension host, it is exercised by integration tests in a real

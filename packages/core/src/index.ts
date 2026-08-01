@@ -95,6 +95,7 @@ export {
   reachedBy,
   shortestPath,
   sliceAround,
+  withFolderHierarchy,
 } from "./transforms/transforms.js";
 export {
   analyzeWithTreeSitter,

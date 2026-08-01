@@ -1,3 +1,4 @@
+import { DEFAULT_EXCLUDE, DEFAULT_INCLUDE } from "@surrounded-by-slop/host/decisions";
 import * as vscode from "vscode";
 
 /** The extension's settings, read fresh so changes apply on the next render (no reload). */
@@ -6,7 +7,7 @@ export interface SlopConfig {
   readonly include: readonly string[];
   /** Globs to exclude when visualizing the workspace. */
   readonly exclude: readonly string[];
-  /** Include `*.test.*` / `*.spec.*` files in the workspace map. */
+  /** Include test filenames and files under conventional test directories. */
   readonly includeTests: boolean;
   /**
    * Show external packages / unresolved imports as nodes. `undefined` when the
@@ -20,25 +21,13 @@ export interface SlopConfig {
   readonly theme: "auto" | "light" | "dark";
   /** Layout flow direction. */
   readonly layoutDirection: "RIGHT" | "DOWN";
+  /**
+   * Modules above which the workspace map opens folded to folders. Readability,
+   * not layout cost: a map can be far under the layout guardrails and still be
+   * a wall of boxes (#78). `0` disables folding entirely.
+   */
+  readonly foldThreshold: number;
 }
-
-const DEFAULT_INCLUDE = ["**/*.{ts,tsx,mts,cts,js,jsx,mjs,cjs,py}"];
-const DEFAULT_EXCLUDE = [
-  "**/node_modules/**",
-  "**/dist/**",
-  "**/out/**",
-  "**/build/**",
-  "**/coverage/**",
-  "**/.git/**",
-  "**/.vscode-test/**",
-  "**/.next/**",
-  "**/.nuxt/**",
-  "**/.svelte-kit/**",
-  "**/.turbo/**",
-  "**/.cache/**",
-  "**/vendor/**",
-  "**/*.min.js",
-];
 
 /**
  * The user's setting only if they actually set it (at any scope), else
@@ -53,12 +42,13 @@ function explicitBoolean(config: vscode.WorkspaceConfiguration, key: string): bo
 export function readConfig(): SlopConfig {
   const config = vscode.workspace.getConfiguration("slop");
   return {
-    include: config.get<string[]>("include", DEFAULT_INCLUDE),
-    exclude: config.get<string[]>("exclude", DEFAULT_EXCLUDE),
+    include: config.get<string[]>("include", [...DEFAULT_INCLUDE]),
+    exclude: config.get<string[]>("exclude", [...DEFAULT_EXCLUDE]),
     includeTests: config.get<boolean>("includeTests", false),
     showExternalModules: explicitBoolean(config, "showExternalModules"),
     theme: config.get<"auto" | "light" | "dark">("theme", "auto"),
     layoutDirection:
       config.get<"right" | "down">("layoutDirection", "right") === "down" ? "DOWN" : "RIGHT",
+    foldThreshold: Math.max(0, Math.trunc(config.get<number>("foldThreshold", 40))),
   };
 }

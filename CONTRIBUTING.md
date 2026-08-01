@@ -12,6 +12,7 @@ right pnpm automatically).
 git clone https://github.com/georgyia/surrounded-by-slop.git
 cd surrounded-by-slop
 pnpm install
+pnpm build       # workspace packages publish their entry points from dist/
 pnpm test        # everything green? you're ready
 ```
 
@@ -35,13 +36,16 @@ visualization command lands, activation is deliberately a no-op.)
 ```
 packages/
   core/        # source → Semantic Graph IR → exporters. Pure TS. No `vscode`, no fs, no UI.
+  host/        # shared filesystem discovery + tsconfig aliases. No editor APIs.
+  cli/         # headless `sbs` binary + MCP server; consumes core + host.
   extension/   # VS Code host: commands, webview panel, settings, file IO.
   webview/     # diagram UI: layout, SVG rendering, pan/zoom, interactions.
 ```
 
-The dependency direction is one-way: `extension` and `webview` may depend on
-`core`; `core` depends on nothing editor-related. CI and reviewers enforce
-this.
+The dependency direction is one-way: `host` consumes `core`; `cli` and
+`extension` consume both; `webview` consumes only pure helpers from `core`.
+`core` depends on nothing editor- or filesystem-related. CI and reviewers
+enforce this.
 
 ## The rules
 

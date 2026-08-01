@@ -1,7 +1,8 @@
 import { resolve } from "node:path";
 import { type AnalysisResult, analyzeTypeScriptProject } from "@surrounded-by-slop/core";
-import { type DiscoverOptions, discoverFiles } from "./discovery.js";
-import { discoverAliasOptions } from "./tsconfig.js";
+import { discoverFiles } from "@surrounded-by-slop/host/discovery";
+import { discoverAliasOptions } from "@surrounded-by-slop/host/tsconfig";
+import type { DiscoverOptions } from "../public-host.js";
 
 /**
  * The shared pipeline every command runs: discover files under a root, resolve

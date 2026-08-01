@@ -11,6 +11,7 @@ import {
   reachedBy,
   shortestPath,
   sliceAround,
+  withFolderHierarchy,
 } from "./transforms.js";
 
 /** One realistic graph, produced by the actual analyzer, shared by all cases. */
@@ -159,6 +160,39 @@ describe("collapseToFolders", () => {
     const ids = folders.nodes.map((node) => node.id);
     expect(ids).toContain("folder:src/store");
     expect(ids).toContain("module:src/app.ts"); // only one segment deep — stays a module
+  });
+});
+
+describe("withFolderHierarchy", () => {
+  const hierarchical = withFolderHierarchy(graph, 1);
+
+  it("keeps the full graph and nests grouped modules under stable folders", () => {
+    expect(hierarchical.nodes.some((node) => node.id === "folder:src")).toBe(true);
+    expect(hierarchical.nodes.some((node) => node.id === "module:src/app.ts")).toBe(true);
+    expect(hierarchical.nodes.some((node) => node.id === "function:src/app.ts#main")).toBe(true);
+    expect(
+      hierarchical.edges.some(
+        (edge) =>
+          edge.kind === "contains" && edge.from === "folder:src" && edge.to === "module:src/app.ts",
+      ),
+    ).toBe(true);
+    expect(validateGraph(hierarchical)).toEqual([]);
+  });
+
+  it("drills folders to modules to members through the normal expansion transform", () => {
+    const overview = expandNodes(hierarchical, []);
+    expect(overview.nodes.some((node) => node.id === "folder:src")).toBe(true);
+    expect(overview.nodes.some((node) => node.id === "module:src/app.ts")).toBe(false);
+    expect(expandableIds(hierarchical, overview, [])).toContain("folder:src");
+
+    const modules = expandNodes(hierarchical, ["folder:src"]);
+    expect(modules.nodes.some((node) => node.id === "module:src/app.ts")).toBe(true);
+    expect(modules.nodes.some((node) => node.id === "function:src/app.ts#main")).toBe(false);
+    expect(expandableIds(hierarchical, modules, ["folder:src"])).toContain("module:src/app.ts");
+
+    const members = expandNodes(hierarchical, ["folder:src", "module:src/app.ts"]);
+    expect(members.nodes.some((node) => node.id === "function:src/app.ts#main")).toBe(true);
+    expect(validateGraph(members)).toEqual([]);
   });
 });
 
