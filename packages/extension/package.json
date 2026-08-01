@@ -252,7 +252,7 @@
     "@surrounded-by-slop/webview": "workspace:*"
   },
   "devDependencies": {
-    "@types/node": "^26.1.1",
+    "@types/node": "^26.1.2",
     "@types/vscode": "^1.96.0",
     "@vscode/test-electron": "^3.1.0",
     "@vscode/vsce": "^3.3.0",
