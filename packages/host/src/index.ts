@@ -12,3 +12,8 @@ export {
   discoverAliasOptions,
   toVirtualAliasOptions,
 } from "./tsconfig.js";
+export {
+  discoverWorkspacePackages,
+  type WorkspacePackage,
+  workspacePackagePaths,
+} from "./workspace-packages.js";
