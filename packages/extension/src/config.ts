@@ -21,6 +21,12 @@ export interface SlopConfig {
   readonly theme: "auto" | "light" | "dark";
   /** Layout flow direction. */
   readonly layoutDirection: "RIGHT" | "DOWN";
+  /**
+   * Modules above which the workspace map opens folded to folders. Readability,
+   * not layout cost: a map can be far under the layout guardrails and still be
+   * a wall of boxes (#78). `0` disables folding entirely.
+   */
+  readonly foldThreshold: number;
 }
 
 /**
@@ -43,5 +49,6 @@ export function readConfig(): SlopConfig {
     theme: config.get<"auto" | "light" | "dark">("theme", "auto"),
     layoutDirection:
       config.get<"right" | "down">("layoutDirection", "right") === "down" ? "DOWN" : "RIGHT",
+    foldThreshold: Math.max(0, Math.trunc(config.get<number>("foldThreshold", 40))),
   };
 }

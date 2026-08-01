@@ -32,3 +32,6 @@ MARKETING.md
 
 # diagrams exported while testing
 *.drawio
+
+# settings the integration run writes into the fixture workspace
+packages/extension/test-fixtures/workspace/.vscode/

@@ -479,13 +479,16 @@ export class VisualizationController implements vscode.Disposable {
           this.workspaceFolderDepth = 2;
         }
       }
-      // Guardrail (SBS-065 + SBS-090): past the readability budget — by module
-      // count or by edge density — fold up to the folder level so a large repo
-      // shows as clusters, not a hairball. Folders remain expandable (#77).
-      if (
-        modules.nodes.length > MODULE_RENDER_BUDGET ||
-        flatEdgeCount(modules) > EDGE_RENDER_BUDGET
-      ) {
+      // Two separate reasons to open folded (#78). The budgets are a hard
+      // layout-cost guardrail (SBS-065 + SBS-090); slop.foldThreshold is the
+      // readability line, and it is much lower — a map can be well inside the
+      // budgets and still be a wall of boxes. Folders stay expandable (#77),
+      // so folding is a starting point, not a restriction.
+      const overBudget =
+        modules.nodes.length > MODULE_RENDER_BUDGET || flatEdgeCount(modules) > EDGE_RENDER_BUDGET;
+      const overFoldThreshold =
+        config.foldThreshold > 0 && modules.nodes.length > config.foldThreshold;
+      if (overBudget || overFoldThreshold) {
         const overview =
           folderOverview.nodes.length < modules.nodes.length ? folderOverview : modules;
         if (overview.nodes.length > MAX_LAYOUT_NODES) {
@@ -503,11 +506,17 @@ export class VisualizationController implements vscode.Disposable {
         this.logger.info(
           `Visualized workspace ${folder.name}: ${inputs.length} files → ${overview.nodes.length} groups`,
         );
-        void vscode.window.showInformationMessage(
-          this.workspaceView === "folders"
-            ? `Surrounded by Slop: ${modules.nodes.length} modules is a lot — showing folders first. Expand a folder or use Show modules to drill in.`
-            : `Surrounded by Slop: ${modules.nodes.length} modules is a lot, but this workspace has no useful folder grouping — showing modules.`,
-        );
+        if (overBudget) {
+          void vscode.window.showInformationMessage(
+            this.workspaceView === "folders"
+              ? `Surrounded by Slop: ${modules.nodes.length} modules is a lot — showing folders first. Expand a folder or use Show modules to drill in.`
+              : `Surrounded by Slop: ${modules.nodes.length} modules is a lot, but this workspace has no useful folder grouping — showing modules.`,
+          );
+        } else if (this.workspaceView === "folders") {
+          void vscode.window.showInformationMessage(
+            `Surrounded by Slop: opened ${modules.nodes.length} modules as folders. Expand one or use Show modules to drill in — slop.foldThreshold controls this.`,
+          );
+        }
         return;
       }
 

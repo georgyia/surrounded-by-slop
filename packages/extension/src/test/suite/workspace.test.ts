@@ -99,6 +99,60 @@ test("Workspace map toggles to folders and drills folder → module → function
   );
 });
 
+test("slop.foldThreshold opens a busy map folded, and 0 keeps it flat (#78)", async () => {
+  const api = await getApi();
+  const config = vscode.workspace.getConfiguration("slop");
+  const folder = vscode.workspace.workspaceFolders?.[0];
+  assert.ok(folder, "a workspace folder is open");
+
+  // Folding only helps when there are folders to fold into, so give the map a
+  // couple of real ones. Well under every layout budget — this exercises the
+  // readability threshold, not the cost guardrail.
+  const written = ["zone/one.ts", "zone/two.ts", "region/three.ts", "region/four.ts"].map(
+    (relative) => vscode.Uri.joinPath(folder.uri, relative),
+  );
+  for (const [index, uri] of written.entries()) {
+    await vscode.workspace.fs.writeFile(
+      uri,
+      new TextEncoder().encode(`export const value${index} = ${index};\n`),
+    );
+  }
+
+  try {
+    await config.update("foldThreshold", 1, vscode.ConfigurationTarget.Global);
+    const folded = nextVisualize(api);
+    await api.visualizeWorkspace(new vscode.CancellationTokenSource().token);
+    const foldedDiagram = await withTimeout(folded, 20_000, "folded workspace");
+    assert.strictEqual(
+      foldedDiagram.workspaceView,
+      "folders",
+      "past the threshold the map opens at the folder level",
+    );
+
+    // The readability fold must stay a starting point, not a restriction.
+    const drilled = nextVisualize(api);
+    api.toggleWorkspaceNode("folder:zone");
+    const drilledDiagram = await withTimeout(drilled, 20_000, "expanded folder");
+    assert.ok(
+      drilledDiagram.graph.nodes.some((node) => node.id === "module:zone/one.ts"),
+      "a folded folder still expands to its modules",
+    );
+
+    await config.update("foldThreshold", 0, vscode.ConfigurationTarget.Global);
+    const flat = nextVisualize(api);
+    await api.visualizeWorkspace(new vscode.CancellationTokenSource().token);
+    const flatDiagram = await withTimeout(flat, 20_000, "flat workspace");
+    assert.strictEqual(flatDiagram.workspaceView, "modules", "0 disables the readability fold");
+  } finally {
+    await config.update("foldThreshold", undefined, vscode.ConfigurationTarget.Global);
+    for (const directory of ["zone", "region"]) {
+      await vscode.workspace.fs.delete(vscode.Uri.joinPath(folder.uri, directory), {
+        recursive: true,
+      });
+    }
+  }
+});
+
 test("Visualize Workspace skips small minified bundles", async () => {
   const api = await getApi();
   const folder = vscode.workspace.workspaceFolders?.[0];
