@@ -390,7 +390,7 @@ function legendSwatch(entry: LegendEntry, isNode: boolean): SVGSVGElement {
       ["x2", "23"],
       ["y2", "5"],
       ["stroke", entry.stroke],
-      ["stroke-width", "2"],
+      ["stroke-width", String(entry.weight ?? 2)],
     ]) {
       line.setAttribute(name ?? "", value ?? "");
     }

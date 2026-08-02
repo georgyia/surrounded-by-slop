@@ -1,4 +1,11 @@
-import type { GraphEdge, GraphLayout, NodeKind, SemanticGraph } from "@surrounded-by-slop/core";
+import {
+  type EdgeTone,
+  edgeEmphasis,
+  type GraphEdge,
+  type GraphLayout,
+  type NodeKind,
+  type SemanticGraph,
+} from "@surrounded-by-slop/core";
 import type { ColorTheme } from "./protocol.js";
 
 /**
@@ -24,6 +31,8 @@ export interface Theme {
   readonly edge: string;
   readonly edgeLow: string;
   readonly heritage: string;
+  /** Import cycles — the one relationship a reader is usually hunting for. */
+  readonly cycle: string;
   readonly fillOpacity: string;
   readonly kinds: Readonly<Record<NodeKind, KindStyle>>;
 }
@@ -35,6 +44,7 @@ const LIGHT: Theme = {
   edge: "#57606a",
   edgeLow: "#a8b1ba",
   heritage: "#8250df",
+  cycle: "#cf222e",
   fillOpacity: "1",
   kinds: {
     module: { fill: "#eaeef2", stroke: "#8c959f" },
@@ -56,6 +66,7 @@ const DARK: Theme = {
   edge: "#8b949e",
   edgeLow: "#484f58",
   heritage: "#bc8cff",
+  cycle: "#f85149",
   fillOpacity: "0.13",
   kinds: {
     module: { fill: "#8b949e", stroke: "#8b949e" },
@@ -87,17 +98,33 @@ function coordinate(value: number): string {
   return String(Math.round(value * 100) / 100);
 }
 
+const TONE_MARKERS: Readonly<Record<EdgeTone, string>> = {
+  normal: "arrow-solid",
+  muted: "arrow-low",
+  heritage: "arrow-hollow",
+  cycle: "arrow-cycle",
+};
+
+export function toneColor(tone: EdgeTone, theme: Theme): string {
+  switch (tone) {
+    case "muted":
+      return theme.edgeLow;
+    case "heritage":
+      return theme.heritage;
+    case "cycle":
+      return theme.cycle;
+    default:
+      return theme.edge;
+  }
+}
+
+/** Colour, weight and dash for one edge — the emphasis rules live in core. */
 function edgeStroke(
   edge: GraphEdge,
   theme: Theme,
-): { stroke: string; dash: boolean; marker: string } {
-  if (edge.kind === "extends" || edge.kind === "implements") {
-    return { stroke: theme.heritage, dash: edge.kind === "implements", marker: "arrow-hollow" };
-  }
-  if (edge.confidence === "low") {
-    return { stroke: theme.edgeLow, dash: true, marker: "arrow-low" };
-  }
-  return { stroke: theme.edge, dash: edge.kind === "imports", marker: "arrow-solid" };
+): { stroke: string; dash: boolean; marker: string; width: number } {
+  const { tone, width, dash } = edgeEmphasis(edge);
+  return { stroke: toneColor(tone, theme), dash, marker: TONE_MARKERS[tone], width };
 }
 
 /** Render `graph` (positioned by `layout`) as an interactive SVG document string. */
@@ -119,6 +146,7 @@ export function renderDiagram(
     `    <marker id="arrow-solid" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M 0 1 L 9 5 L 0 9 z" fill="${palette.edge}" /></marker>`,
     `    <marker id="arrow-low" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M 0 1 L 9 5 L 0 9 z" fill="${palette.edgeLow}" /></marker>`,
     `    <marker id="arrow-hollow" viewBox="0 0 12 12" refX="11" refY="6" markerWidth="10" markerHeight="10" orient="auto-start-reverse"><path d="M 1 1 L 11 6 L 1 11 z" fill="none" stroke="${palette.heritage}" /></marker>`,
+    `    <marker id="arrow-cycle" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M 0 1 L 9 5 L 0 9 z" fill="${palette.cycle}" /></marker>`,
     "  </defs>",
     `  <g class="slop-viewport" data-content-width="${width}" data-content-height="${height}">`,
   ];
@@ -147,12 +175,12 @@ export function renderDiagram(
     if (route === undefined) {
       continue;
     }
-    const { stroke, dash, marker } = edgeStroke(edge, palette);
+    const { stroke, dash, marker, width } = edgeStroke(edge, palette);
     const points = route.points
       .map((point) => `${coordinate(point.x)},${coordinate(point.y)}`)
       .join(" ");
     lines.push(
-      `    <polyline points="${points}" fill="none" stroke="${stroke}" stroke-width="1.5"${dash ? ' stroke-dasharray="6 5"' : ""} marker-end="url(#${marker})" />`,
+      `    <polyline points="${points}" fill="none" stroke="${stroke}" stroke-width="${width}"${dash ? ' stroke-dasharray="6 5"' : ""} marker-end="url(#${marker})" />`,
     );
   }
 
