@@ -1,7 +1,9 @@
 import { describe, expect, it } from "vitest";
+import type { GraphEdge, GraphNode, SemanticGraph } from "../ir/types.js";
 import { validateGraph } from "../ir/validate.js";
 import { analyzeTypeScriptProject } from "../typescript/adapter.js";
 import {
+  bestFolderDepth,
   collapseToFolders,
   collapseToModules,
   expandableIds,
@@ -281,5 +283,86 @@ describe("shortestPath", () => {
     expect(() => shortestPath(graph, "function:src/app.ts#main", "module:ghost.ts")).toThrow(
       /not in the graph/,
     );
+  });
+});
+
+describe("bestFolderDepth", () => {
+  const moduleNode = (path: string): GraphNode => ({
+    id: `module:${path}`,
+    kind: "module",
+    name: path.split("/").pop() ?? path,
+    qualifiedName: path,
+    span: { file: path, startLine: 1, startCol: 1, endLine: 1, endCol: 1 },
+  });
+  /** `from` imports `to`, so a grouping can be judged on whether it connects. */
+  const importEdge = (from: string, to: string): GraphEdge => ({
+    id: `imports:module:${from}->module:${to}`,
+    kind: "imports",
+    from: `module:${from}`,
+    to: `module:${to}`,
+  });
+  const graphOf = (paths: string[], edges: GraphEdge[] = []): SemanticGraph => ({
+    schemaVersion: 1,
+    nodes: paths.map(moduleNode),
+    edges,
+  });
+
+  it("skips a single src/ box and groups by what is inside it", () => {
+    const paths = ["src/app/a.ts", "src/store/b.ts", "src/util/c.ts"];
+    const edges = [importEdge("src/app/a.ts", "src/store/b.ts")];
+    const depth = bestFolderDepth(graphOf(paths, edges));
+    expect(depth).toBe(2);
+    const folders = collapseToFolders(graphOf(paths, edges), depth).nodes.filter(
+      (node) => node.kind === "folder",
+    );
+    expect(folders.map((node) => node.qualifiedName)).toEqual(["src/app", "src/store", "src/util"]);
+  });
+
+  it("skips a single packages/ box in a monorepo", () => {
+    expect(
+      bestFolderDepth(
+        graphOf(
+          ["packages/core/src/a.ts", "packages/cli/src/b.ts"],
+          [importEdge("packages/cli/src/b.ts", "packages/core/src/a.ts")],
+        ),
+      ),
+    ).toBe(2);
+  });
+
+  it("goes deeper when the top level groups but connects nothing", () => {
+    // Three real top-level folders that never reference each other: a correct
+    // grouping and a blank diagram. The useful architecture is one level down.
+    expect(
+      bestFolderDepth(
+        graphOf(
+          ["examples/demo/a.ts", "packages/core/src/b.ts", "packages/cli/src/c.ts"],
+          [importEdge("packages/cli/src/c.ts", "packages/core/src/b.ts")],
+        ),
+      ),
+    ).toBe(2);
+  });
+
+  it("stays shallow when the top level is already meaningful", () => {
+    expect(
+      bestFolderDepth(
+        graphOf(
+          ["app/a.ts", "lib/b.ts", "web/c.ts"],
+          [importEdge("app/a.ts", "lib/b.ts"), importEdge("web/c.ts", "lib/b.ts")],
+        ),
+      ),
+    ).toBe(1);
+  });
+
+  it("falls back to the richest grouping when nothing connects at any depth", () => {
+    expect(bestFolderDepth(graphOf(["src/app/a.ts", "src/store/b.ts"]))).toBe(2);
+  });
+
+  it("gives up rather than fragmenting a genuinely single-chain repo", () => {
+    expect(bestFolderDepth(graphOf(["src/deep/deeper/a.ts", "src/deep/deeper/b.ts"]))).toBe(1);
+  });
+
+  it("handles root-level files and an empty graph", () => {
+    expect(bestFolderDepth(graphOf(["a.ts", "b.ts"]))).toBe(1);
+    expect(bestFolderDepth(graphOf([]))).toBe(1);
   });
 });

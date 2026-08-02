@@ -133,6 +133,52 @@ export function collapseToFolders(graph: SemanticGraph, depth = 1): SemanticGrap
   });
 }
 
+/** Deeper than this and "folder overview" stops being an overview. */
+const MAX_FOLDER_DEPTH = 4;
+
+/**
+ * Pick the shallowest folder depth that produces a useful overview (#98).
+ *
+ * Grouping by leading path segments is only useful if the repo's top level is
+ * meaningful, and for the two most common layouts it is not: `src/**` folds to
+ * a single `src` box, and a `packages/*` monorepo folds to `packages`. Both
+ * are true and useless.
+ *
+ * "Useful" needs two things, and the second is easy to miss: more than one
+ * group, *and* edges between those groups. This repo has three top-level
+ * folders (`examples`, `packages`, `scripts`) that reference each other not at
+ * all — a correct grouping and a blank diagram. One level deeper the packages
+ * appear with real dependencies between them.
+ *
+ * Falls back to whichever depth yields the most folders when no depth connects
+ * anything, so a genuinely disconnected repo still gets its best available
+ * grouping rather than depth 1 by default.
+ *
+ * Chosen here, in core, so the extension, CLI and MCP server land on the same
+ * view instead of each carrying its own heuristic.
+ */
+export function bestFolderDepth(graph: SemanticGraph, maxDepth = MAX_FOLDER_DEPTH): number {
+  const moduleLevel = collapseToModules(graph);
+  let fallbackDepth = 1;
+  let mostFolders = 0;
+  for (let depth = 1; depth <= Math.max(1, maxDepth); depth += 1) {
+    const folded = collapseToFolders(moduleLevel, depth);
+    const folders = folded.nodes.filter((node) => node.kind === "folder");
+    if (folders.length > mostFolders) {
+      fallbackDepth = depth;
+      mostFolders = folders.length;
+    }
+    const folderIds = new Set(folders.map((node) => node.id));
+    const connects = folded.edges.some(
+      (edge) => edge.kind !== "contains" && (folderIds.has(edge.from) || folderIds.has(edge.to)),
+    );
+    if (folders.length > 1 && connects) {
+      return depth;
+    }
+  }
+  return fallbackDepth;
+}
+
 /**
  * Add a folder containment layer without discarding modules or their members.
  * With {@link expandNodes}, an empty expansion renders the folder overview;
