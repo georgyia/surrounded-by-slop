@@ -1,5 +1,6 @@
 import { describe, expect, it } from "vitest";
 import { buildGraph, declarationId, edgeId, moduleId } from "../ir/ids.js";
+import type { SemanticGraph } from "../ir/types.js";
 import type { GraphLayout } from "../layout/layout.js";
 import { layoutGraph } from "../layout/layout.js";
 import { analyzeTypeScriptProject } from "../typescript/adapter.js";
@@ -56,6 +57,7 @@ describe("svg exporter", () => {
         '    <marker id="arrow-solid" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M 0 1 L 9 5 L 0 9 z" fill="#57606a" /></marker>',
         '    <marker id="arrow-low" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M 0 1 L 9 5 L 0 9 z" fill="#a8b1ba" /></marker>',
         '    <marker id="arrow-hollow" viewBox="0 0 12 12" refX="11" refY="6" markerWidth="10" markerHeight="10" orient="auto-start-reverse"><path d="M 1 1 L 11 6 L 1 11 z" fill="#ffffff" stroke="#8250df" /></marker>',
+        '    <marker id="arrow-cycle" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M 0 1 L 9 5 L 0 9 z" fill="#cf222e" /></marker>',
         "  </defs>",
         '  <rect width="100%" height="100%" fill="#ffffff" />',
         '  <g transform="translate(16,16)">',
@@ -100,5 +102,38 @@ describe("svg exporter", () => {
     expect(output).toContain('viewBox="0 0 ');
 
     expect(svgExporter.export(graph, { layout })).toBe(output);
+  });
+
+  it("draws heavily used edges thicker and mutes type-only ones (#99)", async () => {
+    const heavy: SemanticGraph = {
+      schemaVersion: 1,
+      nodes: [
+        { id: "module:a.ts", kind: "module", name: "a.ts", qualifiedName: "a.ts" },
+        { id: "module:b.ts", kind: "module", name: "b.ts", qualifiedName: "b.ts" },
+        { id: "module:c.ts", kind: "module", name: "c.ts", qualifiedName: "c.ts" },
+      ],
+      edges: [
+        {
+          id: "imports:module:a.ts->module:b.ts",
+          kind: "imports",
+          from: "module:a.ts",
+          to: "module:b.ts",
+          count: 16,
+        },
+        {
+          id: "imports:module:a.ts->module:c.ts",
+          kind: "imports",
+          from: "module:a.ts",
+          to: "module:c.ts",
+          typeOnly: true,
+        },
+      ],
+    };
+    const output = svgExporter.export(heavy, { layout: await layoutGraph(heavy) });
+
+    // The 16-use edge reaches the width cap; the type-only one stays minimal
+    // and takes the muted colour, so weight reads as runtime coupling only.
+    expect(output).toContain('stroke="#57606a" stroke-width="3.5"');
+    expect(output).toContain('stroke="#a8b1ba" stroke-width="1.2"');
   });
 });

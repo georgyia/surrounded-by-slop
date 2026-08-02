@@ -1,4 +1,5 @@
 import type { GraphEdge, NodeKind } from "../ir/types.js";
+import { type EdgeTone, edgeEmphasis } from "../layout/edgeEmphasis.js";
 import { type Exporter, requiredLayout } from "./exporter.js";
 
 /**
@@ -20,6 +21,7 @@ interface Theme {
   edge: string;
   edgeLow: string;
   heritage: string;
+  cycle: string;
   fillOpacity: string;
   kinds: Record<NodeKind, KindStyle>;
 }
@@ -32,6 +34,7 @@ const LIGHT: Theme = {
   edge: "#57606a",
   edgeLow: "#a8b1ba",
   heritage: "#8250df",
+  cycle: "#cf222e",
   fillOpacity: "1",
   kinds: {
     module: { fill: "#eaeef2", stroke: "#8c959f" },
@@ -54,6 +57,7 @@ const DARK: Theme = {
   edge: "#8b949e",
   edgeLow: "#484f58",
   heritage: "#bc8cff",
+  cycle: "#f85149",
   fillOpacity: "0.13",
   kinds: {
     module: { fill: "#8b949e", stroke: "#8b949e" },
@@ -80,17 +84,33 @@ function coordinate(value: number): string {
   return String(Math.round(value * 100) / 100);
 }
 
+const TONE_MARKERS: Record<EdgeTone, string> = {
+  normal: "arrow-solid",
+  muted: "arrow-low",
+  heritage: "arrow-hollow",
+  cycle: "arrow-cycle",
+};
+
+function toneColor(tone: EdgeTone, theme: Theme): string {
+  switch (tone) {
+    case "muted":
+      return theme.edgeLow;
+    case "heritage":
+      return theme.heritage;
+    case "cycle":
+      return theme.cycle;
+    default:
+      return theme.edge;
+  }
+}
+
+/** Shares the emphasis rules with the webview so exports match what you saw. */
 function edgeStroke(
   edge: GraphEdge,
   theme: Theme,
-): { stroke: string; dash: boolean; marker: string } {
-  if (edge.kind === "extends" || edge.kind === "implements") {
-    return { stroke: theme.heritage, dash: edge.kind === "implements", marker: "hollow" };
-  }
-  if (edge.confidence === "low") {
-    return { stroke: theme.edgeLow, dash: true, marker: "solid" };
-  }
-  return { stroke: theme.edge, dash: edge.kind === "imports", marker: "solid" };
+): { stroke: string; dash: boolean; marker: string; width: number } {
+  const { tone, width, dash } = edgeEmphasis(edge);
+  return { stroke: toneColor(tone, theme), dash, marker: TONE_MARKERS[tone], width };
 }
 
 export const svgExporter: Exporter = {
@@ -112,6 +132,7 @@ export const svgExporter: Exporter = {
       `    <marker id="arrow-solid" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M 0 1 L 9 5 L 0 9 z" fill="${theme.edge}" /></marker>`,
       `    <marker id="arrow-low" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M 0 1 L 9 5 L 0 9 z" fill="${theme.edgeLow}" /></marker>`,
       `    <marker id="arrow-hollow" viewBox="0 0 12 12" refX="11" refY="6" markerWidth="10" markerHeight="10" orient="auto-start-reverse"><path d="M 1 1 L 11 6 L 1 11 z" fill="${theme.background}" stroke="${theme.heritage}" /></marker>`,
+      `    <marker id="arrow-cycle" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M 0 1 L 9 5 L 0 9 z" fill="${theme.cycle}" /></marker>`,
       "  </defs>",
       `  <rect width="100%" height="100%" fill="${theme.background}" />`,
       `  <g transform="translate(${margin},${margin})">`,
@@ -137,16 +158,10 @@ export const svgExporter: Exporter = {
       if (route === undefined) {
         continue;
       }
-      const { stroke, dash, marker } = edgeStroke(edge, theme);
-      const markerId =
-        marker === "hollow"
-          ? "arrow-hollow"
-          : edge.confidence === "low"
-            ? "arrow-low"
-            : "arrow-solid";
+      const { stroke, dash, marker, width } = edgeStroke(edge, theme);
       const points = route.points.map((p) => `${coordinate(p.x)},${coordinate(p.y)}`).join(" ");
       lines.push(
-        `    <polyline points="${points}" fill="none" stroke="${stroke}" stroke-width="1.5"${dash ? ' stroke-dasharray="6 5"' : ""} marker-end="url(#${markerId})" />`,
+        `    <polyline points="${points}" fill="none" stroke="${stroke}" stroke-width="${width}"${dash ? ' stroke-dasharray="6 5"' : ""} marker-end="url(#${marker})" />`,
       );
     }
 

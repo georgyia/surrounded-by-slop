@@ -13,6 +13,8 @@ export interface LegendEntry {
   readonly stroke: string;
   /** Edge entries only: drawn as a dashed line. */
   readonly dashed?: boolean;
+  /** Edge entries only: stroke width, when the entry is demonstrating weight. */
+  readonly weight?: number;
 }
 
 const KIND_LABELS: Record<NodeKind, string> = {
@@ -39,13 +41,24 @@ export function nodeLegend(kinds: Iterable<NodeKind>, palette: Theme): LegendEnt
   }));
 }
 
-/** The fixed edge vocabulary (line style ⇒ relationship). */
+/**
+ * The fixed edge vocabulary (line style ⇒ relationship). Thickness is a second,
+ * independent channel — how often the relationship occurs (#99) — so it is
+ * described here rather than given its own swatch.
+ */
 export function edgeLegend(palette: Theme): LegendEntry[] {
   return [
     { label: "calls", fill: "none", stroke: palette.edge },
     { label: "imports", fill: "none", stroke: palette.edge, dashed: true },
     { label: "extends / implements", fill: "none", stroke: palette.heritage },
-    { label: "inferred (low confidence)", fill: "none", stroke: palette.edgeLow, dashed: true },
+    { label: "in an import cycle", fill: "none", stroke: palette.cycle },
+    {
+      label: "type-only / inferred",
+      fill: "none",
+      stroke: palette.edgeLow,
+      dashed: true,
+    },
+    { label: "thicker = used more often", fill: "none", stroke: palette.edge, weight: 3.5 },
   ];
 }
 

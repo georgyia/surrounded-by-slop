@@ -399,7 +399,8 @@ export class VisualizationController implements vscode.Disposable {
       }
 
       const core = await import("@surrounded-by-slop/core");
-      const { analyzeTypeScriptProject, collapseToFolders, collapseToModules } = core;
+      const { analyzeTypeScriptProject, bestFolderDepth, collapseToFolders, collapseToModules } =
+        core;
       // Bridge VS Code's token (isCancellationRequested) to the core's (cancelled).
       const cancellation = {
         get cancelled(): boolean {
@@ -459,26 +460,14 @@ export class VisualizationController implements vscode.Disposable {
       this.workspaceGraph = base;
       this.workspaceTitle = `${folder.name} — workspace`;
       this.workspaceView = "modules";
-      this.workspaceFolderDepth = 1;
       this.expanded.clear();
       this.shownUri = undefined;
-      // A src-rooted repo folds to one useless box at depth 1. Use the same
-      // depth heuristic for automatic folding and the manual toolbar toggle.
-      let folderOverview = collapseToFolders(base, 1);
-      const depthOneFolders = folderOverview.nodes.filter((node) => node.kind === "folder").length;
-      if (depthOneFolders < 4) {
-        const depthTwoOverview = collapseToFolders(base, 2);
-        const depthTwoFolders = depthTwoOverview.nodes.filter(
-          (node) => node.kind === "folder",
-        ).length;
-        // Prefer the deeper view only when it reveals more meaningful groups;
-        // a flat src/ directory is still better represented by one folder than
-        // by a misleading "folders" view containing no folders at all.
-        if (depthTwoFolders > depthOneFolders) {
-          folderOverview = depthTwoOverview;
-          this.workspaceFolderDepth = 2;
-        }
-      }
+      // A src-rooted repo folds to one useless box at depth 1, and a
+      // packages/* monorepo to one "packages" box. Core picks the shallowest
+      // depth that actually groups something (#98), so the extension, CLI and
+      // MCP server all land on the same view.
+      this.workspaceFolderDepth = bestFolderDepth(base);
+      const folderOverview = collapseToFolders(base, this.workspaceFolderDepth);
       // Two separate reasons to open folded (#78). The budgets are a hard
       // layout-cost guardrail (SBS-065 + SBS-090); slop.foldThreshold is the
       // readability line, and it is much lower — a map can be well inside the

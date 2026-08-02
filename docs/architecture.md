@@ -48,6 +48,7 @@ same as stale formatting.
 flowchart LR
   module_adapter_ts[["adapter.ts"]]
   module_bench_compare_ts[["bench/compare.ts"]]
+  module_bench_orientation_ts[["bench/orientation.ts"]]
   module_bench_synthetic_ts[["bench/synthetic.ts"]]
   module_cfg_builder_ts[["cfg/builder.ts"]]
   module_cfg_dataflow_ts[["cfg/dataflow.ts"]]
@@ -66,6 +67,7 @@ flowchart LR
   module_ir_ids_ts[["ir/ids.ts"]]
   module_ir_types_ts[["ir/types.ts"]]
   module_ir_validate_ts[["ir/validate.ts"]]
+  module_layout_edgeEmphasis_ts[["layout/edgeEmphasis.ts"]]
   module_layout_label_ts[["layout/label.ts"]]
   module_layout_layout_ts[["layout/layout.ts"]]
   module_python_adapter_ts[["python/adapter.ts"]]
@@ -87,6 +89,7 @@ flowchart LR
   module_export_json_ts --> module_stable_json_ts
   module_export_mermaid_ts -->|"2×"| module_layout_label_ts
   module_export_svg_ts --> module_export_exporter_ts
+  module_export_svg_ts --> module_layout_edgeEmphasis_ts
   module_incremental_ts --> module_ir_ids_ts
   module_incremental_ts --> module_stable_json_ts
   module_incremental_ts -->|"2×"| module_typescript_adapter_ts
@@ -94,7 +97,7 @@ flowchart LR
   module_layout_layout_ts -->|"2×"| module_layout_label_ts
   module_python_adapter_ts --> module_treesitter_mapper_ts
   module_python_adapter_ts --> module_treesitter_runtime_ts
-  module_transforms_transforms_ts -->|"5×"| module_ir_ids_ts
+  module_transforms_transforms_ts -->|"7×"| module_ir_ids_ts
   module_transforms_transforms_ts -->|"2×"| module_transforms_glob_ts
   module_treesitter_mapper_ts --> module_adapter_ts
   module_treesitter_mapper_ts -->|"8×"| module_ir_ids_ts
@@ -118,6 +121,7 @@ flowchart LR
   module_typescript_structure_ts -->|"7×"| module_typescript_common_ts
   module_typescript_structure_ts --> module_typescript_host_ts
   module_adapter_ts -.->|"type"| module_ir_types_ts
+  module_bench_orientation_ts -.->|"type"| module_layout_layout_ts
   module_bench_synthetic_ts -.->|"type"| module_adapter_ts
   module_cfg_builder_ts -.->|"type"| module_adapter_ts
   module_cfg_builder_ts -.->|"type"| module_cfg_types_ts
@@ -141,6 +145,7 @@ flowchart LR
   module_export_mermaid_ts -.-> module_layout_label_ts
   module_export_svg_ts -.-> module_export_exporter_ts
   module_export_svg_ts -.->|"type"| module_ir_types_ts
+  module_export_svg_ts -.-> module_layout_edgeEmphasis_ts
   module_incremental_ts -.->|"type"| module_adapter_ts
   module_incremental_ts -.-> module_ir_ids_ts
   module_incremental_ts -.->|"2×"| module_ir_types_ts
@@ -162,6 +167,7 @@ flowchart LR
   module_index_ts -.-> module_ir_ids_ts
   module_index_ts -.-> module_ir_types_ts
   module_index_ts -.-> module_ir_validate_ts
+  module_index_ts -.-> module_layout_edgeEmphasis_ts
   module_index_ts -.-> module_layout_label_ts
   module_index_ts -.-> module_layout_layout_ts
   module_index_ts -.-> module_python_adapter_ts
@@ -175,6 +181,7 @@ flowchart LR
   module_ir_ids_ts -.->|"type"| module_ir_types_ts
   module_ir_validate_ts -.-> module_ir_ids_ts
   module_ir_validate_ts -.->|"type"| module_ir_types_ts
+  module_layout_edgeEmphasis_ts -.->|"type"| module_ir_types_ts
   module_layout_label_ts -.->|"type"| module_ir_types_ts
   module_layout_layout_ts -.->|"type"| module_ir_types_ts
   module_layout_layout_ts -.-> module_layout_label_ts
@@ -281,8 +288,8 @@ flowchart LR
   module_test_suite_index_ts[["test/suite/index.ts"]]
   module_controller_ts -->|"4×"| module_config_ts
   module_controller_ts -->|"19×"| module_log_ts
-  module_controller_ts -->|"7×"| module_panel_diagramView_ts
-  module_extension_ts -->|"11×"| module_controller_ts
+  module_controller_ts -->|"6×"| module_panel_diagramView_ts
+  module_extension_ts -->|"13×"| module_controller_ts
   module_extension_ts --> module_log_ts
   module_extension_ts -->|"5×"| module_panel_diagramView_ts
   module_panel_diagramView_ts -->|"2×"| module_log_ts

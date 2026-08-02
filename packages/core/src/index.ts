@@ -62,6 +62,12 @@ export {
   type SourceSpan,
 } from "./ir/types.js";
 export { validateGraph } from "./ir/validate.js";
+export {
+  type EdgeEmphasis,
+  type EdgeTone,
+  edgeEmphasis,
+  edgeWidth,
+} from "./layout/edgeEmphasis.js";
 export { displayLabel } from "./layout/label.js";
 export {
   type GraphLayout,
@@ -85,6 +91,7 @@ export {
   rankNodes,
 } from "./transforms/rank.js";
 export {
+  bestFolderDepth,
   collapseToFolders,
   collapseToModules,
   expandableIds,
