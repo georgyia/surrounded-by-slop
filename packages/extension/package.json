@@ -16,16 +16,30 @@
     "vscode": "^1.96.0"
   },
   "categories": [
-    "Visualization"
+    "Visualization",
+    "Programming Languages"
   ],
   "keywords": [
     "diagram",
     "visualization",
     "architecture",
     "call graph",
+    "dependency graph",
+    "code map",
+    "monorepo",
+    "control flow",
     "drawio",
-    "mermaid"
+    "mermaid",
+    "typescript",
+    "python",
+    "mcp",
+    "ai agent"
   ],
+  "homepage": "https://github.com/georgyia/surrounded-by-slop#readme",
+  "bugs": {
+    "url": "https://github.com/georgyia/surrounded-by-slop/issues"
+  },
+  "qna": "https://github.com/georgyia/surrounded-by-slop/discussions",
   "main": "./dist/extension.js",
   "activationEvents": [],
   "contributes": {
