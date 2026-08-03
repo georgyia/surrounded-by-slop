@@ -64,3 +64,62 @@ test("every contributed setting is namespaced and has a description and default"
     assert.ok("default" in property, `setting '${key}' has a default`);
   }
 });
+
+/**
+ * The marketplace's documented allowed values. `vsce package` does *not*
+ * validate categories — a wrong one packages happily and is only rejected
+ * once the release tag tries to publish, which is the worst place to find out.
+ * https://code.visualstudio.com/api/references/extension-manifest
+ */
+const MARKETPLACE_CATEGORIES = new Set([
+  "Programming Languages",
+  "Snippets",
+  "Linters",
+  "Themes",
+  "Debuggers",
+  "Formatters",
+  "Keymaps",
+  "SCM Providers",
+  "Other",
+  "Extension Packs",
+  "Language Packs",
+  "Data Science",
+  "Machine Learning",
+  "Visualization",
+  "Notebooks",
+  "Education",
+  "Testing",
+]);
+
+test("the marketplace listing declares valid categories and an icon", async () => {
+  const extension = vscode.extensions.getExtension(EXTENSION_ID);
+  assert.ok(extension, "extension present");
+  const manifest = extension.packageJSON as {
+    categories?: readonly string[];
+    keywords?: readonly string[];
+    icon?: string;
+    description?: string;
+  };
+
+  const categories = manifest.categories ?? [];
+  assert.ok(categories.length > 0, "at least one category, or the listing is unbrowsable");
+  for (const category of categories) {
+    assert.ok(
+      MARKETPLACE_CATEGORIES.has(category),
+      `'${category}' is not a marketplace category — publishing would reject it`,
+    );
+  }
+  assert.strictEqual(new Set(categories).size, categories.length, "categories are unique");
+
+  // The marketplace shows at most the first few keywords, and a listing with
+  // no icon or summary renders as a blank card.
+  assert.ok((manifest.keywords ?? []).length > 0, "keywords drive marketplace search");
+  assert.ok(
+    typeof manifest.icon === "string" && manifest.icon.length > 0,
+    "an icon is required for the listing",
+  );
+  assert.ok(
+    typeof manifest.description === "string" && manifest.description.length > 0,
+    "a description is required for the listing",
+  );
+});
