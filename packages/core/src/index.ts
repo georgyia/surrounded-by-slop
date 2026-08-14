@@ -66,6 +66,12 @@ export {
 } from "./ir/types.js";
 export { validateGraph } from "./ir/validate.js";
 export {
+  createJavaAdapter,
+  type JavaWasm,
+  javaQueries,
+  resolveJavaImport,
+} from "./java/adapter.js";
+export {
   type EdgeEmphasis,
   type EdgeTone,
   edgeEmphasis,

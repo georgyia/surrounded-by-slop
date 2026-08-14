@@ -94,6 +94,39 @@ describe("analyzeWithTreeSitter", () => {
       });
       expect(result.graph.nodes.map((node) => node.kind)).toEqual(["module"]);
     });
+
+    it("gives two same-named declarations distinct ids", () => {
+      // Overloads (Java, C#) and plain re-definitions (Python) put two
+      // declarations under one qualified name. Minting the same id twice would
+      // produce a graph that fails validation, so the later one is suffixed.
+      const result = analyze(
+        [file("a.py", "def go():\n    pass\n\n\ndef go():\n    pass\n")],
+        pythonQueries,
+      );
+      const ids = result.graph.nodes.map((node) => node.id);
+      expect(new Set(ids).size).toBe(ids.length);
+      expect(ids).toContain("function:a.py#go");
+      expect(ids).toContain("function:a.py#go~2");
+    });
+
+    it("keeps containment edges pointing at the disambiguated ids", () => {
+      const result = analyze(
+        [
+          file(
+            "a.py",
+            "class Box:\n    def go(self):\n        pass\n\n    def go(self):\n        pass\n",
+          ),
+        ],
+        pythonQueries,
+      );
+      const targets = result.graph.edges
+        .filter((edge) => edge.kind === "contains")
+        .map((edge) => edge.to);
+      expect(new Set(targets).size).toBe(targets.length);
+      for (const target of targets) {
+        expect(result.graph.nodes.some((node) => node.id === target)).toBe(true);
+      }
+    });
   });
 
   describe("import queries", () => {

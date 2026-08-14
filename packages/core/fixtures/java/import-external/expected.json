@@ -1,0 +1,74 @@
+{
+  "diagnostics": [],
+  "graph": {
+    "edges": [
+      {
+        "from": "class:input.java#Uses",
+        "id": "contains:class:input.java#Uses->method:input.java#Uses.go",
+        "kind": "contains",
+        "to": "method:input.java#Uses.go"
+      },
+      {
+        "from": "module:input.java",
+        "id": "contains:module:input.java->class:input.java#Uses",
+        "kind": "contains",
+        "to": "class:input.java#Uses"
+      },
+      {
+        "from": "module:input.java",
+        "id": "imports:module:input.java->module:external:com.example.other.Missing",
+        "kind": "imports",
+        "to": "module:external:com.example.other.Missing"
+      }
+    ],
+    "nodes": [
+      {
+        "id": "class:input.java#Uses",
+        "kind": "class",
+        "name": "Uses",
+        "qualifiedName": "Uses",
+        "span": {
+          "endCol": 2,
+          "endLine": 6,
+          "file": "input.java",
+          "startCol": 1,
+          "startLine": 3
+        }
+      },
+      {
+        "id": "method:input.java#Uses.go",
+        "kind": "method",
+        "name": "go",
+        "qualifiedName": "Uses.go",
+        "span": {
+          "endCol": 6,
+          "endLine": 5,
+          "file": "input.java",
+          "startCol": 5,
+          "startLine": 4
+        }
+      },
+      {
+        "external": true,
+        "id": "module:external:com.example.other.Missing",
+        "kind": "module",
+        "name": "com.example.other.Missing",
+        "qualifiedName": "com.example.other.Missing"
+      },
+      {
+        "id": "module:input.java",
+        "kind": "module",
+        "name": "input.java",
+        "qualifiedName": "input.java",
+        "span": {
+          "endCol": 1,
+          "endLine": 7,
+          "file": "input.java",
+          "startCol": 1,
+          "startLine": 1
+        }
+      }
+    ],
+    "schemaVersion": 1
+  }
+}
