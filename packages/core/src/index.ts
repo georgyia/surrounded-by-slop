@@ -29,6 +29,7 @@ export type {
 } from "./cfg/types.js";
 export { validateCfg } from "./cfg/validate.js";
 export { builtinExporters, createDefaultExporterRegistry } from "./export/builtins.js";
+export { dotExporter } from "./export/dot.js";
 export { drawioExporter } from "./export/drawio.js";
 export {
   createExporterRegistry,
