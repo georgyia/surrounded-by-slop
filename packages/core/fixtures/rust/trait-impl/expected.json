@@ -1,0 +1,118 @@
+{
+  "diagnostics": [],
+  "graph": {
+    "edges": [
+      {
+        "from": "class:input.rs#Echo~2",
+        "id": "contains:class:input.rs#Echo~2->method:input.rs#Echo.say",
+        "kind": "contains",
+        "to": "method:input.rs#Echo.say"
+      },
+      {
+        "from": "class:input.rs#Speak",
+        "id": "contains:class:input.rs#Speak->method:input.rs#Speak.say",
+        "kind": "contains",
+        "to": "method:input.rs#Speak.say"
+      },
+      {
+        "from": "module:input.rs",
+        "id": "contains:module:input.rs->class:input.rs#Echo",
+        "kind": "contains",
+        "to": "class:input.rs#Echo"
+      },
+      {
+        "from": "module:input.rs",
+        "id": "contains:module:input.rs->class:input.rs#Echo~2",
+        "kind": "contains",
+        "to": "class:input.rs#Echo~2"
+      },
+      {
+        "from": "module:input.rs",
+        "id": "contains:module:input.rs->class:input.rs#Speak",
+        "kind": "contains",
+        "to": "class:input.rs#Speak"
+      }
+    ],
+    "nodes": [
+      {
+        "id": "class:input.rs#Echo",
+        "kind": "class",
+        "name": "Echo",
+        "qualifiedName": "Echo",
+        "span": {
+          "endCol": 17,
+          "endLine": 1,
+          "file": "input.rs",
+          "startCol": 1,
+          "startLine": 1
+        }
+      },
+      {
+        "id": "class:input.rs#Echo~2",
+        "kind": "class",
+        "name": "Echo",
+        "qualifiedName": "Echo",
+        "span": {
+          "endCol": 2,
+          "endLine": 11,
+          "file": "input.rs",
+          "startCol": 1,
+          "startLine": 7
+        }
+      },
+      {
+        "id": "class:input.rs#Speak",
+        "kind": "class",
+        "name": "Speak",
+        "qualifiedName": "Speak",
+        "span": {
+          "endCol": 2,
+          "endLine": 5,
+          "file": "input.rs",
+          "startCol": 1,
+          "startLine": 3
+        }
+      },
+      {
+        "id": "method:input.rs#Echo.say",
+        "kind": "method",
+        "name": "say",
+        "qualifiedName": "Echo.say",
+        "span": {
+          "endCol": 6,
+          "endLine": 10,
+          "file": "input.rs",
+          "startCol": 5,
+          "startLine": 8
+        }
+      },
+      {
+        "id": "method:input.rs#Speak.say",
+        "kind": "method",
+        "name": "say",
+        "qualifiedName": "Speak.say",
+        "span": {
+          "endCol": 29,
+          "endLine": 4,
+          "file": "input.rs",
+          "startCol": 5,
+          "startLine": 4
+        }
+      },
+      {
+        "id": "module:input.rs",
+        "kind": "module",
+        "name": "input.rs",
+        "qualifiedName": "input.rs",
+        "span": {
+          "endCol": 1,
+          "endLine": 12,
+          "file": "input.rs",
+          "startCol": 1,
+          "startLine": 1
+        }
+      }
+    ],
+    "schemaVersion": 1
+  }
+}

@@ -1,0 +1,277 @@
+{
+  "diagnostics": [],
+  "graph": {
+    "edges": [
+      {
+        "from": "class:src/store/mod.rs#Store~2",
+        "id": "contains:class:src/store/mod.rs#Store~2->method:src/store/mod.rs#Store.get",
+        "kind": "contains",
+        "to": "method:src/store/mod.rs#Store.get"
+      },
+      {
+        "from": "class:src/store/mod.rs#Store~2",
+        "id": "contains:class:src/store/mod.rs#Store~2->method:src/store/mod.rs#Store.open",
+        "kind": "contains",
+        "to": "method:src/store/mod.rs#Store.open"
+      },
+      {
+        "from": "class:src/web/mod.rs#Server~2",
+        "id": "contains:class:src/web/mod.rs#Server~2->method:src/web/mod.rs#Server.new",
+        "kind": "contains",
+        "to": "method:src/web/mod.rs#Server.new"
+      },
+      {
+        "from": "class:src/web/mod.rs#Server~2",
+        "id": "contains:class:src/web/mod.rs#Server~2->method:src/web/mod.rs#Server.serve",
+        "kind": "contains",
+        "to": "method:src/web/mod.rs#Server.serve"
+      },
+      {
+        "from": "module:src/main.rs",
+        "id": "contains:module:src/main.rs->class:src/main.rs#store",
+        "kind": "contains",
+        "to": "class:src/main.rs#store"
+      },
+      {
+        "from": "module:src/main.rs",
+        "id": "contains:module:src/main.rs->class:src/main.rs#web",
+        "kind": "contains",
+        "to": "class:src/main.rs#web"
+      },
+      {
+        "from": "module:src/main.rs",
+        "id": "contains:module:src/main.rs->function:src/main.rs#main",
+        "kind": "contains",
+        "to": "function:src/main.rs#main"
+      },
+      {
+        "from": "module:src/store/mod.rs",
+        "id": "contains:module:src/store/mod.rs->class:src/store/mod.rs#Store",
+        "kind": "contains",
+        "to": "class:src/store/mod.rs#Store"
+      },
+      {
+        "from": "module:src/store/mod.rs",
+        "id": "contains:module:src/store/mod.rs->class:src/store/mod.rs#Store~2",
+        "kind": "contains",
+        "to": "class:src/store/mod.rs#Store~2"
+      },
+      {
+        "from": "module:src/web/mod.rs",
+        "id": "contains:module:src/web/mod.rs->class:src/web/mod.rs#Server",
+        "kind": "contains",
+        "to": "class:src/web/mod.rs#Server"
+      },
+      {
+        "from": "module:src/web/mod.rs",
+        "id": "contains:module:src/web/mod.rs->class:src/web/mod.rs#Server~2",
+        "kind": "contains",
+        "to": "class:src/web/mod.rs#Server~2"
+      },
+      {
+        "from": "module:src/main.rs",
+        "id": "imports:module:src/main.rs->module:src/store/mod.rs",
+        "kind": "imports",
+        "to": "module:src/store/mod.rs"
+      },
+      {
+        "count": 2,
+        "from": "module:src/main.rs",
+        "id": "imports:module:src/main.rs->module:src/web/mod.rs",
+        "kind": "imports",
+        "to": "module:src/web/mod.rs"
+      },
+      {
+        "from": "module:src/web/mod.rs",
+        "id": "imports:module:src/web/mod.rs->module:src/store/mod.rs",
+        "kind": "imports",
+        "to": "module:src/store/mod.rs"
+      }
+    ],
+    "nodes": [
+      {
+        "id": "class:src/main.rs#store",
+        "kind": "class",
+        "name": "store",
+        "qualifiedName": "store",
+        "span": {
+          "endCol": 11,
+          "endLine": 3,
+          "file": "src/main.rs",
+          "startCol": 1,
+          "startLine": 3
+        }
+      },
+      {
+        "id": "class:src/main.rs#web",
+        "kind": "class",
+        "name": "web",
+        "qualifiedName": "web",
+        "span": {
+          "endCol": 9,
+          "endLine": 4,
+          "file": "src/main.rs",
+          "startCol": 1,
+          "startLine": 4
+        }
+      },
+      {
+        "id": "class:src/store/mod.rs#Store",
+        "kind": "class",
+        "name": "Store",
+        "qualifiedName": "Store",
+        "span": {
+          "endCol": 18,
+          "endLine": 1,
+          "file": "src/store/mod.rs",
+          "startCol": 1,
+          "startLine": 1
+        }
+      },
+      {
+        "id": "class:src/store/mod.rs#Store~2",
+        "kind": "class",
+        "name": "Store",
+        "qualifiedName": "Store",
+        "span": {
+          "endCol": 2,
+          "endLine": 11,
+          "file": "src/store/mod.rs",
+          "startCol": 1,
+          "startLine": 3
+        }
+      },
+      {
+        "id": "class:src/web/mod.rs#Server",
+        "kind": "class",
+        "name": "Server",
+        "qualifiedName": "Server",
+        "span": {
+          "endCol": 2,
+          "endLine": 5,
+          "file": "src/web/mod.rs",
+          "startCol": 1,
+          "startLine": 3
+        }
+      },
+      {
+        "id": "class:src/web/mod.rs#Server~2",
+        "kind": "class",
+        "name": "Server",
+        "qualifiedName": "Server",
+        "span": {
+          "endCol": 2,
+          "endLine": 15,
+          "file": "src/web/mod.rs",
+          "startCol": 1,
+          "startLine": 7
+        }
+      },
+      {
+        "id": "function:src/main.rs#main",
+        "kind": "function",
+        "name": "main",
+        "qualifiedName": "main",
+        "span": {
+          "endCol": 2,
+          "endLine": 9,
+          "file": "src/main.rs",
+          "startCol": 1,
+          "startLine": 6
+        }
+      },
+      {
+        "id": "method:src/store/mod.rs#Store.get",
+        "kind": "method",
+        "name": "get",
+        "qualifiedName": "Store.get",
+        "span": {
+          "endCol": 6,
+          "endLine": 10,
+          "file": "src/store/mod.rs",
+          "startCol": 5,
+          "startLine": 8
+        }
+      },
+      {
+        "id": "method:src/store/mod.rs#Store.open",
+        "kind": "method",
+        "name": "open",
+        "qualifiedName": "Store.open",
+        "span": {
+          "endCol": 6,
+          "endLine": 6,
+          "file": "src/store/mod.rs",
+          "startCol": 5,
+          "startLine": 4
+        }
+      },
+      {
+        "id": "method:src/web/mod.rs#Server.new",
+        "kind": "method",
+        "name": "new",
+        "qualifiedName": "Server.new",
+        "span": {
+          "endCol": 6,
+          "endLine": 10,
+          "file": "src/web/mod.rs",
+          "startCol": 5,
+          "startLine": 8
+        }
+      },
+      {
+        "id": "method:src/web/mod.rs#Server.serve",
+        "kind": "method",
+        "name": "serve",
+        "qualifiedName": "Server.serve",
+        "span": {
+          "endCol": 6,
+          "endLine": 14,
+          "file": "src/web/mod.rs",
+          "startCol": 5,
+          "startLine": 12
+        }
+      },
+      {
+        "id": "module:src/main.rs",
+        "kind": "module",
+        "name": "main.rs",
+        "qualifiedName": "src/main.rs",
+        "span": {
+          "endCol": 1,
+          "endLine": 10,
+          "file": "src/main.rs",
+          "startCol": 1,
+          "startLine": 1
+        }
+      },
+      {
+        "id": "module:src/store/mod.rs",
+        "kind": "module",
+        "name": "mod.rs",
+        "qualifiedName": "src/store/mod.rs",
+        "span": {
+          "endCol": 1,
+          "endLine": 12,
+          "file": "src/store/mod.rs",
+          "startCol": 1,
+          "startLine": 1
+        }
+      },
+      {
+        "id": "module:src/web/mod.rs",
+        "kind": "module",
+        "name": "mod.rs",
+        "qualifiedName": "src/web/mod.rs",
+        "span": {
+          "endCol": 1,
+          "endLine": 16,
+          "file": "src/web/mod.rs",
+          "startCol": 1,
+          "startLine": 1
+        }
+      }
+    ],
+    "schemaVersion": 1
+  }
+}

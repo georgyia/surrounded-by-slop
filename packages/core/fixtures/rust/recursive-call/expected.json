@@ -1,0 +1,42 @@
+{
+  "diagnostics": [],
+  "graph": {
+    "edges": [
+      {
+        "from": "module:input.rs",
+        "id": "contains:module:input.rs->function:input.rs#factorial",
+        "kind": "contains",
+        "to": "function:input.rs#factorial"
+      }
+    ],
+    "nodes": [
+      {
+        "id": "function:input.rs#factorial",
+        "kind": "function",
+        "name": "factorial",
+        "qualifiedName": "factorial",
+        "span": {
+          "endCol": 2,
+          "endLine": 6,
+          "file": "input.rs",
+          "startCol": 1,
+          "startLine": 1
+        }
+      },
+      {
+        "id": "module:input.rs",
+        "kind": "module",
+        "name": "input.rs",
+        "qualifiedName": "input.rs",
+        "span": {
+          "endCol": 1,
+          "endLine": 7,
+          "file": "input.rs",
+          "startCol": 1,
+          "startLine": 1
+        }
+      }
+    ],
+    "schemaVersion": 1
+  }
+}

@@ -1,0 +1,55 @@
+{
+  "diagnostics": [],
+  "graph": {
+    "edges": [
+      {
+        "from": "module:input.rs",
+        "id": "contains:module:input.rs->function:input.rs#make",
+        "kind": "contains",
+        "to": "function:input.rs#make"
+      },
+      {
+        "from": "module:input.rs",
+        "id": "imports:module:input.rs->module:external:std::collections::HashMap",
+        "kind": "imports",
+        "to": "module:external:std::collections::HashMap"
+      }
+    ],
+    "nodes": [
+      {
+        "id": "function:input.rs#make",
+        "kind": "function",
+        "name": "make",
+        "qualifiedName": "make",
+        "span": {
+          "endCol": 2,
+          "endLine": 5,
+          "file": "input.rs",
+          "startCol": 1,
+          "startLine": 3
+        }
+      },
+      {
+        "external": true,
+        "id": "module:external:std::collections::HashMap",
+        "kind": "module",
+        "name": "std::collections::HashMap",
+        "qualifiedName": "std::collections::HashMap"
+      },
+      {
+        "id": "module:input.rs",
+        "kind": "module",
+        "name": "input.rs",
+        "qualifiedName": "input.rs",
+        "span": {
+          "endCol": 1,
+          "endLine": 6,
+          "file": "input.rs",
+          "startCol": 1,
+          "startLine": 1
+        }
+      }
+    ],
+    "schemaVersion": 1
+  }
+}
