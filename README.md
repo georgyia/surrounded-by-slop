@@ -192,6 +192,9 @@ understanding. So this project runs both ways.
     compiler, not regex, so the model gets ground truth it can't hallucinate.
   - `git diff | sbs impact -` — the real blast‑radius of a change before an agent
     makes it.
+  - `sbs init` — writes a ~12‑line pointer into `AGENTS.md` so agents reach for
+    the graph instead of grep. A pointer, never a generated dump; `--check`
+    guards it in CI.
 - **Built *with* Codex.** Codex was the pair‑programmer, held to exactly the same
   bar as any human PR — strict TS, coverage the linter enforces, a written
   justification for every dependency. [That bar is the point](#principles).
