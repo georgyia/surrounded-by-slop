@@ -2,6 +2,7 @@ import { type ArgSpec, parseArgs, UsageError } from "./args.js";
 import { analyzeCommand } from "./commands/analyze.js";
 import { exportCommand } from "./commands/export.js";
 import { impactCommand } from "./commands/impact.js";
+import { initCommand } from "./commands/init.js";
 import { mapCommand } from "./commands/map.js";
 import { mcpCommand } from "./commands/mcp.js";
 import { queryCommand } from "./commands/query.js";
@@ -17,7 +18,7 @@ type Command = (ctx: CommandContext, parsed: ReturnType<typeof parseArgs>) => nu
 
 /** Flags that never consume a following value, across all commands. */
 const BOOLEAN_FLAGS: ArgSpec = {
-  booleans: ["json", "verbose", "include-tests", "staged", "help"],
+  booleans: ["json", "verbose", "include-tests", "staged", "check", "help"],
 };
 
 const COMMANDS = new Map<string, Command>([
@@ -27,6 +28,7 @@ const COMMANDS = new Map<string, Command>([
   ["query", queryCommand],
   ["impact", impactCommand],
   ["mcp", mcpCommand],
+  ["init", initCommand],
 ]);
 
 const HELP = `sbs — headless code analysis for AI agents and CI
@@ -44,6 +46,7 @@ Commands:
                                    path <from> <to>      shortest call/import chain
   impact [--staged|--diff <ref>|-]  Blast radius of a diff (callers, tests)
   mcp [path]                     Run the MCP server over stdio (for AI agents)
+  init [path]                    Add the agent pointer block to AGENTS.md
   analyze [path]                 Print the Semantic Graph as canonical JSON
   export --format mermaid|json   Render the graph in a text format
 
@@ -57,6 +60,7 @@ Options:
   --include <glob>               Replace the default include glob (repeatable)
   --exclude <glob>               Add an exclude on top of the defaults (repeatable)
   --include-tests                Analyze test files too (excluded by default)
+  --check                        init: exit 1 if the AGENTS.md block is stale
   --verbose                      Print discovery notes to stderr
   --help                         Show this help
 
