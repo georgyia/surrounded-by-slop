@@ -430,7 +430,7 @@ function buildLegend(): void {
   };
   if (diagram?.flow === undefined) {
     section("Nodes", nodeLegend(kinds, palette), true);
-    section("Edges", edgeLegend(palette), false);
+    section("Edges", edgeLegend(diagram?.graph.edges ?? [], palette), false);
   } else {
     section("Flow", flowLegend(palette), false);
   }
