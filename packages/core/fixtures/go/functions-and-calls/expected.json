@@ -1,0 +1,68 @@
+{
+  "diagnostics": [],
+  "graph": {
+    "edges": [
+      {
+        "confidence": "low",
+        "from": "function:input.go#run",
+        "id": "calls:function:input.go#run->function:input.go#helper",
+        "kind": "calls",
+        "to": "function:input.go#helper"
+      },
+      {
+        "from": "module:input.go",
+        "id": "contains:module:input.go->function:input.go#helper",
+        "kind": "contains",
+        "to": "function:input.go#helper"
+      },
+      {
+        "from": "module:input.go",
+        "id": "contains:module:input.go->function:input.go#run",
+        "kind": "contains",
+        "to": "function:input.go#run"
+      }
+    ],
+    "nodes": [
+      {
+        "id": "function:input.go#helper",
+        "kind": "function",
+        "name": "helper",
+        "qualifiedName": "helper",
+        "span": {
+          "endCol": 2,
+          "endLine": 5,
+          "file": "input.go",
+          "startCol": 1,
+          "startLine": 3
+        }
+      },
+      {
+        "id": "function:input.go#run",
+        "kind": "function",
+        "name": "run",
+        "qualifiedName": "run",
+        "span": {
+          "endCol": 2,
+          "endLine": 9,
+          "file": "input.go",
+          "startCol": 1,
+          "startLine": 7
+        }
+      },
+      {
+        "id": "module:input.go",
+        "kind": "module",
+        "name": "input.go",
+        "qualifiedName": "input.go",
+        "span": {
+          "endCol": 1,
+          "endLine": 10,
+          "file": "input.go",
+          "startCol": 1,
+          "startLine": 1
+        }
+      }
+    ],
+    "schemaVersion": 1
+  }
+}

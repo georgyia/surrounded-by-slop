@@ -14,10 +14,12 @@ const coreDir = dirname(
 const fromCore = (spec) => require.resolve(spec, { paths: [coreDir] });
 mkdirSync("dist", { recursive: true });
 copyFileSync(fromCore("web-tree-sitter/web-tree-sitter.wasm"), "dist/web-tree-sitter.wasm");
-copyFileSync(
-  join(dirname(fromCore("@vscode/tree-sitter-wasm/package.json")), "wasm/tree-sitter-python.wasm"),
-  "dist/tree-sitter-python.wasm",
-);
+// Grammars ship with the extension and load on first use of that language
+// (see TREE_SITTER_LANGUAGES in controller.ts). Keep this list in step with it.
+const grammarDir = join(dirname(fromCore("@vscode/tree-sitter-wasm/package.json")), "wasm");
+for (const grammar of ["tree-sitter-python.wasm", "tree-sitter-go.wasm"]) {
+  copyFileSync(join(grammarDir, grammar), `dist/${grammar}`);
+}
 
 const production = process.argv.includes("--production");
 const watch = process.argv.includes("--watch");

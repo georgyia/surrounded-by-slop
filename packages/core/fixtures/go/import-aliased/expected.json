@@ -1,0 +1,55 @@
+{
+  "diagnostics": [],
+  "graph": {
+    "edges": [
+      {
+        "from": "module:input.go",
+        "id": "contains:module:input.go->function:input.go#shout",
+        "kind": "contains",
+        "to": "function:input.go#shout"
+      },
+      {
+        "from": "module:input.go",
+        "id": "imports:module:input.go->module:external:strings",
+        "kind": "imports",
+        "to": "module:external:strings"
+      }
+    ],
+    "nodes": [
+      {
+        "id": "function:input.go#shout",
+        "kind": "function",
+        "name": "shout",
+        "qualifiedName": "shout",
+        "span": {
+          "endCol": 2,
+          "endLine": 9,
+          "file": "input.go",
+          "startCol": 1,
+          "startLine": 7
+        }
+      },
+      {
+        "external": true,
+        "id": "module:external:strings",
+        "kind": "module",
+        "name": "strings",
+        "qualifiedName": "strings"
+      },
+      {
+        "id": "module:input.go",
+        "kind": "module",
+        "name": "input.go",
+        "qualifiedName": "input.go",
+        "span": {
+          "endCol": 1,
+          "endLine": 10,
+          "file": "input.go",
+          "startCol": 1,
+          "startLine": 1
+        }
+      }
+    ],
+    "schemaVersion": 1
+  }
+}

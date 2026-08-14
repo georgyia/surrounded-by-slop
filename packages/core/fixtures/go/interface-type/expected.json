@@ -1,0 +1,61 @@
+{
+  "diagnostics": [],
+  "graph": {
+    "edges": [
+      {
+        "from": "module:input.go",
+        "id": "contains:module:input.go->class:input.go#Handler",
+        "kind": "contains",
+        "to": "class:input.go#Handler"
+      },
+      {
+        "from": "module:input.go",
+        "id": "contains:module:input.go->class:input.go#Logger",
+        "kind": "contains",
+        "to": "class:input.go#Logger"
+      }
+    ],
+    "nodes": [
+      {
+        "id": "class:input.go#Handler",
+        "kind": "class",
+        "name": "Handler",
+        "qualifiedName": "Handler",
+        "span": {
+          "endCol": 2,
+          "endLine": 5,
+          "file": "input.go",
+          "startCol": 1,
+          "startLine": 3
+        }
+      },
+      {
+        "id": "class:input.go#Logger",
+        "kind": "class",
+        "name": "Logger",
+        "qualifiedName": "Logger",
+        "span": {
+          "endCol": 2,
+          "endLine": 9,
+          "file": "input.go",
+          "startCol": 1,
+          "startLine": 7
+        }
+      },
+      {
+        "id": "module:input.go",
+        "kind": "module",
+        "name": "input.go",
+        "qualifiedName": "input.go",
+        "span": {
+          "endCol": 1,
+          "endLine": 10,
+          "file": "input.go",
+          "startCol": 1,
+          "startLine": 1
+        }
+      }
+    ],
+    "schemaVersion": 1
+  }
+}

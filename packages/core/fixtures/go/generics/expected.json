@@ -1,0 +1,61 @@
+{
+  "diagnostics": [],
+  "graph": {
+    "edges": [
+      {
+        "from": "module:input.go",
+        "id": "contains:module:input.go->class:input.go#List",
+        "kind": "contains",
+        "to": "class:input.go#List"
+      },
+      {
+        "from": "module:input.go",
+        "id": "contains:module:input.go->function:input.go#Map",
+        "kind": "contains",
+        "to": "function:input.go#Map"
+      }
+    ],
+    "nodes": [
+      {
+        "id": "class:input.go#List",
+        "kind": "class",
+        "name": "List",
+        "qualifiedName": "List",
+        "span": {
+          "endCol": 2,
+          "endLine": 5,
+          "file": "input.go",
+          "startCol": 1,
+          "startLine": 3
+        }
+      },
+      {
+        "id": "function:input.go#Map",
+        "kind": "function",
+        "name": "Map",
+        "qualifiedName": "Map",
+        "span": {
+          "endCol": 2,
+          "endLine": 10,
+          "file": "input.go",
+          "startCol": 1,
+          "startLine": 7
+        }
+      },
+      {
+        "id": "module:input.go",
+        "kind": "module",
+        "name": "input.go",
+        "qualifiedName": "input.go",
+        "span": {
+          "endCol": 1,
+          "endLine": 11,
+          "file": "input.go",
+          "startCol": 1,
+          "startLine": 1
+        }
+      }
+    ],
+    "schemaVersion": 1
+  }
+}

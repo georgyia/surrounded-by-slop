@@ -1,0 +1,247 @@
+{
+  "diagnostics": [],
+  "graph": {
+    "edges": [
+      {
+        "confidence": "low",
+        "from": "function:handler/handler.go#Serve",
+        "id": "calls:function:handler/handler.go#Serve->function:handler/handler.go#lookup",
+        "kind": "calls",
+        "to": "function:handler/handler.go#lookup"
+      },
+      {
+        "from": "module:handler/handler.go",
+        "id": "contains:module:handler/handler.go->class:handler/handler.go#Handler",
+        "kind": "contains",
+        "to": "class:handler/handler.go#Handler"
+      },
+      {
+        "from": "module:handler/handler.go",
+        "id": "contains:module:handler/handler.go->function:handler/handler.go#New",
+        "kind": "contains",
+        "to": "function:handler/handler.go#New"
+      },
+      {
+        "from": "module:handler/handler.go",
+        "id": "contains:module:handler/handler.go->function:handler/handler.go#Serve",
+        "kind": "contains",
+        "to": "function:handler/handler.go#Serve"
+      },
+      {
+        "from": "module:handler/handler.go",
+        "id": "contains:module:handler/handler.go->function:handler/handler.go#lookup",
+        "kind": "contains",
+        "to": "function:handler/handler.go#lookup"
+      },
+      {
+        "from": "module:main.go",
+        "id": "contains:module:main.go->function:main.go#main",
+        "kind": "contains",
+        "to": "function:main.go#main"
+      },
+      {
+        "from": "module:store/store.go",
+        "id": "contains:module:store/store.go->class:store/store.go#Store",
+        "kind": "contains",
+        "to": "class:store/store.go#Store"
+      },
+      {
+        "from": "module:store/store.go",
+        "id": "contains:module:store/store.go->function:store/store.go#Get",
+        "kind": "contains",
+        "to": "function:store/store.go#Get"
+      },
+      {
+        "from": "module:store/store.go",
+        "id": "contains:module:store/store.go->function:store/store.go#Open",
+        "kind": "contains",
+        "to": "function:store/store.go#Open"
+      },
+      {
+        "from": "module:handler/handler.go",
+        "id": "imports:module:handler/handler.go->module:external:example.com/service/store",
+        "kind": "imports",
+        "to": "module:external:example.com/service/store"
+      },
+      {
+        "from": "module:main.go",
+        "id": "imports:module:main.go->module:external:example.com/service/handler",
+        "kind": "imports",
+        "to": "module:external:example.com/service/handler"
+      },
+      {
+        "from": "module:main.go",
+        "id": "imports:module:main.go->module:external:fmt",
+        "kind": "imports",
+        "to": "module:external:fmt"
+      }
+    ],
+    "nodes": [
+      {
+        "id": "class:handler/handler.go#Handler",
+        "kind": "class",
+        "name": "Handler",
+        "qualifiedName": "Handler",
+        "span": {
+          "endCol": 2,
+          "endLine": 7,
+          "file": "handler/handler.go",
+          "startCol": 1,
+          "startLine": 5
+        }
+      },
+      {
+        "id": "class:store/store.go#Store",
+        "kind": "class",
+        "name": "Store",
+        "qualifiedName": "Store",
+        "span": {
+          "endCol": 2,
+          "endLine": 5,
+          "file": "store/store.go",
+          "startCol": 1,
+          "startLine": 3
+        }
+      },
+      {
+        "id": "function:handler/handler.go#New",
+        "kind": "function",
+        "name": "New",
+        "qualifiedName": "New",
+        "span": {
+          "endCol": 2,
+          "endLine": 11,
+          "file": "handler/handler.go",
+          "startCol": 1,
+          "startLine": 9
+        }
+      },
+      {
+        "id": "function:handler/handler.go#Serve",
+        "kind": "function",
+        "name": "Serve",
+        "qualifiedName": "Serve",
+        "span": {
+          "endCol": 2,
+          "endLine": 15,
+          "file": "handler/handler.go",
+          "startCol": 1,
+          "startLine": 13
+        }
+      },
+      {
+        "id": "function:handler/handler.go#lookup",
+        "kind": "function",
+        "name": "lookup",
+        "qualifiedName": "lookup",
+        "span": {
+          "endCol": 2,
+          "endLine": 19,
+          "file": "handler/handler.go",
+          "startCol": 1,
+          "startLine": 17
+        }
+      },
+      {
+        "id": "function:main.go#main",
+        "kind": "function",
+        "name": "main",
+        "qualifiedName": "main",
+        "span": {
+          "endCol": 2,
+          "endLine": 12,
+          "file": "main.go",
+          "startCol": 1,
+          "startLine": 9
+        }
+      },
+      {
+        "id": "function:store/store.go#Get",
+        "kind": "function",
+        "name": "Get",
+        "qualifiedName": "Get",
+        "span": {
+          "endCol": 2,
+          "endLine": 13,
+          "file": "store/store.go",
+          "startCol": 1,
+          "startLine": 11
+        }
+      },
+      {
+        "id": "function:store/store.go#Open",
+        "kind": "function",
+        "name": "Open",
+        "qualifiedName": "Open",
+        "span": {
+          "endCol": 2,
+          "endLine": 9,
+          "file": "store/store.go",
+          "startCol": 1,
+          "startLine": 7
+        }
+      },
+      {
+        "external": true,
+        "id": "module:external:example.com/service/handler",
+        "kind": "module",
+        "name": "example.com/service/handler",
+        "qualifiedName": "example.com/service/handler"
+      },
+      {
+        "external": true,
+        "id": "module:external:example.com/service/store",
+        "kind": "module",
+        "name": "example.com/service/store",
+        "qualifiedName": "example.com/service/store"
+      },
+      {
+        "external": true,
+        "id": "module:external:fmt",
+        "kind": "module",
+        "name": "fmt",
+        "qualifiedName": "fmt"
+      },
+      {
+        "id": "module:handler/handler.go",
+        "kind": "module",
+        "name": "handler.go",
+        "qualifiedName": "handler/handler.go",
+        "span": {
+          "endCol": 1,
+          "endLine": 20,
+          "file": "handler/handler.go",
+          "startCol": 1,
+          "startLine": 1
+        }
+      },
+      {
+        "id": "module:main.go",
+        "kind": "module",
+        "name": "main.go",
+        "qualifiedName": "main.go",
+        "span": {
+          "endCol": 1,
+          "endLine": 13,
+          "file": "main.go",
+          "startCol": 1,
+          "startLine": 1
+        }
+      },
+      {
+        "id": "module:store/store.go",
+        "kind": "module",
+        "name": "store.go",
+        "qualifiedName": "store/store.go",
+        "span": {
+          "endCol": 1,
+          "endLine": 14,
+          "file": "store/store.go",
+          "startCol": 1,
+          "startLine": 1
+        }
+      }
+    ],
+    "schemaVersion": 1
+  }
+}

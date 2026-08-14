@@ -1,0 +1,68 @@
+{
+  "diagnostics": [],
+  "graph": {
+    "edges": [
+      {
+        "from": "module:input.go",
+        "id": "contains:module:input.go->function:input.go#fail",
+        "kind": "contains",
+        "to": "function:input.go#fail"
+      },
+      {
+        "from": "module:input.go",
+        "id": "imports:module:input.go->module:external:errors",
+        "kind": "imports",
+        "to": "module:external:errors"
+      },
+      {
+        "from": "module:input.go",
+        "id": "imports:module:input.go->module:external:os",
+        "kind": "imports",
+        "to": "module:external:os"
+      }
+    ],
+    "nodes": [
+      {
+        "id": "function:input.go#fail",
+        "kind": "function",
+        "name": "fail",
+        "qualifiedName": "fail",
+        "span": {
+          "endCol": 2,
+          "endLine": 11,
+          "file": "input.go",
+          "startCol": 1,
+          "startLine": 8
+        }
+      },
+      {
+        "external": true,
+        "id": "module:external:errors",
+        "kind": "module",
+        "name": "errors",
+        "qualifiedName": "errors"
+      },
+      {
+        "external": true,
+        "id": "module:external:os",
+        "kind": "module",
+        "name": "os",
+        "qualifiedName": "os"
+      },
+      {
+        "id": "module:input.go",
+        "kind": "module",
+        "name": "input.go",
+        "qualifiedName": "input.go",
+        "span": {
+          "endCol": 1,
+          "endLine": 12,
+          "file": "input.go",
+          "startCol": 1,
+          "startLine": 1
+        }
+      }
+    ],
+    "schemaVersion": 1
+  }
+}
