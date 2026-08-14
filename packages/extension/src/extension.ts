@@ -24,7 +24,7 @@ export interface SlopApi {
 export function activate(context: vscode.ExtensionContext): SlopApi {
   const logger = new Logger();
   const view = new DiagramView(context.extensionUri, logger);
-  const controller = new VisualizationController(view, logger);
+  const controller = new VisualizationController(view, logger, context.globalState);
 
   context.subscriptions.push(
     logger,
@@ -40,6 +40,7 @@ export function activate(context: vscode.ExtensionContext): SlopApi {
     vscode.commands.registerCommand("slop.togglePin", () => controller.togglePin()),
     vscode.commands.registerCommand("slop.followActiveEditor", () => controller.toggleFollow()),
     vscode.commands.registerCommand("slop.exportDiagram", () => controller.exportInteractive()),
+    vscode.commands.registerCommand("slop.resetNotices", () => controller.resetNotices()),
     // The diagram's native right-click menu: VS Code hands the node's
     // data-vscode-context object to the command (see render.ts).
     vscode.commands.registerCommand(

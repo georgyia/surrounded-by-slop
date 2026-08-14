@@ -153,6 +153,86 @@ test("slop.foldThreshold opens a busy map folded, and 0 keeps it flat (#78)", as
   }
 });
 
+test("the fold notice can be dismissed for good, without disabling folding (#106)", async () => {
+  const api = await getApi();
+  const config = vscode.workspace.getConfiguration("slop");
+  const folder = vscode.workspace.workspaceFolders?.[0];
+  assert.ok(folder, "a workspace folder is open");
+
+  const written = ["quiet/one.ts", "quiet/two.ts", "loud/three.ts", "loud/four.ts"].map(
+    (relative) => vscode.Uri.joinPath(folder.uri, relative),
+  );
+  for (const [index, uri] of written.entries()) {
+    await vscode.workspace.fs.writeFile(
+      uri,
+      new TextEncoder().encode(`export const notice${index} = ${index};\n`),
+    );
+  }
+
+  // The notice is a toast, so the only way to observe it is at the API seam.
+  const shown: string[] = [];
+  const original = vscode.window.showInformationMessage;
+  let answer: string | undefined;
+  // biome-ignore lint/suspicious/noExplicitAny: stubbing an overloaded vscode API
+  (vscode.window as any).showInformationMessage = (message: string, ...items: string[]) => {
+    shown.push(message);
+    return Promise.resolve(items.includes(answer ?? "") ? answer : undefined);
+  };
+
+  const mapWorkspace = async (): Promise<DiagramData> => {
+    const next = nextVisualize(api);
+    await api.visualizeWorkspace(new vscode.CancellationTokenSource().token);
+    return withTimeout(next, 20_000, "folded workspace");
+  };
+  const foldNotices = (): string[] => shown.filter((message) => message.includes("as folders"));
+
+  try {
+    // Dismissal is global state, and the test host reuses its user-data-dir
+    // across runs — start from a known-undismissed state.
+    await vscode.commands.executeCommand("slop.resetNotices");
+    shown.length = 0;
+    await config.update("foldThreshold", 1, vscode.ConfigurationTarget.Global);
+
+    // First map: the notice is the right message, and it offers a way out.
+    const first = await mapWorkspace();
+    assert.strictEqual(first.workspaceView, "folders", "past the threshold the map opens folded");
+    assert.strictEqual(foldNotices().length, 1, "the notice explains the first folded map");
+
+    // Ignoring it keeps it coming — dismissal has to be a deliberate choice.
+    await mapWorkspace();
+    assert.strictEqual(foldNotices().length, 2, "an unanswered notice is not self-suppressing");
+
+    // Take the "Don't show again" action.
+    answer = "Don't show again";
+    await mapWorkspace();
+    assert.strictEqual(foldNotices().length, 3, "the dismissed run still showed the notice once");
+
+    // ...and it stays quiet, while the map still opens folded.
+    answer = undefined;
+    const afterDismissal = await mapWorkspace();
+    assert.strictEqual(foldNotices().length, 3, "the notice stays dismissed on later maps");
+    assert.strictEqual(
+      afterDismissal.workspaceView,
+      "folders",
+      "dismissing the notice does not disable the fold behaviour",
+    );
+
+    // A dismissal must not be a one-way door.
+    await vscode.commands.executeCommand("slop.resetNotices");
+    await mapWorkspace();
+    assert.strictEqual(foldNotices().length, 4, "Reset Suppressed Notices brings the notice back");
+  } finally {
+    vscode.window.showInformationMessage = original;
+    await vscode.commands.executeCommand("slop.resetNotices");
+    await config.update("foldThreshold", undefined, vscode.ConfigurationTarget.Global);
+    for (const directory of ["quiet", "loud"]) {
+      await vscode.workspace.fs.delete(vscode.Uri.joinPath(folder.uri, directory), {
+        recursive: true,
+      });
+    }
+  }
+});
+
 test("Visualize Workspace skips small minified bundles", async () => {
   const api = await getApi();
   const folder = vscode.workspace.workspaceFolders?.[0];

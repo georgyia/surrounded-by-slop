@@ -76,6 +76,11 @@
         "category": "Slop"
       },
       {
+        "command": "slop.resetNotices",
+        "title": "Reset Suppressed Notices",
+        "category": "Slop"
+      },
+      {
         "command": "slop.copyMermaid",
         "title": "Copy Diagram as Mermaid",
         "category": "Slop"
