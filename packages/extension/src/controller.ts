@@ -94,34 +94,53 @@ function exportTheme(): "light" | "dark" {
     : "light";
 }
 
-/** Render the diagram in the format named by a file extension (drawio/svg/mmd/json). */
+/**
+ * Render the diagram in the format named by a file extension.
+ *
+ * Formats come from the core registry, not a switch here: adding an exporter
+ * should be one module plus a registration, and the extension has no business
+ * knowing the list. What stays host-side is genuinely host-shaped — the
+ * editor's theme, and the two formats that carry a *flow* chart natively.
+ */
 async function renderExport(format: string, diagram: DiagramData): Promise<string> {
-  const {
-    cfgToMermaid,
-    drawioExporter,
-    jsonExporter,
-    mermaidExporter,
-    stableStringify,
-    svgExporter,
-  } = await import("@surrounded-by-slop/core");
-  switch (format) {
-    case "drawio":
-      // Flow charts export their synthetic block graph — positions and block
-      // text are faithful; the condition labels live in the mmd/json formats.
-      return drawioExporter.export(diagram.graph, { layout: diagram.layout });
-    case "svg":
-      return svgExporter.export(diagram.graph, { layout: diagram.layout, theme: exportTheme() });
-    case "mmd":
-      return diagram.flow === undefined
-        ? mermaidExporter.export(diagram.graph)
-        : cfgToMermaid(diagram.flow);
-    case "json":
-      return diagram.flow === undefined
-        ? jsonExporter.export(diagram.graph)
-        : `${stableStringify(diagram.flow, 2)}\n`;
-    default:
-      throw new Error(`unsupported export format ".${format}" — use .drawio, .mmd, .svg or .json`);
+  const { cfgToMermaid, createDefaultExporterRegistry, stableStringify } = await import(
+    "@surrounded-by-slop/core"
+  );
+  const registry = createDefaultExporterRegistry();
+  const exporter = registry.byExtension(format);
+  if (exporter === undefined) {
+    const known = registry
+      .all()
+      .map((entry) => entry.fileExtension)
+      .join(", ");
+    throw new Error(`unsupported export format ".${format}" — use ${known}`);
   }
+  // A flow chart's condition labels and block kinds only survive in the text
+  // formats that can carry a CFG; the rest export its synthetic block graph,
+  // where positions and block text are faithful but labels are not.
+  if (diagram.flow !== undefined) {
+    if (exporter.id === "mermaid") {
+      return cfgToMermaid(diagram.flow);
+    }
+    if (exporter.id === "json") {
+      return `${stableStringify(diagram.flow, 2)}\n`;
+    }
+  }
+  return exporter.export(diagram.graph, {
+    ...(exporter.needsLayout ? { layout: diagram.layout } : {}),
+    theme: exportTheme(),
+  });
+}
+
+/** Save-dialog filters for every registered format, e.g. `{ Mermaid: ["mmd"] }`. */
+async function exportFilters(): Promise<Record<string, string[]>> {
+  const { builtinExporters } = await import("@surrounded-by-slop/core");
+  return Object.fromEntries(
+    builtinExporters.map((exporter) => [
+      exporter.displayName,
+      [exporter.fileExtension.replace(/^\./, "")],
+    ]),
+  );
 }
 
 /** Drop external (npm / unresolved) nodes and any edge that touched them. */
@@ -708,7 +727,7 @@ export class VisualizationController implements vscode.Disposable {
     const defaultUri = this.defaultExportUri(this.shown.title);
     const target = await vscode.window.showSaveDialog({
       title: "Export Diagram",
-      filters: { "draw.io": ["drawio"], Mermaid: ["mmd"], SVG: ["svg"], JSON: ["json"] },
+      filters: await exportFilters(),
       ...(defaultUri !== undefined ? { defaultUri } : {}),
     });
     if (target !== undefined) {

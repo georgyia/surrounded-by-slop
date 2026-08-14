@@ -43,20 +43,43 @@ export function requiredLayout(exporter: Exporter, options?: ExportOptions): Gra
 export interface ExporterRegistry {
   register(exporter: Exporter): void;
   byId(id: string): Exporter | undefined;
+  /**
+   * Lookup by file extension, with or without the leading dot and in any case
+   * — the form a save dialog hands back. This is what lets a host offer "every
+   * format we support" without naming any of them.
+   */
+  byExtension(extension: string): Exporter | undefined;
   all(): readonly Exporter[];
+}
+
+function normalizeExtension(extension: string): string {
+  const lower = extension.toLowerCase();
+  return lower.startsWith(".") ? lower : `.${lower}`;
 }
 
 export function createExporterRegistry(): ExporterRegistry {
   const exporters = new Map<string, Exporter>();
+  const byFileExtension = new Map<string, Exporter>();
   return {
     register(exporter) {
       if (exporters.has(exporter.id)) {
         throw new Error(`exporter ${exporter.id} is already registered`);
       }
+      const extension = normalizeExtension(exporter.fileExtension);
+      const owner = byFileExtension.get(extension);
+      if (owner !== undefined) {
+        throw new Error(
+          `exporter ${exporter.id} claims ${extension}, already taken by ${owner.id}`,
+        );
+      }
       exporters.set(exporter.id, exporter);
+      byFileExtension.set(extension, exporter);
     },
     byId(id) {
       return exporters.get(id);
+    },
+    byExtension(extension) {
+      return byFileExtension.get(normalizeExtension(extension));
     },
     all() {
       return [...exporters.values()];
