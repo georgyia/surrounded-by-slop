@@ -13,26 +13,64 @@ const LANGUAGE_EXTENSIONS: Readonly<Record<string, string>> = {
   javascript: ".js",
   javascriptreact: ".jsx",
   python: ".py",
+  go: ".go",
 };
 
+type CoreAdapter = import("@surrounded-by-slop/core").LanguageAdapter;
+
 /**
- * The Python adapter loads its tree-sitter grammar on first use (SBS-081);
- * the wasm binaries sit next to the host bundle (see esbuild.mjs).
+ * The tree-sitter languages, as data. Everything TypeScript is not goes
+ * through one of these: the grammar loads on first use (SBS-080), its wasm
+ * sitting next to the host bundle (see esbuild.mjs). Adding a language is a
+ * row here, not new code — which is the point of the adapter contract.
  */
-let pythonAdapterPromise: Promise<import("@surrounded-by-slop/core").LanguageAdapter> | undefined;
-function pythonAdapter(): Promise<import("@surrounded-by-slop/core").LanguageAdapter> {
-  if (pythonAdapterPromise === undefined) {
-    pythonAdapterPromise = (async () => {
-      const { readFile } = await import("node:fs/promises");
-      const { join } = await import("node:path");
+const TREE_SITTER_LANGUAGES = [
+  {
+    /** VS Code's language id, so a single-file visualize can pick the adapter. */
+    languageId: "python",
+    fileExtension: ".py",
+    grammar: "tree-sitter-python.wasm",
+    create: async (runtime: Uint8Array, grammar: Uint8Array): Promise<CoreAdapter> => {
       const { createPythonAdapter } = await import("@surrounded-by-slop/core");
-      return createPythonAdapter({
-        runtime: new Uint8Array(await readFile(join(__dirname, "web-tree-sitter.wasm"))),
-        python: new Uint8Array(await readFile(join(__dirname, "tree-sitter-python.wasm"))),
-      });
-    })();
+      return createPythonAdapter({ runtime, python: grammar });
+    },
+  },
+  {
+    languageId: "go",
+    fileExtension: ".go",
+    grammar: "tree-sitter-go.wasm",
+    create: async (runtime: Uint8Array, grammar: Uint8Array): Promise<CoreAdapter> => {
+      const { createGoAdapter } = await import("@surrounded-by-slop/core");
+      return createGoAdapter({ runtime, go: grammar });
+    },
+  },
+] as const;
+
+type TreeSitterLanguage = (typeof TREE_SITTER_LANGUAGES)[number];
+
+/** One loaded adapter per language, kept for the session — grammars are not cheap. */
+const adapterCache = new Map<string, Promise<CoreAdapter>>();
+
+function treeSitterAdapter(language: TreeSitterLanguage): Promise<CoreAdapter> {
+  const cached = adapterCache.get(language.languageId);
+  if (cached !== undefined) {
+    return cached;
   }
-  return pythonAdapterPromise;
+  const loading = (async () => {
+    const { readFile } = await import("node:fs/promises");
+    const { join } = await import("node:path");
+    return language.create(
+      new Uint8Array(await readFile(join(__dirname, "web-tree-sitter.wasm"))),
+      new Uint8Array(await readFile(join(__dirname, language.grammar))),
+    );
+  })();
+  adapterCache.set(language.languageId, loading);
+  return loading;
+}
+
+/** The tree-sitter language owning this file, if any; TypeScript handles the rest. */
+function treeSitterLanguageFor(path: string): TreeSitterLanguage | undefined {
+  return TREE_SITTER_LANGUAGES.find((language) => path.endsWith(language.fileExtension));
 }
 
 /** Merge per-language analyses into one workspace graph (ids never collide). */
@@ -483,8 +521,7 @@ export class VisualizationController implements vscode.Disposable {
       };
       // Each language analyzes with its own adapter; the maps merge afterwards
       // (module ids are path-based, so they can never collide).
-      const pythonInputs = inputs.filter((input) => input.path.endsWith(".py"));
-      const tsInputs = inputs.filter((input) => !input.path.endsWith(".py"));
+      const tsInputs = inputs.filter((input) => treeSitterLanguageFor(input.path) === undefined);
       const results = [];
       if (tsInputs.length > 0) {
         // Without the project's own aliases, every `@/foo` import resolves to
@@ -509,8 +546,11 @@ export class VisualizationController implements vscode.Disposable {
           }),
         );
       }
-      if (pythonInputs.length > 0) {
-        results.push((await pythonAdapter()).analyze(pythonInputs, { cancellation }));
+      for (const language of TREE_SITTER_LANGUAGES) {
+        const owned = inputs.filter((input) => input.path.endsWith(language.fileExtension));
+        if (owned.length > 0) {
+          results.push((await treeSitterAdapter(language)).analyze(owned, { cancellation }));
+        }
       }
       const analyzed = await mergeResults(results);
       for (const diagnostic of analyzed.diagnostics) {
@@ -812,10 +852,14 @@ export class VisualizationController implements vscode.Disposable {
       const { analyzeTypeScriptProject, layoutGraph } = await import("@surrounded-by-slop/core");
       // A broken file degrades to a partial graph plus diagnostics — surface those
       // as warnings and carry on rather than failing the whole visualization.
+      const input = [{ path, text: document.getText() }];
+      const language = TREE_SITTER_LANGUAGES.find(
+        (candidate) => candidate.languageId === document.languageId,
+      );
       const analyzed =
-        document.languageId === "python"
-          ? (await pythonAdapter()).analyze([{ path, text: document.getText() }])
-          : analyzeTypeScriptProject([{ path, text: document.getText() }]);
+        language === undefined
+          ? analyzeTypeScriptProject(input)
+          : (await treeSitterAdapter(language)).analyze(input);
       for (const diagnostic of analyzed.diagnostics) {
         this.logger.warn(`${diagnostic.file ?? path}: ${diagnostic.message}`);
       }

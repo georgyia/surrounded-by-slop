@@ -30,6 +30,13 @@ export interface TreeSitterAnalysisOptions {
   queries: LanguageQueries;
   /** Resolve an import's module text to a project file path; undefined = external. */
   resolveModule(fromFile: string, moduleText: string): string | undefined;
+  /**
+   * Clean up the raw capture text before it is resolved or shown. Languages
+   * that quote their import paths (Go's `"fmt"`, Java's trailing `;`) strip
+   * here, so an external module node reads `fmt` and not `"fmt"`. Defaults to
+   * the raw text.
+   */
+  normalizeModuleText?(raw: string): string;
   cancellation?: CancellationToken | undefined;
 }
 
@@ -75,6 +82,7 @@ interface Declaration {
 /** Run the three queries over every file and assemble one semantic graph. */
 export function analyzeWithTreeSitter(options: TreeSitterAnalysisOptions): AnalysisResult {
   const { files, language, queries, resolveModule, cancellation } = options;
+  const normalizeModuleText = options.normalizeModuleText ?? ((raw: string) => raw);
   const nodes: GraphNode[] = [];
   const edgeById = new Map<string, GraphEdge>();
   const diagnostics: Diagnostic[] = [];
@@ -170,7 +178,10 @@ export function analyzeWithTreeSitter(options: TreeSitterAnalysisOptions): Analy
         if (capture.name !== "import.module") {
           continue;
         }
-        const text = capture.node.text;
+        const text = normalizeModuleText(capture.node.text);
+        if (text === "") {
+          continue;
+        }
         const resolved = resolveModule(file.path, text);
         let target: string;
         if (resolved !== undefined) {

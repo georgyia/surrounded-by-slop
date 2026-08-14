@@ -1,0 +1,68 @@
+{
+  "diagnostics": [],
+  "graph": {
+    "edges": [
+      {
+        "from": "module:input.go",
+        "id": "contains:module:input.go->function:input.go#open",
+        "kind": "contains",
+        "to": "function:input.go#open"
+      },
+      {
+        "from": "module:input.go",
+        "id": "imports:module:input.go->module:external:database/sql",
+        "kind": "imports",
+        "to": "module:external:database/sql"
+      },
+      {
+        "from": "module:input.go",
+        "id": "imports:module:input.go->module:external:database/sql/driver",
+        "kind": "imports",
+        "to": "module:external:database/sql/driver"
+      }
+    ],
+    "nodes": [
+      {
+        "id": "function:input.go#open",
+        "kind": "function",
+        "name": "open",
+        "qualifiedName": "open",
+        "span": {
+          "endCol": 2,
+          "endLine": 10,
+          "file": "input.go",
+          "startCol": 1,
+          "startLine": 8
+        }
+      },
+      {
+        "external": true,
+        "id": "module:external:database/sql",
+        "kind": "module",
+        "name": "database/sql",
+        "qualifiedName": "database/sql"
+      },
+      {
+        "external": true,
+        "id": "module:external:database/sql/driver",
+        "kind": "module",
+        "name": "database/sql/driver",
+        "qualifiedName": "database/sql/driver"
+      },
+      {
+        "id": "module:input.go",
+        "kind": "module",
+        "name": "input.go",
+        "qualifiedName": "input.go",
+        "span": {
+          "endCol": 1,
+          "endLine": 11,
+          "file": "input.go",
+          "startCol": 1,
+          "startLine": 1
+        }
+      }
+    ],
+    "schemaVersion": 1
+  }
+}
