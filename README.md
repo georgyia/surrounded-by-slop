@@ -244,7 +244,7 @@ Or open the repo in VS Code and hit **F5**.
 | ------- | ------------ |
 | **Slop: Visualize File** (`ctrl`/`cmd`+`shift`+`v`) | Diagram the active TS/JS file, beside the editor |
 | **Slop: Visualize Workspace** | Module map of the folder; toggle a folder overview and drill folder → module → function |
-| **Slop: Export Diagram As…** | Save as `.drawio`, `.mmd`, `.dot`, `.svg` or `.json` |
+| **Slop: Export Diagram As…** | Save as `.drawio`, `.mmd`, `.dot`, `.puml`, `.svg` or `.json` |
 | **Slop: Copy Diagram as Mermaid** | Mermaid on the clipboard, ready for a PR |
 | **Slop: Pin Diagram** / **Follow Active Editor** | Freeze a diagram, or track whatever file you open |
 | **Slop: Reset Suppressed Notices** | Bring back anything you dismissed with "Don't show again" |

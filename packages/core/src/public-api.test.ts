@@ -47,6 +47,7 @@ it("exports exactly the documented public api", () => {
     "matchesAnyGlob",
     "mermaidExporter",
     "moduleId",
+    "plantumlExporter",
     "pythonQueries",
     "rankNodes",
     "reachableCfgBlocks",

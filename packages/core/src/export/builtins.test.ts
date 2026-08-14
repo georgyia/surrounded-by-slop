@@ -7,6 +7,7 @@ describe("builtinExporters", () => {
       "drawio",
       "mermaid",
       "dot",
+      "plantuml",
       "svg",
       "json",
     ]);

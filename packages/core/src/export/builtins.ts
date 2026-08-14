@@ -3,6 +3,7 @@ import { drawioExporter } from "./drawio.js";
 import { createExporterRegistry, type Exporter, type ExporterRegistry } from "./exporter.js";
 import { jsonExporter } from "./json.js";
 import { mermaidExporter } from "./mermaid.js";
+import { plantumlExporter } from "./plantuml.js";
 import { svgExporter } from "./svg.js";
 
 /**
@@ -18,6 +19,7 @@ export const builtinExporters: readonly Exporter[] = [
   drawioExporter,
   mermaidExporter,
   dotExporter,
+  plantumlExporter,
   svgExporter,
   jsonExporter,
 ];
