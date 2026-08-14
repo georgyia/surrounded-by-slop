@@ -4,7 +4,7 @@
  * renderer draws (both read the same palette). `main.ts` turns these entries
  * into small SVG swatches beside their labels.
  */
-import type { NodeKind } from "@surrounded-by-slop/core";
+import { edgeEmphasis, type GraphEdge, type NodeKind } from "@surrounded-by-slop/core";
 import type { Theme } from "./render.js";
 
 export interface LegendEntry {
@@ -42,24 +42,74 @@ export function nodeLegend(kinds: Iterable<NodeKind>, palette: Theme): LegendEnt
 }
 
 /**
- * The fixed edge vocabulary (line style ⇒ relationship). Thickness is a second,
- * independent channel — how often the relationship occurs (#99) — so it is
- * described here rather than given its own swatch.
+ * The edge vocabulary (line style ⇒ relationship), narrowed to the styles the
+ * diagram actually draws. A legend explains the picture, not the feature set:
+ * a codebase with no cycles and no type-only imports should not be told what
+ * those would have looked like.
+ *
+ * Presence is decided by running the edges through the same `edgeEmphasis` the
+ * renderer uses, so an entry appears exactly when a line of that style exists.
+ * Thickness is a second, independent channel — how often the relationship
+ * occurs (#99) — and only worth explaining once two edges actually differ.
  */
-export function edgeLegend(palette: Theme): LegendEntry[] {
-  return [
-    { label: "calls", fill: "none", stroke: palette.edge },
-    { label: "imports", fill: "none", stroke: palette.edge, dashed: true },
-    { label: "extends / implements", fill: "none", stroke: palette.heritage },
-    { label: "in an import cycle", fill: "none", stroke: palette.cycle },
-    {
+export function edgeLegend(edges: Iterable<GraphEdge>, palette: Theme): LegendEntry[] {
+  let calls = false;
+  let imports = false;
+  let heritage = false;
+  let cycle = false;
+  let muted = false;
+  const widths = new Set<number>();
+
+  for (const edge of edges) {
+    const { tone, width, dash } = edgeEmphasis(edge);
+    widths.add(width);
+    if (tone === "heritage") {
+      heritage = true;
+    } else if (tone === "muted") {
+      muted = true;
+    } else {
+      if (tone === "cycle") {
+        cycle = true;
+      }
+      // Within the solid tones, dashing is what separates an import from a call.
+      if (dash) {
+        imports = true;
+      } else {
+        calls = true;
+      }
+    }
+  }
+
+  const entries: LegendEntry[] = [];
+  if (calls) {
+    entries.push({ label: "calls", fill: "none", stroke: palette.edge });
+  }
+  if (imports) {
+    entries.push({ label: "imports", fill: "none", stroke: palette.edge, dashed: true });
+  }
+  if (heritage) {
+    entries.push({ label: "extends / implements", fill: "none", stroke: palette.heritage });
+  }
+  if (cycle) {
+    entries.push({ label: "in an import cycle", fill: "none", stroke: palette.cycle });
+  }
+  if (muted) {
+    entries.push({
       label: "type-only / inferred",
       fill: "none",
       stroke: palette.edgeLow,
       dashed: true,
-    },
-    { label: "thicker = used more often", fill: "none", stroke: palette.edge, weight: 3.5 },
-  ];
+    });
+  }
+  if (widths.size > 1) {
+    entries.push({
+      label: "thicker = used more often",
+      fill: "none",
+      stroke: palette.edge,
+      weight: 3.5,
+    });
+  }
+  return entries;
 }
 
 /** The flowchart vocabulary (SBS-071): what a function-flow diagram's lines mean. */
