@@ -211,6 +211,12 @@ export class VisualizationController implements vscode.Disposable {
   private readonly expanded = new Set<string>();
   /** The diagram shown before an isolate, so "Show all" can restore it (SBS-063). */
   private preIsolate: DiagramData | undefined;
+  /**
+   * In-session mirror of the persisted fold-notice dismissal (#106). `undefined`
+   * means "not decided this session — ask global state"; the field exists so a
+   * dismissal applies to the very next map instead of waiting on the write.
+   */
+  private foldNoticeDismissed: boolean | undefined;
   private readonly disposables: vscode.Disposable[];
 
   constructor(
@@ -235,7 +241,7 @@ export class VisualizationController implements vscode.Disposable {
    * still explains why a map opened folded (#106).
    */
   private showFoldNotice(moduleCount: number): void {
-    if (this.state.get(FOLD_NOTICE_DISMISSED, false)) {
+    if (this.foldNoticeDismissed ?? this.state.get(FOLD_NOTICE_DISMISSED, false)) {
       return;
     }
     void vscode.window
@@ -245,6 +251,10 @@ export class VisualizationController implements vscode.Disposable {
       )
       .then((choice) => {
         if (choice === DISMISS) {
+          // Take effect now, persist after: `Memento.update` is asynchronous,
+          // and two workspace maps in quick succession would otherwise race it
+          // and show the notice again right after it was dismissed.
+          this.foldNoticeDismissed = true;
           void this.state.update(FOLD_NOTICE_DISMISSED, true);
           this.logger.info("Fold notice dismissed; folding still follows slop.foldThreshold.");
         }
@@ -256,6 +266,7 @@ export class VisualizationController implements vscode.Disposable {
    * "Don't show again". Without it, a dismissal is a one-way door.
    */
   async resetNotices(): Promise<void> {
+    this.foldNoticeDismissed = false;
     await this.state.update(FOLD_NOTICE_DISMISSED, undefined);
     this.logger.info("Suppressed notices reset.");
     void vscode.window.showInformationMessage("Surrounded by Slop: suppressed notices are back.");
