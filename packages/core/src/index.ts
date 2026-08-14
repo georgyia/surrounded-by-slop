@@ -94,16 +94,17 @@ export {
   resolvePythonModule,
 } from "./python/adapter.js";
 export {
-  createRustAdapter,
-  type RustWasm,
-  resolveRustModule,
-  rustQueries,
-} from "./rust/adapter.js";
   createRubyAdapter,
   type RubyWasm,
   resolveRubyRequire,
   rubyQueries,
 } from "./ruby/adapter.js";
+export {
+  createRustAdapter,
+  type RustWasm,
+  resolveRustModule,
+  rustQueries,
+} from "./rust/adapter.js";
 export { stableStringify } from "./stable-json.js";
 export { globToRegExp, matchesAnyGlob } from "./transforms/glob.js";
 export {
