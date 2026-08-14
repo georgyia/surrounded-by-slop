@@ -1,0 +1,80 @@
+{
+  "diagnostics": [],
+  "graph": {
+    "edges": [
+      {
+        "from": "class:input.rs#Mode~2",
+        "id": "contains:class:input.rs#Mode~2->method:input.rs#Mode.enabled",
+        "kind": "contains",
+        "to": "method:input.rs#Mode.enabled"
+      },
+      {
+        "from": "module:input.rs",
+        "id": "contains:module:input.rs->class:input.rs#Mode",
+        "kind": "contains",
+        "to": "class:input.rs#Mode"
+      },
+      {
+        "from": "module:input.rs",
+        "id": "contains:module:input.rs->class:input.rs#Mode~2",
+        "kind": "contains",
+        "to": "class:input.rs#Mode~2"
+      }
+    ],
+    "nodes": [
+      {
+        "id": "class:input.rs#Mode",
+        "kind": "class",
+        "name": "Mode",
+        "qualifiedName": "Mode",
+        "span": {
+          "endCol": 2,
+          "endLine": 4,
+          "file": "input.rs",
+          "startCol": 1,
+          "startLine": 1
+        }
+      },
+      {
+        "id": "class:input.rs#Mode~2",
+        "kind": "class",
+        "name": "Mode",
+        "qualifiedName": "Mode",
+        "span": {
+          "endCol": 2,
+          "endLine": 10,
+          "file": "input.rs",
+          "startCol": 1,
+          "startLine": 6
+        }
+      },
+      {
+        "id": "method:input.rs#Mode.enabled",
+        "kind": "method",
+        "name": "enabled",
+        "qualifiedName": "Mode.enabled",
+        "span": {
+          "endCol": 6,
+          "endLine": 9,
+          "file": "input.rs",
+          "startCol": 5,
+          "startLine": 7
+        }
+      },
+      {
+        "id": "module:input.rs",
+        "kind": "module",
+        "name": "input.rs",
+        "qualifiedName": "input.rs",
+        "span": {
+          "endCol": 1,
+          "endLine": 11,
+          "file": "input.rs",
+          "startCol": 1,
+          "startLine": 1
+        }
+      }
+    ],
+    "schemaVersion": 1
+  }
+}

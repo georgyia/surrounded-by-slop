@@ -24,7 +24,7 @@ interface FixtureCase {
 }
 
 /** Categories with their own harness and golden format (see src/cfg/). */
-const FOREIGN_CATEGORIES = new Set(["cfg", "dataflow", "python", "go", "java"]);
+const FOREIGN_CATEGORIES = new Set(["cfg", "dataflow", "python", "go", "java", "rust"]);
 
 function listCases(): FixtureCase[] {
   const cases: FixtureCase[] = [];

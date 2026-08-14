@@ -1,0 +1,87 @@
+{
+  "diagnostics": [],
+  "graph": {
+    "edges": [
+      {
+        "confidence": "low",
+        "from": "method:input.rs#Handler.accepts",
+        "id": "calls:method:input.rs#Handler.accepts->method:input.rs#Handler.handle",
+        "kind": "calls",
+        "to": "method:input.rs#Handler.handle"
+      },
+      {
+        "from": "class:input.rs#Handler",
+        "id": "contains:class:input.rs#Handler->method:input.rs#Handler.accepts",
+        "kind": "contains",
+        "to": "method:input.rs#Handler.accepts"
+      },
+      {
+        "from": "class:input.rs#Handler",
+        "id": "contains:class:input.rs#Handler->method:input.rs#Handler.handle",
+        "kind": "contains",
+        "to": "method:input.rs#Handler.handle"
+      },
+      {
+        "from": "module:input.rs",
+        "id": "contains:module:input.rs->class:input.rs#Handler",
+        "kind": "contains",
+        "to": "class:input.rs#Handler"
+      }
+    ],
+    "nodes": [
+      {
+        "id": "class:input.rs#Handler",
+        "kind": "class",
+        "name": "Handler",
+        "qualifiedName": "Handler",
+        "span": {
+          "endCol": 2,
+          "endLine": 7,
+          "file": "input.rs",
+          "startCol": 1,
+          "startLine": 1
+        }
+      },
+      {
+        "id": "method:input.rs#Handler.accepts",
+        "kind": "method",
+        "name": "accepts",
+        "qualifiedName": "Handler.accepts",
+        "span": {
+          "endCol": 6,
+          "endLine": 6,
+          "file": "input.rs",
+          "startCol": 5,
+          "startLine": 4
+        }
+      },
+      {
+        "id": "method:input.rs#Handler.handle",
+        "kind": "method",
+        "name": "handle",
+        "qualifiedName": "Handler.handle",
+        "span": {
+          "endCol": 42,
+          "endLine": 2,
+          "file": "input.rs",
+          "startCol": 5,
+          "startLine": 2
+        }
+      },
+      {
+        "id": "module:input.rs",
+        "kind": "module",
+        "name": "input.rs",
+        "qualifiedName": "input.rs",
+        "span": {
+          "endCol": 1,
+          "endLine": 8,
+          "file": "input.rs",
+          "startCol": 1,
+          "startLine": 1
+        }
+      }
+    ],
+    "schemaVersion": 1
+  }
+}

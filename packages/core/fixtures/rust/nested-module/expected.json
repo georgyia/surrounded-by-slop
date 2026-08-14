@@ -1,0 +1,137 @@
+{
+  "diagnostics": [],
+  "graph": {
+    "edges": [
+      {
+        "from": "module:src/api/mod.rs",
+        "id": "contains:module:src/api/mod.rs->class:src/api/mod.rs#routes",
+        "kind": "contains",
+        "to": "class:src/api/mod.rs#routes"
+      },
+      {
+        "from": "module:src/api/mod.rs",
+        "id": "contains:module:src/api/mod.rs->function:src/api/mod.rs#version",
+        "kind": "contains",
+        "to": "function:src/api/mod.rs#version"
+      },
+      {
+        "from": "module:src/api/routes.rs",
+        "id": "contains:module:src/api/routes.rs->function:src/api/routes.rs#index",
+        "kind": "contains",
+        "to": "function:src/api/routes.rs#index"
+      },
+      {
+        "from": "module:src/lib.rs",
+        "id": "contains:module:src/lib.rs->class:src/lib.rs#api",
+        "kind": "contains",
+        "to": "class:src/lib.rs#api"
+      },
+      {
+        "from": "module:src/api/mod.rs",
+        "id": "imports:module:src/api/mod.rs->module:src/api/routes.rs",
+        "kind": "imports",
+        "to": "module:src/api/routes.rs"
+      },
+      {
+        "from": "module:src/lib.rs",
+        "id": "imports:module:src/lib.rs->module:src/api/mod.rs",
+        "kind": "imports",
+        "to": "module:src/api/mod.rs"
+      }
+    ],
+    "nodes": [
+      {
+        "id": "class:src/api/mod.rs#routes",
+        "kind": "class",
+        "name": "routes",
+        "qualifiedName": "routes",
+        "span": {
+          "endCol": 16,
+          "endLine": 1,
+          "file": "src/api/mod.rs",
+          "startCol": 1,
+          "startLine": 1
+        }
+      },
+      {
+        "id": "class:src/lib.rs#api",
+        "kind": "class",
+        "name": "api",
+        "qualifiedName": "api",
+        "span": {
+          "endCol": 13,
+          "endLine": 1,
+          "file": "src/lib.rs",
+          "startCol": 1,
+          "startLine": 1
+        }
+      },
+      {
+        "id": "function:src/api/mod.rs#version",
+        "kind": "function",
+        "name": "version",
+        "qualifiedName": "version",
+        "span": {
+          "endCol": 2,
+          "endLine": 5,
+          "file": "src/api/mod.rs",
+          "startCol": 1,
+          "startLine": 3
+        }
+      },
+      {
+        "id": "function:src/api/routes.rs#index",
+        "kind": "function",
+        "name": "index",
+        "qualifiedName": "index",
+        "span": {
+          "endCol": 2,
+          "endLine": 3,
+          "file": "src/api/routes.rs",
+          "startCol": 1,
+          "startLine": 1
+        }
+      },
+      {
+        "id": "module:src/api/mod.rs",
+        "kind": "module",
+        "name": "mod.rs",
+        "qualifiedName": "src/api/mod.rs",
+        "span": {
+          "endCol": 1,
+          "endLine": 6,
+          "file": "src/api/mod.rs",
+          "startCol": 1,
+          "startLine": 1
+        }
+      },
+      {
+        "id": "module:src/api/routes.rs",
+        "kind": "module",
+        "name": "routes.rs",
+        "qualifiedName": "src/api/routes.rs",
+        "span": {
+          "endCol": 1,
+          "endLine": 4,
+          "file": "src/api/routes.rs",
+          "startCol": 1,
+          "startLine": 1
+        }
+      },
+      {
+        "id": "module:src/lib.rs",
+        "kind": "module",
+        "name": "lib.rs",
+        "qualifiedName": "src/lib.rs",
+        "span": {
+          "endCol": 1,
+          "endLine": 2,
+          "file": "src/lib.rs",
+          "startCol": 1,
+          "startLine": 1
+        }
+      }
+    ],
+    "schemaVersion": 1
+  }
+}

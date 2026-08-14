@@ -1,0 +1,139 @@
+{
+  "diagnostics": [],
+  "graph": {
+    "edges": [
+      {
+        "confidence": "low",
+        "from": "method:input.rs#Chain.second",
+        "id": "calls:method:input.rs#Chain.second->method:input.rs#Chain.first",
+        "kind": "calls",
+        "to": "method:input.rs#Chain.first"
+      },
+      {
+        "confidence": "low",
+        "from": "method:input.rs#Chain.third",
+        "id": "calls:method:input.rs#Chain.third->method:input.rs#Chain.first",
+        "kind": "calls",
+        "to": "method:input.rs#Chain.first"
+      },
+      {
+        "confidence": "low",
+        "from": "method:input.rs#Chain.third",
+        "id": "calls:method:input.rs#Chain.third->method:input.rs#Chain.second",
+        "kind": "calls",
+        "to": "method:input.rs#Chain.second"
+      },
+      {
+        "from": "class:input.rs#Chain~2",
+        "id": "contains:class:input.rs#Chain~2->method:input.rs#Chain.first",
+        "kind": "contains",
+        "to": "method:input.rs#Chain.first"
+      },
+      {
+        "from": "class:input.rs#Chain~2",
+        "id": "contains:class:input.rs#Chain~2->method:input.rs#Chain.second",
+        "kind": "contains",
+        "to": "method:input.rs#Chain.second"
+      },
+      {
+        "from": "class:input.rs#Chain~2",
+        "id": "contains:class:input.rs#Chain~2->method:input.rs#Chain.third",
+        "kind": "contains",
+        "to": "method:input.rs#Chain.third"
+      },
+      {
+        "from": "module:input.rs",
+        "id": "contains:module:input.rs->class:input.rs#Chain",
+        "kind": "contains",
+        "to": "class:input.rs#Chain"
+      },
+      {
+        "from": "module:input.rs",
+        "id": "contains:module:input.rs->class:input.rs#Chain~2",
+        "kind": "contains",
+        "to": "class:input.rs#Chain~2"
+      }
+    ],
+    "nodes": [
+      {
+        "id": "class:input.rs#Chain",
+        "kind": "class",
+        "name": "Chain",
+        "qualifiedName": "Chain",
+        "span": {
+          "endCol": 18,
+          "endLine": 1,
+          "file": "input.rs",
+          "startCol": 1,
+          "startLine": 1
+        }
+      },
+      {
+        "id": "class:input.rs#Chain~2",
+        "kind": "class",
+        "name": "Chain",
+        "qualifiedName": "Chain",
+        "span": {
+          "endCol": 2,
+          "endLine": 15,
+          "file": "input.rs",
+          "startCol": 1,
+          "startLine": 3
+        }
+      },
+      {
+        "id": "method:input.rs#Chain.first",
+        "kind": "method",
+        "name": "first",
+        "qualifiedName": "Chain.first",
+        "span": {
+          "endCol": 6,
+          "endLine": 5,
+          "file": "input.rs",
+          "startCol": 5,
+          "startLine": 4
+        }
+      },
+      {
+        "id": "method:input.rs#Chain.second",
+        "kind": "method",
+        "name": "second",
+        "qualifiedName": "Chain.second",
+        "span": {
+          "endCol": 6,
+          "endLine": 9,
+          "file": "input.rs",
+          "startCol": 5,
+          "startLine": 7
+        }
+      },
+      {
+        "id": "method:input.rs#Chain.third",
+        "kind": "method",
+        "name": "third",
+        "qualifiedName": "Chain.third",
+        "span": {
+          "endCol": 6,
+          "endLine": 14,
+          "file": "input.rs",
+          "startCol": 5,
+          "startLine": 11
+        }
+      },
+      {
+        "id": "module:input.rs",
+        "kind": "module",
+        "name": "input.rs",
+        "qualifiedName": "input.rs",
+        "span": {
+          "endCol": 1,
+          "endLine": 16,
+          "file": "input.rs",
+          "startCol": 1,
+          "startLine": 1
+        }
+      }
+    ],
+    "schemaVersion": 1
+  }
+}

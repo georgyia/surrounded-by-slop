@@ -1,0 +1,80 @@
+{
+  "diagnostics": [],
+  "graph": {
+    "edges": [
+      {
+        "from": "class:input.rs#config",
+        "id": "contains:class:input.rs#config->class:input.rs#config.Settings",
+        "kind": "contains",
+        "to": "class:input.rs#config.Settings"
+      },
+      {
+        "from": "class:input.rs#config",
+        "id": "contains:class:input.rs#config->method:input.rs#config.defaults",
+        "kind": "contains",
+        "to": "method:input.rs#config.defaults"
+      },
+      {
+        "from": "module:input.rs",
+        "id": "contains:module:input.rs->class:input.rs#config",
+        "kind": "contains",
+        "to": "class:input.rs#config"
+      }
+    ],
+    "nodes": [
+      {
+        "id": "class:input.rs#config",
+        "kind": "class",
+        "name": "config",
+        "qualifiedName": "config",
+        "span": {
+          "endCol": 2,
+          "endLine": 9,
+          "file": "input.rs",
+          "startCol": 1,
+          "startLine": 1
+        }
+      },
+      {
+        "id": "class:input.rs#config.Settings",
+        "kind": "class",
+        "name": "Settings",
+        "qualifiedName": "config.Settings",
+        "span": {
+          "endCol": 6,
+          "endLine": 4,
+          "file": "input.rs",
+          "startCol": 5,
+          "startLine": 2
+        }
+      },
+      {
+        "id": "method:input.rs#config.defaults",
+        "kind": "method",
+        "name": "defaults",
+        "qualifiedName": "config.defaults",
+        "span": {
+          "endCol": 6,
+          "endLine": 8,
+          "file": "input.rs",
+          "startCol": 5,
+          "startLine": 6
+        }
+      },
+      {
+        "id": "module:input.rs",
+        "kind": "module",
+        "name": "input.rs",
+        "qualifiedName": "input.rs",
+        "span": {
+          "endCol": 1,
+          "endLine": 10,
+          "file": "input.rs",
+          "startCol": 1,
+          "startLine": 1
+        }
+      }
+    ],
+    "schemaVersion": 1
+  }
+}

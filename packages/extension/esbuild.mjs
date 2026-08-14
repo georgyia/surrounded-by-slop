@@ -17,7 +17,12 @@ copyFileSync(fromCore("web-tree-sitter/web-tree-sitter.wasm"), "dist/web-tree-si
 // Grammars ship with the extension and load on first use of that language
 // (see TREE_SITTER_LANGUAGES in controller.ts). Keep this list in step with it.
 const grammarDir = join(dirname(fromCore("@vscode/tree-sitter-wasm/package.json")), "wasm");
-for (const grammar of ["tree-sitter-python.wasm", "tree-sitter-go.wasm", "tree-sitter-java.wasm"]) {
+for (const grammar of [
+  "tree-sitter-python.wasm",
+  "tree-sitter-go.wasm",
+  "tree-sitter-java.wasm",
+  "tree-sitter-rust.wasm",
+]) {
   copyFileSync(join(grammarDir, grammar), `dist/${grammar}`);
 }
 

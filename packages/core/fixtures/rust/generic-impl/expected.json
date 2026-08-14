@@ -1,0 +1,80 @@
+{
+  "diagnostics": [],
+  "graph": {
+    "edges": [
+      {
+        "from": "class:input.rs#Wrapper~2",
+        "id": "contains:class:input.rs#Wrapper~2->method:input.rs#Wrapper.get",
+        "kind": "contains",
+        "to": "method:input.rs#Wrapper.get"
+      },
+      {
+        "from": "module:input.rs",
+        "id": "contains:module:input.rs->class:input.rs#Wrapper",
+        "kind": "contains",
+        "to": "class:input.rs#Wrapper"
+      },
+      {
+        "from": "module:input.rs",
+        "id": "contains:module:input.rs->class:input.rs#Wrapper~2",
+        "kind": "contains",
+        "to": "class:input.rs#Wrapper~2"
+      }
+    ],
+    "nodes": [
+      {
+        "id": "class:input.rs#Wrapper",
+        "kind": "class",
+        "name": "Wrapper",
+        "qualifiedName": "Wrapper",
+        "span": {
+          "endCol": 2,
+          "endLine": 3,
+          "file": "input.rs",
+          "startCol": 1,
+          "startLine": 1
+        }
+      },
+      {
+        "id": "class:input.rs#Wrapper~2",
+        "kind": "class",
+        "name": "Wrapper",
+        "qualifiedName": "Wrapper",
+        "span": {
+          "endCol": 2,
+          "endLine": 9,
+          "file": "input.rs",
+          "startCol": 1,
+          "startLine": 5
+        }
+      },
+      {
+        "id": "method:input.rs#Wrapper.get",
+        "kind": "method",
+        "name": "get",
+        "qualifiedName": "Wrapper.get",
+        "span": {
+          "endCol": 6,
+          "endLine": 8,
+          "file": "input.rs",
+          "startCol": 5,
+          "startLine": 6
+        }
+      },
+      {
+        "id": "module:input.rs",
+        "kind": "module",
+        "name": "input.rs",
+        "qualifiedName": "input.rs",
+        "span": {
+          "endCol": 1,
+          "endLine": 10,
+          "file": "input.rs",
+          "startCol": 1,
+          "startLine": 1
+        }
+      }
+    ],
+    "schemaVersion": 1
+  }
+}

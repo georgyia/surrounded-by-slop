@@ -1,0 +1,99 @@
+{
+  "diagnostics": [],
+  "graph": {
+    "edges": [
+      {
+        "from": "module:src/helper.rs",
+        "id": "contains:module:src/helper.rs->function:src/helper.rs#help",
+        "kind": "contains",
+        "to": "function:src/helper.rs#help"
+      },
+      {
+        "from": "module:src/lib.rs",
+        "id": "contains:module:src/lib.rs->class:src/lib.rs#helper",
+        "kind": "contains",
+        "to": "class:src/lib.rs#helper"
+      },
+      {
+        "from": "module:src/lib.rs",
+        "id": "contains:module:src/lib.rs->function:src/lib.rs#run",
+        "kind": "contains",
+        "to": "function:src/lib.rs#run"
+      },
+      {
+        "from": "module:src/lib.rs",
+        "id": "imports:module:src/lib.rs->module:src/helper.rs",
+        "kind": "imports",
+        "to": "module:src/helper.rs"
+      }
+    ],
+    "nodes": [
+      {
+        "id": "class:src/lib.rs#helper",
+        "kind": "class",
+        "name": "helper",
+        "qualifiedName": "helper",
+        "span": {
+          "endCol": 12,
+          "endLine": 1,
+          "file": "src/lib.rs",
+          "startCol": 1,
+          "startLine": 1
+        }
+      },
+      {
+        "id": "function:src/helper.rs#help",
+        "kind": "function",
+        "name": "help",
+        "qualifiedName": "help",
+        "span": {
+          "endCol": 2,
+          "endLine": 2,
+          "file": "src/helper.rs",
+          "startCol": 1,
+          "startLine": 1
+        }
+      },
+      {
+        "id": "function:src/lib.rs#run",
+        "kind": "function",
+        "name": "run",
+        "qualifiedName": "run",
+        "span": {
+          "endCol": 2,
+          "endLine": 4,
+          "file": "src/lib.rs",
+          "startCol": 1,
+          "startLine": 3
+        }
+      },
+      {
+        "id": "module:src/helper.rs",
+        "kind": "module",
+        "name": "helper.rs",
+        "qualifiedName": "src/helper.rs",
+        "span": {
+          "endCol": 1,
+          "endLine": 3,
+          "file": "src/helper.rs",
+          "startCol": 1,
+          "startLine": 1
+        }
+      },
+      {
+        "id": "module:src/lib.rs",
+        "kind": "module",
+        "name": "lib.rs",
+        "qualifiedName": "src/lib.rs",
+        "span": {
+          "endCol": 1,
+          "endLine": 5,
+          "file": "src/lib.rs",
+          "startCol": 1,
+          "startLine": 1
+        }
+      }
+    ],
+    "schemaVersion": 1
+  }
+}

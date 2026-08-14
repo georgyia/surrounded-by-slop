@@ -1,0 +1,138 @@
+{
+  "diagnostics": [],
+  "graph": {
+    "edges": [
+      {
+        "from": "class:src/store.rs#Store~2",
+        "id": "contains:class:src/store.rs#Store~2->method:src/store.rs#Store.open",
+        "kind": "contains",
+        "to": "method:src/store.rs#Store.open"
+      },
+      {
+        "from": "module:src/main.rs",
+        "id": "contains:module:src/main.rs->class:src/main.rs#store",
+        "kind": "contains",
+        "to": "class:src/main.rs#store"
+      },
+      {
+        "from": "module:src/main.rs",
+        "id": "contains:module:src/main.rs->function:src/main.rs#main",
+        "kind": "contains",
+        "to": "function:src/main.rs#main"
+      },
+      {
+        "from": "module:src/store.rs",
+        "id": "contains:module:src/store.rs->class:src/store.rs#Store",
+        "kind": "contains",
+        "to": "class:src/store.rs#Store"
+      },
+      {
+        "from": "module:src/store.rs",
+        "id": "contains:module:src/store.rs->class:src/store.rs#Store~2",
+        "kind": "contains",
+        "to": "class:src/store.rs#Store~2"
+      },
+      {
+        "count": 2,
+        "from": "module:src/main.rs",
+        "id": "imports:module:src/main.rs->module:src/store.rs",
+        "kind": "imports",
+        "to": "module:src/store.rs"
+      }
+    ],
+    "nodes": [
+      {
+        "id": "class:src/main.rs#store",
+        "kind": "class",
+        "name": "store",
+        "qualifiedName": "store",
+        "span": {
+          "endCol": 11,
+          "endLine": 3,
+          "file": "src/main.rs",
+          "startCol": 1,
+          "startLine": 3
+        }
+      },
+      {
+        "id": "class:src/store.rs#Store",
+        "kind": "class",
+        "name": "Store",
+        "qualifiedName": "Store",
+        "span": {
+          "endCol": 18,
+          "endLine": 1,
+          "file": "src/store.rs",
+          "startCol": 1,
+          "startLine": 1
+        }
+      },
+      {
+        "id": "class:src/store.rs#Store~2",
+        "kind": "class",
+        "name": "Store",
+        "qualifiedName": "Store",
+        "span": {
+          "endCol": 2,
+          "endLine": 7,
+          "file": "src/store.rs",
+          "startCol": 1,
+          "startLine": 3
+        }
+      },
+      {
+        "id": "function:src/main.rs#main",
+        "kind": "function",
+        "name": "main",
+        "qualifiedName": "main",
+        "span": {
+          "endCol": 2,
+          "endLine": 7,
+          "file": "src/main.rs",
+          "startCol": 1,
+          "startLine": 5
+        }
+      },
+      {
+        "id": "method:src/store.rs#Store.open",
+        "kind": "method",
+        "name": "open",
+        "qualifiedName": "Store.open",
+        "span": {
+          "endCol": 6,
+          "endLine": 6,
+          "file": "src/store.rs",
+          "startCol": 5,
+          "startLine": 4
+        }
+      },
+      {
+        "id": "module:src/main.rs",
+        "kind": "module",
+        "name": "main.rs",
+        "qualifiedName": "src/main.rs",
+        "span": {
+          "endCol": 1,
+          "endLine": 8,
+          "file": "src/main.rs",
+          "startCol": 1,
+          "startLine": 1
+        }
+      },
+      {
+        "id": "module:src/store.rs",
+        "kind": "module",
+        "name": "store.rs",
+        "qualifiedName": "src/store.rs",
+        "span": {
+          "endCol": 1,
+          "endLine": 8,
+          "file": "src/store.rs",
+          "startCol": 1,
+          "startLine": 1
+        }
+      }
+    ],
+    "schemaVersion": 1
+  }
+}
