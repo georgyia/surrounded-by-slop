@@ -29,6 +29,7 @@ it("exports exactly the documented public api", () => {
     "dataflowForSpan",
     "declarationId",
     "displayLabel",
+    "dotExporter",
     "drawioExporter",
     "edgeEmphasis",
     "edgeId",

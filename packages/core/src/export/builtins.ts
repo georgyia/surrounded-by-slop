@@ -1,3 +1,4 @@
+import { dotExporter } from "./dot.js";
 import { drawioExporter } from "./drawio.js";
 import { createExporterRegistry, type Exporter, type ExporterRegistry } from "./exporter.js";
 import { jsonExporter } from "./json.js";
@@ -16,6 +17,7 @@ import { svgExporter } from "./svg.js";
 export const builtinExporters: readonly Exporter[] = [
   drawioExporter,
   mermaidExporter,
+  dotExporter,
   svgExporter,
   jsonExporter,
 ];
