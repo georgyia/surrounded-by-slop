@@ -1,0 +1,80 @@
+{
+  "diagnostics": [],
+  "graph": {
+    "edges": [
+      {
+        "from": "class:input.rb#Shop",
+        "id": "contains:class:input.rb#Shop->class:input.rb#Shop.Cart",
+        "kind": "contains",
+        "to": "class:input.rb#Shop.Cart"
+      },
+      {
+        "from": "class:input.rb#Shop.Cart",
+        "id": "contains:class:input.rb#Shop.Cart->method:input.rb#Shop.Cart.total",
+        "kind": "contains",
+        "to": "method:input.rb#Shop.Cart.total"
+      },
+      {
+        "from": "module:input.rb",
+        "id": "contains:module:input.rb->class:input.rb#Shop",
+        "kind": "contains",
+        "to": "class:input.rb#Shop"
+      }
+    ],
+    "nodes": [
+      {
+        "id": "class:input.rb#Shop",
+        "kind": "class",
+        "name": "Shop",
+        "qualifiedName": "Shop",
+        "span": {
+          "endCol": 4,
+          "endLine": 7,
+          "file": "input.rb",
+          "startCol": 1,
+          "startLine": 1
+        }
+      },
+      {
+        "id": "class:input.rb#Shop.Cart",
+        "kind": "class",
+        "name": "Cart",
+        "qualifiedName": "Shop.Cart",
+        "span": {
+          "endCol": 6,
+          "endLine": 6,
+          "file": "input.rb",
+          "startCol": 3,
+          "startLine": 2
+        }
+      },
+      {
+        "id": "method:input.rb#Shop.Cart.total",
+        "kind": "method",
+        "name": "total",
+        "qualifiedName": "Shop.Cart.total",
+        "span": {
+          "endCol": 8,
+          "endLine": 5,
+          "file": "input.rb",
+          "startCol": 5,
+          "startLine": 3
+        }
+      },
+      {
+        "id": "module:input.rb",
+        "kind": "module",
+        "name": "input.rb",
+        "qualifiedName": "input.rb",
+        "span": {
+          "endCol": 1,
+          "endLine": 8,
+          "file": "input.rb",
+          "startCol": 1,
+          "startLine": 1
+        }
+      }
+    ],
+    "schemaVersion": 1
+  }
+}

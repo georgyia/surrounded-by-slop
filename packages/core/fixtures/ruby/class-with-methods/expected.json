@@ -1,0 +1,87 @@
+{
+  "diagnostics": [],
+  "graph": {
+    "edges": [
+      {
+        "confidence": "low",
+        "from": "method:input.rb#Greeter.shout",
+        "id": "calls:method:input.rb#Greeter.shout->method:input.rb#Greeter.greet",
+        "kind": "calls",
+        "to": "method:input.rb#Greeter.greet"
+      },
+      {
+        "from": "class:input.rb#Greeter",
+        "id": "contains:class:input.rb#Greeter->method:input.rb#Greeter.greet",
+        "kind": "contains",
+        "to": "method:input.rb#Greeter.greet"
+      },
+      {
+        "from": "class:input.rb#Greeter",
+        "id": "contains:class:input.rb#Greeter->method:input.rb#Greeter.shout",
+        "kind": "contains",
+        "to": "method:input.rb#Greeter.shout"
+      },
+      {
+        "from": "module:input.rb",
+        "id": "contains:module:input.rb->class:input.rb#Greeter",
+        "kind": "contains",
+        "to": "class:input.rb#Greeter"
+      }
+    ],
+    "nodes": [
+      {
+        "id": "class:input.rb#Greeter",
+        "kind": "class",
+        "name": "Greeter",
+        "qualifiedName": "Greeter",
+        "span": {
+          "endCol": 4,
+          "endLine": 9,
+          "file": "input.rb",
+          "startCol": 1,
+          "startLine": 1
+        }
+      },
+      {
+        "id": "method:input.rb#Greeter.greet",
+        "kind": "method",
+        "name": "greet",
+        "qualifiedName": "Greeter.greet",
+        "span": {
+          "endCol": 6,
+          "endLine": 4,
+          "file": "input.rb",
+          "startCol": 3,
+          "startLine": 2
+        }
+      },
+      {
+        "id": "method:input.rb#Greeter.shout",
+        "kind": "method",
+        "name": "shout",
+        "qualifiedName": "Greeter.shout",
+        "span": {
+          "endCol": 6,
+          "endLine": 8,
+          "file": "input.rb",
+          "startCol": 3,
+          "startLine": 6
+        }
+      },
+      {
+        "id": "module:input.rb",
+        "kind": "module",
+        "name": "input.rb",
+        "qualifiedName": "input.rb",
+        "span": {
+          "endCol": 1,
+          "endLine": 10,
+          "file": "input.rb",
+          "startCol": 1,
+          "startLine": 1
+        }
+      }
+    ],
+    "schemaVersion": 1
+  }
+}

@@ -1,0 +1,80 @@
+{
+  "diagnostics": [],
+  "graph": {
+    "edges": [
+      {
+        "from": "class:input.rb#Config",
+        "id": "contains:class:input.rb#Config->method:input.rb#Config.value",
+        "kind": "contains",
+        "to": "method:input.rb#Config.value"
+      },
+      {
+        "from": "class:input.rb#Config",
+        "id": "contains:class:input.rb#Config->method:input.rb#Config.value=",
+        "kind": "contains",
+        "to": "method:input.rb#Config.value="
+      },
+      {
+        "from": "module:input.rb",
+        "id": "contains:module:input.rb->class:input.rb#Config",
+        "kind": "contains",
+        "to": "class:input.rb#Config"
+      }
+    ],
+    "nodes": [
+      {
+        "id": "class:input.rb#Config",
+        "kind": "class",
+        "name": "Config",
+        "qualifiedName": "Config",
+        "span": {
+          "endCol": 4,
+          "endLine": 9,
+          "file": "input.rb",
+          "startCol": 1,
+          "startLine": 1
+        }
+      },
+      {
+        "id": "method:input.rb#Config.value",
+        "kind": "method",
+        "name": "value",
+        "qualifiedName": "Config.value",
+        "span": {
+          "endCol": 6,
+          "endLine": 8,
+          "file": "input.rb",
+          "startCol": 3,
+          "startLine": 6
+        }
+      },
+      {
+        "id": "method:input.rb#Config.value=",
+        "kind": "method",
+        "name": "value=",
+        "qualifiedName": "Config.value=",
+        "span": {
+          "endCol": 6,
+          "endLine": 4,
+          "file": "input.rb",
+          "startCol": 3,
+          "startLine": 2
+        }
+      },
+      {
+        "id": "module:input.rb",
+        "kind": "module",
+        "name": "input.rb",
+        "qualifiedName": "input.rb",
+        "span": {
+          "endCol": 1,
+          "endLine": 10,
+          "file": "input.rb",
+          "startCol": 1,
+          "startLine": 1
+        }
+      }
+    ],
+    "schemaVersion": 1
+  }
+}

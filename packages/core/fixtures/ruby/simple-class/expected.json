@@ -1,0 +1,42 @@
+{
+  "diagnostics": [],
+  "graph": {
+    "edges": [
+      {
+        "from": "module:input.rb",
+        "id": "contains:module:input.rb->class:input.rb#Empty",
+        "kind": "contains",
+        "to": "class:input.rb#Empty"
+      }
+    ],
+    "nodes": [
+      {
+        "id": "class:input.rb#Empty",
+        "kind": "class",
+        "name": "Empty",
+        "qualifiedName": "Empty",
+        "span": {
+          "endCol": 4,
+          "endLine": 2,
+          "file": "input.rb",
+          "startCol": 1,
+          "startLine": 1
+        }
+      },
+      {
+        "id": "module:input.rb",
+        "kind": "module",
+        "name": "input.rb",
+        "qualifiedName": "input.rb",
+        "span": {
+          "endCol": 1,
+          "endLine": 3,
+          "file": "input.rb",
+          "startCol": 1,
+          "startLine": 1
+        }
+      }
+    ],
+    "schemaVersion": 1
+  }
+}

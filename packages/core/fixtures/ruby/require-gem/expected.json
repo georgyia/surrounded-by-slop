@@ -1,0 +1,87 @@
+{
+  "diagnostics": [],
+  "graph": {
+    "edges": [
+      {
+        "from": "class:input.rb#Client",
+        "id": "contains:class:input.rb#Client->method:input.rb#Client.parse",
+        "kind": "contains",
+        "to": "method:input.rb#Client.parse"
+      },
+      {
+        "from": "module:input.rb",
+        "id": "contains:module:input.rb->class:input.rb#Client",
+        "kind": "contains",
+        "to": "class:input.rb#Client"
+      },
+      {
+        "from": "module:input.rb",
+        "id": "imports:module:input.rb->module:external:json",
+        "kind": "imports",
+        "to": "module:external:json"
+      },
+      {
+        "from": "module:input.rb",
+        "id": "imports:module:input.rb->module:external:net/http",
+        "kind": "imports",
+        "to": "module:external:net/http"
+      }
+    ],
+    "nodes": [
+      {
+        "id": "class:input.rb#Client",
+        "kind": "class",
+        "name": "Client",
+        "qualifiedName": "Client",
+        "span": {
+          "endCol": 4,
+          "endLine": 8,
+          "file": "input.rb",
+          "startCol": 1,
+          "startLine": 4
+        }
+      },
+      {
+        "id": "method:input.rb#Client.parse",
+        "kind": "method",
+        "name": "parse",
+        "qualifiedName": "Client.parse",
+        "span": {
+          "endCol": 6,
+          "endLine": 7,
+          "file": "input.rb",
+          "startCol": 3,
+          "startLine": 5
+        }
+      },
+      {
+        "external": true,
+        "id": "module:external:json",
+        "kind": "module",
+        "name": "json",
+        "qualifiedName": "json"
+      },
+      {
+        "external": true,
+        "id": "module:external:net/http",
+        "kind": "module",
+        "name": "net/http",
+        "qualifiedName": "net/http"
+      },
+      {
+        "id": "module:input.rb",
+        "kind": "module",
+        "name": "input.rb",
+        "qualifiedName": "input.rb",
+        "span": {
+          "endCol": 1,
+          "endLine": 9,
+          "file": "input.rb",
+          "startCol": 1,
+          "startLine": 1
+        }
+      }
+    ],
+    "schemaVersion": 1
+  }
+}

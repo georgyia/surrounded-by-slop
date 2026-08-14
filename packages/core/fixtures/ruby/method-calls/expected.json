@@ -1,0 +1,99 @@
+{
+  "diagnostics": [],
+  "graph": {
+    "edges": [
+      {
+        "from": "class:input.rb#Pipeline",
+        "id": "contains:class:input.rb#Pipeline->method:input.rb#Pipeline.first",
+        "kind": "contains",
+        "to": "method:input.rb#Pipeline.first"
+      },
+      {
+        "from": "class:input.rb#Pipeline",
+        "id": "contains:class:input.rb#Pipeline->method:input.rb#Pipeline.second",
+        "kind": "contains",
+        "to": "method:input.rb#Pipeline.second"
+      },
+      {
+        "from": "class:input.rb#Pipeline",
+        "id": "contains:class:input.rb#Pipeline->method:input.rb#Pipeline.third",
+        "kind": "contains",
+        "to": "method:input.rb#Pipeline.third"
+      },
+      {
+        "from": "module:input.rb",
+        "id": "contains:module:input.rb->class:input.rb#Pipeline",
+        "kind": "contains",
+        "to": "class:input.rb#Pipeline"
+      }
+    ],
+    "nodes": [
+      {
+        "id": "class:input.rb#Pipeline",
+        "kind": "class",
+        "name": "Pipeline",
+        "qualifiedName": "Pipeline",
+        "span": {
+          "endCol": 4,
+          "endLine": 13,
+          "file": "input.rb",
+          "startCol": 1,
+          "startLine": 1
+        }
+      },
+      {
+        "id": "method:input.rb#Pipeline.first",
+        "kind": "method",
+        "name": "first",
+        "qualifiedName": "Pipeline.first",
+        "span": {
+          "endCol": 6,
+          "endLine": 3,
+          "file": "input.rb",
+          "startCol": 3,
+          "startLine": 2
+        }
+      },
+      {
+        "id": "method:input.rb#Pipeline.second",
+        "kind": "method",
+        "name": "second",
+        "qualifiedName": "Pipeline.second",
+        "span": {
+          "endCol": 6,
+          "endLine": 7,
+          "file": "input.rb",
+          "startCol": 3,
+          "startLine": 5
+        }
+      },
+      {
+        "id": "method:input.rb#Pipeline.third",
+        "kind": "method",
+        "name": "third",
+        "qualifiedName": "Pipeline.third",
+        "span": {
+          "endCol": 6,
+          "endLine": 12,
+          "file": "input.rb",
+          "startCol": 3,
+          "startLine": 9
+        }
+      },
+      {
+        "id": "module:input.rb",
+        "kind": "module",
+        "name": "input.rb",
+        "qualifiedName": "input.rb",
+        "span": {
+          "endCol": 1,
+          "endLine": 14,
+          "file": "input.rb",
+          "startCol": 1,
+          "startLine": 1
+        }
+      }
+    ],
+    "schemaVersion": 1
+  }
+}

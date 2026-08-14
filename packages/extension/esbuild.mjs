@@ -22,6 +22,7 @@ for (const grammar of [
   "tree-sitter-go.wasm",
   "tree-sitter-java.wasm",
   "tree-sitter-rust.wasm",
+  "tree-sitter-ruby.wasm",
 ]) {
   copyFileSync(join(grammarDir, grammar), `dist/${grammar}`);
 }

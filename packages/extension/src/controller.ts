@@ -16,6 +16,7 @@ const LANGUAGE_EXTENSIONS: Readonly<Record<string, string>> = {
   go: ".go",
   java: ".java",
   rust: ".rs",
+  ruby: ".rb",
 };
 
 type CoreAdapter = import("@surrounded-by-slop/core").LanguageAdapter;
@@ -62,6 +63,15 @@ const TREE_SITTER_LANGUAGES = [
     create: async (runtime: Uint8Array, grammar: Uint8Array): Promise<CoreAdapter> => {
       const { createRustAdapter } = await import("@surrounded-by-slop/core");
       return createRustAdapter({ runtime, rust: grammar });
+    },
+  },
+  {
+    languageId: "ruby",
+    fileExtension: ".rb",
+    grammar: "tree-sitter-ruby.wasm",
+    create: async (runtime: Uint8Array, grammar: Uint8Array): Promise<CoreAdapter> => {
+      const { createRubyAdapter } = await import("@surrounded-by-slop/core");
+      return createRubyAdapter({ runtime, ruby: grammar });
     },
   },
 ] as const;

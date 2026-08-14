@@ -1,0 +1,99 @@
+{
+  "diagnostics": [],
+  "graph": {
+    "edges": [
+      {
+        "from": "class:input.rb#Animal",
+        "id": "contains:class:input.rb#Animal->method:input.rb#Animal.speak",
+        "kind": "contains",
+        "to": "method:input.rb#Animal.speak"
+      },
+      {
+        "from": "class:input.rb#Dog",
+        "id": "contains:class:input.rb#Dog->method:input.rb#Dog.speak",
+        "kind": "contains",
+        "to": "method:input.rb#Dog.speak"
+      },
+      {
+        "from": "module:input.rb",
+        "id": "contains:module:input.rb->class:input.rb#Animal",
+        "kind": "contains",
+        "to": "class:input.rb#Animal"
+      },
+      {
+        "from": "module:input.rb",
+        "id": "contains:module:input.rb->class:input.rb#Dog",
+        "kind": "contains",
+        "to": "class:input.rb#Dog"
+      }
+    ],
+    "nodes": [
+      {
+        "id": "class:input.rb#Animal",
+        "kind": "class",
+        "name": "Animal",
+        "qualifiedName": "Animal",
+        "span": {
+          "endCol": 4,
+          "endLine": 4,
+          "file": "input.rb",
+          "startCol": 1,
+          "startLine": 1
+        }
+      },
+      {
+        "id": "class:input.rb#Dog",
+        "kind": "class",
+        "name": "Dog",
+        "qualifiedName": "Dog",
+        "span": {
+          "endCol": 4,
+          "endLine": 10,
+          "file": "input.rb",
+          "startCol": 1,
+          "startLine": 6
+        }
+      },
+      {
+        "id": "method:input.rb#Animal.speak",
+        "kind": "method",
+        "name": "speak",
+        "qualifiedName": "Animal.speak",
+        "span": {
+          "endCol": 6,
+          "endLine": 3,
+          "file": "input.rb",
+          "startCol": 3,
+          "startLine": 2
+        }
+      },
+      {
+        "id": "method:input.rb#Dog.speak",
+        "kind": "method",
+        "name": "speak",
+        "qualifiedName": "Dog.speak",
+        "span": {
+          "endCol": 6,
+          "endLine": 9,
+          "file": "input.rb",
+          "startCol": 3,
+          "startLine": 7
+        }
+      },
+      {
+        "id": "module:input.rb",
+        "kind": "module",
+        "name": "input.rb",
+        "qualifiedName": "input.rb",
+        "span": {
+          "endCol": 1,
+          "endLine": 11,
+          "file": "input.rb",
+          "startCol": 1,
+          "startLine": 1
+        }
+      }
+    ],
+    "schemaVersion": 1
+  }
+}

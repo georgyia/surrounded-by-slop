@@ -1,0 +1,87 @@
+{
+  "diagnostics": [],
+  "graph": {
+    "edges": [
+      {
+        "confidence": "low",
+        "from": "method:input.rb#Runner.each_item",
+        "id": "calls:method:input.rb#Runner.each_item->method:input.rb#Runner.handle",
+        "kind": "calls",
+        "to": "method:input.rb#Runner.handle"
+      },
+      {
+        "from": "class:input.rb#Runner",
+        "id": "contains:class:input.rb#Runner->method:input.rb#Runner.each_item",
+        "kind": "contains",
+        "to": "method:input.rb#Runner.each_item"
+      },
+      {
+        "from": "class:input.rb#Runner",
+        "id": "contains:class:input.rb#Runner->method:input.rb#Runner.handle",
+        "kind": "contains",
+        "to": "method:input.rb#Runner.handle"
+      },
+      {
+        "from": "module:input.rb",
+        "id": "contains:module:input.rb->class:input.rb#Runner",
+        "kind": "contains",
+        "to": "class:input.rb#Runner"
+      }
+    ],
+    "nodes": [
+      {
+        "id": "class:input.rb#Runner",
+        "kind": "class",
+        "name": "Runner",
+        "qualifiedName": "Runner",
+        "span": {
+          "endCol": 4,
+          "endLine": 10,
+          "file": "input.rb",
+          "startCol": 1,
+          "startLine": 1
+        }
+      },
+      {
+        "id": "method:input.rb#Runner.each_item",
+        "kind": "method",
+        "name": "each_item",
+        "qualifiedName": "Runner.each_item",
+        "span": {
+          "endCol": 6,
+          "endLine": 6,
+          "file": "input.rb",
+          "startCol": 3,
+          "startLine": 2
+        }
+      },
+      {
+        "id": "method:input.rb#Runner.handle",
+        "kind": "method",
+        "name": "handle",
+        "qualifiedName": "Runner.handle",
+        "span": {
+          "endCol": 6,
+          "endLine": 9,
+          "file": "input.rb",
+          "startCol": 3,
+          "startLine": 8
+        }
+      },
+      {
+        "id": "module:input.rb",
+        "kind": "module",
+        "name": "input.rb",
+        "qualifiedName": "input.rb",
+        "span": {
+          "endCol": 1,
+          "endLine": 11,
+          "file": "input.rb",
+          "startCol": 1,
+          "startLine": 1
+        }
+      }
+    ],
+    "schemaVersion": 1
+  }
+}
