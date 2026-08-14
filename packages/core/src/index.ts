@@ -28,6 +28,11 @@ export type {
   ExtractedControlFlow,
 } from "./cfg/types.js";
 export { validateCfg } from "./cfg/validate.js";
+export {
+  type CSharpWasm,
+  createCSharpAdapter,
+  csharpQueries,
+} from "./csharp/adapter.js";
 export { builtinExporters, createDefaultExporterRegistry } from "./export/builtins.js";
 export { dotExporter } from "./export/dot.js";
 export { drawioExporter } from "./export/drawio.js";

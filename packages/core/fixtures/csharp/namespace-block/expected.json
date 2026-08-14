@@ -1,0 +1,80 @@
+{
+  "diagnostics": [],
+  "graph": {
+    "edges": [
+      {
+        "from": "class:input.cs#Shop.Api.Controller",
+        "id": "contains:class:input.cs#Shop.Api.Controller->method:input.cs#Shop.Api.Controller.Index",
+        "kind": "contains",
+        "to": "method:input.cs#Shop.Api.Controller.Index"
+      },
+      {
+        "from": "module:input.cs",
+        "id": "contains:module:input.cs->namespace:input.cs#Shop.Api",
+        "kind": "contains",
+        "to": "namespace:input.cs#Shop.Api"
+      },
+      {
+        "from": "namespace:input.cs#Shop.Api",
+        "id": "contains:namespace:input.cs#Shop.Api->class:input.cs#Shop.Api.Controller",
+        "kind": "contains",
+        "to": "class:input.cs#Shop.Api.Controller"
+      }
+    ],
+    "nodes": [
+      {
+        "id": "class:input.cs#Shop.Api.Controller",
+        "kind": "class",
+        "name": "Controller",
+        "qualifiedName": "Shop.Api.Controller",
+        "span": {
+          "endCol": 6,
+          "endLine": 8,
+          "file": "input.cs",
+          "startCol": 5,
+          "startLine": 3
+        }
+      },
+      {
+        "id": "method:input.cs#Shop.Api.Controller.Index",
+        "kind": "method",
+        "name": "Index",
+        "qualifiedName": "Shop.Api.Controller.Index",
+        "span": {
+          "endCol": 10,
+          "endLine": 7,
+          "file": "input.cs",
+          "startCol": 9,
+          "startLine": 5
+        }
+      },
+      {
+        "id": "module:input.cs",
+        "kind": "module",
+        "name": "input.cs",
+        "qualifiedName": "input.cs",
+        "span": {
+          "endCol": 1,
+          "endLine": 10,
+          "file": "input.cs",
+          "startCol": 1,
+          "startLine": 1
+        }
+      },
+      {
+        "id": "namespace:input.cs#Shop.Api",
+        "kind": "namespace",
+        "name": "Shop.Api",
+        "qualifiedName": "Shop.Api",
+        "span": {
+          "endCol": 2,
+          "endLine": 9,
+          "file": "input.cs",
+          "startCol": 1,
+          "startLine": 1
+        }
+      }
+    ],
+    "schemaVersion": 1
+  }
+}

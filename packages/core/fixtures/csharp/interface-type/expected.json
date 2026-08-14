@@ -1,0 +1,61 @@
+{
+  "diagnostics": [],
+  "graph": {
+    "edges": [
+      {
+        "from": "class:input.cs#IHandler",
+        "id": "contains:class:input.cs#IHandler->method:input.cs#IHandler.Handle",
+        "kind": "contains",
+        "to": "method:input.cs#IHandler.Handle"
+      },
+      {
+        "from": "module:input.cs",
+        "id": "contains:module:input.cs->class:input.cs#IHandler",
+        "kind": "contains",
+        "to": "class:input.cs#IHandler"
+      }
+    ],
+    "nodes": [
+      {
+        "id": "class:input.cs#IHandler",
+        "kind": "class",
+        "name": "IHandler",
+        "qualifiedName": "IHandler",
+        "span": {
+          "endCol": 2,
+          "endLine": 4,
+          "file": "input.cs",
+          "startCol": 1,
+          "startLine": 1
+        }
+      },
+      {
+        "id": "method:input.cs#IHandler.Handle",
+        "kind": "method",
+        "name": "Handle",
+        "qualifiedName": "IHandler.Handle",
+        "span": {
+          "endCol": 30,
+          "endLine": 3,
+          "file": "input.cs",
+          "startCol": 5,
+          "startLine": 3
+        }
+      },
+      {
+        "id": "module:input.cs",
+        "kind": "module",
+        "name": "input.cs",
+        "qualifiedName": "input.cs",
+        "span": {
+          "endCol": 1,
+          "endLine": 5,
+          "file": "input.cs",
+          "startCol": 1,
+          "startLine": 1
+        }
+      }
+    ],
+    "schemaVersion": 1
+  }
+}

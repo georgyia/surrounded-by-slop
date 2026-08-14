@@ -1,0 +1,99 @@
+{
+  "diagnostics": [],
+  "graph": {
+    "edges": [
+      {
+        "from": "class:input.cs#Outer",
+        "id": "contains:class:input.cs#Outer->class:input.cs#Outer.Inner",
+        "kind": "contains",
+        "to": "class:input.cs#Outer.Inner"
+      },
+      {
+        "from": "class:input.cs#Outer",
+        "id": "contains:class:input.cs#Outer->method:input.cs#Outer.Run",
+        "kind": "contains",
+        "to": "method:input.cs#Outer.Run"
+      },
+      {
+        "from": "class:input.cs#Outer.Inner",
+        "id": "contains:class:input.cs#Outer.Inner->method:input.cs#Outer.Inner.Help",
+        "kind": "contains",
+        "to": "method:input.cs#Outer.Inner.Help"
+      },
+      {
+        "from": "module:input.cs",
+        "id": "contains:module:input.cs->class:input.cs#Outer",
+        "kind": "contains",
+        "to": "class:input.cs#Outer"
+      }
+    ],
+    "nodes": [
+      {
+        "id": "class:input.cs#Outer",
+        "kind": "class",
+        "name": "Outer",
+        "qualifiedName": "Outer",
+        "span": {
+          "endCol": 2,
+          "endLine": 13,
+          "file": "input.cs",
+          "startCol": 1,
+          "startLine": 1
+        }
+      },
+      {
+        "id": "class:input.cs#Outer.Inner",
+        "kind": "class",
+        "name": "Inner",
+        "qualifiedName": "Outer.Inner",
+        "span": {
+          "endCol": 6,
+          "endLine": 12,
+          "file": "input.cs",
+          "startCol": 5,
+          "startLine": 7
+        }
+      },
+      {
+        "id": "method:input.cs#Outer.Inner.Help",
+        "kind": "method",
+        "name": "Help",
+        "qualifiedName": "Outer.Inner.Help",
+        "span": {
+          "endCol": 10,
+          "endLine": 11,
+          "file": "input.cs",
+          "startCol": 9,
+          "startLine": 9
+        }
+      },
+      {
+        "id": "method:input.cs#Outer.Run",
+        "kind": "method",
+        "name": "Run",
+        "qualifiedName": "Outer.Run",
+        "span": {
+          "endCol": 6,
+          "endLine": 5,
+          "file": "input.cs",
+          "startCol": 5,
+          "startLine": 3
+        }
+      },
+      {
+        "id": "module:input.cs",
+        "kind": "module",
+        "name": "input.cs",
+        "qualifiedName": "input.cs",
+        "span": {
+          "endCol": 1,
+          "endLine": 14,
+          "file": "input.cs",
+          "startCol": 1,
+          "startLine": 1
+        }
+      }
+    ],
+    "schemaVersion": 1
+  }
+}

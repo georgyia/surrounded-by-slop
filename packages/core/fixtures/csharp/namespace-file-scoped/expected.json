@@ -1,0 +1,80 @@
+{
+  "diagnostics": [],
+  "graph": {
+    "edges": [
+      {
+        "from": "class:input.cs#Repository",
+        "id": "contains:class:input.cs#Repository->method:input.cs#Repository.ById",
+        "kind": "contains",
+        "to": "method:input.cs#Repository.ById"
+      },
+      {
+        "from": "module:input.cs",
+        "id": "contains:module:input.cs->class:input.cs#Repository",
+        "kind": "contains",
+        "to": "class:input.cs#Repository"
+      },
+      {
+        "from": "module:input.cs",
+        "id": "contains:module:input.cs->namespace:input.cs#Shop.Store",
+        "kind": "contains",
+        "to": "namespace:input.cs#Shop.Store"
+      }
+    ],
+    "nodes": [
+      {
+        "id": "class:input.cs#Repository",
+        "kind": "class",
+        "name": "Repository",
+        "qualifiedName": "Repository",
+        "span": {
+          "endCol": 2,
+          "endLine": 9,
+          "file": "input.cs",
+          "startCol": 1,
+          "startLine": 3
+        }
+      },
+      {
+        "id": "method:input.cs#Repository.ById",
+        "kind": "method",
+        "name": "ById",
+        "qualifiedName": "Repository.ById",
+        "span": {
+          "endCol": 6,
+          "endLine": 8,
+          "file": "input.cs",
+          "startCol": 5,
+          "startLine": 5
+        }
+      },
+      {
+        "id": "module:input.cs",
+        "kind": "module",
+        "name": "input.cs",
+        "qualifiedName": "input.cs",
+        "span": {
+          "endCol": 1,
+          "endLine": 10,
+          "file": "input.cs",
+          "startCol": 1,
+          "startLine": 1
+        }
+      },
+      {
+        "id": "namespace:input.cs#Shop.Store",
+        "kind": "namespace",
+        "name": "Shop.Store",
+        "qualifiedName": "Shop.Store",
+        "span": {
+          "endCol": 22,
+          "endLine": 1,
+          "file": "input.cs",
+          "startCol": 1,
+          "startLine": 1
+        }
+      }
+    ],
+    "schemaVersion": 1
+  }
+}

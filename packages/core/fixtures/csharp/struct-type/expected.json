@@ -1,0 +1,61 @@
+{
+  "diagnostics": [],
+  "graph": {
+    "edges": [
+      {
+        "from": "class:input.cs#Point",
+        "id": "contains:class:input.cs#Point->method:input.cs#Point.Sum",
+        "kind": "contains",
+        "to": "method:input.cs#Point.Sum"
+      },
+      {
+        "from": "module:input.cs",
+        "id": "contains:module:input.cs->class:input.cs#Point",
+        "kind": "contains",
+        "to": "class:input.cs#Point"
+      }
+    ],
+    "nodes": [
+      {
+        "id": "class:input.cs#Point",
+        "kind": "class",
+        "name": "Point",
+        "qualifiedName": "Point",
+        "span": {
+          "endCol": 2,
+          "endLine": 9,
+          "file": "input.cs",
+          "startCol": 1,
+          "startLine": 1
+        }
+      },
+      {
+        "id": "method:input.cs#Point.Sum",
+        "kind": "method",
+        "name": "Sum",
+        "qualifiedName": "Point.Sum",
+        "span": {
+          "endCol": 6,
+          "endLine": 8,
+          "file": "input.cs",
+          "startCol": 5,
+          "startLine": 5
+        }
+      },
+      {
+        "id": "module:input.cs",
+        "kind": "module",
+        "name": "input.cs",
+        "qualifiedName": "input.cs",
+        "span": {
+          "endCol": 1,
+          "endLine": 10,
+          "file": "input.cs",
+          "startCol": 1,
+          "startLine": 1
+        }
+      }
+    ],
+    "schemaVersion": 1
+  }
+}

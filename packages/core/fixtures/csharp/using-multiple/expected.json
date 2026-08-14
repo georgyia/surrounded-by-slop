@@ -1,0 +1,100 @@
+{
+  "diagnostics": [],
+  "graph": {
+    "edges": [
+      {
+        "from": "class:input.cs#Encoder",
+        "id": "contains:class:input.cs#Encoder->method:input.cs#Encoder.Encode",
+        "kind": "contains",
+        "to": "method:input.cs#Encoder.Encode"
+      },
+      {
+        "from": "module:input.cs",
+        "id": "contains:module:input.cs->class:input.cs#Encoder",
+        "kind": "contains",
+        "to": "class:input.cs#Encoder"
+      },
+      {
+        "from": "module:input.cs",
+        "id": "imports:module:input.cs->module:external:Newtonsoft.Json",
+        "kind": "imports",
+        "to": "module:external:Newtonsoft.Json"
+      },
+      {
+        "from": "module:input.cs",
+        "id": "imports:module:input.cs->module:external:System",
+        "kind": "imports",
+        "to": "module:external:System"
+      },
+      {
+        "from": "module:input.cs",
+        "id": "imports:module:input.cs->module:external:System.Text",
+        "kind": "imports",
+        "to": "module:external:System.Text"
+      }
+    ],
+    "nodes": [
+      {
+        "id": "class:input.cs#Encoder",
+        "kind": "class",
+        "name": "Encoder",
+        "qualifiedName": "Encoder",
+        "span": {
+          "endCol": 2,
+          "endLine": 11,
+          "file": "input.cs",
+          "startCol": 1,
+          "startLine": 5
+        }
+      },
+      {
+        "id": "method:input.cs#Encoder.Encode",
+        "kind": "method",
+        "name": "Encode",
+        "qualifiedName": "Encoder.Encode",
+        "span": {
+          "endCol": 6,
+          "endLine": 10,
+          "file": "input.cs",
+          "startCol": 5,
+          "startLine": 7
+        }
+      },
+      {
+        "external": true,
+        "id": "module:external:Newtonsoft.Json",
+        "kind": "module",
+        "name": "Newtonsoft.Json",
+        "qualifiedName": "Newtonsoft.Json"
+      },
+      {
+        "external": true,
+        "id": "module:external:System",
+        "kind": "module",
+        "name": "System",
+        "qualifiedName": "System"
+      },
+      {
+        "external": true,
+        "id": "module:external:System.Text",
+        "kind": "module",
+        "name": "System.Text",
+        "qualifiedName": "System.Text"
+      },
+      {
+        "id": "module:input.cs",
+        "kind": "module",
+        "name": "input.cs",
+        "qualifiedName": "input.cs",
+        "span": {
+          "endCol": 1,
+          "endLine": 12,
+          "file": "input.cs",
+          "startCol": 1,
+          "startLine": 1
+        }
+      }
+    ],
+    "schemaVersion": 1
+  }
+}

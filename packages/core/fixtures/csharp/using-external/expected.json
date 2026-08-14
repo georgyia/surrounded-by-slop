@@ -1,0 +1,87 @@
+{
+  "diagnostics": [],
+  "graph": {
+    "edges": [
+      {
+        "from": "class:input.cs#Bag",
+        "id": "contains:class:input.cs#Bag->method:input.cs#Bag.Items",
+        "kind": "contains",
+        "to": "method:input.cs#Bag.Items"
+      },
+      {
+        "from": "module:input.cs",
+        "id": "contains:module:input.cs->class:input.cs#Bag",
+        "kind": "contains",
+        "to": "class:input.cs#Bag"
+      },
+      {
+        "from": "module:input.cs",
+        "id": "imports:module:input.cs->module:external:System",
+        "kind": "imports",
+        "to": "module:external:System"
+      },
+      {
+        "from": "module:input.cs",
+        "id": "imports:module:input.cs->module:external:System.Collections.Generic",
+        "kind": "imports",
+        "to": "module:external:System.Collections.Generic"
+      }
+    ],
+    "nodes": [
+      {
+        "id": "class:input.cs#Bag",
+        "kind": "class",
+        "name": "Bag",
+        "qualifiedName": "Bag",
+        "span": {
+          "endCol": 2,
+          "endLine": 10,
+          "file": "input.cs",
+          "startCol": 1,
+          "startLine": 4
+        }
+      },
+      {
+        "id": "method:input.cs#Bag.Items",
+        "kind": "method",
+        "name": "Items",
+        "qualifiedName": "Bag.Items",
+        "span": {
+          "endCol": 6,
+          "endLine": 9,
+          "file": "input.cs",
+          "startCol": 5,
+          "startLine": 6
+        }
+      },
+      {
+        "external": true,
+        "id": "module:external:System",
+        "kind": "module",
+        "name": "System",
+        "qualifiedName": "System"
+      },
+      {
+        "external": true,
+        "id": "module:external:System.Collections.Generic",
+        "kind": "module",
+        "name": "System.Collections.Generic",
+        "qualifiedName": "System.Collections.Generic"
+      },
+      {
+        "id": "module:input.cs",
+        "kind": "module",
+        "name": "input.cs",
+        "qualifiedName": "input.cs",
+        "span": {
+          "endCol": 1,
+          "endLine": 11,
+          "file": "input.cs",
+          "startCol": 1,
+          "startLine": 1
+        }
+      }
+    ],
+    "schemaVersion": 1
+  }
+}

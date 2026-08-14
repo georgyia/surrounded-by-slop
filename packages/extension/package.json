@@ -36,6 +36,7 @@
     "java",
     "rust",
     "ruby",
+    "csharp",
     "mcp",
     "ai agent"
   ],
@@ -109,14 +110,14 @@
       "editor/title": [
         {
           "command": "slop.visualizeFile",
-          "when": "resourceLangId =~ /typescript|javascript|python|go|java|rust|ruby/",
+          "when": "resourceLangId =~ /typescript|javascript|python|go|java|rust|ruby|csharp/",
           "group": "navigation"
         }
       ],
       "editor/context": [
         {
           "command": "slop.visualizeFile",
-          "when": "resourceLangId =~ /typescript|javascript|python|go|java|rust|ruby/",
+          "when": "resourceLangId =~ /typescript|javascript|python|go|java|rust|ruby|csharp/",
           "group": "navigation"
         },
         {
@@ -174,7 +175,7 @@
         "command": "slop.visualizeFile",
         "key": "ctrl+shift+v",
         "mac": "cmd+shift+v",
-        "when": "editorTextFocus && editorLangId =~ /typescript|javascript|python|go|java|rust|ruby/"
+        "when": "editorTextFocus && editorLangId =~ /typescript|javascript|python|go|java|rust|ruby|csharp/"
       }
     ],
     "configuration": {
@@ -186,7 +187,7 @@
             "type": "string"
           },
           "default": [
-            "**/*.{ts,tsx,mts,cts,js,jsx,mjs,cjs,py,go,java,rs,rb}"
+            "**/*.{ts,tsx,mts,cts,js,jsx,mjs,cjs,py,go,java,rs,rb,cs}"
           ],
           "description": "Glob patterns for files to include when visualizing the workspace."
         },

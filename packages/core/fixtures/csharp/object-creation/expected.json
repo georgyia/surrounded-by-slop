@@ -1,0 +1,80 @@
+{
+  "diagnostics": [],
+  "graph": {
+    "edges": [
+      {
+        "from": "class:input.cs#Factory",
+        "id": "contains:class:input.cs#Factory->method:input.cs#Factory.Make",
+        "kind": "contains",
+        "to": "method:input.cs#Factory.Make"
+      },
+      {
+        "from": "module:input.cs",
+        "id": "contains:module:input.cs->class:input.cs#Builder",
+        "kind": "contains",
+        "to": "class:input.cs#Builder"
+      },
+      {
+        "from": "module:input.cs",
+        "id": "contains:module:input.cs->class:input.cs#Factory",
+        "kind": "contains",
+        "to": "class:input.cs#Factory"
+      }
+    ],
+    "nodes": [
+      {
+        "id": "class:input.cs#Builder",
+        "kind": "class",
+        "name": "Builder",
+        "qualifiedName": "Builder",
+        "span": {
+          "endCol": 2,
+          "endLine": 11,
+          "file": "input.cs",
+          "startCol": 1,
+          "startLine": 9
+        }
+      },
+      {
+        "id": "class:input.cs#Factory",
+        "kind": "class",
+        "name": "Factory",
+        "qualifiedName": "Factory",
+        "span": {
+          "endCol": 2,
+          "endLine": 7,
+          "file": "input.cs",
+          "startCol": 1,
+          "startLine": 1
+        }
+      },
+      {
+        "id": "method:input.cs#Factory.Make",
+        "kind": "method",
+        "name": "Make",
+        "qualifiedName": "Factory.Make",
+        "span": {
+          "endCol": 6,
+          "endLine": 6,
+          "file": "input.cs",
+          "startCol": 5,
+          "startLine": 3
+        }
+      },
+      {
+        "id": "module:input.cs",
+        "kind": "module",
+        "name": "input.cs",
+        "qualifiedName": "input.cs",
+        "span": {
+          "endCol": 1,
+          "endLine": 12,
+          "file": "input.cs",
+          "startCol": 1,
+          "startLine": 1
+        }
+      }
+    ],
+    "schemaVersion": 1
+  }
+}

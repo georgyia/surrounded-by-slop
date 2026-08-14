@@ -1,0 +1,80 @@
+{
+  "diagnostics": [],
+  "graph": {
+    "edges": [
+      {
+        "from": "class:input.cs#Server",
+        "id": "contains:class:input.cs#Server->method:input.cs#Server.Server",
+        "kind": "contains",
+        "to": "method:input.cs#Server.Server"
+      },
+      {
+        "from": "class:input.cs#Server",
+        "id": "contains:class:input.cs#Server->method:input.cs#Server.Server~2",
+        "kind": "contains",
+        "to": "method:input.cs#Server.Server~2"
+      },
+      {
+        "from": "module:input.cs",
+        "id": "contains:module:input.cs->class:input.cs#Server",
+        "kind": "contains",
+        "to": "class:input.cs#Server"
+      }
+    ],
+    "nodes": [
+      {
+        "id": "class:input.cs#Server",
+        "kind": "class",
+        "name": "Server",
+        "qualifiedName": "Server",
+        "span": {
+          "endCol": 2,
+          "endLine": 13,
+          "file": "input.cs",
+          "startCol": 1,
+          "startLine": 1
+        }
+      },
+      {
+        "id": "method:input.cs#Server.Server",
+        "kind": "method",
+        "name": "Server",
+        "qualifiedName": "Server.Server",
+        "span": {
+          "endCol": 6,
+          "endLine": 8,
+          "file": "input.cs",
+          "startCol": 5,
+          "startLine": 5
+        }
+      },
+      {
+        "id": "method:input.cs#Server.Server~2",
+        "kind": "method",
+        "name": "Server",
+        "qualifiedName": "Server.Server",
+        "span": {
+          "endCol": 6,
+          "endLine": 12,
+          "file": "input.cs",
+          "startCol": 5,
+          "startLine": 10
+        }
+      },
+      {
+        "id": "module:input.cs",
+        "kind": "module",
+        "name": "input.cs",
+        "qualifiedName": "input.cs",
+        "span": {
+          "endCol": 1,
+          "endLine": 14,
+          "file": "input.cs",
+          "startCol": 1,
+          "startLine": 1
+        }
+      }
+    ],
+    "schemaVersion": 1
+  }
+}

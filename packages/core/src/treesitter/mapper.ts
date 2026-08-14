@@ -18,8 +18,10 @@ import type { LoadedLanguage } from "./runtime.js";
  * code. Capture names are the contract:
  *
  * - structure: `@class.def` + `@class.name`, `@function.def` + `@function.name`
- *   per match. Containment and method-ness are derived from span nesting, so
- *   queries stay flat and simple.
+ *   per match, and optionally `@namespace.def` + `@namespace.name` for a named
+ *   container that is not a type (C#'s `namespace`). Containment and
+ *   method-ness are derived from span nesting, so queries stay flat and simple
+ *   — a function inside a class is a method, one inside a namespace is not.
  * - imports:   `@import.module` on the node holding the imported module path.
  * - calls:     `@call.name` on the callee's name node. Calls resolve
  *   heuristically to same-module declarations by name and are marked
@@ -76,8 +78,19 @@ function contains(outer: SourceSpan, inner: SourceSpan): boolean {
   );
 }
 
+/**
+ * What a `@<kind>.def` capture may declare. `namespace` exists because some
+ * languages (C#) have a named container that is not a type — a function inside
+ * one is still a function, not a method.
+ */
+type DeclarationKind = "class" | "function" | "namespace";
+
+function isDeclarationKind(kind: string | undefined): kind is DeclarationKind {
+  return kind === "class" || kind === "function" || kind === "namespace";
+}
+
 interface Declaration {
-  kind: "class" | "function" | "method";
+  kind: "class" | "function" | "method" | "namespace";
   name: string;
   qualifiedName: string;
   id: string;
@@ -128,12 +141,12 @@ export function analyzeWithTreeSitter(options: TreeSitterAnalysisOptions): Analy
     });
 
     // --- structure: defs, then containment by span nesting ---
-    const raw: { kind: "class" | "function"; def: Node; name: Node }[] = [];
+    const raw: { kind: DeclarationKind; def: Node; name: Node }[] = [];
     for (const match of language.query(queries.structure).matches(tree.rootNode)) {
       const def = match.captures.find((capture) => capture.name.endsWith(".def"))?.node;
       const name = match.captures.find((capture) => capture.name.endsWith(".name"))?.node;
       const kind = match.captures[0]?.name.split(".")[0];
-      if (def === undefined || name === undefined || (kind !== "class" && kind !== "function")) {
+      if (def === undefined || name === undefined || !isDeclarationKind(kind)) {
         continue;
       }
       raw.push({ kind, def, name });
@@ -227,7 +240,12 @@ export function analyzeWithTreeSitter(options: TreeSitterAnalysisOptions): Analy
     // --- calls: heuristic, same module, by name ---
     const byName = new Map<string, Declaration>();
     for (const declaration of declarations) {
-      if (declaration.kind !== "class" && !byName.has(declaration.name)) {
+      // Only callables are call targets — a type or a namespace never is.
+      if (
+        declaration.kind !== "class" &&
+        declaration.kind !== "namespace" &&
+        !byName.has(declaration.name)
+      ) {
         byName.set(declaration.name, declaration);
       }
     }

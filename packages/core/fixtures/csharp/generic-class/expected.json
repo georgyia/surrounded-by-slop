@@ -1,0 +1,61 @@
+{
+  "diagnostics": [],
+  "graph": {
+    "edges": [
+      {
+        "from": "class:input.cs#Box",
+        "id": "contains:class:input.cs#Box->method:input.cs#Box.Get",
+        "kind": "contains",
+        "to": "method:input.cs#Box.Get"
+      },
+      {
+        "from": "module:input.cs",
+        "id": "contains:module:input.cs->class:input.cs#Box",
+        "kind": "contains",
+        "to": "class:input.cs#Box"
+      }
+    ],
+    "nodes": [
+      {
+        "id": "class:input.cs#Box",
+        "kind": "class",
+        "name": "Box",
+        "qualifiedName": "Box",
+        "span": {
+          "endCol": 2,
+          "endLine": 9,
+          "file": "input.cs",
+          "startCol": 1,
+          "startLine": 1
+        }
+      },
+      {
+        "id": "method:input.cs#Box.Get",
+        "kind": "method",
+        "name": "Get",
+        "qualifiedName": "Box.Get",
+        "span": {
+          "endCol": 6,
+          "endLine": 8,
+          "file": "input.cs",
+          "startCol": 5,
+          "startLine": 5
+        }
+      },
+      {
+        "id": "module:input.cs",
+        "kind": "module",
+        "name": "input.cs",
+        "qualifiedName": "input.cs",
+        "span": {
+          "endCol": 1,
+          "endLine": 10,
+          "file": "input.cs",
+          "startCol": 1,
+          "startLine": 1
+        }
+      }
+    ],
+    "schemaVersion": 1
+  }
+}
