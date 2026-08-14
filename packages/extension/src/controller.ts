@@ -162,6 +162,16 @@ function braceGlob(globs: readonly string[]): string | undefined {
   return globs.length === 1 ? first : `{${globs.join(",")}}`;
 }
 
+/** Offered on the readability-fold notice; the answer lives in global state. */
+const DISMISS = "Don't show again";
+/**
+ * Global rather than per-workspace (#106): "I know what the folded view is" is
+ * a fact about the reader, not about the repository. Someone who works in one
+ * repo above the threshold usually works in several, and re-learning the same
+ * toast per checkout is exactly the noise being fixed.
+ */
+export const FOLD_NOTICE_DISMISSED = "slop.foldNotice.dismissed";
+
 /**
  * Drives visualization: the command, and the live behaviors around it — refresh
  * on save (debounced, viewport preserved by the view), Follow to track the
@@ -187,6 +197,8 @@ export class VisualizationController implements vscode.Disposable {
   constructor(
     private readonly view: DiagramView,
     private readonly logger: Logger,
+    /** Extension global state — remembers dismissed notices across sessions. */
+    private readonly state: vscode.Memento,
   ) {
     this.disposables = [
       vscode.workspace.onDidSaveTextDocument((document) => this.onSave(document)),
@@ -196,6 +208,38 @@ export class VisualizationController implements vscode.Disposable {
       this.view.onIsolate((nodeId) => void this.isolate(nodeId)),
       this.view.onResetView(() => this.resetIsolate()),
     ];
+  }
+
+  /**
+   * The readability-fold notice, shown until the reader says they have it.
+   * Suppression is recorded rather than the message being dropped, so the log
+   * still explains why a map opened folded (#106).
+   */
+  private showFoldNotice(moduleCount: number): void {
+    if (this.state.get(FOLD_NOTICE_DISMISSED, false)) {
+      return;
+    }
+    void vscode.window
+      .showInformationMessage(
+        `Surrounded by Slop: opened ${moduleCount} modules as folders. Expand one or use Show modules to drill in — slop.foldThreshold controls this.`,
+        DISMISS,
+      )
+      .then((choice) => {
+        if (choice === DISMISS) {
+          void this.state.update(FOLD_NOTICE_DISMISSED, true);
+          this.logger.info("Fold notice dismissed; folding still follows slop.foldThreshold.");
+        }
+      });
+  }
+
+  /**
+   * `Slop: Reset Suppressed Notices` — bring back everything dismissed with
+   * "Don't show again". Without it, a dismissal is a one-way door.
+   */
+  async resetNotices(): Promise<void> {
+    await this.state.update(FOLD_NOTICE_DISMISSED, undefined);
+    this.logger.info("Suppressed notices reset.");
+    void vscode.window.showInformationMessage("Surrounded by Slop: suppressed notices are back.");
   }
 
   /** `Slop: Visualize File` — visualize the active editor. */
@@ -502,9 +546,12 @@ export class VisualizationController implements vscode.Disposable {
               : `Surrounded by Slop: ${modules.nodes.length} modules is a lot, but this workspace has no useful folder grouping — showing modules.`,
           );
         } else if (this.workspaceView === "folders") {
-          void vscode.window.showInformationMessage(
-            `Surrounded by Slop: opened ${modules.nodes.length} modules as folders. Expand one or use Show modules to drill in — slop.foldThreshold controls this.`,
-          );
+          // Right the first time, noise by the fifth: the folded view is
+          // already discoverable from the toolbar's modules/folders toggle, so
+          // the notice can go quiet while the behaviour stays on (#106). The
+          // hard-guardrail message above stays unconditional — it fires rarely
+          // and explains a much bigger surprise.
+          this.showFoldNotice(modules.nodes.length);
         }
         return;
       }

@@ -247,6 +247,7 @@ Or open the repo in VS Code and hit **F5**.
 | **Slop: Export Diagram As…** | Save as `.drawio`, `.mmd`, `.svg` or `.json` |
 | **Slop: Copy Diagram as Mermaid** | Mermaid on the clipboard, ready for a PR |
 | **Slop: Pin Diagram** / **Follow Active Editor** | Freeze a diagram, or track whatever file you open |
+| **Slop: Reset Suppressed Notices** | Bring back anything you dismissed with "Don't show again" |
 
 Click any node to jump to its source; the diagram refreshes when you save the
 file. On workspace maps, **Group folders / Show modules** switches level without

@@ -16,6 +16,7 @@ command below from the Command Palette (`⌘⇧P` / `Ctrl+Shift+P`, prefix
 | **Slop: Follow Active Editor** | Re-visualize whenever you switch editors. |
 | **Slop: Export Diagram As…** | Save the current diagram as `.drawio`, `.mmd` (Mermaid), `.svg`, or `.json`. Flow charts export their CFG faithfully in Mermaid/JSON. |
 | **Slop: Copy Diagram as Mermaid** | Same as the `.mmd` export, straight to the clipboard. |
+| **Slop: Reset Suppressed Notices** | Bring back any notice you dismissed with "Don't show again". |
 
 ## Inside the diagram
 
