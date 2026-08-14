@@ -1,0 +1,120 @@
+{
+  "diagnostics": [],
+  "graph": {
+    "edges": [
+      {
+        "confidence": "low",
+        "from": "method:input.cs#Pipeline.Second",
+        "id": "calls:method:input.cs#Pipeline.Second->method:input.cs#Pipeline.First",
+        "kind": "calls",
+        "to": "method:input.cs#Pipeline.First"
+      },
+      {
+        "confidence": "low",
+        "from": "method:input.cs#Pipeline.Third",
+        "id": "calls:method:input.cs#Pipeline.Third->method:input.cs#Pipeline.First",
+        "kind": "calls",
+        "to": "method:input.cs#Pipeline.First"
+      },
+      {
+        "confidence": "low",
+        "from": "method:input.cs#Pipeline.Third",
+        "id": "calls:method:input.cs#Pipeline.Third->method:input.cs#Pipeline.Second",
+        "kind": "calls",
+        "to": "method:input.cs#Pipeline.Second"
+      },
+      {
+        "from": "class:input.cs#Pipeline",
+        "id": "contains:class:input.cs#Pipeline->method:input.cs#Pipeline.First",
+        "kind": "contains",
+        "to": "method:input.cs#Pipeline.First"
+      },
+      {
+        "from": "class:input.cs#Pipeline",
+        "id": "contains:class:input.cs#Pipeline->method:input.cs#Pipeline.Second",
+        "kind": "contains",
+        "to": "method:input.cs#Pipeline.Second"
+      },
+      {
+        "from": "class:input.cs#Pipeline",
+        "id": "contains:class:input.cs#Pipeline->method:input.cs#Pipeline.Third",
+        "kind": "contains",
+        "to": "method:input.cs#Pipeline.Third"
+      },
+      {
+        "from": "module:input.cs",
+        "id": "contains:module:input.cs->class:input.cs#Pipeline",
+        "kind": "contains",
+        "to": "class:input.cs#Pipeline"
+      }
+    ],
+    "nodes": [
+      {
+        "id": "class:input.cs#Pipeline",
+        "kind": "class",
+        "name": "Pipeline",
+        "qualifiedName": "Pipeline",
+        "span": {
+          "endCol": 2,
+          "endLine": 17,
+          "file": "input.cs",
+          "startCol": 1,
+          "startLine": 1
+        }
+      },
+      {
+        "id": "method:input.cs#Pipeline.First",
+        "kind": "method",
+        "name": "First",
+        "qualifiedName": "Pipeline.First",
+        "span": {
+          "endCol": 6,
+          "endLine": 5,
+          "file": "input.cs",
+          "startCol": 5,
+          "startLine": 3
+        }
+      },
+      {
+        "id": "method:input.cs#Pipeline.Second",
+        "kind": "method",
+        "name": "Second",
+        "qualifiedName": "Pipeline.Second",
+        "span": {
+          "endCol": 6,
+          "endLine": 10,
+          "file": "input.cs",
+          "startCol": 5,
+          "startLine": 7
+        }
+      },
+      {
+        "id": "method:input.cs#Pipeline.Third",
+        "kind": "method",
+        "name": "Third",
+        "qualifiedName": "Pipeline.Third",
+        "span": {
+          "endCol": 6,
+          "endLine": 16,
+          "file": "input.cs",
+          "startCol": 5,
+          "startLine": 12
+        }
+      },
+      {
+        "id": "module:input.cs",
+        "kind": "module",
+        "name": "input.cs",
+        "qualifiedName": "input.cs",
+        "span": {
+          "endCol": 1,
+          "endLine": 18,
+          "file": "input.cs",
+          "startCol": 1,
+          "startLine": 1
+        }
+      }
+    ],
+    "schemaVersion": 1
+  }
+}

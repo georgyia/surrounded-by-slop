@@ -1,0 +1,42 @@
+{
+  "diagnostics": [],
+  "graph": {
+    "edges": [
+      {
+        "from": "module:input.cs",
+        "id": "contains:module:input.cs->class:input.cs#Empty",
+        "kind": "contains",
+        "to": "class:input.cs#Empty"
+      }
+    ],
+    "nodes": [
+      {
+        "id": "class:input.cs#Empty",
+        "kind": "class",
+        "name": "Empty",
+        "qualifiedName": "Empty",
+        "span": {
+          "endCol": 2,
+          "endLine": 3,
+          "file": "input.cs",
+          "startCol": 1,
+          "startLine": 1
+        }
+      },
+      {
+        "id": "module:input.cs",
+        "kind": "module",
+        "name": "input.cs",
+        "qualifiedName": "input.cs",
+        "span": {
+          "endCol": 1,
+          "endLine": 4,
+          "file": "input.cs",
+          "startCol": 1,
+          "startLine": 1
+        }
+      }
+    ],
+    "schemaVersion": 1
+  }
+}

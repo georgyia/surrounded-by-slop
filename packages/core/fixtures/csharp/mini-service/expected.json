@@ -1,0 +1,208 @@
+{
+  "diagnostics": [],
+  "graph": {
+    "edges": [
+      {
+        "confidence": "low",
+        "from": "method:Api/OrdersController.cs#OrdersController.Find",
+        "id": "calls:method:Api/OrdersController.cs#OrdersController.Find->method:Api/OrdersController.cs#OrdersController.Lookup",
+        "kind": "calls",
+        "to": "method:Api/OrdersController.cs#OrdersController.Lookup"
+      },
+      {
+        "from": "class:Api/OrdersController.cs#OrdersController",
+        "id": "contains:class:Api/OrdersController.cs#OrdersController->method:Api/OrdersController.cs#OrdersController.Find",
+        "kind": "contains",
+        "to": "method:Api/OrdersController.cs#OrdersController.Find"
+      },
+      {
+        "from": "class:Api/OrdersController.cs#OrdersController",
+        "id": "contains:class:Api/OrdersController.cs#OrdersController->method:Api/OrdersController.cs#OrdersController.Lookup",
+        "kind": "contains",
+        "to": "method:Api/OrdersController.cs#OrdersController.Lookup"
+      },
+      {
+        "from": "class:Api/OrdersController.cs#OrdersController",
+        "id": "contains:class:Api/OrdersController.cs#OrdersController->method:Api/OrdersController.cs#OrdersController.OrdersController",
+        "kind": "contains",
+        "to": "method:Api/OrdersController.cs#OrdersController.OrdersController"
+      },
+      {
+        "from": "class:Store/OrderRepository.cs#OrderRepository",
+        "id": "contains:class:Store/OrderRepository.cs#OrderRepository->method:Store/OrderRepository.cs#OrderRepository.ById",
+        "kind": "contains",
+        "to": "method:Store/OrderRepository.cs#OrderRepository.ById"
+      },
+      {
+        "from": "module:Api/OrdersController.cs",
+        "id": "contains:module:Api/OrdersController.cs->class:Api/OrdersController.cs#OrdersController",
+        "kind": "contains",
+        "to": "class:Api/OrdersController.cs#OrdersController"
+      },
+      {
+        "from": "module:Api/OrdersController.cs",
+        "id": "contains:module:Api/OrdersController.cs->namespace:Api/OrdersController.cs#Shop.Api",
+        "kind": "contains",
+        "to": "namespace:Api/OrdersController.cs#Shop.Api"
+      },
+      {
+        "from": "module:Store/OrderRepository.cs",
+        "id": "contains:module:Store/OrderRepository.cs->class:Store/OrderRepository.cs#OrderRepository",
+        "kind": "contains",
+        "to": "class:Store/OrderRepository.cs#OrderRepository"
+      },
+      {
+        "from": "module:Store/OrderRepository.cs",
+        "id": "contains:module:Store/OrderRepository.cs->namespace:Store/OrderRepository.cs#Shop.Store",
+        "kind": "contains",
+        "to": "namespace:Store/OrderRepository.cs#Shop.Store"
+      },
+      {
+        "from": "module:Api/OrdersController.cs",
+        "id": "imports:module:Api/OrdersController.cs->module:external:Shop.Store",
+        "kind": "imports",
+        "to": "module:external:Shop.Store"
+      }
+    ],
+    "nodes": [
+      {
+        "id": "class:Api/OrdersController.cs#OrdersController",
+        "kind": "class",
+        "name": "OrdersController",
+        "qualifiedName": "OrdersController",
+        "span": {
+          "endCol": 2,
+          "endLine": 23,
+          "file": "Api/OrdersController.cs",
+          "startCol": 1,
+          "startLine": 5
+        }
+      },
+      {
+        "id": "class:Store/OrderRepository.cs#OrderRepository",
+        "kind": "class",
+        "name": "OrderRepository",
+        "qualifiedName": "OrderRepository",
+        "span": {
+          "endCol": 2,
+          "endLine": 9,
+          "file": "Store/OrderRepository.cs",
+          "startCol": 1,
+          "startLine": 3
+        }
+      },
+      {
+        "id": "method:Api/OrdersController.cs#OrdersController.Find",
+        "kind": "method",
+        "name": "Find",
+        "qualifiedName": "OrdersController.Find",
+        "span": {
+          "endCol": 6,
+          "endLine": 17,
+          "file": "Api/OrdersController.cs",
+          "startCol": 5,
+          "startLine": 14
+        }
+      },
+      {
+        "id": "method:Api/OrdersController.cs#OrdersController.Lookup",
+        "kind": "method",
+        "name": "Lookup",
+        "qualifiedName": "OrdersController.Lookup",
+        "span": {
+          "endCol": 6,
+          "endLine": 22,
+          "file": "Api/OrdersController.cs",
+          "startCol": 5,
+          "startLine": 19
+        }
+      },
+      {
+        "id": "method:Api/OrdersController.cs#OrdersController.OrdersController",
+        "kind": "method",
+        "name": "OrdersController",
+        "qualifiedName": "OrdersController.OrdersController",
+        "span": {
+          "endCol": 6,
+          "endLine": 12,
+          "file": "Api/OrdersController.cs",
+          "startCol": 5,
+          "startLine": 9
+        }
+      },
+      {
+        "id": "method:Store/OrderRepository.cs#OrderRepository.ById",
+        "kind": "method",
+        "name": "ById",
+        "qualifiedName": "OrderRepository.ById",
+        "span": {
+          "endCol": 6,
+          "endLine": 8,
+          "file": "Store/OrderRepository.cs",
+          "startCol": 5,
+          "startLine": 5
+        }
+      },
+      {
+        "id": "module:Api/OrdersController.cs",
+        "kind": "module",
+        "name": "OrdersController.cs",
+        "qualifiedName": "Api/OrdersController.cs",
+        "span": {
+          "endCol": 1,
+          "endLine": 24,
+          "file": "Api/OrdersController.cs",
+          "startCol": 1,
+          "startLine": 1
+        }
+      },
+      {
+        "id": "module:Store/OrderRepository.cs",
+        "kind": "module",
+        "name": "OrderRepository.cs",
+        "qualifiedName": "Store/OrderRepository.cs",
+        "span": {
+          "endCol": 1,
+          "endLine": 10,
+          "file": "Store/OrderRepository.cs",
+          "startCol": 1,
+          "startLine": 1
+        }
+      },
+      {
+        "external": true,
+        "id": "module:external:Shop.Store",
+        "kind": "module",
+        "name": "Shop.Store",
+        "qualifiedName": "Shop.Store"
+      },
+      {
+        "id": "namespace:Api/OrdersController.cs#Shop.Api",
+        "kind": "namespace",
+        "name": "Shop.Api",
+        "qualifiedName": "Shop.Api",
+        "span": {
+          "endCol": 20,
+          "endLine": 3,
+          "file": "Api/OrdersController.cs",
+          "startCol": 1,
+          "startLine": 3
+        }
+      },
+      {
+        "id": "namespace:Store/OrderRepository.cs#Shop.Store",
+        "kind": "namespace",
+        "name": "Shop.Store",
+        "qualifiedName": "Shop.Store",
+        "span": {
+          "endCol": 22,
+          "endLine": 1,
+          "file": "Store/OrderRepository.cs",
+          "startCol": 1,
+          "startLine": 1
+        }
+      }
+    ],
+    "schemaVersion": 1
+  }
+}

@@ -1,0 +1,61 @@
+{
+  "diagnostics": [],
+  "graph": {
+    "edges": [
+      {
+        "from": "class:input.cs#Person",
+        "id": "contains:class:input.cs#Person->method:input.cs#Person.Greet",
+        "kind": "contains",
+        "to": "method:input.cs#Person.Greet"
+      },
+      {
+        "from": "module:input.cs",
+        "id": "contains:module:input.cs->class:input.cs#Person",
+        "kind": "contains",
+        "to": "class:input.cs#Person"
+      }
+    ],
+    "nodes": [
+      {
+        "id": "class:input.cs#Person",
+        "kind": "class",
+        "name": "Person",
+        "qualifiedName": "Person",
+        "span": {
+          "endCol": 2,
+          "endLine": 7,
+          "file": "input.cs",
+          "startCol": 1,
+          "startLine": 1
+        }
+      },
+      {
+        "id": "method:input.cs#Person.Greet",
+        "kind": "method",
+        "name": "Greet",
+        "qualifiedName": "Person.Greet",
+        "span": {
+          "endCol": 6,
+          "endLine": 6,
+          "file": "input.cs",
+          "startCol": 5,
+          "startLine": 3
+        }
+      },
+      {
+        "id": "module:input.cs",
+        "kind": "module",
+        "name": "input.cs",
+        "qualifiedName": "input.cs",
+        "span": {
+          "endCol": 1,
+          "endLine": 8,
+          "file": "input.cs",
+          "startCol": 1,
+          "startLine": 1
+        }
+      }
+    ],
+    "schemaVersion": 1
+  }
+}

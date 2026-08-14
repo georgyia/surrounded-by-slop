@@ -95,6 +95,28 @@ describe("analyzeWithTreeSitter", () => {
       expect(result.graph.nodes.map((node) => node.kind)).toEqual(["module"]);
     });
 
+    it("supports a namespace container, which does not make its functions methods", () => {
+      // Python has no `namespace`, so the Python grammar stands in for one:
+      // what is under test is the mapper's kind handling, not the language.
+      const result = analyze([file("a.py", "class Outer:\n    def go(self):\n        pass\n")], {
+        ...noQueries,
+        structure: [
+          "(class_definition name: (identifier) @namespace.name) @namespace.def",
+          "(function_definition name: (identifier) @function.name) @function.def",
+        ].join("\n"),
+      });
+      const kinds = result.graph.nodes.map((node) => node.kind).sort();
+      expect(kinds).toEqual(["function", "module", "namespace"]);
+      // Nested inside the namespace, but a function — only a class makes methods.
+      const fn = result.graph.nodes.find((node) => node.kind === "function");
+      expect(fn?.qualifiedName).toBe("Outer.go");
+      expect(
+        result.graph.edges.some(
+          (edge) => edge.kind === "contains" && edge.from.startsWith("namespace:"),
+        ),
+      ).toBe(true);
+    });
+
     it("gives two same-named declarations distinct ids", () => {
       // Overloads (Java, C#) and plain re-definitions (Python) put two
       // declarations under one qualified name. Minting the same id twice would

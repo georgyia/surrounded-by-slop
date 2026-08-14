@@ -1,0 +1,61 @@
+{
+  "diagnostics": [],
+  "graph": {
+    "edges": [
+      {
+        "from": "class:input.cs#Fib",
+        "id": "contains:class:input.cs#Fib->method:input.cs#Fib.At",
+        "kind": "contains",
+        "to": "method:input.cs#Fib.At"
+      },
+      {
+        "from": "module:input.cs",
+        "id": "contains:module:input.cs->class:input.cs#Fib",
+        "kind": "contains",
+        "to": "class:input.cs#Fib"
+      }
+    ],
+    "nodes": [
+      {
+        "id": "class:input.cs#Fib",
+        "kind": "class",
+        "name": "Fib",
+        "qualifiedName": "Fib",
+        "span": {
+          "endCol": 2,
+          "endLine": 11,
+          "file": "input.cs",
+          "startCol": 1,
+          "startLine": 1
+        }
+      },
+      {
+        "id": "method:input.cs#Fib.At",
+        "kind": "method",
+        "name": "At",
+        "qualifiedName": "Fib.At",
+        "span": {
+          "endCol": 6,
+          "endLine": 10,
+          "file": "input.cs",
+          "startCol": 5,
+          "startLine": 3
+        }
+      },
+      {
+        "id": "module:input.cs",
+        "kind": "module",
+        "name": "input.cs",
+        "qualifiedName": "input.cs",
+        "span": {
+          "endCol": 1,
+          "endLine": 12,
+          "file": "input.cs",
+          "startCol": 1,
+          "startLine": 1
+        }
+      }
+    ],
+    "schemaVersion": 1
+  }
+}
