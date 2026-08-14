@@ -57,6 +57,20 @@ describe("resolveRustModule", () => {
   it("returns nothing for an empty path", () => {
     expect(resolveRustModule(project("src/lib.rs"), "src/lib.rs", "")).toBeUndefined();
   });
+
+  it("falls back to a root-relative path when the crate has no lib.rs or main.rs", () => {
+    // A crate root is how `crate::` is anchored; without one (a fixture, a
+    // snippet) the path is tried from the top rather than guessed at.
+    const files = project("store.rs");
+    expect(resolveRustModule(files, "other.rs", "crate::store")).toBe("store.rs");
+  });
+
+  it("resolves a multi-segment path through nested module directories", () => {
+    const files = project("src/lib.rs", "src/api/routes/health.rs");
+    expect(resolveRustModule(files, "src/lib.rs", "crate::api::routes::health::check")).toBe(
+      "src/api/routes/health.rs",
+    );
+  });
 });
 
 describe("rustQueries", () => {

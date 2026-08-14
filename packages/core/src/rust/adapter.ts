@@ -96,10 +96,8 @@ export function resolveRustModule(
     base = ownDir;
   }
 
+  // `take` is never 0 below, so `parts` always names at least one segment.
   const candidate = (parts: readonly string[]): string | undefined => {
-    if (parts.length === 0) {
-      return undefined;
-    }
     const joined = parts.join("/");
     return [`${joined}.rs`, `${joined}/mod.rs`].find((path) => projectFiles.has(path));
   };
