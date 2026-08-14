@@ -6,6 +6,7 @@ describe("builtinExporters", () => {
     expect(builtinExporters.map((exporter) => exporter.id)).toEqual([
       "drawio",
       "mermaid",
+      "dot",
       "svg",
       "json",
     ]);
