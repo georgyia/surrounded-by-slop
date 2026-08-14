@@ -1,0 +1,55 @@
+{
+  "diagnostics": [],
+  "graph": {
+    "edges": [
+      {
+        "from": "module:input.go",
+        "id": "contains:module:input.go->function:input.go#show",
+        "kind": "contains",
+        "to": "function:input.go#show"
+      },
+      {
+        "from": "module:input.go",
+        "id": "imports:module:input.go->module:external:fmt",
+        "kind": "imports",
+        "to": "module:external:fmt"
+      }
+    ],
+    "nodes": [
+      {
+        "id": "function:input.go#show",
+        "kind": "function",
+        "name": "show",
+        "qualifiedName": "show",
+        "span": {
+          "endCol": 2,
+          "endLine": 7,
+          "file": "input.go",
+          "startCol": 1,
+          "startLine": 5
+        }
+      },
+      {
+        "external": true,
+        "id": "module:external:fmt",
+        "kind": "module",
+        "name": "fmt",
+        "qualifiedName": "fmt"
+      },
+      {
+        "id": "module:input.go",
+        "kind": "module",
+        "name": "input.go",
+        "qualifiedName": "input.go",
+        "span": {
+          "endCol": 1,
+          "endLine": 8,
+          "file": "input.go",
+          "startCol": 1,
+          "startLine": 1
+        }
+      }
+    ],
+    "schemaVersion": 1
+  }
+}

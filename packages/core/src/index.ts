@@ -41,6 +41,7 @@ export {
 export { jsonExporter } from "./export/json.js";
 export { mermaidExporter } from "./export/mermaid.js";
 export { svgExporter } from "./export/svg.js";
+export { createGoAdapter, type GoWasm, goQueries, normalizeGoImport } from "./go/adapter.js";
 export { createIncrementalAnalyzer, type IncrementalAnalyzer } from "./incremental.js";
 export {
   buildGraph,

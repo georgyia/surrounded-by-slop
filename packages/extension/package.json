@@ -32,6 +32,7 @@
     "mermaid",
     "typescript",
     "python",
+    "go",
     "mcp",
     "ai agent"
   ],
@@ -105,14 +106,14 @@
       "editor/title": [
         {
           "command": "slop.visualizeFile",
-          "when": "resourceLangId =~ /typescript|javascript|python/",
+          "when": "resourceLangId =~ /typescript|javascript|python|go/",
           "group": "navigation"
         }
       ],
       "editor/context": [
         {
           "command": "slop.visualizeFile",
-          "when": "resourceLangId =~ /typescript|javascript|python/",
+          "when": "resourceLangId =~ /typescript|javascript|python|go/",
           "group": "navigation"
         },
         {
@@ -170,7 +171,7 @@
         "command": "slop.visualizeFile",
         "key": "ctrl+shift+v",
         "mac": "cmd+shift+v",
-        "when": "editorTextFocus && editorLangId =~ /typescript|javascript|python/"
+        "when": "editorTextFocus && editorLangId =~ /typescript|javascript|python|go/"
       }
     ],
     "configuration": {
@@ -182,7 +183,7 @@
             "type": "string"
           },
           "default": [
-            "**/*.{ts,tsx,mts,cts,js,jsx,mjs,cjs,py}"
+            "**/*.{ts,tsx,mts,cts,js,jsx,mjs,cjs,py,go}"
           ],
           "description": "Glob patterns for files to include when visualizing the workspace."
         },

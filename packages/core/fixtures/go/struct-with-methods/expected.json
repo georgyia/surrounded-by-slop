@@ -1,0 +1,87 @@
+{
+  "diagnostics": [],
+  "graph": {
+    "edges": [
+      {
+        "confidence": "low",
+        "from": "function:input.go#Describe",
+        "id": "calls:function:input.go#Describe->function:input.go#Name",
+        "kind": "calls",
+        "to": "function:input.go#Name"
+      },
+      {
+        "from": "module:input.go",
+        "id": "contains:module:input.go->class:input.go#Server",
+        "kind": "contains",
+        "to": "class:input.go#Server"
+      },
+      {
+        "from": "module:input.go",
+        "id": "contains:module:input.go->function:input.go#Describe",
+        "kind": "contains",
+        "to": "function:input.go#Describe"
+      },
+      {
+        "from": "module:input.go",
+        "id": "contains:module:input.go->function:input.go#Name",
+        "kind": "contains",
+        "to": "function:input.go#Name"
+      }
+    ],
+    "nodes": [
+      {
+        "id": "class:input.go#Server",
+        "kind": "class",
+        "name": "Server",
+        "qualifiedName": "Server",
+        "span": {
+          "endCol": 2,
+          "endLine": 5,
+          "file": "input.go",
+          "startCol": 1,
+          "startLine": 3
+        }
+      },
+      {
+        "id": "function:input.go#Describe",
+        "kind": "function",
+        "name": "Describe",
+        "qualifiedName": "Describe",
+        "span": {
+          "endCol": 2,
+          "endLine": 13,
+          "file": "input.go",
+          "startCol": 1,
+          "startLine": 11
+        }
+      },
+      {
+        "id": "function:input.go#Name",
+        "kind": "function",
+        "name": "Name",
+        "qualifiedName": "Name",
+        "span": {
+          "endCol": 2,
+          "endLine": 9,
+          "file": "input.go",
+          "startCol": 1,
+          "startLine": 7
+        }
+      },
+      {
+        "id": "module:input.go",
+        "kind": "module",
+        "name": "input.go",
+        "qualifiedName": "input.go",
+        "span": {
+          "endCol": 1,
+          "endLine": 14,
+          "file": "input.go",
+          "startCol": 1,
+          "startLine": 1
+        }
+      }
+    ],
+    "schemaVersion": 1
+  }
+}
