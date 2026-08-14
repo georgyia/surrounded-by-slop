@@ -1,0 +1,87 @@
+{
+  "diagnostics": [],
+  "graph": {
+    "edges": [
+      {
+        "confidence": "low",
+        "from": "method:input.java#Greeter.shout",
+        "id": "calls:method:input.java#Greeter.shout->method:input.java#Greeter.greet",
+        "kind": "calls",
+        "to": "method:input.java#Greeter.greet"
+      },
+      {
+        "from": "class:input.java#Greeter",
+        "id": "contains:class:input.java#Greeter->method:input.java#Greeter.greet",
+        "kind": "contains",
+        "to": "method:input.java#Greeter.greet"
+      },
+      {
+        "from": "class:input.java#Greeter",
+        "id": "contains:class:input.java#Greeter->method:input.java#Greeter.shout",
+        "kind": "contains",
+        "to": "method:input.java#Greeter.shout"
+      },
+      {
+        "from": "module:input.java",
+        "id": "contains:module:input.java->class:input.java#Greeter",
+        "kind": "contains",
+        "to": "class:input.java#Greeter"
+      }
+    ],
+    "nodes": [
+      {
+        "id": "class:input.java#Greeter",
+        "kind": "class",
+        "name": "Greeter",
+        "qualifiedName": "Greeter",
+        "span": {
+          "endCol": 2,
+          "endLine": 11,
+          "file": "input.java",
+          "startCol": 1,
+          "startLine": 1
+        }
+      },
+      {
+        "id": "method:input.java#Greeter.greet",
+        "kind": "method",
+        "name": "greet",
+        "qualifiedName": "Greeter.greet",
+        "span": {
+          "endCol": 6,
+          "endLine": 6,
+          "file": "input.java",
+          "startCol": 5,
+          "startLine": 4
+        }
+      },
+      {
+        "id": "method:input.java#Greeter.shout",
+        "kind": "method",
+        "name": "shout",
+        "qualifiedName": "Greeter.shout",
+        "span": {
+          "endCol": 6,
+          "endLine": 10,
+          "file": "input.java",
+          "startCol": 5,
+          "startLine": 8
+        }
+      },
+      {
+        "id": "module:input.java",
+        "kind": "module",
+        "name": "input.java",
+        "qualifiedName": "input.java",
+        "span": {
+          "endCol": 1,
+          "endLine": 12,
+          "file": "input.java",
+          "startCol": 1,
+          "startLine": 1
+        }
+      }
+    ],
+    "schemaVersion": 1
+  }
+}

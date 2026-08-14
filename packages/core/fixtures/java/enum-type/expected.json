@@ -1,0 +1,61 @@
+{
+  "diagnostics": [],
+  "graph": {
+    "edges": [
+      {
+        "from": "class:input.java#Mode",
+        "id": "contains:class:input.java#Mode->method:input.java#Mode.enabled",
+        "kind": "contains",
+        "to": "method:input.java#Mode.enabled"
+      },
+      {
+        "from": "module:input.java",
+        "id": "contains:module:input.java->class:input.java#Mode",
+        "kind": "contains",
+        "to": "class:input.java#Mode"
+      }
+    ],
+    "nodes": [
+      {
+        "id": "class:input.java#Mode",
+        "kind": "class",
+        "name": "Mode",
+        "qualifiedName": "Mode",
+        "span": {
+          "endCol": 2,
+          "endLine": 8,
+          "file": "input.java",
+          "startCol": 1,
+          "startLine": 1
+        }
+      },
+      {
+        "id": "method:input.java#Mode.enabled",
+        "kind": "method",
+        "name": "enabled",
+        "qualifiedName": "Mode.enabled",
+        "span": {
+          "endCol": 6,
+          "endLine": 7,
+          "file": "input.java",
+          "startCol": 5,
+          "startLine": 5
+        }
+      },
+      {
+        "id": "module:input.java",
+        "kind": "module",
+        "name": "input.java",
+        "qualifiedName": "input.java",
+        "span": {
+          "endCol": 1,
+          "endLine": 9,
+          "file": "input.java",
+          "startCol": 1,
+          "startLine": 1
+        }
+      }
+    ],
+    "schemaVersion": 1
+  }
+}

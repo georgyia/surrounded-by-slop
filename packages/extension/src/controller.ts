@@ -14,6 +14,7 @@ const LANGUAGE_EXTENSIONS: Readonly<Record<string, string>> = {
   javascriptreact: ".jsx",
   python: ".py",
   go: ".go",
+  java: ".java",
 };
 
 type CoreAdapter = import("@surrounded-by-slop/core").LanguageAdapter;
@@ -42,6 +43,15 @@ const TREE_SITTER_LANGUAGES = [
     create: async (runtime: Uint8Array, grammar: Uint8Array): Promise<CoreAdapter> => {
       const { createGoAdapter } = await import("@surrounded-by-slop/core");
       return createGoAdapter({ runtime, go: grammar });
+    },
+  },
+  {
+    languageId: "java",
+    fileExtension: ".java",
+    grammar: "tree-sitter-java.wasm",
+    create: async (runtime: Uint8Array, grammar: Uint8Array): Promise<CoreAdapter> => {
+      const { createJavaAdapter } = await import("@surrounded-by-slop/core");
+      return createJavaAdapter({ runtime, java: grammar });
     },
   },
 ] as const;

@@ -1,0 +1,201 @@
+{
+  "diagnostics": [],
+  "graph": {
+    "edges": [
+      {
+        "from": "class:src/main/java/com/shop/api/OrderController.java#OrderController",
+        "id": "contains:class:src/main/java/com/shop/api/OrderController.java#OrderController->method:src/main/java/com/shop/api/OrderController.java#OrderController.OrderController",
+        "kind": "contains",
+        "to": "method:src/main/java/com/shop/api/OrderController.java#OrderController.OrderController"
+      },
+      {
+        "from": "class:src/main/java/com/shop/api/OrderController.java#OrderController",
+        "id": "contains:class:src/main/java/com/shop/api/OrderController.java#OrderController->method:src/main/java/com/shop/api/OrderController.java#OrderController.find",
+        "kind": "contains",
+        "to": "method:src/main/java/com/shop/api/OrderController.java#OrderController.find"
+      },
+      {
+        "from": "class:src/main/java/com/shop/store/InMemoryOrders.java#InMemoryOrders",
+        "id": "contains:class:src/main/java/com/shop/store/InMemoryOrders.java#InMemoryOrders->method:src/main/java/com/shop/store/InMemoryOrders.java#InMemoryOrders.byId",
+        "kind": "contains",
+        "to": "method:src/main/java/com/shop/store/InMemoryOrders.java#InMemoryOrders.byId"
+      },
+      {
+        "from": "class:src/main/java/com/shop/store/OrderRepository.java#OrderRepository",
+        "id": "contains:class:src/main/java/com/shop/store/OrderRepository.java#OrderRepository->method:src/main/java/com/shop/store/OrderRepository.java#OrderRepository.byId",
+        "kind": "contains",
+        "to": "method:src/main/java/com/shop/store/OrderRepository.java#OrderRepository.byId"
+      },
+      {
+        "from": "module:src/main/java/com/shop/api/OrderController.java",
+        "id": "contains:module:src/main/java/com/shop/api/OrderController.java->class:src/main/java/com/shop/api/OrderController.java#OrderController",
+        "kind": "contains",
+        "to": "class:src/main/java/com/shop/api/OrderController.java#OrderController"
+      },
+      {
+        "from": "module:src/main/java/com/shop/store/InMemoryOrders.java",
+        "id": "contains:module:src/main/java/com/shop/store/InMemoryOrders.java->class:src/main/java/com/shop/store/InMemoryOrders.java#InMemoryOrders",
+        "kind": "contains",
+        "to": "class:src/main/java/com/shop/store/InMemoryOrders.java#InMemoryOrders"
+      },
+      {
+        "from": "module:src/main/java/com/shop/store/OrderRepository.java",
+        "id": "contains:module:src/main/java/com/shop/store/OrderRepository.java->class:src/main/java/com/shop/store/OrderRepository.java#OrderRepository",
+        "kind": "contains",
+        "to": "class:src/main/java/com/shop/store/OrderRepository.java#OrderRepository"
+      },
+      {
+        "from": "module:src/main/java/com/shop/api/OrderController.java",
+        "id": "imports:module:src/main/java/com/shop/api/OrderController.java->module:src/main/java/com/shop/store/OrderRepository.java",
+        "kind": "imports",
+        "to": "module:src/main/java/com/shop/store/OrderRepository.java"
+      },
+      {
+        "from": "module:src/main/java/com/shop/store/InMemoryOrders.java",
+        "id": "imports:module:src/main/java/com/shop/store/InMemoryOrders.java->module:external:java.util.HashMap",
+        "kind": "imports",
+        "to": "module:external:java.util.HashMap"
+      }
+    ],
+    "nodes": [
+      {
+        "id": "class:src/main/java/com/shop/api/OrderController.java#OrderController",
+        "kind": "class",
+        "name": "OrderController",
+        "qualifiedName": "OrderController",
+        "span": {
+          "endCol": 2,
+          "endLine": 15,
+          "file": "src/main/java/com/shop/api/OrderController.java",
+          "startCol": 1,
+          "startLine": 5
+        }
+      },
+      {
+        "id": "class:src/main/java/com/shop/store/InMemoryOrders.java#InMemoryOrders",
+        "kind": "class",
+        "name": "InMemoryOrders",
+        "qualifiedName": "InMemoryOrders",
+        "span": {
+          "endCol": 2,
+          "endLine": 11,
+          "file": "src/main/java/com/shop/store/InMemoryOrders.java",
+          "startCol": 1,
+          "startLine": 5
+        }
+      },
+      {
+        "id": "class:src/main/java/com/shop/store/OrderRepository.java#OrderRepository",
+        "kind": "class",
+        "name": "OrderRepository",
+        "qualifiedName": "OrderRepository",
+        "span": {
+          "endCol": 2,
+          "endLine": 5,
+          "file": "src/main/java/com/shop/store/OrderRepository.java",
+          "startCol": 1,
+          "startLine": 3
+        }
+      },
+      {
+        "id": "method:src/main/java/com/shop/api/OrderController.java#OrderController.OrderController",
+        "kind": "method",
+        "name": "OrderController",
+        "qualifiedName": "OrderController.OrderController",
+        "span": {
+          "endCol": 6,
+          "endLine": 10,
+          "file": "src/main/java/com/shop/api/OrderController.java",
+          "startCol": 5,
+          "startLine": 8
+        }
+      },
+      {
+        "id": "method:src/main/java/com/shop/api/OrderController.java#OrderController.find",
+        "kind": "method",
+        "name": "find",
+        "qualifiedName": "OrderController.find",
+        "span": {
+          "endCol": 6,
+          "endLine": 14,
+          "file": "src/main/java/com/shop/api/OrderController.java",
+          "startCol": 5,
+          "startLine": 12
+        }
+      },
+      {
+        "id": "method:src/main/java/com/shop/store/InMemoryOrders.java#InMemoryOrders.byId",
+        "kind": "method",
+        "name": "byId",
+        "qualifiedName": "InMemoryOrders.byId",
+        "span": {
+          "endCol": 6,
+          "endLine": 10,
+          "file": "src/main/java/com/shop/store/InMemoryOrders.java",
+          "startCol": 5,
+          "startLine": 8
+        }
+      },
+      {
+        "id": "method:src/main/java/com/shop/store/OrderRepository.java#OrderRepository.byId",
+        "kind": "method",
+        "name": "byId",
+        "qualifiedName": "OrderRepository.byId",
+        "span": {
+          "endCol": 28,
+          "endLine": 4,
+          "file": "src/main/java/com/shop/store/OrderRepository.java",
+          "startCol": 5,
+          "startLine": 4
+        }
+      },
+      {
+        "external": true,
+        "id": "module:external:java.util.HashMap",
+        "kind": "module",
+        "name": "java.util.HashMap",
+        "qualifiedName": "java.util.HashMap"
+      },
+      {
+        "id": "module:src/main/java/com/shop/api/OrderController.java",
+        "kind": "module",
+        "name": "OrderController.java",
+        "qualifiedName": "src/main/java/com/shop/api/OrderController.java",
+        "span": {
+          "endCol": 1,
+          "endLine": 16,
+          "file": "src/main/java/com/shop/api/OrderController.java",
+          "startCol": 1,
+          "startLine": 1
+        }
+      },
+      {
+        "id": "module:src/main/java/com/shop/store/InMemoryOrders.java",
+        "kind": "module",
+        "name": "InMemoryOrders.java",
+        "qualifiedName": "src/main/java/com/shop/store/InMemoryOrders.java",
+        "span": {
+          "endCol": 1,
+          "endLine": 12,
+          "file": "src/main/java/com/shop/store/InMemoryOrders.java",
+          "startCol": 1,
+          "startLine": 1
+        }
+      },
+      {
+        "id": "module:src/main/java/com/shop/store/OrderRepository.java",
+        "kind": "module",
+        "name": "OrderRepository.java",
+        "qualifiedName": "src/main/java/com/shop/store/OrderRepository.java",
+        "span": {
+          "endCol": 1,
+          "endLine": 6,
+          "file": "src/main/java/com/shop/store/OrderRepository.java",
+          "startCol": 1,
+          "startLine": 1
+        }
+      }
+    ],
+    "schemaVersion": 1
+  }
+}

@@ -1,0 +1,74 @@
+{
+  "diagnostics": [],
+  "graph": {
+    "edges": [
+      {
+        "from": "class:input.java#Box",
+        "id": "contains:class:input.java#Box->method:input.java#Box.first",
+        "kind": "contains",
+        "to": "method:input.java#Box.first"
+      },
+      {
+        "from": "module:input.java",
+        "id": "contains:module:input.java->class:input.java#Box",
+        "kind": "contains",
+        "to": "class:input.java#Box"
+      },
+      {
+        "from": "module:input.java",
+        "id": "imports:module:input.java->module:external:java.util.List",
+        "kind": "imports",
+        "to": "module:external:java.util.List"
+      }
+    ],
+    "nodes": [
+      {
+        "id": "class:input.java#Box",
+        "kind": "class",
+        "name": "Box",
+        "qualifiedName": "Box",
+        "span": {
+          "endCol": 2,
+          "endLine": 9,
+          "file": "input.java",
+          "startCol": 1,
+          "startLine": 3
+        }
+      },
+      {
+        "id": "method:input.java#Box.first",
+        "kind": "method",
+        "name": "first",
+        "qualifiedName": "Box.first",
+        "span": {
+          "endCol": 6,
+          "endLine": 8,
+          "file": "input.java",
+          "startCol": 5,
+          "startLine": 6
+        }
+      },
+      {
+        "external": true,
+        "id": "module:external:java.util.List",
+        "kind": "module",
+        "name": "java.util.List",
+        "qualifiedName": "java.util.List"
+      },
+      {
+        "id": "module:input.java",
+        "kind": "module",
+        "name": "input.java",
+        "qualifiedName": "input.java",
+        "span": {
+          "endCol": 1,
+          "endLine": 10,
+          "file": "input.java",
+          "startCol": 1,
+          "startLine": 1
+        }
+      }
+    ],
+    "schemaVersion": 1
+  }
+}

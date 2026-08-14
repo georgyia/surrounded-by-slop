@@ -1,0 +1,74 @@
+{
+  "diagnostics": [],
+  "graph": {
+    "edges": [
+      {
+        "from": "class:input.java#Bag",
+        "id": "contains:class:input.java#Bag->method:input.java#Bag.items",
+        "kind": "contains",
+        "to": "method:input.java#Bag.items"
+      },
+      {
+        "from": "module:input.java",
+        "id": "contains:module:input.java->class:input.java#Bag",
+        "kind": "contains",
+        "to": "class:input.java#Bag"
+      },
+      {
+        "from": "module:input.java",
+        "id": "imports:module:input.java->module:external:java.util",
+        "kind": "imports",
+        "to": "module:external:java.util"
+      }
+    ],
+    "nodes": [
+      {
+        "id": "class:input.java#Bag",
+        "kind": "class",
+        "name": "Bag",
+        "qualifiedName": "Bag",
+        "span": {
+          "endCol": 2,
+          "endLine": 7,
+          "file": "input.java",
+          "startCol": 1,
+          "startLine": 3
+        }
+      },
+      {
+        "id": "method:input.java#Bag.items",
+        "kind": "method",
+        "name": "items",
+        "qualifiedName": "Bag.items",
+        "span": {
+          "endCol": 6,
+          "endLine": 6,
+          "file": "input.java",
+          "startCol": 5,
+          "startLine": 4
+        }
+      },
+      {
+        "external": true,
+        "id": "module:external:java.util",
+        "kind": "module",
+        "name": "java.util",
+        "qualifiedName": "java.util"
+      },
+      {
+        "id": "module:input.java",
+        "kind": "module",
+        "name": "input.java",
+        "qualifiedName": "input.java",
+        "span": {
+          "endCol": 1,
+          "endLine": 8,
+          "file": "input.java",
+          "startCol": 1,
+          "startLine": 1
+        }
+      }
+    ],
+    "schemaVersion": 1
+  }
+}

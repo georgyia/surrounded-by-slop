@@ -1,0 +1,61 @@
+{
+  "diagnostics": [],
+  "graph": {
+    "edges": [
+      {
+        "from": "class:input.java#Factory",
+        "id": "contains:class:input.java#Factory->method:input.java#Factory.make",
+        "kind": "contains",
+        "to": "method:input.java#Factory.make"
+      },
+      {
+        "from": "module:input.java",
+        "id": "contains:module:input.java->class:input.java#Factory",
+        "kind": "contains",
+        "to": "class:input.java#Factory"
+      }
+    ],
+    "nodes": [
+      {
+        "id": "class:input.java#Factory",
+        "kind": "class",
+        "name": "Factory",
+        "qualifiedName": "Factory",
+        "span": {
+          "endCol": 2,
+          "endLine": 5,
+          "file": "input.java",
+          "startCol": 1,
+          "startLine": 1
+        }
+      },
+      {
+        "id": "method:input.java#Factory.make",
+        "kind": "method",
+        "name": "make",
+        "qualifiedName": "Factory.make",
+        "span": {
+          "endCol": 6,
+          "endLine": 4,
+          "file": "input.java",
+          "startCol": 5,
+          "startLine": 2
+        }
+      },
+      {
+        "id": "module:input.java",
+        "kind": "module",
+        "name": "input.java",
+        "qualifiedName": "input.java",
+        "span": {
+          "endCol": 1,
+          "endLine": 6,
+          "file": "input.java",
+          "startCol": 1,
+          "startLine": 1
+        }
+      }
+    ],
+    "schemaVersion": 1
+  }
+}

@@ -1,0 +1,61 @@
+{
+  "diagnostics": [],
+  "graph": {
+    "edges": [
+      {
+        "from": "class:input.java#Fib",
+        "id": "contains:class:input.java#Fib->method:input.java#Fib.at",
+        "kind": "contains",
+        "to": "method:input.java#Fib.at"
+      },
+      {
+        "from": "module:input.java",
+        "id": "contains:module:input.java->class:input.java#Fib",
+        "kind": "contains",
+        "to": "class:input.java#Fib"
+      }
+    ],
+    "nodes": [
+      {
+        "id": "class:input.java#Fib",
+        "kind": "class",
+        "name": "Fib",
+        "qualifiedName": "Fib",
+        "span": {
+          "endCol": 2,
+          "endLine": 8,
+          "file": "input.java",
+          "startCol": 1,
+          "startLine": 1
+        }
+      },
+      {
+        "id": "method:input.java#Fib.at",
+        "kind": "method",
+        "name": "at",
+        "qualifiedName": "Fib.at",
+        "span": {
+          "endCol": 6,
+          "endLine": 7,
+          "file": "input.java",
+          "startCol": 5,
+          "startLine": 2
+        }
+      },
+      {
+        "id": "module:input.java",
+        "kind": "module",
+        "name": "input.java",
+        "qualifiedName": "input.java",
+        "span": {
+          "endCol": 1,
+          "endLine": 9,
+          "file": "input.java",
+          "startCol": 1,
+          "startLine": 1
+        }
+      }
+    ],
+    "schemaVersion": 1
+  }
+}

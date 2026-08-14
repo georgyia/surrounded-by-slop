@@ -1,7 +1,14 @@
 import type { Node } from "web-tree-sitter";
 import type { CancellationToken, FileInput } from "../adapter.js";
 import { OperationCancelledError } from "../adapter.js";
-import { canonicalizeGraph, declarationId, edgeId, externalModuleId, moduleId } from "../ir/ids.js";
+import {
+  canonicalizeGraph,
+  declarationId,
+  edgeId,
+  externalModuleId,
+  IdAllocator,
+  moduleId,
+} from "../ir/ids.js";
 import type { AnalysisResult, Diagnostic, GraphEdge, GraphNode, SourceSpan } from "../ir/types.js";
 import type { LoadedLanguage } from "./runtime.js";
 
@@ -87,6 +94,7 @@ export function analyzeWithTreeSitter(options: TreeSitterAnalysisOptions): Analy
   const edgeById = new Map<string, GraphEdge>();
   const diagnostics: Diagnostic[] = [];
   const externals = new Map<string, string>(); // module text → node id
+  const ids = new IdAllocator();
 
   const addEdge = (edge: GraphEdge): void => {
     const existing = edgeById.get(edge.id);
@@ -150,7 +158,11 @@ export function analyzeWithTreeSitter(options: TreeSitterAnalysisOptions): Analy
         kind,
         name,
         qualifiedName,
-        id: declarationId(kind, file.path, qualifiedName),
+        // Overloads (Java, C#) and re-definitions (Python) put two declarations
+        // under one qualified name, which would mint the same id twice and
+        // produce an invalid graph. The allocator suffixes the later ones, the
+        // same way the TypeScript adapter has always handled it.
+        id: ids.allocate(declarationId(kind, file.path, qualifiedName)),
         defSpan,
         nameSpan: spanOf(entry.name, file.path),
         parent,

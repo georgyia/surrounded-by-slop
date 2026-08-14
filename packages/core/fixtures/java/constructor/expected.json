@@ -1,0 +1,80 @@
+{
+  "diagnostics": [],
+  "graph": {
+    "edges": [
+      {
+        "from": "class:input.java#Server",
+        "id": "contains:class:input.java#Server->method:input.java#Server.Server",
+        "kind": "contains",
+        "to": "method:input.java#Server.Server"
+      },
+      {
+        "from": "class:input.java#Server",
+        "id": "contains:class:input.java#Server->method:input.java#Server.Server~2",
+        "kind": "contains",
+        "to": "method:input.java#Server.Server~2"
+      },
+      {
+        "from": "module:input.java",
+        "id": "contains:module:input.java->class:input.java#Server",
+        "kind": "contains",
+        "to": "class:input.java#Server"
+      }
+    ],
+    "nodes": [
+      {
+        "id": "class:input.java#Server",
+        "kind": "class",
+        "name": "Server",
+        "qualifiedName": "Server",
+        "span": {
+          "endCol": 2,
+          "endLine": 11,
+          "file": "input.java",
+          "startCol": 1,
+          "startLine": 1
+        }
+      },
+      {
+        "id": "method:input.java#Server.Server",
+        "kind": "method",
+        "name": "Server",
+        "qualifiedName": "Server.Server",
+        "span": {
+          "endCol": 6,
+          "endLine": 6,
+          "file": "input.java",
+          "startCol": 5,
+          "startLine": 4
+        }
+      },
+      {
+        "id": "method:input.java#Server.Server~2",
+        "kind": "method",
+        "name": "Server",
+        "qualifiedName": "Server.Server",
+        "span": {
+          "endCol": 6,
+          "endLine": 10,
+          "file": "input.java",
+          "startCol": 5,
+          "startLine": 8
+        }
+      },
+      {
+        "id": "module:input.java",
+        "kind": "module",
+        "name": "input.java",
+        "qualifiedName": "input.java",
+        "span": {
+          "endCol": 1,
+          "endLine": 12,
+          "file": "input.java",
+          "startCol": 1,
+          "startLine": 1
+        }
+      }
+    ],
+    "schemaVersion": 1
+  }
+}
