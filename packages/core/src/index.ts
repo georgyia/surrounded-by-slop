@@ -40,6 +40,7 @@ export {
 } from "./export/exporter.js";
 export { jsonExporter } from "./export/json.js";
 export { mermaidExporter } from "./export/mermaid.js";
+export { plantumlExporter } from "./export/plantuml.js";
 export { svgExporter } from "./export/svg.js";
 export { createIncrementalAnalyzer, type IncrementalAnalyzer } from "./incremental.js";
 export {

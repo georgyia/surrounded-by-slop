@@ -14,7 +14,7 @@ command below from the Command Palette (`⌘⇧P` / `Ctrl+Shift+P`, prefix
 | **Slop: Visualize Workspace** | Module map of the whole workspace, TS and Python merged. Opens collapsed to modules; very large or dense repos fold to an expandable folder level automatically. |
 | **Slop: Pin Diagram** | Freeze the current diagram — it stops refreshing on save until unpinned. |
 | **Slop: Follow Active Editor** | Re-visualize whenever you switch editors. |
-| **Slop: Export Diagram As…** | Save the current diagram as `.drawio`, `.mmd` (Mermaid), `.dot` (Graphviz — pipe it to `dot -Tpng`), `.svg`, or `.json`. Flow charts export their CFG faithfully in Mermaid/JSON. |
+| **Slop: Export Diagram As…** | Save the current diagram as `.drawio`, `.mmd` (Mermaid), `.dot` (Graphviz — pipe it to `dot -Tpng`), `.puml` (PlantUML), `.svg`, or `.json`. Flow charts export their CFG faithfully in Mermaid/JSON. |
 | **Slop: Copy Diagram as Mermaid** | Same as the `.mmd` export, straight to the clipboard. |
 | **Slop: Reset Suppressed Notices** | Bring back any notice you dismissed with "Don't show again". |
 
