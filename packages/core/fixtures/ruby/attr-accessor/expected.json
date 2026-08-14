@@ -1,0 +1,61 @@
+{
+  "diagnostics": [],
+  "graph": {
+    "edges": [
+      {
+        "from": "class:input.rb#Point",
+        "id": "contains:class:input.rb#Point->method:input.rb#Point.initialize",
+        "kind": "contains",
+        "to": "method:input.rb#Point.initialize"
+      },
+      {
+        "from": "module:input.rb",
+        "id": "contains:module:input.rb->class:input.rb#Point",
+        "kind": "contains",
+        "to": "class:input.rb#Point"
+      }
+    ],
+    "nodes": [
+      {
+        "id": "class:input.rb#Point",
+        "kind": "class",
+        "name": "Point",
+        "qualifiedName": "Point",
+        "span": {
+          "endCol": 4,
+          "endLine": 8,
+          "file": "input.rb",
+          "startCol": 1,
+          "startLine": 1
+        }
+      },
+      {
+        "id": "method:input.rb#Point.initialize",
+        "kind": "method",
+        "name": "initialize",
+        "qualifiedName": "Point.initialize",
+        "span": {
+          "endCol": 6,
+          "endLine": 7,
+          "file": "input.rb",
+          "startCol": 3,
+          "startLine": 4
+        }
+      },
+      {
+        "id": "module:input.rb",
+        "kind": "module",
+        "name": "input.rb",
+        "qualifiedName": "input.rb",
+        "span": {
+          "endCol": 1,
+          "endLine": 9,
+          "file": "input.rb",
+          "startCol": 1,
+          "startLine": 1
+        }
+      }
+    ],
+    "schemaVersion": 1
+  }
+}

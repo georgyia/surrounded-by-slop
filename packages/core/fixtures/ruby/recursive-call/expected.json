@@ -1,0 +1,42 @@
+{
+  "diagnostics": [],
+  "graph": {
+    "edges": [
+      {
+        "from": "module:input.rb",
+        "id": "contains:module:input.rb->function:input.rb#factorial",
+        "kind": "contains",
+        "to": "function:input.rb#factorial"
+      }
+    ],
+    "nodes": [
+      {
+        "id": "function:input.rb#factorial",
+        "kind": "function",
+        "name": "factorial",
+        "qualifiedName": "factorial",
+        "span": {
+          "endCol": 4,
+          "endLine": 4,
+          "file": "input.rb",
+          "startCol": 1,
+          "startLine": 1
+        }
+      },
+      {
+        "id": "module:input.rb",
+        "kind": "module",
+        "name": "input.rb",
+        "qualifiedName": "input.rb",
+        "span": {
+          "endCol": 1,
+          "endLine": 5,
+          "file": "input.rb",
+          "startCol": 1,
+          "startLine": 1
+        }
+      }
+    ],
+    "schemaVersion": 1
+  }
+}

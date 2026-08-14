@@ -1,0 +1,99 @@
+{
+  "diagnostics": [],
+  "graph": {
+    "edges": [
+      {
+        "from": "class:app/controller.rb#Controller",
+        "id": "contains:class:app/controller.rb#Controller->method:app/controller.rb#Controller.show",
+        "kind": "contains",
+        "to": "method:app/controller.rb#Controller.show"
+      },
+      {
+        "from": "module:app/controller.rb",
+        "id": "contains:module:app/controller.rb->class:app/controller.rb#Controller",
+        "kind": "contains",
+        "to": "class:app/controller.rb#Controller"
+      },
+      {
+        "from": "module:lib/repository.rb",
+        "id": "contains:module:lib/repository.rb->class:lib/repository.rb#Repository",
+        "kind": "contains",
+        "to": "class:lib/repository.rb#Repository"
+      },
+      {
+        "from": "module:app/controller.rb",
+        "id": "imports:module:app/controller.rb->module:lib/repository.rb",
+        "kind": "imports",
+        "to": "module:lib/repository.rb"
+      }
+    ],
+    "nodes": [
+      {
+        "id": "class:app/controller.rb#Controller",
+        "kind": "class",
+        "name": "Controller",
+        "qualifiedName": "Controller",
+        "span": {
+          "endCol": 4,
+          "endLine": 7,
+          "file": "app/controller.rb",
+          "startCol": 1,
+          "startLine": 3
+        }
+      },
+      {
+        "id": "class:lib/repository.rb#Repository",
+        "kind": "class",
+        "name": "Repository",
+        "qualifiedName": "Repository",
+        "span": {
+          "endCol": 4,
+          "endLine": 2,
+          "file": "lib/repository.rb",
+          "startCol": 1,
+          "startLine": 1
+        }
+      },
+      {
+        "id": "method:app/controller.rb#Controller.show",
+        "kind": "method",
+        "name": "show",
+        "qualifiedName": "Controller.show",
+        "span": {
+          "endCol": 6,
+          "endLine": 6,
+          "file": "app/controller.rb",
+          "startCol": 3,
+          "startLine": 4
+        }
+      },
+      {
+        "id": "module:app/controller.rb",
+        "kind": "module",
+        "name": "controller.rb",
+        "qualifiedName": "app/controller.rb",
+        "span": {
+          "endCol": 1,
+          "endLine": 8,
+          "file": "app/controller.rb",
+          "startCol": 1,
+          "startLine": 1
+        }
+      },
+      {
+        "id": "module:lib/repository.rb",
+        "kind": "module",
+        "name": "repository.rb",
+        "qualifiedName": "lib/repository.rb",
+        "span": {
+          "endCol": 1,
+          "endLine": 3,
+          "file": "lib/repository.rb",
+          "startCol": 1,
+          "startLine": 1
+        }
+      }
+    ],
+    "schemaVersion": 1
+  }
+}

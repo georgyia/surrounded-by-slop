@@ -1,0 +1,80 @@
+{
+  "diagnostics": [],
+  "graph": {
+    "edges": [
+      {
+        "from": "class:input.rb#Registry",
+        "id": "contains:class:input.rb#Registry->method:input.rb#Registry.instance",
+        "kind": "contains",
+        "to": "method:input.rb#Registry.instance"
+      },
+      {
+        "from": "class:input.rb#Registry",
+        "id": "contains:class:input.rb#Registry->method:input.rb#Registry.register",
+        "kind": "contains",
+        "to": "method:input.rb#Registry.register"
+      },
+      {
+        "from": "module:input.rb",
+        "id": "contains:module:input.rb->class:input.rb#Registry",
+        "kind": "contains",
+        "to": "class:input.rb#Registry"
+      }
+    ],
+    "nodes": [
+      {
+        "id": "class:input.rb#Registry",
+        "kind": "class",
+        "name": "Registry",
+        "qualifiedName": "Registry",
+        "span": {
+          "endCol": 4,
+          "endLine": 10,
+          "file": "input.rb",
+          "startCol": 1,
+          "startLine": 1
+        }
+      },
+      {
+        "id": "method:input.rb#Registry.instance",
+        "kind": "method",
+        "name": "instance",
+        "qualifiedName": "Registry.instance",
+        "span": {
+          "endCol": 8,
+          "endLine": 5,
+          "file": "input.rb",
+          "startCol": 5,
+          "startLine": 3
+        }
+      },
+      {
+        "id": "method:input.rb#Registry.register",
+        "kind": "method",
+        "name": "register",
+        "qualifiedName": "Registry.register",
+        "span": {
+          "endCol": 6,
+          "endLine": 9,
+          "file": "input.rb",
+          "startCol": 3,
+          "startLine": 8
+        }
+      },
+      {
+        "id": "module:input.rb",
+        "kind": "module",
+        "name": "input.rb",
+        "qualifiedName": "input.rb",
+        "span": {
+          "endCol": 1,
+          "endLine": 11,
+          "file": "input.rb",
+          "startCol": 1,
+          "startLine": 1
+        }
+      }
+    ],
+    "schemaVersion": 1
+  }
+}

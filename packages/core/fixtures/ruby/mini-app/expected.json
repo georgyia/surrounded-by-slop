@@ -1,0 +1,195 @@
+{
+  "diagnostics": [],
+  "graph": {
+    "edges": [
+      {
+        "confidence": "low",
+        "from": "method:app/orders.rb#Shop.Orders.find",
+        "id": "calls:method:app/orders.rb#Shop.Orders.find->method:app/orders.rb#Shop.Orders.lookup",
+        "kind": "calls",
+        "to": "method:app/orders.rb#Shop.Orders.lookup"
+      },
+      {
+        "from": "class:app/orders.rb#Shop",
+        "id": "contains:class:app/orders.rb#Shop->class:app/orders.rb#Shop.Orders",
+        "kind": "contains",
+        "to": "class:app/orders.rb#Shop.Orders"
+      },
+      {
+        "from": "class:app/orders.rb#Shop.Orders",
+        "id": "contains:class:app/orders.rb#Shop.Orders->method:app/orders.rb#Shop.Orders.find",
+        "kind": "contains",
+        "to": "method:app/orders.rb#Shop.Orders.find"
+      },
+      {
+        "from": "class:app/orders.rb#Shop.Orders",
+        "id": "contains:class:app/orders.rb#Shop.Orders->method:app/orders.rb#Shop.Orders.initialize",
+        "kind": "contains",
+        "to": "method:app/orders.rb#Shop.Orders.initialize"
+      },
+      {
+        "from": "class:app/orders.rb#Shop.Orders",
+        "id": "contains:class:app/orders.rb#Shop.Orders->method:app/orders.rb#Shop.Orders.lookup",
+        "kind": "contains",
+        "to": "method:app/orders.rb#Shop.Orders.lookup"
+      },
+      {
+        "from": "class:lib/store.rb#Store",
+        "id": "contains:class:lib/store.rb#Store->method:lib/store.rb#Store.get",
+        "kind": "contains",
+        "to": "method:lib/store.rb#Store.get"
+      },
+      {
+        "from": "module:app/orders.rb",
+        "id": "contains:module:app/orders.rb->class:app/orders.rb#Shop",
+        "kind": "contains",
+        "to": "class:app/orders.rb#Shop"
+      },
+      {
+        "from": "module:lib/store.rb",
+        "id": "contains:module:lib/store.rb->class:lib/store.rb#Store",
+        "kind": "contains",
+        "to": "class:lib/store.rb#Store"
+      },
+      {
+        "from": "module:app/orders.rb",
+        "id": "imports:module:app/orders.rb->module:external:json",
+        "kind": "imports",
+        "to": "module:external:json"
+      },
+      {
+        "from": "module:app/orders.rb",
+        "id": "imports:module:app/orders.rb->module:lib/store.rb",
+        "kind": "imports",
+        "to": "module:lib/store.rb"
+      }
+    ],
+    "nodes": [
+      {
+        "id": "class:app/orders.rb#Shop",
+        "kind": "class",
+        "name": "Shop",
+        "qualifiedName": "Shop",
+        "span": {
+          "endCol": 4,
+          "endLine": 18,
+          "file": "app/orders.rb",
+          "startCol": 1,
+          "startLine": 4
+        }
+      },
+      {
+        "id": "class:app/orders.rb#Shop.Orders",
+        "kind": "class",
+        "name": "Orders",
+        "qualifiedName": "Shop.Orders",
+        "span": {
+          "endCol": 6,
+          "endLine": 17,
+          "file": "app/orders.rb",
+          "startCol": 3,
+          "startLine": 5
+        }
+      },
+      {
+        "id": "class:lib/store.rb#Store",
+        "kind": "class",
+        "name": "Store",
+        "qualifiedName": "Store",
+        "span": {
+          "endCol": 4,
+          "endLine": 5,
+          "file": "lib/store.rb",
+          "startCol": 1,
+          "startLine": 1
+        }
+      },
+      {
+        "id": "method:app/orders.rb#Shop.Orders.find",
+        "kind": "method",
+        "name": "find",
+        "qualifiedName": "Shop.Orders.find",
+        "span": {
+          "endCol": 8,
+          "endLine": 12,
+          "file": "app/orders.rb",
+          "startCol": 5,
+          "startLine": 10
+        }
+      },
+      {
+        "id": "method:app/orders.rb#Shop.Orders.initialize",
+        "kind": "method",
+        "name": "initialize",
+        "qualifiedName": "Shop.Orders.initialize",
+        "span": {
+          "endCol": 8,
+          "endLine": 8,
+          "file": "app/orders.rb",
+          "startCol": 5,
+          "startLine": 6
+        }
+      },
+      {
+        "id": "method:app/orders.rb#Shop.Orders.lookup",
+        "kind": "method",
+        "name": "lookup",
+        "qualifiedName": "Shop.Orders.lookup",
+        "span": {
+          "endCol": 8,
+          "endLine": 16,
+          "file": "app/orders.rb",
+          "startCol": 5,
+          "startLine": 14
+        }
+      },
+      {
+        "id": "method:lib/store.rb#Store.get",
+        "kind": "method",
+        "name": "get",
+        "qualifiedName": "Store.get",
+        "span": {
+          "endCol": 6,
+          "endLine": 4,
+          "file": "lib/store.rb",
+          "startCol": 3,
+          "startLine": 2
+        }
+      },
+      {
+        "id": "module:app/orders.rb",
+        "kind": "module",
+        "name": "orders.rb",
+        "qualifiedName": "app/orders.rb",
+        "span": {
+          "endCol": 1,
+          "endLine": 19,
+          "file": "app/orders.rb",
+          "startCol": 1,
+          "startLine": 1
+        }
+      },
+      {
+        "external": true,
+        "id": "module:external:json",
+        "kind": "module",
+        "name": "json",
+        "qualifiedName": "json"
+      },
+      {
+        "id": "module:lib/store.rb",
+        "kind": "module",
+        "name": "store.rb",
+        "qualifiedName": "lib/store.rb",
+        "span": {
+          "endCol": 1,
+          "endLine": 6,
+          "file": "lib/store.rb",
+          "startCol": 1,
+          "startLine": 1
+        }
+      }
+    ],
+    "schemaVersion": 1
+  }
+}

@@ -1,0 +1,99 @@
+{
+  "diagnostics": [],
+  "graph": {
+    "edges": [
+      {
+        "from": "class:input.rb#Outer",
+        "id": "contains:class:input.rb#Outer->class:input.rb#Outer.Inner",
+        "kind": "contains",
+        "to": "class:input.rb#Outer.Inner"
+      },
+      {
+        "from": "class:input.rb#Outer.Inner",
+        "id": "contains:class:input.rb#Outer.Inner->class:input.rb#Outer.Inner.Deep",
+        "kind": "contains",
+        "to": "class:input.rb#Outer.Inner.Deep"
+      },
+      {
+        "from": "class:input.rb#Outer.Inner.Deep",
+        "id": "contains:class:input.rb#Outer.Inner.Deep->method:input.rb#Outer.Inner.Deep.value",
+        "kind": "contains",
+        "to": "method:input.rb#Outer.Inner.Deep.value"
+      },
+      {
+        "from": "module:input.rb",
+        "id": "contains:module:input.rb->class:input.rb#Outer",
+        "kind": "contains",
+        "to": "class:input.rb#Outer"
+      }
+    ],
+    "nodes": [
+      {
+        "id": "class:input.rb#Outer",
+        "kind": "class",
+        "name": "Outer",
+        "qualifiedName": "Outer",
+        "span": {
+          "endCol": 4,
+          "endLine": 9,
+          "file": "input.rb",
+          "startCol": 1,
+          "startLine": 1
+        }
+      },
+      {
+        "id": "class:input.rb#Outer.Inner",
+        "kind": "class",
+        "name": "Inner",
+        "qualifiedName": "Outer.Inner",
+        "span": {
+          "endCol": 6,
+          "endLine": 8,
+          "file": "input.rb",
+          "startCol": 3,
+          "startLine": 2
+        }
+      },
+      {
+        "id": "class:input.rb#Outer.Inner.Deep",
+        "kind": "class",
+        "name": "Deep",
+        "qualifiedName": "Outer.Inner.Deep",
+        "span": {
+          "endCol": 8,
+          "endLine": 7,
+          "file": "input.rb",
+          "startCol": 5,
+          "startLine": 3
+        }
+      },
+      {
+        "id": "method:input.rb#Outer.Inner.Deep.value",
+        "kind": "method",
+        "name": "value",
+        "qualifiedName": "Outer.Inner.Deep.value",
+        "span": {
+          "endCol": 10,
+          "endLine": 6,
+          "file": "input.rb",
+          "startCol": 7,
+          "startLine": 4
+        }
+      },
+      {
+        "id": "module:input.rb",
+        "kind": "module",
+        "name": "input.rb",
+        "qualifiedName": "input.rb",
+        "span": {
+          "endCol": 1,
+          "endLine": 10,
+          "file": "input.rb",
+          "startCol": 1,
+          "startLine": 1
+        }
+      }
+    ],
+    "schemaVersion": 1
+  }
+}

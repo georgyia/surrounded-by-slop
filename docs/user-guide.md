@@ -1,7 +1,7 @@
 # User guide
 
 Slop turns code into diagrams you can navigate, right inside the editor.
-Install the extension, open a TypeScript/JavaScript/Python/Go/Java/Rust file, and run any
+Install the extension, open a TypeScript/JavaScript/Python/Go/Java/Rust/Ruby file, and run any
 command below from the Command Palette (`⌘⇧P` / `Ctrl+Shift+P`, prefix
 "Slop:"), the editor context menu, or the editor title button.
 
@@ -9,9 +9,9 @@ command below from the Command Palette (`⌘⇧P` / `Ctrl+Shift+P`, prefix
 
 | Command | What it does |
 |---|---|
-| **Slop: Visualize File** (`⌘⇧V` / `Ctrl+Shift+V`) | Structure + call diagram of the active file. TS/JS via the type checker; Python, Go, Java and Rust via tree-sitter. |
+| **Slop: Visualize File** (`⌘⇧V` / `Ctrl+Shift+V`) | Structure + call diagram of the active file. TS/JS via the type checker; Python, Go, Java, Rust and Ruby via tree-sitter. |
 | **Slop: Visualize Function Flow** | Control-flow chart of the function under the cursor (TS/JS): condition-labeled branches, dashed loop back-edges, dimmed unreachable code, and a variable picker that highlights each variable's reads (blue) and writes (orange). |
-| **Slop: Visualize Workspace** | Module map of the whole workspace, TS, Python, Go, Java and Rust merged. Opens collapsed to modules; very large or dense repos fold to an expandable folder level automatically. |
+| **Slop: Visualize Workspace** | Module map of the whole workspace, TS, Python, Go, Java, Rust and Ruby merged. Opens collapsed to modules; very large or dense repos fold to an expandable folder level automatically. |
 | **Slop: Pin Diagram** | Freeze the current diagram — it stops refreshing on save until unpinned. |
 | **Slop: Follow Active Editor** | Re-visualize whenever you switch editors. |
 | **Slop: Export Diagram As…** | Save the current diagram as `.drawio`, `.mmd` (Mermaid), `.dot` (Graphviz — pipe it to `dot -Tpng`), `.puml` (PlantUML), `.svg`, or `.json`. Flow charts export their CFG faithfully in Mermaid/JSON. |
@@ -40,7 +40,7 @@ command below from the Command Palette (`⌘⇧P` / `Ctrl+Shift+P`, prefix
 
 | Setting | Default | Meaning |
 |---|---|---|
-| `slop.include` | `**/*.{ts,tsx,mts,cts,js,jsx,mjs,cjs,py,go,java,rs}` | Globs analyzed by Visualize Workspace. |
+| `slop.include` | `**/*.{ts,tsx,mts,cts,js,jsx,mjs,cjs,py,go,java,rs,rb}` | Globs analyzed by Visualize Workspace. |
 | `slop.exclude` | dependencies, build output, fixtures | Globs skipped everywhere. |
 | `slop.includeTests` | `false` | Include test filenames and files under `__tests__/`, `tests/`, or `spec/` in the workspace map. |
 | `slop.showExternalModules` | `true` | Show external packages and unresolved imports as dashed nodes. |
@@ -50,7 +50,7 @@ command below from the Command Palette (`⌘⇧P` / `Ctrl+Shift+P`, prefix
 ## Reading the edges
 
 Solid = calls · dashed = imports · purple = extends/implements · dimmed
-dashed = heuristic (low-confidence) edges, e.g. Python, Go, Java and Rust calls. In flow charts:
+dashed = heuristic (low-confidence) edges, e.g. Python, Go, Java, Rust and Ruby calls. In flow charts:
 labeled solid = branches, dashed purple = loop back, dotted = throw/finally
 routes.
 
@@ -77,6 +77,7 @@ What each analyzer honestly knows, matching the adapters' capability flags:
 | Go | types, funcs, methods | external module nodes only | heuristic, marked low-confidence |
 | Java | classes, interfaces, enums, records, methods | resolved intra-project | heuristic, marked low-confidence |
 | Rust | modules, structs, enums, traits, impls, fns | resolved across the module tree | heuristic, marked low-confidence |
+| Ruby | modules, classes, methods | `require_relative` only | heuristic, marked low-confidence |
 
 Go specifics: an import path names a *package* (a directory), while module
 nodes are per-file, so imports render as external nodes rather than resolving
@@ -97,6 +98,14 @@ so the **impl block** is what holds them on the diagram — methods read as
 impl carrying its methods (a type can have several, one per trait). `mod`,
 `crate::`, `super::` and `self::` all resolve across the module tree; external
 crates stay external.
+
+Ruby specifics: `module A; class B` nests, so qualified names like `A.B.method`
+come out naturally. `require_relative` resolves inside the project; a plain
+`require "json"` names a gem and stays external. What a syntax-only pass
+cannot see is stated rather than guessed: `define_method`, `method_missing`,
+`include`d modules and anything else metaprogrammed is invisible, and methods
+inside `class << self` are attributed to the enclosing class without being
+marked as class methods.
 
 ## Privacy
 

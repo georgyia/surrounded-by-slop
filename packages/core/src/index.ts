@@ -94,6 +94,12 @@ export {
   resolvePythonModule,
 } from "./python/adapter.js";
 export {
+  createRubyAdapter,
+  type RubyWasm,
+  resolveRubyRequire,
+  rubyQueries,
+} from "./ruby/adapter.js";
+export {
   createRustAdapter,
   type RustWasm,
   resolveRustModule,

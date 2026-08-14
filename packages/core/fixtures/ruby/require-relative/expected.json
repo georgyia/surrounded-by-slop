@@ -1,0 +1,99 @@
+{
+  "diagnostics": [],
+  "graph": {
+    "edges": [
+      {
+        "from": "class:main.rb#App",
+        "id": "contains:class:main.rb#App->method:main.rb#App.run",
+        "kind": "contains",
+        "to": "method:main.rb#App.run"
+      },
+      {
+        "from": "module:main.rb",
+        "id": "contains:module:main.rb->class:main.rb#App",
+        "kind": "contains",
+        "to": "class:main.rb#App"
+      },
+      {
+        "from": "module:store.rb",
+        "id": "contains:module:store.rb->class:store.rb#Store",
+        "kind": "contains",
+        "to": "class:store.rb#Store"
+      },
+      {
+        "from": "module:main.rb",
+        "id": "imports:module:main.rb->module:store.rb",
+        "kind": "imports",
+        "to": "module:store.rb"
+      }
+    ],
+    "nodes": [
+      {
+        "id": "class:main.rb#App",
+        "kind": "class",
+        "name": "App",
+        "qualifiedName": "App",
+        "span": {
+          "endCol": 4,
+          "endLine": 7,
+          "file": "main.rb",
+          "startCol": 1,
+          "startLine": 3
+        }
+      },
+      {
+        "id": "class:store.rb#Store",
+        "kind": "class",
+        "name": "Store",
+        "qualifiedName": "Store",
+        "span": {
+          "endCol": 4,
+          "endLine": 2,
+          "file": "store.rb",
+          "startCol": 1,
+          "startLine": 1
+        }
+      },
+      {
+        "id": "method:main.rb#App.run",
+        "kind": "method",
+        "name": "run",
+        "qualifiedName": "App.run",
+        "span": {
+          "endCol": 6,
+          "endLine": 6,
+          "file": "main.rb",
+          "startCol": 3,
+          "startLine": 4
+        }
+      },
+      {
+        "id": "module:main.rb",
+        "kind": "module",
+        "name": "main.rb",
+        "qualifiedName": "main.rb",
+        "span": {
+          "endCol": 1,
+          "endLine": 8,
+          "file": "main.rb",
+          "startCol": 1,
+          "startLine": 1
+        }
+      },
+      {
+        "id": "module:store.rb",
+        "kind": "module",
+        "name": "store.rb",
+        "qualifiedName": "store.rb",
+        "span": {
+          "endCol": 1,
+          "endLine": 3,
+          "file": "store.rb",
+          "startCol": 1,
+          "startLine": 1
+        }
+      }
+    ],
+    "schemaVersion": 1
+  }
+}

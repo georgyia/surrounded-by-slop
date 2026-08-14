@@ -1,0 +1,80 @@
+{
+  "diagnostics": [],
+  "graph": {
+    "edges": [
+      {
+        "from": "class:input.rb#Factory",
+        "id": "contains:class:input.rb#Factory->method:input.rb#Factory.build",
+        "kind": "contains",
+        "to": "method:input.rb#Factory.build"
+      },
+      {
+        "from": "class:input.rb#Factory",
+        "id": "contains:class:input.rb#Factory->method:input.rb#Factory.initialize",
+        "kind": "contains",
+        "to": "method:input.rb#Factory.initialize"
+      },
+      {
+        "from": "module:input.rb",
+        "id": "contains:module:input.rb->class:input.rb#Factory",
+        "kind": "contains",
+        "to": "class:input.rb#Factory"
+      }
+    ],
+    "nodes": [
+      {
+        "id": "class:input.rb#Factory",
+        "kind": "class",
+        "name": "Factory",
+        "qualifiedName": "Factory",
+        "span": {
+          "endCol": 4,
+          "endLine": 8,
+          "file": "input.rb",
+          "startCol": 1,
+          "startLine": 1
+        }
+      },
+      {
+        "id": "method:input.rb#Factory.build",
+        "kind": "method",
+        "name": "build",
+        "qualifiedName": "Factory.build",
+        "span": {
+          "endCol": 6,
+          "endLine": 4,
+          "file": "input.rb",
+          "startCol": 3,
+          "startLine": 2
+        }
+      },
+      {
+        "id": "method:input.rb#Factory.initialize",
+        "kind": "method",
+        "name": "initialize",
+        "qualifiedName": "Factory.initialize",
+        "span": {
+          "endCol": 6,
+          "endLine": 7,
+          "file": "input.rb",
+          "startCol": 3,
+          "startLine": 6
+        }
+      },
+      {
+        "id": "module:input.rb",
+        "kind": "module",
+        "name": "input.rb",
+        "qualifiedName": "input.rb",
+        "span": {
+          "endCol": 1,
+          "endLine": 9,
+          "file": "input.rb",
+          "startCol": 1,
+          "startLine": 1
+        }
+      }
+    ],
+    "schemaVersion": 1
+  }
+}
