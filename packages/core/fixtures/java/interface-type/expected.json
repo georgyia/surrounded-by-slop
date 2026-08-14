@@ -1,0 +1,80 @@
+{
+  "diagnostics": [],
+  "graph": {
+    "edges": [
+      {
+        "from": "class:input.java#Handler",
+        "id": "contains:class:input.java#Handler->method:input.java#Handler.accepts",
+        "kind": "contains",
+        "to": "method:input.java#Handler.accepts"
+      },
+      {
+        "from": "class:input.java#Handler",
+        "id": "contains:class:input.java#Handler->method:input.java#Handler.handle",
+        "kind": "contains",
+        "to": "method:input.java#Handler.handle"
+      },
+      {
+        "from": "module:input.java",
+        "id": "contains:module:input.java->class:input.java#Handler",
+        "kind": "contains",
+        "to": "class:input.java#Handler"
+      }
+    ],
+    "nodes": [
+      {
+        "id": "class:input.java#Handler",
+        "kind": "class",
+        "name": "Handler",
+        "qualifiedName": "Handler",
+        "span": {
+          "endCol": 2,
+          "endLine": 7,
+          "file": "input.java",
+          "startCol": 1,
+          "startLine": 1
+        }
+      },
+      {
+        "id": "method:input.java#Handler.accepts",
+        "kind": "method",
+        "name": "accepts",
+        "qualifiedName": "Handler.accepts",
+        "span": {
+          "endCol": 6,
+          "endLine": 6,
+          "file": "input.java",
+          "startCol": 5,
+          "startLine": 4
+        }
+      },
+      {
+        "id": "method:input.java#Handler.handle",
+        "kind": "method",
+        "name": "handle",
+        "qualifiedName": "Handler.handle",
+        "span": {
+          "endCol": 30,
+          "endLine": 2,
+          "file": "input.java",
+          "startCol": 5,
+          "startLine": 2
+        }
+      },
+      {
+        "id": "module:input.java",
+        "kind": "module",
+        "name": "input.java",
+        "qualifiedName": "input.java",
+        "span": {
+          "endCol": 1,
+          "endLine": 8,
+          "file": "input.java",
+          "startCol": 1,
+          "startLine": 1
+        }
+      }
+    ],
+    "schemaVersion": 1
+  }
+}

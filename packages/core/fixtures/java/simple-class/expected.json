@@ -1,0 +1,42 @@
+{
+  "diagnostics": [],
+  "graph": {
+    "edges": [
+      {
+        "from": "module:input.java",
+        "id": "contains:module:input.java->class:input.java#Empty",
+        "kind": "contains",
+        "to": "class:input.java#Empty"
+      }
+    ],
+    "nodes": [
+      {
+        "id": "class:input.java#Empty",
+        "kind": "class",
+        "name": "Empty",
+        "qualifiedName": "Empty",
+        "span": {
+          "endCol": 2,
+          "endLine": 2,
+          "file": "input.java",
+          "startCol": 1,
+          "startLine": 1
+        }
+      },
+      {
+        "id": "module:input.java",
+        "kind": "module",
+        "name": "input.java",
+        "qualifiedName": "input.java",
+        "span": {
+          "endCol": 1,
+          "endLine": 3,
+          "file": "input.java",
+          "startCol": 1,
+          "startLine": 1
+        }
+      }
+    ],
+    "schemaVersion": 1
+  }
+}

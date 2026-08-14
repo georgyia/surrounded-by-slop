@@ -1,0 +1,120 @@
+{
+  "diagnostics": [],
+  "graph": {
+    "edges": [
+      {
+        "confidence": "low",
+        "from": "method:input.java#Pipeline.second",
+        "id": "calls:method:input.java#Pipeline.second->method:input.java#Pipeline.first",
+        "kind": "calls",
+        "to": "method:input.java#Pipeline.first"
+      },
+      {
+        "confidence": "low",
+        "from": "method:input.java#Pipeline.third",
+        "id": "calls:method:input.java#Pipeline.third->method:input.java#Pipeline.first",
+        "kind": "calls",
+        "to": "method:input.java#Pipeline.first"
+      },
+      {
+        "confidence": "low",
+        "from": "method:input.java#Pipeline.third",
+        "id": "calls:method:input.java#Pipeline.third->method:input.java#Pipeline.second",
+        "kind": "calls",
+        "to": "method:input.java#Pipeline.second"
+      },
+      {
+        "from": "class:input.java#Pipeline",
+        "id": "contains:class:input.java#Pipeline->method:input.java#Pipeline.first",
+        "kind": "contains",
+        "to": "method:input.java#Pipeline.first"
+      },
+      {
+        "from": "class:input.java#Pipeline",
+        "id": "contains:class:input.java#Pipeline->method:input.java#Pipeline.second",
+        "kind": "contains",
+        "to": "method:input.java#Pipeline.second"
+      },
+      {
+        "from": "class:input.java#Pipeline",
+        "id": "contains:class:input.java#Pipeline->method:input.java#Pipeline.third",
+        "kind": "contains",
+        "to": "method:input.java#Pipeline.third"
+      },
+      {
+        "from": "module:input.java",
+        "id": "contains:module:input.java->class:input.java#Pipeline",
+        "kind": "contains",
+        "to": "class:input.java#Pipeline"
+      }
+    ],
+    "nodes": [
+      {
+        "id": "class:input.java#Pipeline",
+        "kind": "class",
+        "name": "Pipeline",
+        "qualifiedName": "Pipeline",
+        "span": {
+          "endCol": 2,
+          "endLine": 13,
+          "file": "input.java",
+          "startCol": 1,
+          "startLine": 1
+        }
+      },
+      {
+        "id": "method:input.java#Pipeline.first",
+        "kind": "method",
+        "name": "first",
+        "qualifiedName": "Pipeline.first",
+        "span": {
+          "endCol": 6,
+          "endLine": 3,
+          "file": "input.java",
+          "startCol": 5,
+          "startLine": 2
+        }
+      },
+      {
+        "id": "method:input.java#Pipeline.second",
+        "kind": "method",
+        "name": "second",
+        "qualifiedName": "Pipeline.second",
+        "span": {
+          "endCol": 6,
+          "endLine": 7,
+          "file": "input.java",
+          "startCol": 5,
+          "startLine": 5
+        }
+      },
+      {
+        "id": "method:input.java#Pipeline.third",
+        "kind": "method",
+        "name": "third",
+        "qualifiedName": "Pipeline.third",
+        "span": {
+          "endCol": 6,
+          "endLine": 12,
+          "file": "input.java",
+          "startCol": 5,
+          "startLine": 9
+        }
+      },
+      {
+        "id": "module:input.java",
+        "kind": "module",
+        "name": "input.java",
+        "qualifiedName": "input.java",
+        "span": {
+          "endCol": 1,
+          "endLine": 14,
+          "file": "input.java",
+          "startCol": 1,
+          "startLine": 1
+        }
+      }
+    ],
+    "schemaVersion": 1
+  }
+}

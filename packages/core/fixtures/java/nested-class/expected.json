@@ -1,0 +1,99 @@
+{
+  "diagnostics": [],
+  "graph": {
+    "edges": [
+      {
+        "from": "class:input.java#Outer",
+        "id": "contains:class:input.java#Outer->class:input.java#Outer.Inner",
+        "kind": "contains",
+        "to": "class:input.java#Outer.Inner"
+      },
+      {
+        "from": "class:input.java#Outer",
+        "id": "contains:class:input.java#Outer->method:input.java#Outer.run",
+        "kind": "contains",
+        "to": "method:input.java#Outer.run"
+      },
+      {
+        "from": "class:input.java#Outer.Inner",
+        "id": "contains:class:input.java#Outer.Inner->method:input.java#Outer.Inner.help",
+        "kind": "contains",
+        "to": "method:input.java#Outer.Inner.help"
+      },
+      {
+        "from": "module:input.java",
+        "id": "contains:module:input.java->class:input.java#Outer",
+        "kind": "contains",
+        "to": "class:input.java#Outer"
+      }
+    ],
+    "nodes": [
+      {
+        "id": "class:input.java#Outer",
+        "kind": "class",
+        "name": "Outer",
+        "qualifiedName": "Outer",
+        "span": {
+          "endCol": 2,
+          "endLine": 9,
+          "file": "input.java",
+          "startCol": 1,
+          "startLine": 1
+        }
+      },
+      {
+        "id": "class:input.java#Outer.Inner",
+        "kind": "class",
+        "name": "Inner",
+        "qualifiedName": "Outer.Inner",
+        "span": {
+          "endCol": 6,
+          "endLine": 8,
+          "file": "input.java",
+          "startCol": 5,
+          "startLine": 5
+        }
+      },
+      {
+        "id": "method:input.java#Outer.Inner.help",
+        "kind": "method",
+        "name": "help",
+        "qualifiedName": "Outer.Inner.help",
+        "span": {
+          "endCol": 10,
+          "endLine": 7,
+          "file": "input.java",
+          "startCol": 9,
+          "startLine": 6
+        }
+      },
+      {
+        "id": "method:input.java#Outer.run",
+        "kind": "method",
+        "name": "run",
+        "qualifiedName": "Outer.run",
+        "span": {
+          "endCol": 6,
+          "endLine": 3,
+          "file": "input.java",
+          "startCol": 5,
+          "startLine": 2
+        }
+      },
+      {
+        "id": "module:input.java",
+        "kind": "module",
+        "name": "input.java",
+        "qualifiedName": "input.java",
+        "span": {
+          "endCol": 1,
+          "endLine": 10,
+          "file": "input.java",
+          "startCol": 1,
+          "startLine": 1
+        }
+      }
+    ],
+    "schemaVersion": 1
+  }
+}

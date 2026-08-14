@@ -1,0 +1,88 @@
+{
+  "diagnostics": [],
+  "graph": {
+    "edges": [
+      {
+        "confidence": "low",
+        "count": 2,
+        "from": "method:input.java#MathUtil.quad",
+        "id": "calls:method:input.java#MathUtil.quad->method:input.java#MathUtil.square",
+        "kind": "calls",
+        "to": "method:input.java#MathUtil.square"
+      },
+      {
+        "from": "class:input.java#MathUtil",
+        "id": "contains:class:input.java#MathUtil->method:input.java#MathUtil.quad",
+        "kind": "contains",
+        "to": "method:input.java#MathUtil.quad"
+      },
+      {
+        "from": "class:input.java#MathUtil",
+        "id": "contains:class:input.java#MathUtil->method:input.java#MathUtil.square",
+        "kind": "contains",
+        "to": "method:input.java#MathUtil.square"
+      },
+      {
+        "from": "module:input.java",
+        "id": "contains:module:input.java->class:input.java#MathUtil",
+        "kind": "contains",
+        "to": "class:input.java#MathUtil"
+      }
+    ],
+    "nodes": [
+      {
+        "id": "class:input.java#MathUtil",
+        "kind": "class",
+        "name": "MathUtil",
+        "qualifiedName": "MathUtil",
+        "span": {
+          "endCol": 2,
+          "endLine": 9,
+          "file": "input.java",
+          "startCol": 1,
+          "startLine": 1
+        }
+      },
+      {
+        "id": "method:input.java#MathUtil.quad",
+        "kind": "method",
+        "name": "quad",
+        "qualifiedName": "MathUtil.quad",
+        "span": {
+          "endCol": 6,
+          "endLine": 8,
+          "file": "input.java",
+          "startCol": 5,
+          "startLine": 6
+        }
+      },
+      {
+        "id": "method:input.java#MathUtil.square",
+        "kind": "method",
+        "name": "square",
+        "qualifiedName": "MathUtil.square",
+        "span": {
+          "endCol": 6,
+          "endLine": 4,
+          "file": "input.java",
+          "startCol": 5,
+          "startLine": 2
+        }
+      },
+      {
+        "id": "module:input.java",
+        "kind": "module",
+        "name": "input.java",
+        "qualifiedName": "input.java",
+        "span": {
+          "endCol": 1,
+          "endLine": 10,
+          "file": "input.java",
+          "startCol": 1,
+          "startLine": 1
+        }
+      }
+    ],
+    "schemaVersion": 1
+  }
+}

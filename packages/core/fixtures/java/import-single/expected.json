@@ -1,0 +1,118 @@
+{
+  "diagnostics": [],
+  "graph": {
+    "edges": [
+      {
+        "from": "class:com/example/Helper.java#Helper",
+        "id": "contains:class:com/example/Helper.java#Helper->method:com/example/Helper.java#Helper.help",
+        "kind": "contains",
+        "to": "method:com/example/Helper.java#Helper.help"
+      },
+      {
+        "from": "class:com/example/Main.java#Main",
+        "id": "contains:class:com/example/Main.java#Main->method:com/example/Main.java#Main.run",
+        "kind": "contains",
+        "to": "method:com/example/Main.java#Main.run"
+      },
+      {
+        "from": "module:com/example/Helper.java",
+        "id": "contains:module:com/example/Helper.java->class:com/example/Helper.java#Helper",
+        "kind": "contains",
+        "to": "class:com/example/Helper.java#Helper"
+      },
+      {
+        "from": "module:com/example/Main.java",
+        "id": "contains:module:com/example/Main.java->class:com/example/Main.java#Main",
+        "kind": "contains",
+        "to": "class:com/example/Main.java#Main"
+      },
+      {
+        "from": "module:com/example/Main.java",
+        "id": "imports:module:com/example/Main.java->module:com/example/Helper.java",
+        "kind": "imports",
+        "to": "module:com/example/Helper.java"
+      }
+    ],
+    "nodes": [
+      {
+        "id": "class:com/example/Helper.java#Helper",
+        "kind": "class",
+        "name": "Helper",
+        "qualifiedName": "Helper",
+        "span": {
+          "endCol": 2,
+          "endLine": 6,
+          "file": "com/example/Helper.java",
+          "startCol": 1,
+          "startLine": 3
+        }
+      },
+      {
+        "id": "class:com/example/Main.java#Main",
+        "kind": "class",
+        "name": "Main",
+        "qualifiedName": "Main",
+        "span": {
+          "endCol": 2,
+          "endLine": 7,
+          "file": "com/example/Main.java",
+          "startCol": 1,
+          "startLine": 3
+        }
+      },
+      {
+        "id": "method:com/example/Helper.java#Helper.help",
+        "kind": "method",
+        "name": "help",
+        "qualifiedName": "Helper.help",
+        "span": {
+          "endCol": 6,
+          "endLine": 5,
+          "file": "com/example/Helper.java",
+          "startCol": 5,
+          "startLine": 4
+        }
+      },
+      {
+        "id": "method:com/example/Main.java#Main.run",
+        "kind": "method",
+        "name": "run",
+        "qualifiedName": "Main.run",
+        "span": {
+          "endCol": 6,
+          "endLine": 6,
+          "file": "com/example/Main.java",
+          "startCol": 5,
+          "startLine": 4
+        }
+      },
+      {
+        "id": "module:com/example/Helper.java",
+        "kind": "module",
+        "name": "Helper.java",
+        "qualifiedName": "com/example/Helper.java",
+        "span": {
+          "endCol": 1,
+          "endLine": 7,
+          "file": "com/example/Helper.java",
+          "startCol": 1,
+          "startLine": 1
+        }
+      },
+      {
+        "id": "module:com/example/Main.java",
+        "kind": "module",
+        "name": "Main.java",
+        "qualifiedName": "com/example/Main.java",
+        "span": {
+          "endCol": 1,
+          "endLine": 8,
+          "file": "com/example/Main.java",
+          "startCol": 1,
+          "startLine": 1
+        }
+      }
+    ],
+    "schemaVersion": 1
+  }
+}
