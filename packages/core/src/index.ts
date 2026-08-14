@@ -28,6 +28,7 @@ export type {
   ExtractedControlFlow,
 } from "./cfg/types.js";
 export { validateCfg } from "./cfg/validate.js";
+export { builtinExporters, createDefaultExporterRegistry } from "./export/builtins.js";
 export { drawioExporter } from "./export/drawio.js";
 export {
   createExporterRegistry,

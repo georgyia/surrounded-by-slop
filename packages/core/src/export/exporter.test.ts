@@ -53,4 +53,21 @@ describe("createExporterRegistry", () => {
     registry.register(textExporter);
     expect(() => registry.register(textExporter)).toThrow(/already registered/);
   });
+
+  it("finds an exporter by extension, dotted or not, in any case", () => {
+    const registry = createExporterRegistry();
+    registry.register(textExporter);
+    for (const query of [".txt", "txt", ".TXT", "TXT"]) {
+      expect(registry.byExtension(query)).toBe(textExporter);
+    }
+    expect(registry.byExtension("nope")).toBeUndefined();
+  });
+
+  it("rejects two exporters claiming the same extension, naming the incumbent", () => {
+    const registry = createExporterRegistry();
+    registry.register(textExporter);
+    expect(() => registry.register({ ...textExporter, id: "other", displayName: "Other" })).toThrow(
+      /other claims \.txt, already taken by noop/,
+    );
+  });
 });
