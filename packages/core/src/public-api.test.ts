@@ -62,6 +62,7 @@ it("exports exactly the documented public api", () => {
     "reachableCfgBlocks",
     "reachableFrom",
     "reachedBy",
+    "rebaseGraph",
     "requiredLayout",
     "resolveJavaImport",
     "resolvePythonModule",

@@ -2,7 +2,6 @@ import * as assert from "node:assert";
 import type { DiagramData } from "@surrounded-by-slop/webview";
 import * as vscode from "vscode";
 import type { SlopApi } from "../../extension.js";
-import type { LogRecord } from "../../log.js";
 import { test, withTimeout } from "../harness.js";
 
 const EXTENSION_ID = "georgyia.surrounded-by-slop";
@@ -22,32 +21,61 @@ function nextVisualize(api: SlopApi): Promise<DiagramData> {
   });
 }
 
-// The interim contract for #74: until an id scheme keeps two roots'
-// identically-named modules apart, the map covers the first root only —
-// loudly, never silently.
-test("a multi-root workspace maps only the first root, and says so", async () => {
+async function mapWorkspace(api: SlopApi): Promise<DiagramData> {
+  const visualized = nextVisualize(api);
+  await api.visualizeWorkspace(new vscode.CancellationTokenSource().token);
+  return withTimeout(visualized, 20_000, "multi-root workspace visualize");
+}
+
+test("a multi-root workspace maps every root (#74)", async () => {
   const api = await getApi();
   const folders = vscode.workspace.workspaceFolders ?? [];
   assert.strictEqual(folders.length, 2, "the host opened the two-root .code-workspace");
 
-  const logs: LogRecord[] = [];
-  const logSubscription = api.onDidLog((record) => logs.push(record));
-  try {
-    const visualized = nextVisualize(api);
-    await api.visualizeWorkspace(new vscode.CancellationTokenSource().token);
-    const diagram = await withTimeout(visualized, 20_000, "multi-root workspace visualize");
+  const diagram = await mapWorkspace(api);
+  const ids = new Set(diagram.graph.nodes.map((node) => node.id));
 
-    const names = new Set(diagram.graph.nodes.map((node) => node.name));
-    assert.ok(names.has("alpha.ts"), `the first root is mapped (got ${[...names].join(", ")})`);
-    assert.ok(!names.has("zeta.ts"), "the second root is not silently mixed onto the map");
+  // Both roots are on the map, each under its own name.
+  assert.ok(ids.has("module:workspace/alpha.ts"), `first root mapped (got ${[...ids].join(", ")})`);
+  assert.ok(ids.has("module:workspace-b/zeta.ts"), "second root mapped");
+});
 
-    const warning = logs.find(
-      (record) => record.level === "warn" && record.message.includes("Multi-root workspace"),
-    );
-    assert.ok(warning, "the skipped roots are called out in the output channel");
-    assert.ok(warning.message.includes("workspace-b"), "the warning names the unmapped root");
-    assert.ok(warning.message.includes("issues/74"), "the warning links the tracking issue");
-  } finally {
-    logSubscription.dispose();
-  }
+test("identically-named modules in two roots stay separate nodes (#74)", async () => {
+  const api = await getApi();
+  const diagram = await mapWorkspace(api);
+  const ids = diagram.graph.nodes.map((node) => node.id);
+
+  // Both roots contain alpha.ts. Before the root prefix they minted the same
+  // id and silently merged into one box.
+  assert.ok(ids.includes("module:workspace/alpha.ts"), "the first root's alpha.ts");
+  assert.ok(ids.includes("module:workspace-b/alpha.ts"), "the second root's alpha.ts");
+  assert.strictEqual(new Set(ids).size, ids.length, "no duplicate ids on the merged map");
+});
+
+test("a node from the second root reveals the file in that root (#74)", async () => {
+  const api = await getApi();
+  await mapWorkspace(api);
+
+  // The workspace map opens collapsed to modules, so a module node is what a
+  // user actually has to click.
+  await api.revealNode("module:workspace-b/zeta.ts");
+  const editor = vscode.window.activeTextEditor;
+  assert.ok(editor, "an editor opened");
+  assert.ok(
+    editor.document.uri.path.endsWith("workspace-b/zeta.ts"),
+    `the second root's file opened, not the first root's (got ${editor.document.uri.path})`,
+  );
+});
+
+test("each root's own path aliases are used, not the first root's (#74)", async () => {
+  const api = await getApi();
+  const diagram = await mapWorkspace(api);
+
+  // The first root has a tsconfig with `@/*` aliases; the second has none.
+  // Analyzing per root means the second root's files are not resolved through
+  // the first root's baseUrl, which would draw them as external packages.
+  const externalFromB = diagram.graph.nodes.filter(
+    (node) => node.external === true && node.qualifiedName.includes("workspace-b"),
+  );
+  assert.deepStrictEqual(externalFromB, [], "no file of the second root is mapped as external");
 });

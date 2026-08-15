@@ -117,6 +117,7 @@ export {
   type RankOptions,
   rankNodes,
 } from "./transforms/rank.js";
+export { rebaseGraph } from "./transforms/rebase.js";
 export {
   bestFolderDepth,
   collapseToFolders,
