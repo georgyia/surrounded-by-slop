@@ -489,60 +489,73 @@ export class VisualizationController implements vscode.Disposable {
       );
       return;
     }
-    // Multi-root: module ids are root-relative paths, so two roots can both
-    // contain src/index.ts and collide — an id scheme for that is still open
-    // (#74). Until then map the first root only, and say so out loud instead
-    // of silently mixing roots into one confidently-wrong graph.
+    // Every root is mapped (#74). Ids stay unambiguous because a multi-root
+    // workspace prefixes each path with its root's name, while a single root
+    // keeps bare paths — see @surrounded-by-slop/host/roots.
+    const { rootPrefixes } = await import("@surrounded-by-slop/host/roots");
+    const prefixes = rootPrefixes(folders.map((entry) => entry.name));
     if (folders.length > 1) {
-      const skipped = folders.slice(1).map((other) => other.name);
-      this.logger.warn(
-        `Multi-root workspace: mapping only "${folder.name}". Not mapped: ${skipped.join(", ")}. ` +
-          "Multi-root support is tracked at https://github.com/georgyia/surrounded-by-slop/issues/74.",
-      );
-      void vscode.window.showWarningMessage(
-        `Surrounded by Slop: multi-root workspaces aren't supported yet — mapping only "${folder.name}" (${skipped.length} other root${skipped.length === 1 ? "" : "s"} left off the map).`,
+      this.logger.info(
+        `Multi-root workspace: mapping ${folders.length} roots (${folders.map((entry) => entry.name).join(", ")}). Paths are prefixed by root.`,
       );
     }
     try {
       const config = readConfig();
-      const uris = await vscode.workspace.findFiles(
-        new vscode.RelativePattern(
-          folder,
-          braceGlob(config.include) ?? "**/*.{ts,tsx,mts,cts,js,jsx,mjs,cjs,py}",
-        ),
-        braceGlob(config.exclude),
-        MAX_WORKSPACE_FILES,
-        token,
-      );
-      if (token.isCancellationRequested) {
-        return;
+      // Per root, so the file budget is shared and each root keeps its own
+      // relative paths; roots are analyzed separately further down because
+      // their tsconfig aliases differ.
+      const perRoot: { path: string; text: string }[][] = folders.map(() => []);
+      let discovered = 0;
+      for (const [rootIndex, root] of folders.entries()) {
+        const remaining = MAX_WORKSPACE_FILES - discovered;
+        if (remaining <= 0) {
+          break;
+        }
+        const uris = await vscode.workspace.findFiles(
+          new vscode.RelativePattern(
+            root,
+            braceGlob(config.include) ?? "**/*.{ts,tsx,mts,cts,js,jsx,mjs,cjs,py}",
+          ),
+          braceGlob(config.exclude),
+          remaining,
+          token,
+        );
+        if (token.isCancellationRequested) {
+          return;
+        }
+        discovered += uris.length;
+        const sourceUris = config.includeTests ? uris : uris.filter((uri) => !isTestFile(uri.path));
+        for (const uri of sourceUris) {
+          if (token.isCancellationRequested) {
+            return;
+          }
+          // Root-relative, unprefixed: each root is analyzed as its own
+          // project so resolvers behave exactly as in a single-root workspace.
+          // The prefix goes on afterwards, via rebaseGraph.
+          const relative = vscode.workspace.asRelativePath(uri, false);
+          // Skip files too big to be hand-written — minified bundles and generated
+          // blobs blow the analyzer's stack and aren't worth visualizing anyway.
+          const stat = await vscode.workspace.fs.stat(uri);
+          if (stat.size > MAX_FILE_BYTES) {
+            this.logger.warn(
+              `Skipped ${relative} (${Math.round(stat.size / 1024)} KB — too large).`,
+            );
+            continue;
+          }
+          const text = new TextDecoder().decode(await vscode.workspace.fs.readFile(uri));
+          if (looksMinified(text)) {
+            this.logger.warn(`Skipped ${relative} (looks minified/generated — not worth mapping).`);
+            continue;
+          }
+          perRoot[rootIndex]?.push({ path: relative, text });
+        }
       }
-      if (uris.length >= MAX_WORKSPACE_FILES) {
+      if (discovered >= MAX_WORKSPACE_FILES) {
         this.logger.warn(
           `Workspace has more than ${MAX_WORKSPACE_FILES} files; mapping the first ${MAX_WORKSPACE_FILES}. Narrow it with slop.include / slop.exclude.`,
         );
       }
-      const sourceUris = config.includeTests ? uris : uris.filter((uri) => !isTestFile(uri.path));
-      const inputs: { path: string; text: string }[] = [];
-      for (const uri of sourceUris) {
-        if (token.isCancellationRequested) {
-          return;
-        }
-        const relative = vscode.workspace.asRelativePath(uri, false);
-        // Skip files too big to be hand-written — minified bundles and generated
-        // blobs blow the analyzer's stack and aren't worth visualizing anyway.
-        const stat = await vscode.workspace.fs.stat(uri);
-        if (stat.size > MAX_FILE_BYTES) {
-          this.logger.warn(`Skipped ${relative} (${Math.round(stat.size / 1024)} KB — too large).`);
-          continue;
-        }
-        const text = new TextDecoder().decode(await vscode.workspace.fs.readFile(uri));
-        if (looksMinified(text)) {
-          this.logger.warn(`Skipped ${relative} (looks minified/generated — not worth mapping).`);
-          continue;
-        }
-        inputs.push({ path: relative, text });
-      }
+      const inputs = perRoot.flat();
       if (inputs.length === 0) {
         void vscode.window.showInformationMessage(
           "Surrounded by Slop: no TypeScript or JavaScript files found here.",
@@ -559,38 +572,62 @@ export class VisualizationController implements vscode.Disposable {
           return token.isCancellationRequested;
         },
       };
-      // Each language analyzes with its own adapter; the maps merge afterwards
-      // (module ids are path-based, so they can never collide).
-      const tsInputs = inputs.filter((input) => treeSitterLanguageFor(input.path) === undefined);
+      // Every root is analyzed as its own project — its own tsconfig aliases
+      // (#68), and resolvers that see only its files, exactly as in a
+      // single-root workspace — and only then moved under its prefix. Doing it
+      // the other way round would break any resolver that looks a module path
+      // up in the file set. Within a root, each language analyzes with its own
+      // adapter; the maps merge afterwards (ids are path-based).
+      const { discoverAliasOptions } = await import("@surrounded-by-slop/host/tsconfig");
       const results = [];
-      if (tsInputs.length > 0) {
-        // Without the project's own aliases, every `@/foo` import resolves to
-        // nothing and the map draws the project's own code as external
-        // packages — the map is then confidently wrong rather than empty (#68).
-        const { discoverAliasOptions } = await import("@surrounded-by-slop/host/tsconfig");
-        const aliases = discoverAliasOptions(folder.uri.fsPath);
-        if (aliases.options === undefined) {
-          this.logger.info(`Path aliases: ${aliases.reason ?? "none"}.`);
-        } else {
-          const count = Object.keys(aliases.options.paths).length;
-          this.logger.info(
-            `Path aliases: resolving ${count} pattern(s) against ${aliases.options.baseUrl}.`,
+      for (const [rootIndex, root] of folders.entries()) {
+        const rootInputs = perRoot[rootIndex] ?? [];
+        if (rootInputs.length === 0) {
+          continue;
+        }
+        const rootResults = [];
+        const tsInputs = rootInputs.filter(
+          (input) => treeSitterLanguageFor(input.path) === undefined,
+        );
+        if (tsInputs.length > 0) {
+          // Without the project's own aliases, every `@/foo` import resolves to
+          // nothing and the map draws the project's own code as external
+          // packages — the map is then confidently wrong rather than empty (#68).
+          const aliases = discoverAliasOptions(root.uri.fsPath);
+          const where = folders.length > 1 ? ` in "${root.name}"` : "";
+          if (aliases.options === undefined) {
+            this.logger.info(`Path aliases${where}: ${aliases.reason ?? "none"}.`);
+          } else {
+            const count = Object.keys(aliases.options.paths).length;
+            this.logger.info(
+              `Path aliases${where}: resolving ${count} pattern(s) against ${aliases.options.baseUrl}.`,
+            );
+          }
+          rootResults.push(
+            analyzeTypeScriptProject(tsInputs, {
+              cancellation,
+              ...(aliases.options === undefined
+                ? {}
+                : { adapterOptions: { compilerOptions: aliases.options } }),
+            }),
           );
         }
-        results.push(
-          analyzeTypeScriptProject(tsInputs, {
-            cancellation,
-            ...(aliases.options === undefined
-              ? {}
-              : { adapterOptions: { compilerOptions: aliases.options } }),
-          }),
-        );
-      }
-      for (const language of TREE_SITTER_LANGUAGES) {
-        const owned = inputs.filter((input) => input.path.endsWith(language.fileExtension));
-        if (owned.length > 0) {
-          results.push((await treeSitterAdapter(language)).analyze(owned, { cancellation }));
+        for (const language of TREE_SITTER_LANGUAGES) {
+          const owned = rootInputs.filter((input) => input.path.endsWith(language.fileExtension));
+          if (owned.length > 0) {
+            rootResults.push((await treeSitterAdapter(language)).analyze(owned, { cancellation }));
+          }
         }
+        const prefix = prefixes[rootIndex] ?? "";
+        const merged = await mergeResults(rootResults);
+        results.push({
+          graph: core.rebaseGraph(merged.graph, prefix),
+          diagnostics: merged.diagnostics.map((diagnostic) =>
+            diagnostic.file === undefined || prefix === ""
+              ? diagnostic
+              : { ...diagnostic, file: `${prefix}/${diagnostic.file}` },
+          ),
+        });
       }
       const analyzed = await mergeResults(results);
       for (const diagnostic of analyzed.diagnostics) {

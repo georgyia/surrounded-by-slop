@@ -6,6 +6,7 @@ export {
   looksMinified,
 } from "./decisions.js";
 export { type DiscoverOptions, discoverFiles } from "./discovery.js";
+export { prefixPath, rootPrefixes, splitRootPath } from "./roots.js";
 export {
   type AliasDiscovery,
   type AliasOptions,

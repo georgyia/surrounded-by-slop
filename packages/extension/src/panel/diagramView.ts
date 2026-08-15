@@ -1,4 +1,5 @@
 import type { SourceSpan } from "@surrounded-by-slop/core";
+import { rootPrefixes, splitRootPath } from "@surrounded-by-slop/host/roots";
 import type {
   ColorTheme,
   DiagramData,
@@ -140,9 +141,24 @@ export class DiagramView {
     }
   }
 
+  /**
+   * Turn a graph path back into a file. In a multi-root workspace those paths
+   * carry their root's name (#74), so the first segment picks the root; a path
+   * no root claims — a diagram restored from a different workspace — falls
+   * back to the first root rather than silently opening the wrong file.
+   */
   private workspaceUri(file: string): vscode.Uri | undefined {
-    const folder = vscode.workspace.workspaceFolders?.[0];
-    return folder === undefined ? undefined : vscode.Uri.joinPath(folder.uri, file);
+    const folders = vscode.workspace.workspaceFolders ?? [];
+    const [first] = folders;
+    if (first === undefined) {
+      return undefined;
+    }
+    const split = splitRootPath(rootPrefixes(folders.map((folder) => folder.name)), file);
+    if (split === undefined) {
+      return vscode.Uri.joinPath(first.uri, file);
+    }
+    const root = folders[split.rootIndex] ?? first;
+    return vscode.Uri.joinPath(root.uri, split.relative);
   }
 
   dispose(): void {

@@ -20,6 +20,9 @@
       "discovery": [
         "dist/discovery.d.ts"
       ],
+      "roots": [
+        "dist/roots.d.ts"
+      ],
       "tsconfig": [
         "dist/tsconfig.d.ts"
       ]
@@ -37,6 +40,10 @@
     "./discovery": {
       "types": "./dist/discovery.d.ts",
       "import": "./dist/discovery.js"
+    },
+    "./roots": {
+      "types": "./dist/roots.d.ts",
+      "import": "./dist/roots.js"
     },
     "./tsconfig": {
       "types": "./dist/tsconfig.d.ts",
