@@ -22,6 +22,7 @@
     "test:watch": "vitest",
     "package": "pnpm --filter surrounded-by-slop run package",
     "changeset": "changeset",
+    "bench:agent": "pnpm --filter @surrounded-by-slop/core build && pnpm --filter @surrounded-by-slop/host build && pnpm --filter @surrounded-by-slop/cli build && node scripts/agent-eval.mjs",
     "bench": "pnpm --filter @surrounded-by-slop/core build && node scripts/bench.mjs",
     "bench:layout-direction": "pnpm --filter @surrounded-by-slop/core build && pnpm --filter @surrounded-by-slop/host build && node scripts/layout-direction.mjs",
     "docs:agent": "pnpm --filter @surrounded-by-slop/core build && pnpm --filter @surrounded-by-slop/cli build && node scripts/agent-docs.mjs",

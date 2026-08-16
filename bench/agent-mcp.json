@@ -1,0 +1,9 @@
+{
+  "$comment": "Condition B of the agent eval (SBS-119): the same agent, plus the sbs graph.",
+  "mcpServers": {
+    "slop": {
+      "command": "node",
+      "args": ["../../packages/cli/dist/bin.js", "mcp"]
+    }
+  }
+}

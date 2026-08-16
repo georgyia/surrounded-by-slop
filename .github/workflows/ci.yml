@@ -40,6 +40,11 @@ jobs:
             git --no-pager diff -- docs/agent-interface.md
             exit 1
           fi
+      # The eval harness itself spends API tokens and is never CI-gated, but
+      # its gold set is checked against the real graph here — free, and it
+      # stops the question set rotting as the fixtures change (SBS-119).
+      - name: Agent eval gold set is current
+        run: node scripts/agent-eval.mjs --verify
 
   test:
     name: Test (${{ matrix.os }})

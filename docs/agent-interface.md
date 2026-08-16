@@ -356,9 +356,54 @@ the [user guide](user-guide.md#language-limits).
 
 ## Performance and token claims
 
-This page deliberately contains no "saves N% of tokens" numbers. The eval
-harness that would measure them is
-[#87](https://github.com/georgyia/surrounded-by-slop/issues/87); until it
-reports, any figure here would be marketing rather than measurement. `--budget`
-lets you cap the cost yourself, and `sbs map --budget <n>` tells you how many
-symbols of the total it fitted.
+**There are no numbers on this page yet, and that is deliberate.** Every tool
+in this space advertises spectacular figures — "94% fewer tool calls", "10×
+token cut" — usually unreproducible. Rule 2 says tested means tested, and that
+applies to a marketing claim exactly as it applies to code.
+
+So the harness exists first, and the numbers come from it or not at all.
+
+### Methodology
+
+`pnpm bench:agent` runs a committed gold question set through the same agent
+twice:
+
+- **Condition A** — plain repo access. The agent greps and reads.
+- **Condition B** — the same agent, plus the `sbs` MCP server registered and
+  the `AGENTS.md` bootstrap block present.
+
+Both use the same model at temperature 0, and each question is run three times
+by default (`--runs`). Per question the harness records:
+
+| Measure | How |
+|---|---|
+| Correctness | Recall against a gold answer: does the reply name the symbols and files the graph proves are involved? Identifiers are matched on word boundaries, so `recharge` never counts as `charge`. |
+| Tokens | Input + output + cache tokens from the agent transcript. Unmeasured means *unmeasured* — it is reported as such, never as zero. |
+| Tool calls | `tool_use` blocks in the transcript. |
+| Wall-clock | Seconds per question. |
+
+The question set lives in
+[`bench/agent-questions.json`](../bench/agent-questions.json) — 20 questions in
+three families: *where-defined*, *who-calls*, and *what-breaks*, over
+`examples/orders-app` and `packages/core`. Every expected answer is checked
+against the real semantic graph by `node scripts/agent-eval.mjs --verify`, which
+runs in CI and costs nothing, so the gold set cannot rot as the fixtures change.
+Scoring is pure and unit-tested on canned transcripts, so the numbers are
+reproducible from a transcript without an API key.
+
+**The harness is not CI-gated**: it spends real API tokens, so it is a
+maintainer tool, run deliberately before making or refreshing a claim. Results
+are written to `bench/agent-results.local.json` with the date, model and commit.
+
+Adding a question: give it a stable id, name a repo and a family, and list only
+what the graph can prove.
+
+### Results
+
+*Not yet run.* When it is, the table produced by `pnpm bench:agent` goes here,
+with its date, model and commit — and only figures from that table may be cited
+anywhere else in this repository.
+
+In the meantime, the honest and checkable statement is the mechanical one:
+`sbs map --budget <n>` caps its own output at `n` tokens and reports how many
+of the repo's symbols fitted.
