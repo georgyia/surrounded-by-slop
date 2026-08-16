@@ -1,0 +1,156 @@
+{
+  "$comment": [
+    "Gold question set for `pnpm bench:agent` (SBS-119).",
+    "Every `expect` entry is verified against the real semantic graph by",
+    "`node scripts/agent-eval.mjs --verify`, which runs in CI and costs no API",
+    "tokens — so the gold set cannot rot as the fixtures change.",
+    "Adding a question: pick a family, give it a stable id, name the repo, and",
+    "list the symbols and/or files a correct answer must mention. Keep the",
+    "expectations to things the graph can prove, not prose."
+  ],
+  "questions": [
+    {
+      "id": "where-charge",
+      "family": "where-defined",
+      "repo": "examples/orders-app",
+      "prompt": "Where is the payment charging logic defined? Name the file and the function.",
+      "expect": { "symbols": ["charge"], "files": ["src/payments.ts"] }
+    },
+    {
+      "id": "where-money-format",
+      "family": "where-defined",
+      "repo": "examples/orders-app",
+      "prompt": "Which function formats a Money value for display, and where does it live?",
+      "expect": { "symbols": ["format"], "files": ["src/util/money.ts"] }
+    },
+    {
+      "id": "where-notify",
+      "family": "where-defined",
+      "repo": "examples/orders-app",
+      "prompt": "Where is the notification sending implemented?",
+      "expect": { "symbols": ["notify"], "files": ["src/notify.ts"] }
+    },
+    {
+      "id": "where-stock-check",
+      "family": "where-defined",
+      "repo": "examples/orders-app",
+      "prompt": "Which function answers whether a SKU is in stock, and in which file?",
+      "expect": { "symbols": ["inStock"], "files": ["src/inventory.ts"] }
+    },
+    {
+      "id": "where-order-service",
+      "family": "where-defined",
+      "repo": "examples/orders-app",
+      "prompt": "Which class owns order placement, and where is it declared?",
+      "expect": { "symbols": ["OrderService"], "files": ["src/orders.ts"] }
+    },
+    {
+      "id": "where-card-masking",
+      "family": "where-defined",
+      "repo": "examples/orders-app",
+      "prompt": "Where is the card number masked before it is logged or shown?",
+      "expect": { "symbols": ["mask"], "files": ["src/payments.ts"] }
+    },
+    {
+      "id": "where-rank-nodes",
+      "family": "where-defined",
+      "repo": "packages/core",
+      "prompt": "Where is the node ranking used by the repo map implemented?",
+      "expect": { "symbols": ["rankNodes"], "files": ["src/transforms/rank.ts"] }
+    },
+    {
+      "id": "where-edge-emphasis",
+      "family": "where-defined",
+      "repo": "packages/core",
+      "prompt": "Which function decides how strongly an edge is drawn, and where does it live?",
+      "expect": { "symbols": ["edgeEmphasis"], "files": ["src/layout/edgeEmphasis.ts"] }
+    },
+    {
+      "id": "callers-charge",
+      "family": "who-calls",
+      "repo": "examples/orders-app",
+      "prompt": "What calls charge()? List every caller.",
+      "expect": { "symbols": ["place", "placeOrderFinal", "placeOrderFinal2", "main"] }
+    },
+    {
+      "id": "callers-money",
+      "family": "who-calls",
+      "repo": "examples/orders-app",
+      "prompt": "Which functions call money()?",
+      "expect": { "symbols": ["money"], "minSymbols": 1 }
+    },
+    {
+      "id": "callers-notify",
+      "family": "who-calls",
+      "repo": "examples/orders-app",
+      "prompt": "Who calls notify()?",
+      "expect": { "symbols": ["notify"], "minSymbols": 1 }
+    },
+    {
+      "id": "callers-reserve",
+      "family": "who-calls",
+      "repo": "examples/orders-app",
+      "prompt": "What calls reserve() in the inventory module?",
+      "expect": { "symbols": ["reserve"], "minSymbols": 1 }
+    },
+    {
+      "id": "callees-place-order",
+      "family": "who-calls",
+      "repo": "examples/orders-app",
+      "prompt": "What does OrderService.placeOrderFinal call, directly or indirectly?",
+      "expect": { "symbols": ["charge", "notify", "reserve"] }
+    },
+    {
+      "id": "importers-payments",
+      "family": "who-calls",
+      "repo": "examples/orders-app",
+      "prompt": "Which modules import src/payments.ts?",
+      "expect": { "files": ["src/index.ts", "src/orders.ts"] }
+    },
+    {
+      "id": "importers-money",
+      "family": "who-calls",
+      "repo": "examples/orders-app",
+      "prompt": "Which files depend on the money utility module?",
+      "expect": { "files": ["src/payments.ts"], "minFiles": 1 }
+    },
+    {
+      "id": "breaks-money",
+      "family": "what-breaks",
+      "repo": "examples/orders-app",
+      "prompt": "If the Money representation changed, which code paths would be affected?",
+      "expect": {
+        "symbols": ["money", "format"],
+        "files": ["src/util/money.ts", "src/payments.ts"]
+      }
+    },
+    {
+      "id": "breaks-charge",
+      "family": "what-breaks",
+      "repo": "examples/orders-app",
+      "prompt": "If charge() changed its return type, what would need updating?",
+      "expect": { "symbols": ["charge"], "files": ["src/orders.ts"], "minFiles": 1 }
+    },
+    {
+      "id": "breaks-inventory",
+      "family": "what-breaks",
+      "repo": "examples/orders-app",
+      "prompt": "Which parts of the app reach the inventory module?",
+      "expect": { "files": ["src/inventory.ts", "src/orders.ts"] }
+    },
+    {
+      "id": "breaks-rank",
+      "family": "what-breaks",
+      "repo": "packages/core",
+      "prompt": "If rankNodes changed its scoring, which parts of core would be affected?",
+      "expect": { "symbols": ["rankNodes"], "files": ["src/transforms/rank.ts"], "minFiles": 1 }
+    },
+    {
+      "id": "breaks-edge-id",
+      "family": "what-breaks",
+      "repo": "packages/core",
+      "prompt": "What depends on the shape of edge ids?",
+      "expect": { "symbols": ["edgeId"], "files": ["src/ir/ids.ts"], "minFiles": 1 }
+    }
+  ]
+}

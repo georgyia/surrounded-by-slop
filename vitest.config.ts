@@ -10,6 +10,10 @@ export default defineConfig({
       "packages/webview/src/**/*.test.ts",
       "packages/cli/src/**/*.test.ts",
       "packages/host/src/**/*.test.ts",
+      // The agent eval harness (SBS-119) drives a real agent and costs real
+      // tokens, so only its *scoring* half is tested here — pure, and run on
+      // canned transcripts so CI never needs an API key.
+      "scripts/agent-eval/*.test.mjs",
     ],
     coverage: {
       provider: "v8",
