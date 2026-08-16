@@ -24,6 +24,7 @@
     "changeset": "changeset",
     "bench": "pnpm --filter @surrounded-by-slop/core build && node scripts/bench.mjs",
     "bench:layout-direction": "pnpm --filter @surrounded-by-slop/core build && pnpm --filter @surrounded-by-slop/host build && node scripts/layout-direction.mjs",
+    "docs:agent": "pnpm --filter @surrounded-by-slop/core build && pnpm --filter @surrounded-by-slop/cli build && node scripts/agent-docs.mjs",
     "docs:diagrams": "pnpm --filter @surrounded-by-slop/core build && pnpm --filter @surrounded-by-slop/host build && node scripts/architecture-diagrams.mjs"
   },
   "devDependencies": {
