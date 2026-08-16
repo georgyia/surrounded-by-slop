@@ -199,6 +199,17 @@ understanding. So this project runs both ways.
   bar as any human PR — strict TS, coverage the linter enforces, a written
   justification for every dependency. [That bar is the point](#principles).
 
+Point an agent at it in one line, then read the full guide:
+
+```console
+$ claude mcp add slop -- npx -y @surrounded-by-slop/cli mcp   # or: npx @surrounded-by-slop/cli init
+```
+
+Every command, the map's line grammar (parse it yourself), and what each
+language's analyzer actually knows: **[docs/agent-interface.md](docs/agent-interface.md)**.
+All of it runs locally — no network calls, no telemetry, and `sbs mcp` speaks
+stdio rather than opening a port.
+
 > The tool that makes slop legible to humans hands the same map to the model.
 > Details, commands, and the development story: **[CODEX.md](CODEX.md)**.
 

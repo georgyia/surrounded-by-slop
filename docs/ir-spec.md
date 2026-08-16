@@ -126,3 +126,8 @@ canonical artifact, so adding them never touches `schemaVersion`.
   sorted-id iteration order, lexicographic tie-break. Powers the token-budgeted
   repo map. Optional `seeds` supply a personalization vector for task-focused
   rankings.
+
+The repo map's own text format is likewise derived, not part of this schema.
+Its line grammar is normative and specified in
+[the agent interface guide](agent-interface.md#the-map-line-grammar), so a
+third-party tool can parse `sbs map` output without importing the library.

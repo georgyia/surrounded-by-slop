@@ -29,6 +29,17 @@ jobs:
       - run: pnpm build
       - run: pnpm lint
       - run: pnpm typecheck
+      # docs/agent-interface.md pastes real command output (SBS-120). Rerun the
+      # generator and fail if anything moved, so the page can never promise
+      # behaviour the CLI no longer has.
+      - name: Agent docs are current
+        run: |
+          pnpm docs:agent
+          if ! git diff --quiet -- docs/agent-interface.md; then
+            echo '::error::docs/agent-interface.md is stale — run `pnpm docs:agent` and commit the result.'
+            git --no-pager diff -- docs/agent-interface.md
+            exit 1
+          fi
 
   test:
     name: Test (${{ matrix.os }})
