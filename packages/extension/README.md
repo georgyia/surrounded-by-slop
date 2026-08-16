@@ -11,18 +11,19 @@ Everything runs locally. No code ever leaves your machine.
 ## What you get
 
 - **Visualize File** (`⌘⇧V`) — structure + call diagram of the current file.
-  TypeScript/JavaScript with real type-checker resolution; Python via
-  tree-sitter.
-- **Visualize Workspace** — a module map of the whole repo, TS and Python on
+  TypeScript/JavaScript with real type-checker resolution; Python, Go, Java,
+  Rust, Ruby and C# via tree-sitter.
+- **Visualize Workspace** — a module map of the whole repo, every language on
   one canvas. Busy repos open as a folder overview you drill into, rather than
   a wall of boxes; folders expand to modules, modules to their members.
+  Multi-root workspaces map every root, each under its own name.
 - **Visualize Function Flow** — a control-flow chart of the function under
   your cursor: labeled true/false branches, loop back-edges, unreachable code
   dimmed and badged, and a per-variable read/write overlay.
 - **Navigate** — click any box to jump to its source line; search, filter
   chips, isolate a node's neighborhood, hover for signatures.
-- **Export** — draw.io, Mermaid, SVG, or raw JSON; what you export is exactly
-  what you saw.
+- **Export** — draw.io, Mermaid, Graphviz DOT, PlantUML, SVG, or raw JSON; what
+  you export is exactly what you saw.
 
 ### Diagrams you can actually read
 
@@ -40,7 +41,7 @@ instead of disconnected boxes.
 
 ## Quick start
 
-1. Install, open any TypeScript or Python file.
+1. Install, open any TypeScript, JavaScript, Python, Go, Java, Rust, Ruby or C# file.
 2. `⌘⇧V` (or right-click → *Visualize File*).
 3. Click a box — you're at its declaration. That's the loop.
 
@@ -59,9 +60,10 @@ the blast radius of a diff.
 
 ## Honest by design
 
-Heuristic edges (e.g. Python calls) are drawn dimmed and marked
-low-confidence — the diagram never pretends to know more than the analyzer
-does. Guardrail messages tell you when something was skipped or folded, and
+Only TypeScript/JavaScript call edges are resolved by a type checker. Every
+tree-sitter language matches calls by name, so those edges are drawn dimmed and
+marked low-confidence — the diagram never pretends to know more than the
+analyzer does. Guardrail messages tell you when something was skipped or folded, and
 the Output panel says why.
 
 Docs, roadmap, contributing:

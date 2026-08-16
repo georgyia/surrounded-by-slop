@@ -53,7 +53,7 @@ Chart any function's control flow from the cursor, then export exactly what you 
 
 ![Export to draw.io](assets/export-drawio.gif)
 
-## What it will do
+## What it does
 
 - 🗺️ **Workspace map** — modules, imports, and who actually depends on whom (spoiler: everything on `utils`)
 - 🕸️ **Call graphs that don't guess** — resolved through the TypeScript compiler, not regex and optimism
@@ -215,16 +215,17 @@ stdio rather than opening a port.
 
 ## Status
 
-Pre-alpha. The foundation is built and gated (strict TS, 3-OS CI, coverage thresholds the linter actually enforces); the visualization pipeline is landing milestone by milestone:
+Published on both marketplaces and still moving fast. The foundation is gated (strict TS, 3-OS CI, coverage thresholds the linter actually enforces), and the pipeline has landed milestone by milestone:
 
 | Milestone | Ships | Status |
 | --------- | ----- | ------ |
 | **M0 · Foundation** | monorepo, CI gates, governance | ✅ done |
-| **M1 · First Light** | TS/JS file → interactive diagram + Mermaid export | 🔨 next |
-| **M2 · The Map** | workspace call/import graph, click-to-source, draw.io + SVG | ⏳ |
-| **M3 · X-Ray** | control-flow & data-flow overlays, search, filters | ⏳ |
-| **M4 · Babel** | tree-sitter adapter layer, Python first | ⏳ |
-| **M5 · Launch** | VS Code Marketplace + Open VSX, docs site | ⏳ |
+| **M1 · First Light** | TS/JS file → interactive diagram + Mermaid export | ✅ done |
+| **M2 · The Map** | workspace call/import graph, click-to-source, draw.io + SVG | ✅ done |
+| **M3 · X-Ray** | control-flow & data-flow overlays, search, filters | ✅ done |
+| **M4 · Babel** | tree-sitter adapter layer — Python, Go, Java, Rust, Ruby, C# | ✅ done |
+| **M5 · Launch** | VS Code Marketplace + Open VSX | ✅ published (no docs site yet) |
+| **M6 · Agent Interface** | `sbs` CLI + MCP server, token-budgeted repo map | ✅ done (npm publish pending) |
 
 Issues are opened in waves as each milestone starts, so the tracker only ever contains work that's actually actionable.
 
@@ -256,8 +257,8 @@ Or open the repo in VS Code and hit **F5**.
 
 | Command | What it does |
 | ------- | ------------ |
-| **Slop: Visualize File** (`ctrl`/`cmd`+`shift`+`v`) | Diagram the active TS/JS file, beside the editor |
-| **Slop: Visualize Workspace** | Module map of the folder; toggle a folder overview and drill folder → module → function |
+| **Slop: Visualize File** (`ctrl`/`cmd`+`shift`+`v`) | Diagram the active TS/JS, Python, Go, Java, Rust, Ruby or C# file, beside the editor |
+| **Slop: Visualize Workspace** | Module map of every workspace root; toggle a folder overview and drill folder → module → function |
 | **Slop: Export Diagram As…** | Save as `.drawio`, `.mmd`, `.dot`, `.puml`, `.svg` or `.json` |
 | **Slop: Copy Diagram as Mermaid** | Mermaid on the clipboard, ready for a PR |
 | **Slop: Pin Diagram** / **Follow Active Editor** | Freeze a diagram, or track whatever file you open |
