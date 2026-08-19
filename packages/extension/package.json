@@ -276,12 +276,12 @@
     "@surrounded-by-slop/webview": "workspace:*"
   },
   "devDependencies": {
-    "@types/node": "^26.1.2",
+    "@types/node": "^26.2.0",
     "@types/vscode": "^1.96.0",
     "@vscode/test-electron": "^3.1.0",
     "@vscode/vsce": "^3.3.0",
-    "esbuild": "^0.28.1",
-    "ovsx": "^1.0.2",
+    "esbuild": "^0.28.2",
+    "ovsx": "^1.1.1",
     "typescript": "^5.8.0"
   },
   "galleryBanner": {
