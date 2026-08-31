@@ -110,27 +110,53 @@ imports, recursive calls, and one multi-file mini-app proving imports resolve
 across packages. Generate goldens with `UPDATE_FIXTURES=1 pnpm test` and
 **review them like code** — the golden files are the spec.
 
-## Step 5 — wire the extension
+## Step 5 — wire the hosts
 
-In `packages/extension`:
+A language has to be registered in **both** hosts, or it works in one and
+silently does nothing in the other — which is exactly what happened before
+[#131](https://github.com/georgyia/surrounded-by-slop/issues/131). Two of these
+steps are guarded by tests; the rest are a checklist.
 
-1. `esbuild.mjs` — copy your grammar wasm to `dist/` (next to the Python one).
-2. `.vscodeignore` — already ships `dist/*.wasm`.
-3. `src/controller.ts` — add your language id to `LANGUAGE_EXTENSIONS`, a lazy
-   factory like `pythonAdapter()`, and route it in `visualize` and
-   `runWorkspace`.
-4. `package.json` — add your extension to the `slop.include` default glob and
-   the `when` clauses of the Visualize File menu/keybinding.
-5. Add an integration test like "Visualize File charts a Python file…" in
-   `src/test/suite/workspace.test.ts`, plus a small fixture file in
+**The editor** (`packages/extension`):
+
+1. `esbuild.mjs` — add your wasm to the grammar copy list, so it ships in the VSIX.
+2. `.vscodeignore` — already ships `dist/*.wasm`; nothing to do.
+3. `src/controller.ts` — add a row to `TREE_SITTER_LANGUAGES` (language id,
+   file extension, wasm name, factory) and your VS Code language id to
+   `LANGUAGE_EXTENSIONS`. There is no per-language code to write: discovery,
+   analysis and the single-file path all read the table.
+4. `package.json` — add your extension to the `slop.include` default glob, and
+   your language id to the `when` clauses of the Visualize File menu and
+   keybinding. **Guarded:** a manifest test compares that glob against
+   `DEFAULT_INCLUDE` and fails naming the missing extension.
+5. An integration test like "Visualize File charts a Python file…" in
+   `src/test/suite/workspace.test.ts`, plus a fixture in
    `test-fixtures/workspace/`.
+
+**The CLI, MCP server and scripts** (`packages/host`):
+
+6. `src/grammars.ts` — add a `GRAMMARS` entry (extensions, wasm filename,
+   factory). Everything downstream — `sbs map`, `query`, `impact`, the MCP
+   tools — picks it up, loading the grammar only when a project contains that
+   language.
+7. `src/decisions.ts` — add your extension to `DEFAULT_INCLUDE`, or the files
+   are never discovered in the first place. **Guarded** by the same manifest test.
+
+**Everyone:**
+
+8. `docs/user-guide.md` — add a row to the language-limits table and a short
+   paragraph on what your analyzer cannot see. `docs/agent-interface.md`
+   regenerates its own table from the adapter's capability flags, so
+   `pnpm docs:agent` is all that page needs.
 
 ## PR checklist
 
 - [ ] Adapter in `packages/core/src/<language>/` with honest capabilities and documented limits
 - [ ] ≥ 15 golden fixtures, reviewed, incl. one multi-file project
 - [ ] Grammar wasm source + license noted in the PR description
-- [ ] Extension wiring + one integration test
+- [ ] Extension wiring (`TREE_SITTER_LANGUAGES`, esbuild, manifest) + one integration test
+- [ ] Host wiring (`grammars.ts`, `DEFAULT_INCLUDE`) so the CLI and MCP server see it too
+- [ ] `sbs map` on a file of your language lists its symbols
 - [ ] `pnpm lint && pnpm typecheck && pnpm test` green, DCO sign-off on every commit
 - [ ] `docs/adding-a-language.md` updated if you hit anything this guide missed
 
