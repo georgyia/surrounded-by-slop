@@ -1,5 +1,10 @@
 import type { SemanticGraph } from "@surrounded-by-slop/core";
-import { isTestFile, looksMinified } from "@surrounded-by-slop/host/decisions";
+import {
+  isTestFile,
+  looksMinified,
+  MAX_FILE_BYTES,
+  MAX_PROJECT_FILES,
+} from "@surrounded-by-slop/host/decisions";
 import type { DiagramData } from "@surrounded-by-slop/webview";
 import * as vscode from "vscode";
 import { readConfig } from "./config.js";
@@ -137,8 +142,9 @@ async function mergeResults(
 
 const REFRESH_DEBOUNCE_MS = 300;
 /** Guardrails so a stray huge tree (a downloaded SDK, a vendored bundle) can't run analysis away. */
-const MAX_WORKSPACE_FILES = 5000;
-const MAX_FILE_BYTES = 512 * 1024;
+// One source for both hosts (#144): a repo must not map differently depending
+// on whether you ask the editor or the CLI.
+const MAX_WORKSPACE_FILES = MAX_PROJECT_FILES;
 /**
  * Above this many modules the map stops being readable — fold up to the folder
  * level so a big repo opens as a handful of clusters rather than a hairball

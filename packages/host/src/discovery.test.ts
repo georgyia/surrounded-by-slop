@@ -1,7 +1,8 @@
 import { mkdirSync, mkdtempSync, rmSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
-import { afterAll, beforeAll, describe, expect, it } from "vitest";
+import { afterAll, afterEach, beforeAll, beforeEach, describe, expect, it } from "vitest";
+import { MAX_FILE_BYTES } from "./decisions.js";
 import { discoverFiles } from "./discovery.js";
 
 let root: string;
@@ -74,5 +75,84 @@ describe("discoverFiles", () => {
     const paths = discoverFiles(root, { exclude: ["src/deep/**"] }).map((file) => file.path);
     expect(paths).toContain("src/app.ts");
     expect(paths).not.toContain("src/deep/nested.tsx");
+  });
+});
+
+describe("discovery guardrails (#144)", () => {
+  let guardRoot: string;
+  const write = (rel: string, text: string): void => {
+    const full = join(guardRoot, rel);
+    mkdirSync(join(full, ".."), { recursive: true });
+    writeFileSync(full, text);
+  };
+
+  beforeEach(() => {
+    guardRoot = mkdtempSync(join(tmpdir(), "sbs-guards-"));
+  });
+
+  afterEach(() => {
+    rmSync(guardRoot, { recursive: true, force: true });
+  });
+
+  it("skips an oversized file without reading it, and says so", () => {
+    const big = "x".repeat(MAX_FILE_BYTES + 1);
+    write("src/generated.ts", `export const blob = "${big}";\n`);
+    write("src/app.ts", "export function real(): void {}\n");
+
+    const skips: Array<[string, string]> = [];
+    const files = discoverFiles(guardRoot, {
+      onSkip: (path, reason) => skips.push([path, reason]),
+    });
+    expect(files.map((file) => file.path)).toEqual(["src/app.ts"]);
+    expect(skips).toEqual([["src/generated.ts", "too-large"]]);
+  });
+
+  it("keeps a large-but-plausible file when the caller raises the limit", () => {
+    // Many short lines: genuinely large, but not the one-enormous-line shape
+    // that marks a bundle. A generated-but-readable file looks like this.
+    const lines: string[] = [];
+    for (let index = 0; lines.join("\n").length <= MAX_FILE_BYTES; index += 1) {
+      lines.push(`export function generated${index}(): number { return ${index}; }`);
+    }
+    write("src/big.ts", `${lines.join("\n")}\n`);
+
+    expect(discoverFiles(guardRoot)).toEqual([]);
+    const raised = discoverFiles(guardRoot, { maxFileBytes: MAX_FILE_BYTES * 4 });
+    expect(raised.map((file) => file.path)).toEqual(["src/big.ts"]);
+  });
+
+  it("stops at the file limit and reports it exactly once", () => {
+    for (let index = 0; index < 12; index += 1) {
+      write(`src/f${String(index).padStart(2, "0")}.ts`, `export function f${index}(): void {}\n`);
+    }
+    const skips: string[] = [];
+    const files = discoverFiles(guardRoot, {
+      maxFiles: 5,
+      onSkip: (path, reason) => {
+        if (reason === "file-limit") {
+          skips.push(path);
+        }
+      },
+    });
+    expect(files).toHaveLength(5);
+    // One message, not one per remaining file — a 100k-file monorepo would
+    // otherwise drown the user in warnings.
+    expect(skips).toHaveLength(1);
+  });
+
+  it("reports a minified file rather than dropping it silently", () => {
+    // looksMinified needs real bundle shape: >20 KB and >400 chars per line.
+    write("src/bundle.js", `${"var a=1;".repeat(4000)}\n`);
+    const skips: Array<[string, string]> = [];
+    discoverFiles(guardRoot, { onSkip: (path, reason) => skips.push([path, reason]) });
+    expect(skips).toEqual([["src/bundle.js", "minified"]]);
+  });
+
+  it("says nothing when nothing was skipped", () => {
+    write("src/app.ts", "export function real(): void {}\n");
+    const skips: string[] = [];
+    const files = discoverFiles(guardRoot, { onSkip: (path) => skips.push(path) });
+    expect(files).toHaveLength(1);
+    expect(skips).toEqual([]);
   });
 });

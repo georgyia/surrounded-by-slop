@@ -34,6 +34,7 @@ export function analyzeFor(
   const verbose = parsed.flags.has("verbose");
   return analyzeProject(root, {
     ...discoveryFrom(parsed),
+    onWarning: (message: string) => ctx.writeError(`warning: ${message}\n`),
     ...(verbose ? { onDiagnosticNote: (note: string) => ctx.writeError(`note: ${note}\n`) } : {}),
   });
 }
