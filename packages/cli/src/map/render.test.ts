@@ -90,3 +90,76 @@ describe("renderMap", () => {
     expect(text).toMatch(/fn money\(n: number\): number ·\d+ ←\d+/);
   });
 });
+
+describe("the map leads with what a reader can reach (#153)", () => {
+  const analyze = (text: string) => analyzeTypeScriptProject([{ path: "a.ts", text }]).graph;
+
+  it("puts exported symbols ahead of local closures", () => {
+    // A closure called by its parent scores well on PageRank — correctly, it is
+    // locally important — but nothing outside the parent can call it, so it is
+    // not what "what is this repo?" is asking about.
+    const graph = analyze(
+      [
+        "export function api(): number {",
+        "  function helper(): number { return 1; }",
+        "  return helper() + helper() + helper();",
+        "}",
+      ].join("\n"),
+    );
+    const lines = renderMap(graph)
+      .text.split("\n")
+      .filter((line) => line.startsWith("  "));
+    expect(lines[0]).toContain("api");
+    expect(lines[1]).toContain("helper");
+  });
+
+  it("puts exported symbols ahead of non-exported top-level ones", () => {
+    const graph = analyze(
+      ["function internal(): void {}", "export function published(): void { internal(); }"].join(
+        "\n",
+      ),
+    );
+    const lines = renderMap(graph)
+      .text.split("\n")
+      .filter((line) => line.startsWith("  "));
+    expect(lines[0]).toContain("published");
+    expect(lines[1]).toContain("internal");
+  });
+
+  it("still lists closures — they rank last, they do not vanish", () => {
+    const graph = analyze(
+      [
+        "export function outer(): number {",
+        "  function inner(): number { return 1; }",
+        "  return inner();",
+        "}",
+      ].join("\n"),
+    );
+    const rendered = renderMap(graph);
+    expect(rendered.shownSymbols).toBe(2);
+    expect(rendered.text).toContain("inner");
+  });
+
+  it("orders files by their most reachable member", () => {
+    const graph = analyzeTypeScriptProject([
+      {
+        path: "closures.ts",
+        text: "function host(): number {\n  function deep(): number { return 1; }\n  return deep() + deep();\n}\n",
+      },
+      { path: "api.ts", text: "export function surface(): void {}\n" },
+    ]).graph;
+    const text = renderMap(graph).text;
+    expect(text.indexOf("api.ts:")).toBeLessThan(text.indexOf("closures.ts:"));
+  });
+
+  it("is deterministic", () => {
+    const graph = analyze(
+      [
+        "export function a(): void {}",
+        "export function b(): void {}",
+        "function c(): void {}",
+      ].join("\n"),
+    );
+    expect(renderMap(graph).text).toBe(renderMap(graph).text);
+  });
+});
