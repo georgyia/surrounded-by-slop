@@ -7,7 +7,7 @@ import {
 import { discoverFiles } from "@surrounded-by-slop/host/discovery";
 import { adaptersForPaths, isTypeScriptPath } from "@surrounded-by-slop/host/grammars";
 import { discoverAliasOptions } from "@surrounded-by-slop/host/tsconfig";
-import type { DiscoverOptions } from "../public-host.js";
+import { MAX_PROJECT_FILES as DEFAULT_MAX_FILES, type DiscoverOptions } from "../public-host.js";
 
 /**
  * The shared pipeline every command runs: discover files under a root, resolve
@@ -24,6 +24,8 @@ import type { DiscoverOptions } from "../public-host.js";
 export interface AnalyzeProjectOptions extends DiscoverOptions {
   /** Surface why alias discovery found nothing (for `--verbose`). */
   onDiagnosticNote?: (note: string) => void;
+  /** Always-visible warnings: things that changed the answer, not just notes. */
+  onWarning?: (message: string) => void;
 }
 
 export interface AnalyzeProjectResult extends AnalysisResult {
@@ -38,7 +40,25 @@ export async function analyzeProject(
   options: AnalyzeProjectOptions = {},
 ): Promise<AnalyzeProjectResult> {
   const root = resolve(rootInput);
-  const files = discoverFiles(root, options);
+  // A skipped file changes the answer, so it is never dropped silently. The
+  // count cap always warns — it truncates the map — while per-file skips are
+  // notes, since a repo can legitimately hold a few generated blobs.
+  const files = discoverFiles(root, {
+    ...options,
+    onSkip: (path, reason) => {
+      if (reason === "file-limit") {
+        options.onWarning?.(
+          `more than ${options.maxFiles ?? DEFAULT_MAX_FILES} files; mapped the first ${options.maxFiles ?? DEFAULT_MAX_FILES}, starting at ${path}. Narrow it with --include / --exclude.`,
+        );
+        return;
+      }
+      options.onDiagnosticNote?.(
+        reason === "too-large"
+          ? `skipped ${path} (too large)`
+          : `skipped ${path} (looks generated)`,
+      );
+    },
+  });
 
   const aliases = discoverAliasOptions(root);
   if (aliases.reason !== undefined && options.onDiagnosticNote !== undefined) {

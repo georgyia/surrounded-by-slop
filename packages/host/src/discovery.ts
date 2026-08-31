@@ -7,7 +7,12 @@ import {
   expandBraces,
   isTestFile,
   looksMinified,
+  MAX_FILE_BYTES,
+  MAX_PROJECT_FILES,
 } from "./decisions.js";
+
+/** Why a file the globs matched was passed over anyway. */
+export type SkipReason = "too-large" | "minified" | "file-limit";
 
 export interface DiscoverOptions {
   /** Glob patterns to include (default: {@link DEFAULT_INCLUDE}). */
@@ -16,6 +21,16 @@ export interface DiscoverOptions {
   exclude?: readonly string[];
   /** Include test files and test directories (default: false). */
   includeTests?: boolean;
+  /** Skip files larger than this (default: {@link MAX_FILE_BYTES}). */
+  maxFileBytes?: number;
+  /** Stop after this many files (default: {@link MAX_PROJECT_FILES}). */
+  maxFiles?: number;
+  /**
+   * Called for every file the globs matched but the walk passed over.
+   * Dropping files silently is precisely what this project criticizes in other
+   * tools, so a host can always say what it skipped and why.
+   */
+  onSkip?: (path: string, reason: SkipReason) => void;
 }
 
 /**
@@ -26,9 +41,16 @@ export function discoverFiles(root: string, options: DiscoverOptions = {}): File
   const include = (options.include ?? DEFAULT_INCLUDE).flatMap(expandBraces);
   const exclude = (options.exclude ?? DEFAULT_EXCLUDE).flatMap(expandBraces);
   const includeTests = options.includeTests ?? false;
+  const maxFileBytes = options.maxFileBytes ?? MAX_FILE_BYTES;
+  const maxFiles = options.maxFiles ?? MAX_PROJECT_FILES;
+  const onSkip = options.onSkip;
   const files: FileInput[] = [];
+  let stopped = false;
 
   const walk = (dir: string): void => {
+    if (stopped) {
+      return;
+    }
     let entries: string[];
     try {
       entries = readdirSync(dir);
@@ -58,15 +80,32 @@ export function discoverFiles(root: string, options: DiscoverOptions = {}): File
       ) {
         continue;
       }
+      if (files.length >= maxFiles) {
+        // Report once, on the first file over the line: a per-file message for
+        // every remaining file in a 100k-file monorepo helps nobody.
+        if (!stopped) {
+          stopped = true;
+          onSkip?.(rel, "file-limit");
+        }
+        return;
+      }
+      // The stat above already told us the size, so an oversized file is
+      // skipped without ever being read into memory.
+      if (stats.size > maxFileBytes) {
+        onSkip?.(rel, "too-large");
+        continue;
+      }
       let text: string;
       try {
         text = readFileSync(full, "utf8");
       } catch {
         continue;
       }
-      if (!looksMinified(text)) {
-        files.push({ path: rel, text });
+      if (looksMinified(text)) {
+        onSkip?.(rel, "minified");
+        continue;
       }
+      files.push({ path: rel, text });
     }
   };
 

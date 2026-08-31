@@ -1,5 +1,21 @@
 /** Shared, filesystem-free decisions about which source belongs in a project map. */
 
+/**
+ * Guardrails every host inherits (#144). These encode a decision about what is
+ * worth analyzing, so they belong here rather than in one host: a repo must
+ * not map differently depending on whether you ask the editor or the CLI.
+ */
+
+/**
+ * Files above this are minified bundles or generated blobs in practice. They
+ * blow the analyzer's stack and are not worth visualizing, and the size is
+ * checked before the file is read at all.
+ */
+export const MAX_FILE_BYTES = 512 * 1024;
+
+/** Above this many files a project map stops being a map; the walk stops and says so. */
+export const MAX_PROJECT_FILES = 5000;
+
 export const DEFAULT_INCLUDE = [
   "**/*.{ts,tsx,mts,cts,js,jsx,mjs,cjs,py,go,java,rs,rb,cs}",
 ] as const;
