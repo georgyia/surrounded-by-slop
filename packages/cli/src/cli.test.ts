@@ -1,8 +1,10 @@
 import { mkdirSync, mkdtempSync, rmSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
+import { builtinExporters } from "@surrounded-by-slop/core";
 import { afterAll, beforeAll, describe, expect, it } from "vitest";
 import { run } from "./cli.js";
+import { CLI_EXPORTERS } from "./commands/export.js";
 import { bufferContext } from "./context.js";
 
 let root: string;
@@ -103,6 +105,42 @@ describe("run — resilience", () => {
       expect(ctx.out()).toContain("function:ok.ts#fine");
     } finally {
       rmSync(broken, { recursive: true, force: true });
+    }
+  });
+});
+
+describe("sbs export — the format set is derived, not restated (#132)", () => {
+  it("offers exactly the layout-free built-in exporters", () => {
+    // The rule is "a headless pipe cannot produce a positioned diagram". Deriving
+    // the set from `needsLayout` means a future exporter obeys it automatically.
+    expect(CLI_EXPORTERS.map((exporter) => exporter.id).sort()).toEqual(
+      builtinExporters
+        .filter((exporter) => !exporter.needsLayout)
+        .map((exporter) => exporter.id)
+        .sort(),
+    );
+    expect(CLI_EXPORTERS.some((exporter) => exporter.needsLayout)).toBe(false);
+  });
+
+  it("renders every format it advertises", async () => {
+    const root = mkdtempSync(join(tmpdir(), "sbs-formats-"));
+    try {
+      writeFileSync(join(root, "a.ts"), "export function go(): void {}\n");
+      for (const exporter of CLI_EXPORTERS) {
+        const ctx = bufferContext(root);
+        expect(await run(["export", "--format", exporter.id, root], ctx)).toBe(0);
+        expect(ctx.out().length).toBeGreaterThan(0);
+      }
+    } finally {
+      rmSync(root, { recursive: true, force: true });
+    }
+  });
+
+  it("refuses a layout format and names the ones that work", async () => {
+    const ctx = bufferContext(process.cwd());
+    expect(await run(["export", "--format", "svg", process.cwd()], ctx)).toBe(2);
+    for (const exporter of CLI_EXPORTERS) {
+      expect(ctx.err()).toContain(exporter.id);
     }
   });
 });
