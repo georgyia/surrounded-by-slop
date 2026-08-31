@@ -1,26 +1,27 @@
-import { createExporterRegistry, jsonExporter, mermaidExporter } from "@surrounded-by-slop/core";
+import { builtinExporters } from "@surrounded-by-slop/core";
 import { optionValue, type ParsedArgs, UsageError } from "../args.js";
 import type { CommandContext } from "../context.js";
 import { analyzeFor, reportDiagnostics } from "./shared.js";
 
 /**
- * `sbs export --format mermaid|json [path]` — analyze a project and render it
- * through one of the layout-free exporters. Layout formats (svg, drawio) need a
- * positioned graph and belong to the extension, not a headless text pipe.
+ * `sbs export --format <id> [path]` — analyze a project and render it through
+ * one of the layout-free exporters.
+ *
+ * The set is derived, not restated (#132): every built-in exporter that needs
+ * no layout is available here, and every one that does is not. Layout formats
+ * (svg, drawio) need a positioned graph, which belongs to the extension rather
+ * than a headless text pipe — and now that rule enforces itself, instead of
+ * depending on someone remembering to extend a hardcoded list.
  */
-export async function exportCommand(ctx: CommandContext, parsed: ParsedArgs): Promise<number> {
-  const registry = createExporterRegistry();
-  registry.register(mermaidExporter);
-  registry.register(jsonExporter);
 
+/** The exporters a headless pipe can produce: everything that needs no layout. */
+export const CLI_EXPORTERS = builtinExporters.filter((exporter) => !exporter.needsLayout);
+export async function exportCommand(ctx: CommandContext, parsed: ParsedArgs): Promise<number> {
   const format = optionValue(parsed, "format") ?? "mermaid";
-  const exporter = registry.byId(format);
+  const exporter = CLI_EXPORTERS.find((candidate) => candidate.id === format);
   if (exporter === undefined) {
     throw new UsageError(
-      `unknown --format "${format}"; expected one of: ${registry
-        .all()
-        .map((e) => e.id)
-        .join(", ")}`,
+      `unknown --format "${format}"; expected one of: ${CLI_EXPORTERS.map((e) => e.id).join(", ")}`,
     );
   }
 

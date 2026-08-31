@@ -51,7 +51,8 @@ Commands:
   mcp [path]                     Run the MCP server over stdio (for AI agents)
   init [path]                    Add the agent pointer block to AGENTS.md
   analyze [path]                 Print the Semantic Graph as canonical JSON
-  export --format mermaid|json   Render the graph in a text format
+  export --format <id>           Render the graph as text:
+                                   mermaid | json | dot | plantuml
 
 Options:
   --budget <tokens>              Token budget for the map (default 2000)
