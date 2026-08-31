@@ -1,6 +1,8 @@
 /** Shared, filesystem-free decisions about which source belongs in a project map. */
 
-export const DEFAULT_INCLUDE = ["**/*.{ts,tsx,mts,cts,js,jsx,mjs,cjs,py}"] as const;
+export const DEFAULT_INCLUDE = [
+  "**/*.{ts,tsx,mts,cts,js,jsx,mjs,cjs,py,go,java,rs,rb,cs}",
+] as const;
 
 export const DEFAULT_EXCLUDE = [
   "**/node_modules/**",

@@ -43,23 +43,23 @@ const diff = [
 ].join("\n");
 
 describe("impact via stdin", () => {
-  it("reports the changed symbol and its callers", () => {
+  it("reports the changed symbol and its callers", async () => {
     const ctx = bufferContext(root, diff);
-    expect(run(["impact", "--root", root, "-"], ctx)).toBe(0);
+    expect(await run(["impact", "--root", root, "-"], ctx)).toBe(0);
     expect(ctx.out()).toContain("# impact of 1 changed symbols");
     expect(ctx.out()).toContain("fn place");
     expect(ctx.out()).toContain("main"); // caller
   });
 
-  it("emits a valid IR subgraph with --json", () => {
+  it("emits a valid IR subgraph with --json", async () => {
     const ctx = bufferContext(root, diff);
-    expect(run(["impact", "--root", root, "-", "--json"], ctx)).toBe(0);
+    expect(await run(["impact", "--root", root, "-", "--json"], ctx)).toBe(0);
     const parsed = JSON.parse(ctx.out());
     expect(parsed.schemaVersion).toBe(1);
     expect(parsed.nodes.some((n: { name: string }) => n.name === "place")).toBe(true);
   });
 
-  it("exits 0 with an empty message when nothing analyzable changed", () => {
+  it("exits 0 with an empty message when nothing analyzable changed", async () => {
     const docDiff = [
       "diff --git a/README.md b/README.md",
       "--- a/README.md",
@@ -69,13 +69,13 @@ describe("impact via stdin", () => {
       "+new",
     ].join("\n");
     const ctx = bufferContext(root, docDiff);
-    expect(run(["impact", "--root", root, "-"], ctx)).toBe(0);
+    expect(await run(["impact", "--root", root, "-"], ctx)).toBe(0);
     expect(ctx.out()).toContain("no analyzable symbols changed");
   });
 
-  it("errors cleanly when stdin is unavailable", () => {
+  it("errors cleanly when stdin is unavailable", async () => {
     const ctx = bufferContext(root); // no stdin supplied
-    expect(run(["impact", "--root", root, "-"], ctx)).toBe(2);
+    expect(await run(["impact", "--root", root, "-"], ctx)).toBe(2);
     expect(ctx.err()).toContain("no stdin available");
   });
 });
@@ -108,9 +108,9 @@ describe("impact via real git", () => {
     rmSync(repo, { recursive: true, force: true });
   });
 
-  it("computes the blast radius of the staged diff", () => {
+  it("computes the blast radius of the staged diff", async () => {
     const ctx = bufferContext(repo);
-    expect(run(["impact", "--root", repo, "--staged"], ctx)).toBe(0);
+    expect(await run(["impact", "--root", repo, "--staged"], ctx)).toBe(0);
     expect(ctx.out()).toContain("fn core");
     expect(ctx.out()).toContain("wrap"); // caller of core
   });

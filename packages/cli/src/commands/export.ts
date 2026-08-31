@@ -8,7 +8,7 @@ import { analyzeFor, reportDiagnostics } from "./shared.js";
  * through one of the layout-free exporters. Layout formats (svg, drawio) need a
  * positioned graph and belong to the extension, not a headless text pipe.
  */
-export function exportCommand(ctx: CommandContext, parsed: ParsedArgs): number {
+export async function exportCommand(ctx: CommandContext, parsed: ParsedArgs): Promise<number> {
   const registry = createExporterRegistry();
   registry.register(mermaidExporter);
   registry.register(jsonExporter);
@@ -25,7 +25,7 @@ export function exportCommand(ctx: CommandContext, parsed: ParsedArgs): number {
   }
 
   const root = parsed.positionals[0] ?? ctx.cwd;
-  const result = analyzeFor(ctx, parsed, root);
+  const result = await analyzeFor(ctx, parsed, root);
   reportDiagnostics(ctx, result.diagnostics);
 
   const direction = optionValue(parsed, "direction");

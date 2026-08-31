@@ -14,7 +14,7 @@ import { discoveryFrom, reportDiagnostics } from "./shared.js";
  * importers, and the tests in range. Analyzes with test files included so
  * affected tests actually surface.
  */
-export function impactCommand(ctx: CommandContext, parsed: ParsedArgs): number {
+export async function impactCommand(ctx: CommandContext, parsed: ParsedArgs): Promise<number> {
   const depth = intOption(parsed, "depth", 2);
   const stdinMode = parsed.positionals.includes("-");
   const pathArg = parsed.positionals.find((operand) => operand !== "-");
@@ -24,7 +24,7 @@ export function impactCommand(ctx: CommandContext, parsed: ParsedArgs): number {
   const changedLines = parseUnifiedDiff(diffText);
 
   const verbose = parsed.flags.has("verbose");
-  const analysis = analyzeProject(root, {
+  const analysis = await analyzeProject(root, {
     ...discoveryFrom(parsed),
     includeTests: true, // affected tests can only surface if tests are in the graph
     ...(verbose ? { onDiagnosticNote: (note: string) => ctx.writeError(`note: ${note}\n`) } : {}),

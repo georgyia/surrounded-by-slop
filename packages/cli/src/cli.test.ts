@@ -26,79 +26,79 @@ afterAll(() => {
 });
 
 describe("run", () => {
-  it("analyze prints byte-identical JSON across runs", () => {
+  it("analyze prints byte-identical JSON across runs", async () => {
     const first = bufferContext(root);
     const second = bufferContext(root);
-    expect(run(["analyze", root], first)).toBe(0);
-    expect(run(["analyze", root], second)).toBe(0);
+    expect(await run(["analyze", root], first)).toBe(0);
+    expect(await run(["analyze", root], second)).toBe(0);
     expect(first.out()).toBe(second.out());
     expect(first.out()).toContain('"kind": "module"');
     expect(first.out()).toContain("function:src/db.ts#save");
   });
 
-  it("analyze defaults to the context cwd", () => {
+  it("analyze defaults to the context cwd", async () => {
     const ctx = bufferContext(root);
-    expect(run(["analyze"], ctx)).toBe(0);
+    expect(await run(["analyze"], ctx)).toBe(0);
     expect(ctx.out()).toContain("function:src/app.ts#main");
   });
 
-  it("export renders mermaid", () => {
+  it("export renders mermaid", async () => {
     const ctx = bufferContext(root);
-    expect(run(["export", "--format", "mermaid", root], ctx)).toBe(0);
+    expect(await run(["export", "--format", "mermaid", root], ctx)).toBe(0);
     expect(ctx.out()).toContain("flowchart");
   });
 
-  it("map prints a ranked, budgeted repo map", () => {
+  it("map prints a ranked, budgeted repo map", async () => {
     const ctx = bufferContext(root);
-    expect(run(["map", root], ctx)).toBe(0);
+    expect(await run(["map", root], ctx)).toBe(0);
     expect(ctx.out()).toContain("# repo map");
     expect(ctx.out()).toContain("fn save");
     expect(ctx.out()).toContain("deeper: `sbs query");
   });
 
-  it("map rejects a non-positive budget", () => {
+  it("map rejects a non-positive budget", async () => {
     const ctx = bufferContext(root);
-    expect(run(["map", root, "--budget", "0"], ctx)).toBe(2);
+    expect(await run(["map", root, "--budget", "0"], ctx)).toBe(2);
     expect(ctx.err()).toContain("--budget must be positive");
   });
 
-  it("rejects an unknown command with exit 2", () => {
+  it("rejects an unknown command with exit 2", async () => {
     const ctx = bufferContext(root);
-    expect(run(["frobnicate"], ctx)).toBe(2);
+    expect(await run(["frobnicate"], ctx)).toBe(2);
     expect(ctx.err()).toContain('unknown command "frobnicate"');
   });
 
-  it("rejects an unknown export format with exit 2", () => {
+  it("rejects an unknown export format with exit 2", async () => {
     const ctx = bufferContext(root);
-    expect(run(["export", "--format", "svg", root], ctx)).toBe(2);
+    expect(await run(["export", "--format", "svg", root], ctx)).toBe(2);
     expect(ctx.err()).toContain("unknown --format");
   });
 
-  it("prints help with no arguments", () => {
+  it("prints help with no arguments", async () => {
     const ctx = bufferContext(root);
-    expect(run([], ctx)).toBe(0);
+    expect(await run([], ctx)).toBe(0);
     expect(ctx.out()).toContain("headless code analysis");
   });
 
-  it("emits alias discovery notes only with --verbose", () => {
+  it("emits alias discovery notes only with --verbose", async () => {
     const quiet = bufferContext(root);
-    run(["analyze", root], quiet);
+    await run(["analyze", root], quiet);
     expect(quiet.err()).toBe("");
 
     const loud = bufferContext(root);
-    run(["analyze", root, "--verbose"], loud);
+    await run(["analyze", root, "--verbose"], loud);
     expect(loud.err()).toContain("path aliases");
   });
 });
 
 describe("run — resilience", () => {
-  it("yields a partial graph and exits 0 on a syntactically broken file", () => {
+  it("yields a partial graph and exits 0 on a syntactically broken file", async () => {
     const broken = mkdtempSync(join(tmpdir(), "sbs-broken-"));
     writeFileSync(join(broken, "ok.ts"), "export function fine() {}");
     writeFileSync(join(broken, "bad.ts"), "export function oops( {{{ ");
     try {
       const ctx = bufferContext(broken);
-      expect(run(["analyze", broken], ctx)).toBe(0);
+      expect(await run(["analyze", broken], ctx)).toBe(0);
       // The healthy file still made it into the graph.
       expect(ctx.out()).toContain("function:ok.ts#fine");
     } finally {

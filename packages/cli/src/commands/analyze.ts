@@ -8,9 +8,9 @@ import { analyzeFor, reportDiagnostics } from "./shared.js";
  * Graph as JSON. The escape hatch for anything built on top of the graph
  * (Rule 5): byte-stable output, straight from the reference `json` exporter.
  */
-export function analyzeCommand(ctx: CommandContext, parsed: ParsedArgs): number {
+export async function analyzeCommand(ctx: CommandContext, parsed: ParsedArgs): Promise<number> {
   const root = parsed.positionals[0] ?? ctx.cwd;
-  const result = analyzeFor(ctx, parsed, root);
+  const result = await analyzeFor(ctx, parsed, root);
   reportDiagnostics(ctx, result.diagnostics);
   ctx.write(jsonExporter.export(result.graph));
   return 0;

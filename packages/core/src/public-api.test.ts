@@ -53,6 +53,7 @@ it("exports exactly the documented public api", () => {
     "layoutGraph",
     "loadTreeSitterLanguage",
     "matchesAnyGlob",
+    "mergeAnalyses",
     "mermaidExporter",
     "moduleId",
     "normalizeGoImport",
