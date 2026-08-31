@@ -77,7 +77,7 @@ accepts the shared options below.
 | `sbs query slice <symbol>` | "Show me this symbol's neighborhood" |
 | `sbs impact` | "What does this diff put at risk?" |
 | `sbs analyze [path]` | The whole Semantic Graph as canonical JSON |
-| `sbs export --format mermaid\|json` | The graph in a text format |
+| `sbs export --format <id>` | The graph as `mermaid`, `json`, `dot` or `plantuml` |
 | `sbs mcp [path]` | Serve the queries over MCP (stdio) |
 | `sbs init [path]` | Write the agent pointer block into `AGENTS.md` |
 
@@ -95,6 +95,7 @@ accepts the shared options below.
 | `--include <glob>` | all | Replace the default include glob (repeatable) |
 | `--exclude <glob>` | all | Add an exclude on top of the defaults (repeatable) |
 | `--include-tests` | all | Analyze test files too (excluded by default) |
+| `--format <id>` | `export` | `mermaid`, `json`, `dot` or `plantuml` — every layout-free format |
 | `--check` | `init` | Exit 1 if the `AGENTS.md` block is missing or stale |
 | `--verbose` | all | Print discovery notes to stderr |
 | `--help` | all | Show usage |
