@@ -9,7 +9,7 @@ import {
   answerReach,
   answerSlice,
 } from "../query/answers.js";
-import { analyzeFor, reportDiagnostics } from "./shared.js";
+import { analyzeFor, assertAnalyzable, reportDiagnostics } from "./shared.js";
 
 /**
  * `sbs query <sub> …` — the pull half of the agent interface (SBS-113). A thin
@@ -30,6 +30,7 @@ export async function queryCommand(ctx: CommandContext, parsed: ParsedArgs): Pro
 
   const root = parsed.options.get("root")?.[0] ?? ctx.cwd;
   const result = await analyzeFor(ctx, parsed, root);
+  assertAnalyzable(result, parsed);
   reportDiagnostics(ctx, result.diagnostics);
   const graph = result.graph;
   const depth = intOption(parsed, "depth", Number.POSITIVE_INFINITY);

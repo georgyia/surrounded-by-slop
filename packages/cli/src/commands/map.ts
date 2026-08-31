@@ -1,7 +1,7 @@
 import { intOption, type ParsedArgs, UsageError } from "../args.js";
 import type { CommandContext } from "../context.js";
 import { renderMap } from "../map/render.js";
-import { analyzeFor, reportDiagnostics } from "./shared.js";
+import { analyzeFor, assertAnalyzable, reportDiagnostics } from "./shared.js";
 
 /**
  * `sbs map [path] [--budget <tokens>]` — the token-budgeted repo map: the
@@ -15,6 +15,7 @@ export async function mapCommand(ctx: CommandContext, parsed: ParsedArgs): Promi
   }
   const root = parsed.positionals[0] ?? ctx.cwd;
   const result = await analyzeFor(ctx, parsed, root);
+  assertAnalyzable(result, parsed);
   reportDiagnostics(ctx, result.diagnostics);
   ctx.write(renderMap(result.graph, { budget }).text);
   return 0;

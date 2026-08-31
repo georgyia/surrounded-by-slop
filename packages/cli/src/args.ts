@@ -89,3 +89,14 @@ export function intOption(parsed: ParsedArgs, key: string, fallback: number): nu
 
 /** A user-facing error: printed as a one-line message, exit code 2, no stack. */
 export class UsageError extends Error {}
+
+/**
+ * Discovery found no analyzable files (#138).
+ *
+ * Its own error type, and its own exit code, because "I read this project and
+ * it is empty" and "I could not read this project at all" are different
+ * answers — and a script or an agent has to be able to tell them apart. An
+ * empty map that exits 0 reads as "small repo, nothing here", which is the
+ * confidently-wrong answer this project exists to avoid.
+ */
+export class EmptyProjectError extends Error {}
