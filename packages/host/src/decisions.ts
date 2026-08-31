@@ -21,6 +21,28 @@ export const DEFAULT_EXCLUDE = [
   "**/*.min.js",
   "**/fixtures/**",
   "**/testdata/**",
+  // Build and dependency directories of the non-JavaScript languages (#142).
+  // Without these a repo map answers "what did your build tool leave lying
+  // around?" instead of "what is this repo?" — a real .venv or target/ holds
+  // thousands of files, which skews ranking and spends the token budget on
+  // vendored code.
+  //
+  // Two conventions are deliberately absent. NuGet's `packages/` is also the
+  // source directory of this repo and most JS monorepos, so excluding it would
+  // blank out the projects this tool is dogfooded on. And `bin/` holds real
+  // entry-point scripts in plenty of JS and Python projects; `obj/` is the
+  // directory that actually holds generated C#.
+  "**/target/**", // Rust (cargo) and Java (Maven)
+  "**/obj/**", // C# (MSBuild intermediate output, incl. generated .cs)
+  "**/.gradle/**", // Java
+  "**/.venv/**", // Python
+  "**/venv/**",
+  "**/__pycache__/**",
+  "**/site-packages/**",
+  "**/.tox/**",
+  "**/.mypy_cache/**",
+  "**/.pytest_cache/**",
+  "**/.bundle/**", // Ruby
 ] as const;
 
 const TEST_DIRECTORY = /(^|\/)(__tests__|tests|spec)\//i;
