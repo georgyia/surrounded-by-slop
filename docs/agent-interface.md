@@ -279,6 +279,23 @@ $ sbs analyze examples/orders-app --json
 
 <!-- /agent:analyze -->
 
+## Exit codes
+
+Scripted callers need to tell a quiet answer from a failed one, so the CLI
+never returns 0 for a project it could not read:
+
+| Code | Meaning |
+|---|---|
+| 0 | Success |
+| 1 | The command failed (a bad diff, an unreadable file) |
+| 2 | Usage error — unknown command or flag |
+| 3 | Nothing analyzable was found: wrong path, filters too narrow, or a language this tool does not read |
+
+Code 3 is the important one. An empty map that exited 0 would be
+indistinguishable from a small repo, so `map`, `analyze`, `export` and
+`query` refuse to answer at all when discovery found nothing, and stderr says
+which of those causes applies.
+
 ## The map line grammar
 
 `sbs map` output is normative: third-party tools can parse it. The format is

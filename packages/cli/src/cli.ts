@@ -1,4 +1,4 @@
-import { type ArgSpec, parseArgs, UsageError } from "./args.js";
+import { type ArgSpec, EmptyProjectError, parseArgs, UsageError } from "./args.js";
 import { analyzeCommand } from "./commands/analyze.js";
 import { exportCommand } from "./commands/export.js";
 import { impactCommand } from "./commands/impact.js";
@@ -68,6 +68,12 @@ Options:
   --verbose                      Print discovery notes to stderr
   --help                         Show this help
 
+Exit codes:
+  0  success
+  1  a command failed (bad diff, unreadable file, …)
+  2  usage error (unknown command, bad flag)
+  3  nothing analyzable found — the path, the filters, or the language
+
 All analysis is local; nothing is sent anywhere.`;
 
 export async function run(argv: readonly string[], ctx: CommandContext): Promise<number> {
@@ -96,6 +102,12 @@ export async function run(argv: readonly string[], ctx: CommandContext): Promise
     if (error instanceof UsageError) {
       ctx.writeError(`error: ${error.message}\n`);
       return 2;
+    }
+    // Its own code: "I could not read this project" must be distinguishable
+    // from "I read it and there is nothing to say" (#138).
+    if (error instanceof EmptyProjectError) {
+      ctx.writeError(`error: ${error.message}\n`);
+      return 3;
     }
     const message = error instanceof Error ? error.message : String(error);
     ctx.writeError(`error: ${message}\n`);

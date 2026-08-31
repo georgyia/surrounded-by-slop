@@ -1,7 +1,7 @@
 import { builtinExporters } from "@surrounded-by-slop/core";
 import { optionValue, type ParsedArgs, UsageError } from "../args.js";
 import type { CommandContext } from "../context.js";
-import { analyzeFor, reportDiagnostics } from "./shared.js";
+import { analyzeFor, assertAnalyzable, reportDiagnostics } from "./shared.js";
 
 /**
  * `sbs export --format <id> [path]` — analyze a project and render it through
@@ -27,6 +27,7 @@ export async function exportCommand(ctx: CommandContext, parsed: ParsedArgs): Pr
 
   const root = parsed.positionals[0] ?? ctx.cwd;
   const result = await analyzeFor(ctx, parsed, root);
+  assertAnalyzable(result, parsed);
   reportDiagnostics(ctx, result.diagnostics);
 
   const direction = optionValue(parsed, "direction");

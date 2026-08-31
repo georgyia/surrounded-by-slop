@@ -1,7 +1,7 @@
 import { jsonExporter } from "@surrounded-by-slop/core";
 import type { ParsedArgs } from "../args.js";
 import type { CommandContext } from "../context.js";
-import { analyzeFor, reportDiagnostics } from "./shared.js";
+import { analyzeFor, assertAnalyzable, reportDiagnostics } from "./shared.js";
 
 /**
  * `sbs analyze [path]` — analyze a project and print its canonical Semantic
@@ -11,6 +11,7 @@ import { analyzeFor, reportDiagnostics } from "./shared.js";
 export async function analyzeCommand(ctx: CommandContext, parsed: ParsedArgs): Promise<number> {
   const root = parsed.positionals[0] ?? ctx.cwd;
   const result = await analyzeFor(ctx, parsed, root);
+  assertAnalyzable(result, parsed);
   reportDiagnostics(ctx, result.diagnostics);
   ctx.write(jsonExporter.export(result.graph));
   return 0;
