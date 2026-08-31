@@ -17,7 +17,7 @@
         "kind": "function",
         "name": "main",
         "qualifiedName": "main",
-        "signature": "(argv: {}): number",
+        "signature": "(argv: string[]): number",
         "span": {
           "endCol": 2,
           "endLine": 4,

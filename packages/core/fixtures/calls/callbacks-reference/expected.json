@@ -68,7 +68,7 @@
         "kind": "function",
         "name": "each",
         "qualifiedName": "each",
-        "signature": "(items: {}, visit: (item: number) => void): void",
+        "signature": "(items: number[], visit: (item: number) => void): void",
         "span": {
           "endCol": 2,
           "endLine": 5,

@@ -127,3 +127,84 @@ describe("variables", () => {
     expect(ids).toContain("variable:input.ts#c");
   });
 });
+
+describe("signatures render what the author wrote (#149)", () => {
+  const signatures = (text: string): Map<string, string | undefined> => {
+    const { graph } = analyzeTypeScriptProject([{ path: "a.ts", text }]);
+    return new Map(graph.nodes.map((node) => [node.name, node.signature]));
+  };
+
+  it("keeps array types, which the checker cannot resolve without lib", () => {
+    // `noLib` is deliberate, but it left `string[]` printing as `{}` — which
+    // reads as "returns an empty object", not as "unknown".
+    const found = signatures(
+      [
+        "export function ret(): string[] { return []; }",
+        "export function take(items: string[]): number { return items.length; }",
+      ].join("\n"),
+    );
+    expect(found.get("ret")).toBe("(): string[]");
+    expect(found.get("take")).toBe("(items: string[]): number");
+  });
+
+  it("keeps generics, bounds, rest, optional and destructured parameters", () => {
+    const found = signatures(
+      [
+        "export function generic<T>(items: T[]): T | undefined { return items[0]; }",
+        "export function bounded<T extends { id: string }>(x: T): T[] { return [x]; }",
+        "export function rest(first: string, ...others: number[]): void {}",
+        "export function optional(a: string, b?: string[]): void {}",
+        "export function destructured({ a }: { a: string[] }): void {}",
+      ].join("\n"),
+    );
+    expect(found.get("generic")).toBe("<T>(items: T[]): T | undefined");
+    expect(found.get("bounded")).toBe("<T extends { id: string }>(x: T): T[]");
+    expect(found.get("rest")).toBe("(first: string, ...others: number[]): void");
+    expect(found.get("optional")).toBe("(a: string, b?: string[]): void");
+    expect(found.get("destructured")).toBe("({ a }: { a: string[] }): void");
+  });
+
+  it("keeps readonly and nested array forms", () => {
+    const found = signatures(
+      [
+        "export function ro(xs: readonly string[]): ReadonlyArray<number> { return []; }",
+        "export function nested(): Array<Map<string, string[]>> { return []; }",
+      ].join("\n"),
+    );
+    expect(found.get("ro")).toBe("(xs: readonly string[]): ReadonlyArray<number>");
+    expect(found.get("nested")).toBe("(): Array<Map<string, string[]>>");
+  });
+
+  it("keeps a genuine {} the author wrote", () => {
+    expect(signatures("export function empty(): {} { return {}; }").get("empty")).toBe("(): {}");
+  });
+
+  it("omits a return type it cannot resolve rather than claiming {}", () => {
+    // Unannotated and returning an array: the checker infers an unresolved
+    // type. Saying nothing is honest; saying `{}` is a specific wrong claim.
+    expect(signatures("export function guess() { return [1, 2, 3]; }").get("guess")).toBe("()");
+  });
+
+  it("still uses the checker where inference is trustworthy", () => {
+    const found = signatures("export function add(a: number, b: number) { return a + b; }");
+    expect(found.get("add")).toBe("(a: number, b: number): number");
+  });
+});
+
+describe("signatures from a file that does not parse (#149)", () => {
+  it("falls back to the checker rather than printing a truncated annotation", () => {
+    // `function broken(a: {` leaves the annotation's source text as a bare
+    // `{`. Printing that would turn a partial graph into a malformed one.
+    const { graph } = analyzeTypeScriptProject([
+      { path: "a.ts", text: "export function broken(a: {\n  return a;\n}\n" },
+    ]);
+    const broken = graph.nodes.find((node) => node.name === "broken");
+    expect(broken?.signature).toBeDefined();
+    const signature = broken?.signature ?? "";
+    // Whatever it says, it is well-formed: balanced, and no stray fragment.
+    const opens = (signature.match(/[{[(]/g) ?? []).length;
+    const closes = (signature.match(/[}\])]/g) ?? []).length;
+    expect(opens).toBe(closes);
+    expect(signature).not.toBe("(a: {): any");
+  });
+});
