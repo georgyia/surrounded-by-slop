@@ -99,6 +99,7 @@ accepts the shared options below.
 | `--check` | `init` | Exit 1 if the `AGENTS.md` block is missing or stale |
 | `--verbose` | all | Print discovery notes to stderr |
 | `--help` | all | Show usage |
+| `--version` | — | Print the version and exit (also `-v`) |
 
 ## Examples
 

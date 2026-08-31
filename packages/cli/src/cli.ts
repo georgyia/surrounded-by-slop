@@ -7,6 +7,7 @@ import { mapCommand } from "./commands/map.js";
 import { mcpCommand } from "./commands/mcp.js";
 import { queryCommand } from "./commands/query.js";
 import type { CommandContext } from "./context.js";
+import { VERSION } from "./version.js";
 
 /**
  * Command dispatch. Each command is a pure `(ctx, parsed) => exitCode`, so the
@@ -67,6 +68,7 @@ Options:
   --check                        init: exit 1 if the AGENTS.md block is stale
   --verbose                      Print discovery notes to stderr
   --help                         Show this help
+  --version                      Print the version and exit
 
 Exit codes:
   0  success
@@ -81,6 +83,11 @@ export async function run(argv: readonly string[], ctx: CommandContext): Promise
 
   if (commandName === undefined || commandName === "--help" || commandName === "help") {
     ctx.write(`${HELP}\n`);
+    return 0;
+  }
+
+  if (commandName === "--version" || commandName === "-v" || commandName === "version") {
+    ctx.write(`${VERSION}\n`);
     return 0;
   }
 
