@@ -59,6 +59,7 @@ export {
   moduleId,
   unresolvedFunctionId,
 } from "./ir/ids.js";
+export { mergeAnalyses } from "./ir/merge.js";
 export {
   type AnalysisResult,
   type Diagnostic,

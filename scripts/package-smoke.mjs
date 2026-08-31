@@ -72,6 +72,9 @@ try {
   mkdirSync(project, { recursive: true });
   writeFileSync(join(project, "package.json"), '{"private":true}\n');
   writeFileSync(join(project, "app.ts"), "export function hello(): string { return 'hello'; }\n");
+  // A non-TypeScript file too: the published CLI must resolve its tree-sitter
+  // grammars from the installed dependency tree, not from this checkout (#131).
+  writeFileSync(join(project, "worker.py"), "def enqueue():\n    return 1\n");
   run("npm", ["install", "--ignore-scripts", "--no-audit", "--no-fund", core, cli], {
     cwd: project,
   });
@@ -131,6 +134,11 @@ try {
   });
   if (!output.includes("app.ts") || !output.includes("hello")) {
     throw new Error(`packed CLI did not analyze the clean sample project:\n${output}`);
+  }
+  if (!output.includes("worker.py") || !output.includes("enqueue")) {
+    throw new Error(
+      `packed CLI could not load its tree-sitter grammars from a clean install:\n${output}`,
+    );
   }
   console.log("clean install: npx --no-install sbs map . passed");
 } finally {

@@ -1,6 +1,11 @@
 import { createInterface } from "node:readline";
-import { createIncrementalAnalyzer } from "@surrounded-by-slop/core";
+import {
+  createIncrementalAnalyzer,
+  type LanguageAdapter,
+  mergeAnalyses,
+} from "@surrounded-by-slop/core";
 import { discoverFiles } from "@surrounded-by-slop/host/discovery";
+import { adaptersForPaths, isTypeScriptPath } from "@surrounded-by-slop/host/grammars";
 import { discoverAliasOptions } from "@surrounded-by-slop/host/tsconfig";
 import { type DiffSource, gitDiff } from "../host/git.js";
 import { handleRpc, type ProtocolDeps, parseErrorResponse } from "./protocol.js";
@@ -20,8 +25,12 @@ const SERVER_VERSION = "0.0.1";
  * Build the tool context for a project root: warm analyzers (one with tests for
  * `impact`, one without for map/query) and a git shim. Aliases are resolved once
  * at startup — they rarely change within a session.
+ *
+ * Tree-sitter grammars are loaded once here too (#131), which is the only
+ * reason this is async: with the adapters in hand, answering a tool call stays
+ * synchronous, so the JSON-RPC loop never has to await.
  */
-export function createToolContext(root: string): ToolContext {
+export async function createToolContext(root: string): Promise<ToolContext> {
   const aliases = discoverAliasOptions(root);
   const analysisOptions =
     aliases.options === undefined
@@ -33,13 +42,29 @@ export function createToolContext(root: string): ToolContext {
         };
   const mainAnalyzer = createIncrementalAnalyzer();
   const testAnalyzer = createIncrementalAnalyzer();
+  // Load grammars for whatever this project actually contains, once. Only the
+  // TypeScript half is incremental; the tree-sitter languages re-parse per
+  // call, which is cheap and keeps their adapters stateless.
+  const adapters: readonly LanguageAdapter[] = await adaptersForPaths(
+    discoverFiles(root, { includeTests: true }).map((file) => file.path),
+  );
 
   const analyze = (
     analyzer: ReturnType<typeof createIncrementalAnalyzer>,
     includeTests: boolean,
   ) => {
     const files = discoverFiles(root, { includeTests });
-    return analyzer.analyze(files, analysisOptions).graph;
+    const typescriptFiles = files.filter((file) => isTypeScriptPath(file.path));
+    const results = [analyzer.analyze(typescriptFiles, analysisOptions)];
+    for (const adapter of adapters) {
+      const owned = files.filter((file) =>
+        adapter.extensions.some((extension) => file.path.toLowerCase().endsWith(extension)),
+      );
+      if (owned.length > 0) {
+        results.push(adapter.analyze(owned));
+      }
+    }
+    return mergeAnalyses(results).graph;
   };
 
   return {
@@ -49,8 +74,12 @@ export function createToolContext(root: string): ToolContext {
   };
 }
 
-export function serverDeps(root: string): ProtocolDeps {
-  return { tools: createToolContext(root), serverName: SERVER_NAME, serverVersion: SERVER_VERSION };
+export async function serverDeps(root: string): Promise<ProtocolDeps> {
+  return {
+    tools: await createToolContext(root),
+    serverName: SERVER_NAME,
+    serverVersion: SERVER_VERSION,
+  };
 }
 
 /**

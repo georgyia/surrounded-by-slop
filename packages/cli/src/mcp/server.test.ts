@@ -63,11 +63,11 @@ describe("runStdioServer", () => {
 });
 
 describe("createToolContext — warm analyzer reflects edits between calls", () => {
-  it("picks up a new function added between calls", () => {
+  it("picks up a new function added between calls", async () => {
     const root = mkdtempSync(join(tmpdir(), "sbs-mcp-warm-"));
     try {
       writeFileSync(join(root, "m.ts"), "export function first() {}");
-      const ctx = createToolContext(root);
+      const ctx = await createToolContext(root);
       const before = ctx.graph().nodes.map((n) => n.name);
       expect(before).toContain("first");
       expect(before).not.toContain("second");
@@ -82,8 +82,8 @@ describe("createToolContext — warm analyzer reflects edits between calls", () 
 });
 
 describe("serverDeps", () => {
-  it("builds deps with the server identity", () => {
-    const deps = serverDeps(process.cwd());
+  it("builds deps with the server identity", async () => {
+    const deps = await serverDeps(process.cwd());
     expect(deps.serverName).toBe("surrounded-by-slop");
     expect(typeof deps.tools.graph).toBe("function");
   });

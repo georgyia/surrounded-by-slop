@@ -8,13 +8,13 @@ import { analyzeFor, reportDiagnostics } from "./shared.js";
  * codebase's load-bearing symbols, ranked and cut to fit an agent's context
  * window. The push half of the agent interface (SBS-112).
  */
-export function mapCommand(ctx: CommandContext, parsed: ParsedArgs): number {
+export async function mapCommand(ctx: CommandContext, parsed: ParsedArgs): Promise<number> {
   const budget = intOption(parsed, "budget", 2000);
   if (budget <= 0) {
     throw new UsageError(`--budget must be positive, got ${budget}`);
   }
   const root = parsed.positionals[0] ?? ctx.cwd;
-  const result = analyzeFor(ctx, parsed, root);
+  const result = await analyzeFor(ctx, parsed, root);
   reportDiagnostics(ctx, result.diagnostics);
   ctx.write(renderMap(result.graph, { budget }).text);
   return 0;

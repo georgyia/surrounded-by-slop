@@ -9,8 +9,8 @@ import { serverDeps, startStdioServer } from "../mcp/server.js";
  * `run()` returns 0 while the stdin listener keeps the event loop running.
  * Local only — no sockets, no network (Rule 9).
  */
-export function mcpCommand(ctx: CommandContext, parsed: ParsedArgs): number {
+export async function mcpCommand(ctx: CommandContext, parsed: ParsedArgs): Promise<number> {
   const root = parsed.positionals[0] ?? parsed.options.get("root")?.[0] ?? ctx.cwd;
-  startStdioServer(serverDeps(root));
+  startStdioServer(await serverDeps(root));
   return 0;
 }

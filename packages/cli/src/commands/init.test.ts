@@ -16,32 +16,34 @@ afterEach(() => {
   rmSync(root, { recursive: true, force: true });
 });
 
-const init = (...args: string[]): ReturnType<typeof bufferContext> & { code: number } => {
+const init = async (
+  ...args: string[]
+): Promise<ReturnType<typeof bufferContext> & { code: number }> => {
   const ctx = bufferContext(root);
-  const code = run(["init", ...args], ctx);
+  const code = await run(["init", ...args], ctx);
   return Object.assign(ctx, { code });
 };
 
 const agents = (): string => readFileSync(join(root, "AGENTS.md"), "utf8");
 
 describe("sbs init", () => {
-  it("bootstraps a fresh repo with AGENTS.md and a CLAUDE.md that imports it", () => {
-    const ctx = init();
+  it("bootstraps a fresh repo with AGENTS.md and a CLAUDE.md that imports it", async () => {
+    const ctx = await init();
     expect(ctx.code).toBe(0);
     expect(agents()).toBe(`${AGENTS_BLOCK}\n`);
     expect(readFileSync(join(root, "CLAUDE.md"), "utf8")).toBe("@AGENTS.md\n");
     expect(ctx.out()).toContain("created: AGENTS.md");
   });
 
-  it("is idempotent — running twice yields zero diff", () => {
-    init();
+  it("is idempotent — running twice yields zero diff", async () => {
+    await init();
     const first = agents();
-    const second = init();
+    const second = await init();
     expect(agents()).toBe(first);
     expect(second.out()).toContain("unchanged: AGENTS.md");
   });
 
-  it("keeps the block at or under 20 lines, and never inlines a map", () => {
+  it("keeps the block at or under 20 lines, and never inlines a map", async () => {
     const lines = AGENTS_BLOCK.split("\n");
     expect(lines.length).toBeLessThanOrEqual(20);
     expect(lines[0]).toBe(START_MARKER);
@@ -52,7 +54,7 @@ describe("sbs init", () => {
     expect(AGENTS_BLOCK).not.toMatch(/^\s*(module|function|class)\b/m);
   });
 
-  it("leaves the user's content byte-identical above and below the markers", () => {
+  it("leaves the user's content byte-identical above and below the markers", async () => {
     const before = "# My repo\n\nHand-written notes that matter.\n\n";
     const after = "\n## Conventions\n\nDo not touch this either.\n";
     writeFileSync(
@@ -60,7 +62,7 @@ describe("sbs init", () => {
       `${before}${START_MARKER}\nstale content\n${END_MARKER}${after}`,
     );
 
-    expect(init().code).toBe(0);
+    expect((await init()).code).toBe(0);
     const result = agents();
     expect(result.startsWith(before)).toBe(true);
     expect(result.endsWith(after)).toBe(true);
@@ -68,56 +70,56 @@ describe("sbs init", () => {
     expect(result).not.toContain("stale content");
   });
 
-  it("appends to an existing AGENTS.md that has no block yet", () => {
+  it("appends to an existing AGENTS.md that has no block yet", async () => {
     writeFileSync(join(root, "AGENTS.md"), "# Rules\n\nBe nice.\n");
-    init();
+    await init();
     expect(agents()).toBe(`# Rules\n\nBe nice.\n\n${AGENTS_BLOCK}\n`);
   });
 
-  it("never edits an existing CLAUDE.md, but says what to add", () => {
+  it("never edits an existing CLAUDE.md, but says what to add", async () => {
     writeFileSync(join(root, "CLAUDE.md"), "# Existing instructions\n");
-    const ctx = init();
+    const ctx = await init();
     expect(readFileSync(join(root, "CLAUDE.md"), "utf8")).toBe("# Existing instructions\n");
     expect(ctx.out()).toContain("@AGENTS.md");
   });
 
-  it("stays quiet when an existing CLAUDE.md already imports AGENTS.md", () => {
+  it("stays quiet when an existing CLAUDE.md already imports AGENTS.md", async () => {
     writeFileSync(join(root, "CLAUDE.md"), "@AGENTS.md\n\n# More\n");
-    expect(init().out()).not.toContain("add ");
+    expect((await init()).out()).not.toContain("add ");
   });
 
   describe("--check", () => {
-    it("exits 1 when AGENTS.md is missing entirely", () => {
-      const ctx = init("--check");
+    it("exits 1 when AGENTS.md is missing entirely", async () => {
+      const ctx = await init("--check");
       expect(ctx.code).toBe(1);
       expect(ctx.err()).toContain("sbs init");
     });
 
-    it("exits 1 when the block is stale", () => {
-      init();
+    it("exits 1 when the block is stale", async () => {
+      await init();
       writeFileSync(join(root, "AGENTS.md"), `${START_MARKER}\nold\n${END_MARKER}\n`);
-      expect(init("--check").code).toBe(1);
+      expect((await init("--check")).code).toBe(1);
     });
 
-    it("exits 0 when the block is current, and writes nothing", () => {
-      init();
+    it("exits 0 when the block is current, and writes nothing", async () => {
+      await init();
       const before = agents();
-      const ctx = init("--check");
+      const ctx = await init("--check");
       expect(ctx.code).toBe(0);
       expect(agents()).toBe(before);
     });
 
-    it("does not create files as a side effect of checking", () => {
-      init("--check");
+    it("does not create files as a side effect of checking", async () => {
+      await init("--check");
       expect(existsSync(join(root, "AGENTS.md"))).toBe(false);
       expect(existsSync(join(root, "CLAUDE.md"))).toBe(false);
     });
   });
 
-  it("targets an explicit path argument", () => {
+  it("targets an explicit path argument", async () => {
     const nested = mkdtempSync(join(tmpdir(), "sbs-init-nested-"));
     try {
-      expect(run(["init", nested], bufferContext(root))).toBe(0);
+      expect(await run(["init", nested], bufferContext(root))).toBe(0);
       expect(readFileSync(join(nested, "AGENTS.md"), "utf8")).toBe(`${AGENTS_BLOCK}\n`);
       expect(existsSync(join(root, "AGENTS.md"))).toBe(false);
     } finally {
@@ -125,9 +127,9 @@ describe("sbs init", () => {
     }
   });
 
-  it("is listed in the top-level help", () => {
+  it("is listed in the top-level help", async () => {
     const ctx = bufferContext(root);
-    run(["--help"], ctx);
+    await run(["--help"], ctx);
     expect(ctx.out()).toContain("init [path]");
   });
 });

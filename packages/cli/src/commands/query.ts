@@ -19,7 +19,7 @@ import { analyzeFor, reportDiagnostics } from "./shared.js";
 
 const SUBCOMMANDS = ["defs", "callers", "callees", "importers", "slice", "path"] as const;
 
-export function queryCommand(ctx: CommandContext, parsed: ParsedArgs): number {
+export async function queryCommand(ctx: CommandContext, parsed: ParsedArgs): Promise<number> {
   const [sub, ...operands] = parsed.positionals;
   if (sub === undefined) {
     throw new UsageError(`query needs a subcommand: ${SUBCOMMANDS.join(", ")}`);
@@ -29,7 +29,7 @@ export function queryCommand(ctx: CommandContext, parsed: ParsedArgs): number {
   }
 
   const root = parsed.options.get("root")?.[0] ?? ctx.cwd;
-  const result = analyzeFor(ctx, parsed, root);
+  const result = await analyzeFor(ctx, parsed, root);
   reportDiagnostics(ctx, result.diagnostics);
   const graph = result.graph;
   const depth = intOption(parsed, "depth", Number.POSITIVE_INFINITY);

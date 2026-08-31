@@ -29,7 +29,7 @@ export function analyzeFor(
   ctx: CommandContext,
   parsed: ParsedArgs,
   root: string,
-): AnalyzeProjectResult {
+): Promise<AnalyzeProjectResult> {
   const verbose = parsed.flags.has("verbose");
   return analyzeProject(root, {
     ...discoveryFrom(parsed),

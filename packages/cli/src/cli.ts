@@ -14,7 +14,10 @@ import type { CommandContext } from "./context.js";
  * place that touches the real process.
  */
 
-type Command = (ctx: CommandContext, parsed: ReturnType<typeof parseArgs>) => number;
+type Command = (
+  ctx: CommandContext,
+  parsed: ReturnType<typeof parseArgs>,
+) => number | Promise<number>;
 
 /** Flags that never consume a following value, across all commands. */
 const BOOLEAN_FLAGS: ArgSpec = {
@@ -66,7 +69,7 @@ Options:
 
 All analysis is local; nothing is sent anywhere.`;
 
-export function run(argv: readonly string[], ctx: CommandContext): number {
+export async function run(argv: readonly string[], ctx: CommandContext): Promise<number> {
   const [commandName, ...rest] = argv;
 
   if (commandName === undefined || commandName === "--help" || commandName === "help") {
@@ -87,7 +90,7 @@ export function run(argv: readonly string[], ctx: CommandContext): number {
   }
 
   try {
-    return command(ctx, parsed);
+    return await command(ctx, parsed);
   } catch (error) {
     if (error instanceof UsageError) {
       ctx.writeError(`error: ${error.message}\n`);

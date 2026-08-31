@@ -25,6 +25,9 @@
       ],
       "tsconfig": [
         "dist/tsconfig.d.ts"
+      ],
+      "grammars": [
+        "dist/grammars.d.ts"
       ]
     }
   },
@@ -40,6 +43,10 @@
     "./discovery": {
       "types": "./dist/discovery.d.ts",
       "import": "./dist/discovery.js"
+    },
+    "./grammars": {
+      "types": "./dist/grammars.d.ts",
+      "import": "./dist/grammars.js"
     },
     "./roots": {
       "types": "./dist/roots.d.ts",

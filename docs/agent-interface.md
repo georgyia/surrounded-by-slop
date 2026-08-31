@@ -339,6 +339,10 @@ type checker behind them: they are drawn dimmed, marked `confidence: "low"` in
 the IR, and should be treated as leads rather than facts. TypeScript's call
 graph is resolved through the compiler, so its edges are ground truth.
 
+Every command above analyzes all of these: point `sbs map` at a Python, Go,
+Java, Rust, Ruby or C# repo and it reads it, loading only the grammars that
+repo actually needs.
+
 Per-language specifics — Go's package-vs-file imports, Rust's `impl` blocks,
 Ruby's metaprogramming blind spots, C#'s file-scoped namespaces — are listed in
 the [user guide](user-guide.md#language-limits).
