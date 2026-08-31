@@ -16,7 +16,7 @@ export async function mapCommand(ctx: CommandContext, parsed: ParsedArgs): Promi
   const root = parsed.positionals[0] ?? ctx.cwd;
   const result = await analyzeFor(ctx, parsed, root);
   assertAnalyzable(result, parsed);
-  reportDiagnostics(ctx, result.diagnostics);
+  reportDiagnostics(ctx, result.diagnostics, { verbose: parsed.flags.has("verbose") });
   ctx.write(renderMap(result.graph, { budget }).text);
   return 0;
 }

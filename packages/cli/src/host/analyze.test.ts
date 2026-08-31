@@ -92,3 +92,50 @@ describe("analyzeProject — every language the extension supports (#131)", () =
     expect(second.graph).toEqual(first.graph);
   });
 });
+
+describe("import diagnostics distinguish broken from filtered-out (#151)", () => {
+  it("warns about an import that points at nothing", async () => {
+    write(
+      "src/a.ts",
+      'import { x } from "./does-not-exist";\nexport function a(): void { x(); }\n',
+    );
+    const { diagnostics } = await analyzeProject(root);
+    const broken = diagnostics.find((diagnostic) => diagnostic.severity === "warning");
+    expect(broken?.message).toContain("unresolved import");
+    expect(broken?.specifier).toBe("./does-not-exist");
+  });
+
+  it("only informs about an import of a file the filters excluded", async () => {
+    // The file is right there; test files are excluded by default. Calling
+    // that "unresolved" states something false and buries the real warnings.
+    write("src/real.test.ts", "export function t(): void {}\n");
+    write("src/b.ts", 'import { t } from "./real.test.js";\nexport function b(): void { t(); }\n');
+
+    const { diagnostics } = await analyzeProject(root);
+    expect(diagnostics.some((diagnostic) => diagnostic.severity === "warning")).toBe(false);
+    const note = diagnostics.find((diagnostic) => diagnostic.severity === "info");
+    expect(note?.message).toContain("outside the analyzed set");
+  });
+
+  it("resolves the .js specifier TypeScript sources actually write", async () => {
+    // `./x.js` in a .ts file means `./x.ts` on disk — the extension is swapped,
+    // not just appended, and getting that wrong would reinstate the warning.
+    write("src/helper.test.ts", "export function h(): void {}\n");
+    write(
+      "src/c.ts",
+      'import { h } from "./helper.test.js";\nexport function c(): void { h(); }\n',
+    );
+    const { diagnostics } = await analyzeProject(root);
+    expect(diagnostics.every((diagnostic) => diagnostic.severity !== "warning")).toBe(true);
+  });
+
+  it("says nothing at all when every import resolves", async () => {
+    write("src/one.ts", "export function one(): void {}\n");
+    write(
+      "src/two.ts",
+      'import { one } from "./one.js";\nexport function two(): void { one(); }\n',
+    );
+    const { diagnostics } = await analyzeProject(root);
+    expect(diagnostics).toEqual([]);
+  });
+});

@@ -3,7 +3,8 @@
     {
       "file": "main.ts",
       "message": "unresolved import \"./missing\"",
-      "severity": "warning"
+      "severity": "warning",
+      "specifier": "./missing"
     }
   ],
   "graph": {

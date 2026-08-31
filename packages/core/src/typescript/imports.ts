@@ -111,6 +111,7 @@ function resolveSpecifier(
       severity: "warning",
       message: `unresolved import "${site.specifier}"`,
       file: toRelativePath(sourceFile.fileName),
+      specifier: site.specifier,
     });
     return externalModuleNode(ctx, site.specifier);
   }

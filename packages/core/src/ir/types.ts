@@ -81,6 +81,16 @@ export interface Diagnostic {
   severity: "error" | "warning" | "info";
   message: string;
   file?: string;
+  /**
+   * The import specifier this diagnostic is about, when it is about one.
+   *
+   * Carried structurally so a host can classify the diagnostic without parsing
+   * the message: the analyzer cannot tell "this import points at nothing" from
+   * "this import points at a file the host filtered out", but the host can
+   * (#151). Diagnostics are returned alongside the graph rather than stored in
+   * it, so this is not part of the schema.
+   */
+  specifier?: string;
 }
 
 /**
