@@ -31,7 +31,7 @@ export async function queryCommand(ctx: CommandContext, parsed: ParsedArgs): Pro
   const root = parsed.options.get("root")?.[0] ?? ctx.cwd;
   const result = await analyzeFor(ctx, parsed, root);
   assertAnalyzable(result, parsed);
-  reportDiagnostics(ctx, result.diagnostics);
+  reportDiagnostics(ctx, result.diagnostics, { verbose: parsed.flags.has("verbose") });
   const graph = result.graph;
   const depth = intOption(parsed, "depth", Number.POSITIVE_INFINITY);
 

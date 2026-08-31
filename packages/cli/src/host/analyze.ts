@@ -1,7 +1,9 @@
-import { resolve } from "node:path";
+import { existsSync } from "node:fs";
+import { dirname, join, resolve } from "node:path";
 import {
   type AnalysisResult,
   analyzeTypeScriptProject,
+  type Diagnostic,
   mergeAnalyses,
 } from "@surrounded-by-slop/core";
 import { discoverFiles } from "@surrounded-by-slop/host/discovery";
@@ -94,5 +96,44 @@ export async function analyzeProject(
   }
 
   const { graph, diagnostics } = mergeAnalyses(results);
-  return { graph, diagnostics, root, fileCount: files.length };
+  return {
+    graph,
+    diagnostics: diagnostics.map((diagnostic) => classifyImport(diagnostic, root)),
+    root,
+    fileCount: files.length,
+  };
+}
+
+/** Extensions an author may write in a specifier, and the ones we may find on disk. */
+const IMPORT_CANDIDATES = [".ts", ".tsx", ".mts", ".cts", ".js", ".jsx", ".mjs", ".cjs"];
+
+/**
+ * Decide whether an "unresolved import" is broken or merely filtered out (#151).
+ *
+ * The analyzer works from an in-memory file set and cannot tell the two apart:
+ * a file the host excluded simply is not there. The host can, because it has
+ * the actual filesystem — so the classification happens here rather than
+ * teaching the pure core about include/exclude rules.
+ */
+function classifyImport(diagnostic: Diagnostic, root: string): Diagnostic {
+  const specifier = diagnostic.specifier;
+  if (specifier === undefined || diagnostic.file === undefined) {
+    return diagnostic;
+  }
+  const from = dirname(join(root, diagnostic.file));
+  const base = join(from, specifier);
+  // `./x.test.js` in TypeScript source means `./x.test.ts` on disk, so the
+  // written extension is swapped as well as appended.
+  const withoutExtension = base.replace(/\.[cm]?[jt]sx?$/, "");
+  const exists = [base, ...IMPORT_CANDIDATES.flatMap((ext) => [base + ext, withoutExtension + ext])]
+    .concat(IMPORT_CANDIDATES.map((ext) => join(base, `index${ext}`)))
+    .some((candidate) => existsSync(candidate));
+  if (!exists) {
+    return diagnostic;
+  }
+  return {
+    ...diagnostic,
+    severity: "info",
+    message: `import "${specifier}" resolves to a file outside the analyzed set (excluded by include/exclude or test filtering)`,
+  };
 }

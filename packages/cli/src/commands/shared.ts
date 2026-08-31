@@ -44,8 +44,17 @@ export function analyzeFor(
  * reported but never fatal — a broken file yields a partial graph, matching the
  * extension's behavior (SBS-051). The command still exits 0.
  */
-export function reportDiagnostics(ctx: CommandContext, diagnostics: readonly Diagnostic[]): void {
+export function reportDiagnostics(
+  ctx: CommandContext,
+  diagnostics: readonly Diagnostic[],
+  options: { verbose?: boolean } = {},
+): void {
   for (const diagnostic of diagnostics) {
+    // Informational diagnostics explain a deliberate omission rather than a
+    // problem, so they are shown on request instead of ahead of every answer.
+    if (diagnostic.severity === "info" && options.verbose !== true) {
+      continue;
+    }
     const where = diagnostic.file === undefined ? "" : `${diagnostic.file}: `;
     ctx.writeError(`${diagnostic.severity}: ${where}${diagnostic.message}\n`);
   }

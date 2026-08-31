@@ -29,7 +29,7 @@ export async function impactCommand(ctx: CommandContext, parsed: ParsedArgs): Pr
     includeTests: true, // affected tests can only surface if tests are in the graph
     ...(verbose ? { onDiagnosticNote: (note: string) => ctx.writeError(`note: ${note}\n`) } : {}),
   });
-  reportDiagnostics(ctx, analysis.diagnostics);
+  reportDiagnostics(ctx, analysis.diagnostics, { verbose });
 
   const result = computeImpact(analysis.graph, changedLines, { depth });
 

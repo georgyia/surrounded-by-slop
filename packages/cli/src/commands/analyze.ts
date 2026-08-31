@@ -12,7 +12,7 @@ export async function analyzeCommand(ctx: CommandContext, parsed: ParsedArgs): P
   const root = parsed.positionals[0] ?? ctx.cwd;
   const result = await analyzeFor(ctx, parsed, root);
   assertAnalyzable(result, parsed);
-  reportDiagnostics(ctx, result.diagnostics);
+  reportDiagnostics(ctx, result.diagnostics, { verbose: parsed.flags.has("verbose") });
   ctx.write(jsonExporter.export(result.graph));
   return 0;
 }
