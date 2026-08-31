@@ -8,6 +8,7 @@ import { discoverFiles } from "@surrounded-by-slop/host/discovery";
 import { adaptersForPaths, isTypeScriptPath } from "@surrounded-by-slop/host/grammars";
 import { discoverAliasOptions } from "@surrounded-by-slop/host/tsconfig";
 import { type DiffSource, gitDiff } from "../host/git.js";
+import { VERSION } from "../version.js";
 import { handleRpc, type ProtocolDeps, parseErrorResponse } from "./protocol.js";
 import type { ToolContext } from "./tools.js";
 
@@ -19,7 +20,9 @@ import type { ToolContext } from "./tools.js";
  */
 
 const SERVER_NAME = "surrounded-by-slop";
-const SERVER_VERSION = "0.0.1";
+// Reported to every MCP client during initialize, so it must be the real one
+// (#146) — a client showing a stale version makes a bug report misleading.
+const SERVER_VERSION = VERSION;
 
 /**
  * Build the tool context for a project root: warm analyzers (one with tests for
