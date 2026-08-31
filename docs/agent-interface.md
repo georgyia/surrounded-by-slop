@@ -115,25 +115,29 @@ The opening move: what this repo is, in a budget you choose.
 
 ```console
 $ sbs map examples/orders-app --budget 220
-# repo map · 5 files · 13/21 symbols · deeper: `sbs query callers <name>`
+# repo map · 6 files · 16/21 symbols · deeper: `sbs query callers <name>`
 src/inventory.ts:
   fn available(sku: string): number ·7 ←2
   fn inStock(sku: string): boolean ·11 ←1
   fn reserve(sku: string, quantity: number): boolean ·15 ←1
-src/orders.ts:
-  method placeOrderFinal(order: Order): string ·32 ←1
-  method placeOrderFinal2(order: Order): string ·28 ←1
-  method place(order: Order): string ·19 ←1
-  method total(order: Order): Money ·23 ←1
 src/util/money.ts:
   fn money(dollars: number): Money ·5 ←3
   fn add(a: Money, b: Money): Money ·9 ←1
+  fn format(value: Money): string ·13 ←1
+  interface Money ·1
 src/notify.ts:
   fn notify(to: string, message: string): void ·8 ←1
+  interface Notification ·1
+  const outbox ·6
 src/payments.ts:
   fn charge(card: string, amount: Money): PaymentResult ·7 ←1
-  fn isValidCard(card: string): boolean ·14 ←1
-  fn mask(card: string): string ·18 ←1
+src/index.ts:
+  fn main(): void ·15 ←1
+src/orders.ts:
+  class OrderService ·18 ←1
+  interface LineItem ·6
+  interface Order ·12
+  method placeOrderFinal(order: Order): string ·32 ←1
 ```
 
 <!-- /agent:map -->

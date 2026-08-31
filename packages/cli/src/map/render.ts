@@ -50,6 +50,25 @@ interface MapSymbol {
   file: string;
   score: number;
   inbound: number;
+  /** Higher reaches the reader first — see {@link reachTier}. */
+  tier: number;
+}
+
+/**
+ * How reachable a symbol is, which is what a repo *map* is asking about (#153).
+ *
+ * `rankNodes` measures importance, and a closure called six times by its parent
+ * is genuinely important — locally. But nothing outside that parent can call
+ * it, so on an overview it is an implementation detail of one function, and it
+ * should not outrank the module's public surface.
+ *
+ * Ranking still orders within a tier; this only decides who is asked first.
+ */
+function reachTier(node: GraphNode, parentKind: GraphNode["kind"] | undefined): number {
+  if (parentKind === "function" || parentKind === "method") {
+    return 0; // a closure: private to one implementation
+  }
+  return node.exported === true ? 2 : 1;
 }
 
 function symbolLine(sym: MapSymbol): string {
@@ -72,7 +91,11 @@ function renderTop(symbols: readonly MapSymbol[], count: number): { body: string
     const bucket = byFile.get(sym.file) ?? [];
     bucket.push(sym);
     byFile.set(sym.file, bucket);
-    fileBest.set(sym.file, Math.max(fileBest.get(sym.file) ?? 0, sym.score));
+    // Rank a file by its most reachable member, so a file of closures does not
+    // lead a file that exports its API.
+    const best = fileBest.get(sym.file);
+    const candidate = sym.tier + sym.score;
+    fileBest.set(sym.file, best === undefined ? candidate : Math.max(best, candidate));
   }
   const files = [...byFile.keys()].sort((a, b) => {
     const best = (fileBest.get(b) ?? 0) - (fileBest.get(a) ?? 0);
@@ -80,6 +103,9 @@ function renderTop(symbols: readonly MapSymbol[], count: number): { body: string
   });
   const blocks = files.map((file) => {
     const members = (byFile.get(file) ?? []).sort((a, b) => {
+      if (b.tier !== a.tier) {
+        return b.tier - a.tier;
+      }
       if (b.score !== a.score) {
         return b.score - a.score;
       }
@@ -106,6 +132,17 @@ export function renderMap(graph: SemanticGraph, options: RenderMapOptions = {}):
     inbound.set(edge.to, (inbound.get(edge.to) ?? 0) + (edge.count ?? 1));
   }
 
+  const kindById = new Map(graph.nodes.map((node) => [node.id, node.kind]));
+  const parentKind = new Map<string, GraphNode["kind"]>();
+  for (const edge of graph.edges) {
+    if (edge.kind === "contains") {
+      const kind = kindById.get(edge.from);
+      if (kind !== undefined) {
+        parentKind.set(edge.to, kind);
+      }
+    }
+  }
+
   const scoreById = new Map(rankNodes(graph).map((ranked) => [ranked.id, ranked.score]));
   const symbols: MapSymbol[] = graph.nodes
     .filter(isListable)
@@ -114,8 +151,17 @@ export function renderMap(graph: SemanticGraph, options: RenderMapOptions = {}):
       file: node.span?.file ?? node.qualifiedName,
       score: scoreById.get(node.id) ?? 0,
       inbound: inbound.get(node.id) ?? 0,
+      tier: reachTier(node, parentKind.get(node.id)),
     }))
-    .sort((a, b) => (b.score !== a.score ? b.score - a.score : a.node.id < b.node.id ? -1 : 1));
+    .sort((a, b) => {
+      if (b.tier !== a.tier) {
+        return b.tier - a.tier;
+      }
+      if (b.score !== a.score) {
+        return b.score - a.score;
+      }
+      return a.node.id < b.node.id ? -1 : 1;
+    });
 
   const total = symbols.length;
   if (total === 0) {
