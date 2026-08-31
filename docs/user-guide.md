@@ -41,7 +41,7 @@ command below from the Command Palette (`⌘⇧P` / `Ctrl+Shift+P`, prefix
 | Setting | Default | Meaning |
 |---|---|---|
 | `slop.include` | `**/*.{ts,tsx,mts,cts,js,jsx,mjs,cjs,py,go,java,rs,rb,cs}` | Globs analyzed by Visualize Workspace. |
-| `slop.exclude` | dependencies, build output, fixtures | Globs skipped everywhere. |
+| `slop.exclude` | dependencies, build output, fixtures | Globs skipped everywhere — see below. |
 | `slop.includeTests` | `false` | Include test filenames and files under `__tests__/`, `tests/`, or `spec/` in the workspace map. |
 | `slop.showExternalModules` | `true` | Show external packages and unresolved imports as dashed nodes. |
 | `slop.theme` | `auto` | Diagram palette: follow the editor, or force light/dark. |
@@ -59,6 +59,14 @@ routes.
 - Workspaces past ~250 modules or ~600 edges open as a **folder-level
   overview** (with a notice). Expand folders inline or use **Show modules**;
   narrow `slop.include` only when the expanded graph exceeds the hard limit.
+- **Build output and dependencies are skipped by default**, per language:
+  `node_modules`, `dist`, `build`, `out`, `vendor` and the framework caches
+  (`.next`, `.nuxt`, `.turbo`, …), plus `target/` (cargo and Maven), `obj/`
+  (MSBuild), `.gradle/`, `.venv` / `venv` / `__pycache__` / `site-packages` /
+  `.tox` / `.mypy_cache` (Python) and `.bundle` (Ruby). Two lookalikes are
+  deliberately **not** skipped: `packages/` (NuGet's convention, but also the
+  source root of most monorepos) and `bin/` (a C# build directory, but where
+  many JS and Python projects keep real entry points).
 - Files over 512 KB and folders like `node_modules` are skipped, and a
   workspace analysis caps at 5,000 files; the log (Output → Surrounded by
   Slop) says exactly what was skipped and why.

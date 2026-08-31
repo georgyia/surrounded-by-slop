@@ -1,5 +1,5 @@
 import * as assert from "node:assert";
-import { DEFAULT_INCLUDE, expandBraces } from "@surrounded-by-slop/host/decisions";
+import { DEFAULT_EXCLUDE, DEFAULT_INCLUDE, expandBraces } from "@surrounded-by-slop/host/decisions";
 import * as vscode from "vscode";
 import { test } from "../harness.js";
 
@@ -171,5 +171,34 @@ test("the manifest's default include glob covers exactly the shared DEFAULT_INCL
     missingFromShared,
     [],
     `DEFAULT_INCLUDE is missing ${missingFromShared.join(", ")} — add them to packages/host/src/decisions.ts`,
+  );
+});
+
+test("the manifest's default exclude list matches the shared DEFAULT_EXCLUDE", async () => {
+  // Same drift risk as slop.include (#133): the CLI and the editor must skip
+  // the same build output, or a repo maps differently depending on where you
+  // ask from.
+  const extension = vscode.extensions.getExtension(EXTENSION_ID);
+  assert.ok(extension, "extension present");
+  const contributes = (extension.packageJSON as { contributes: Contributes }).contributes;
+  const property = contributes.configuration?.properties?.["slop.exclude"] as
+    | { default?: string[] }
+    | undefined;
+  assert.ok(property?.default, "slop.exclude declares a default");
+
+  const manifest = new Set(property.default);
+  const shared = new Set<string>(DEFAULT_EXCLUDE);
+  const missingFromManifest = [...shared].filter((glob) => !manifest.has(glob)).sort();
+  const missingFromShared = [...manifest].filter((glob) => !shared.has(glob)).sort();
+
+  assert.deepStrictEqual(
+    missingFromManifest,
+    [],
+    `slop.exclude is missing ${missingFromManifest.join(", ")} — add them to packages/extension/package.json`,
+  );
+  assert.deepStrictEqual(
+    missingFromShared,
+    [],
+    `DEFAULT_EXCLUDE is missing ${missingFromShared.join(", ")} — add them to packages/host/src/decisions.ts`,
   );
 });

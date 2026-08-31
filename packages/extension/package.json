@@ -210,9 +210,20 @@
             "**/.turbo/**",
             "**/.cache/**",
             "**/vendor/**",
+            "**/*.min.js",
             "**/fixtures/**",
             "**/testdata/**",
-            "**/*.min.js"
+            "**/target/**",
+            "**/obj/**",
+            "**/.gradle/**",
+            "**/.venv/**",
+            "**/venv/**",
+            "**/__pycache__/**",
+            "**/site-packages/**",
+            "**/.tox/**",
+            "**/.mypy_cache/**",
+            "**/.pytest_cache/**",
+            "**/.bundle/**"
           ],
           "description": "Glob patterns to exclude when visualizing the workspace."
         },
