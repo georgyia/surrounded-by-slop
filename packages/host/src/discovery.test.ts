@@ -110,9 +110,14 @@ describe("discovery guardrails (#144)", () => {
   it("keeps a large-but-plausible file when the caller raises the limit", () => {
     // Many short lines: genuinely large, but not the one-enormous-line shape
     // that marks a bundle. A generated-but-readable file looks like this.
+    // The length is tracked as we go — re-joining a growing array to measure
+    // it is quadratic, which is fast enough locally and times out on CI.
     const lines: string[] = [];
-    for (let index = 0; lines.join("\n").length <= MAX_FILE_BYTES; index += 1) {
-      lines.push(`export function generated${index}(): number { return ${index}; }`);
+    let length = 0;
+    for (let index = 0; length <= MAX_FILE_BYTES; index += 1) {
+      const line = `export function generated${index}(): number { return ${index}; }`;
+      lines.push(line);
+      length += line.length + 1;
     }
     write("src/big.ts", `${lines.join("\n")}\n`);
 
